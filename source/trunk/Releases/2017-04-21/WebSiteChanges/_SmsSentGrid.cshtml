@@ -1,0 +1,219 @@
+﻿@model Figlut.Spread.Web.Site.Models.FilterModel<SmsSentLogModel>
+
+@using Figlut.Server.Toolkit.Data;
+@using Figlut.Spread.Web.Site.Configuration;
+@using Figlut.Spread.Web.Site;
+@using Figlut.Spread.Web.Site.Models;
+@using Figlut.Spread.Web.Site.Extensions;
+@using Figlut.Spread.ORM.Helpers;
+
+@{
+    Figlut.Spread.Web.Site.Models.SmsSentLogModel smsSent = new SmsSentLogModel();
+}
+@{
+    int smsPerPageToDisplay = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.SmsPerPagePageToDisplay].SettingValue);
+    var grid = new WebGrid(Model.DataModel, canPage: true, rowsPerPage: smsPerPageToDisplay, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+    grid.Pager(WebGridPagerModes.All);
+}
+
+<div id="gridContent" class="data-grid">
+    <div id="gridWrapper">
+        <div class="centerInformation" style="float:inherit; margin-top:1%; margin-bottom:1%;">
+            <div class="grid-search">
+                <table style="width:100%;">
+                    <tr>
+                        <td style="width:60%;">
+                            <div class="search-text">
+                                @Html.Raw("Search Text")
+                            </div>
+                        </td>
+                        <td>
+                            <div class="field-label">
+                                @Html.Raw("Start Date")
+                            </div>
+                        </td>
+                        <td>
+                            <div class="field-label">
+                                @Html.Raw("End Date")
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.EditorFor(m => m.SearchText)
+                        </td>
+                        <td>
+                            @Html.EditorFor(m => m.StartDate, new { disabled = "disabled", @readonly = "readonly" })
+                        </td>
+                        <td>
+                            @Html.EditorFor(m => m.EndDate, new { disabled = "disabled", @readonly = "readonly" })
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="grid-buttons">
+                <div style="float: left; margin-left:2%; margin-right:2%">
+                    @Html.LinkButtonForSubmit("Search", "onSearchSmsSentClick()", "btnSearch", "search.png")
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        @Html.LinkButtonForSubmit("Download", "onDownloadAllSmsSentCsvFileClick()", "btnDownload", "spreadsheet.png")
+                    }
+                </div>
+                <div style="float: right; margin-left:2%; margin-right:2%">
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        @Html.LinkButtonForCancel("Delete All", "onDeleteAllSmsSentClick()", "btnDeleteAllSmsSent")
+                        if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+                        {
+                            smsSent = (SmsSentLogModel)grid.Rows[grid.SelectedIndex].Value;
+                            @Html.LinkButtonForCancel("Delete", "onDeleteSmsSentClick()", "btnDeleteSmsSent")
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="message-preview">
+            @if (Model.IsAdministrator && grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+            {
+                smsSent = (SmsSentLogModel)grid.Rows[grid.SelectedIndex].Value;
+                <div style="float:left; margin-left:2%; margin-right:2%;">
+                    <b>@Html.Raw(string.Format("ID: {0}", smsSent.SmsSentLogId.ToString()))</b>
+                </div>
+            }
+            <div style="float: right; margin-left:2%; margin-right:2%">
+                <b>@Html.Raw(string.Format("Messages Loaded: {0} of {1}", Model.TotalCount.ToString(), Model.TotalTableCount.ToString()))</b>
+            </div>
+        </div>
+        <div id="gridTableContainer">
+            @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "header",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                columns: grid.Columns(
+                grid.Column("Sent", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
+                grid.Column(EntityReader<SmsSentLogModel>.GetPropertyName(p => p.SenderUserName, false), "Sender"),
+                grid.Column(EntityReader<SmsSentLogModel>.GetPropertyName(p => p.CellPhoneNumber, false), "Cell"),
+                grid.Column(EntityReader<SmsSentLogModel>.GetPropertyName(p => p.MessageId, false), EntityReader<SmsSentLogModel>.GetPropertyName(p => p.MessageId, true)),
+                grid.Column(EntityReader<SmsSentLogModel>.GetPropertyName(p => p.MessageContentsTrimmed, false), "Message"),
+                grid.Column(EntityReader<SmsSentLogModel>.GetPropertyName(p => p.Success, false), EntityReader<SmsSentLogModel>.GetPropertyName(p => p.Success, true)),
+                grid.Column(EntityReader<SmsSentLogModel>.GetPropertyName(p => p.ErrorCode, false), EntityReader<SmsSentLogModel>.GetPropertyName(p => p.ErrorCode, true)),
+                //grid.Column(EntityReader<SmsSentLogModel>.GetPropertyName(p => p.ErrorMessageTrimmed, false), "Error"),
+                grid.Column(EntityReader<SmsSentLogModel>.GetPropertyName(p => p.Delivered, false), "Delivered"),
+                grid.Column(EntityReader<SmsSentLogModel>.GetPropertyName(p => p.DateCreated, false), "Date")
+            ))
+        </div>
+        <div class="message-preview">
+            @if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+            {
+                @*smsSent = (SmsSentLogModel)grid.Rows[grid.SelectedIndex].Value;
+                <div style="float: left; margin-left:2%; margin-right:2%">
+                    <b>@Html.Raw(string.Format("Message: {0}", smsSent.MessageId))</b>   
+                </div>*@
+                <div style="float:right; margin-left:2%; margin-right:2%; color: #a30e0e;">
+                    @Html.Raw(string.Format("{0}", smsSent.MessageContents))
+                </div>
+            }
+        </div>
+        @if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+        {
+            smsSent = (SmsSentLogModel)grid.Rows[grid.SelectedIndex].Value;
+            if (!string.IsNullOrEmpty(smsSent.ErrorMessage))
+            {
+                <div class="message-preview" style="overflow:auto">
+                    <div style="margin-left:2%; margin-right:2%; color: #a30e0e;">
+                        @Html.Raw(string.Format("{0}", smsSent.ErrorMessage))
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    <div id="SmsSentErrorField" style="color:#8A0808">
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <br />
+            @Html.Raw(ViewBag.ErrorMessage)
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#SearchText").focus();
+        makeGridRowsPostForm();
+        enableDatepickers();
+    });
+
+    function onSearchSmsSentClick() {
+        postSmsSent();
+    }
+
+    function onDeleteSmsSentClick() {
+        //if (!confirm('Are you sure you want to delete?')) {
+        //    return;
+        //}
+@*        $.ajax({
+            url: '@Url.Action("Delete", "SmsSent", new { smsSentLogId = smsSent.SmsSentLogId })',
+            type: 'POST',
+            data: $("#gridPartial").serialize(),
+            success: function (data) {
+                if (data.Success) {
+                    postSmsSent();
+                    return;
+                } else {
+                    $("#SmsSentErrorField").html(data.ErrorMsg);
+                }
+            }
+        })*@
+        showDialog(
+            '#divConfirmationDialog',
+            '#dlgConfirmation',
+            'ConfirmDeleteDialog',
+            'SmsSent',
+            'identifier',
+            '@smsSent.SmsSentLogId.ToString()');
+    };
+
+    function getSearchParametersString() {
+        var searchParameters = '@string.Format("{0}|{1}|{2}",
+        Model.SearchText != null ? Model.SearchText : string.Empty,
+        Model.StartDate.HasValue ? Model.StartDate.Value.Date.ToString() : string.Empty,
+        Model.EndDate.HasValue ? Model.EndDate.Value.Date.ToString() : string.Empty)'
+        return searchParameters;
+    }
+
+    function onDeleteAllSmsSentClick() {
+        var searchParameters = getSearchParametersString();
+        showDialog(
+            '#divConfirmationDialog',
+            '#dlgConfirmation',
+            'ConfirmDeleteAllDialog',
+            'SmsSent',
+            'searchParametersString',
+            searchParameters);
+    }
+
+    function onDownloadAllSmsSentCsvFileClick() {
+        var searchParameters = getSearchParametersString();
+        var downloadUrl = '@Url.Action("DownloadCsvFile", "SmsSent", new { searchParametersString = "_searchValue" })';
+        downloadUrl = downloadUrl.replace('_searchValue', searchParameters);
+        window.location = downloadUrl;
+    }
+
+    function postSmsSent() {
+        $('form#frmDetails').trigger('submit');
+
+@*        $.ajax({
+            url: '@Url.Action("Index", "SmsSent", new { smsSentLogId = smsSent.SmsSentLogId })',
+            type: 'POST',
+            data: $("#frmDetails").serialize(),
+            success: function (data) {
+                if (data.ErrorMsg != undefined) {
+                    alert(data.ErrorMsg);
+                    $("#SmsSentErrorField").html(data.ErrorMsg);
+                }
+            }
+        })*@
+    };
+
+</script>

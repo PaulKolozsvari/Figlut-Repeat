@@ -1,0 +1,12 @@
+URLs create with the Google Service: 
+	https://goo.gl
+
+By visiting the above URL and being logged in with my paulkolo@figlut.com
+I will be able to see how many people have clicked the link.
+
+Unsubscribe Page:
+
+	Original URL: 
+		http://figlut.com/SubscriberSubscription/ViewSubscriberSubscriptions
+	Short URL:
+		goo.gl/nFmT5a

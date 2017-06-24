@@ -1,0 +1,5 @@
+Intel(R) 82574L Gigabit Network Connection: initially connected (cable connected)
+Intel(R) 82579LM Gigabit Network Connection: initially disconnected (cable disconnected)
+
+Drivers download URL forIntel(R) 82574L: 
+	https://downloadcenter.intel.com/download/18725/Ethernet-Intel-Network-Adapter-Driver-for-Windows-Server-2008-R2-?product=32209

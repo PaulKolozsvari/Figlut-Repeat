@@ -1,0 +1,12 @@
+The server at Afrihost (197.242.157.9) has the following network adapters:
+
+Intel(R) 82574L Gigabit Network Connection: connected (cable connected)
+Intel(R) 82579LM Gigabit Network Connection: disconnected (cable disconnected)
+
+Drivers download URL forIntel(R) 82574L: 
+	https://downloadcenter.intel.com/download/18725/Ethernet-Intel-Network-Adapter-Driver-for-Windows-Server-2008-R2-?product=32209
+
+Issues of network card stopping from event log: 
+	"The TCP/IP NetBIOS Helper service was successfully sent a stop control."
+	URL Help: https://answers.microsoft.com/en-us/windows/forum/windows_7-networking/network-randomly-drops-the-tcpip-netbios-helper/a5e0a261-8344-45b2-af3a-75a45332a2ed
+

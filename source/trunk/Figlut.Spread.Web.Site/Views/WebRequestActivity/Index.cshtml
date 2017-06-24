@@ -1,0 +1,45 @@
+﻿@model Figlut.Spread.Web.Site.Models.FilterModel<WebRequestActivityModel>
+
+@using Figlut.Server.Toolkit.Data;
+@using Figlut.Spread.Web.Site.Configuration;
+@using Figlut.Spread.Web.Site;
+@using Figlut.Spread.Web.Site.Models;
+
+@{
+    ViewBag.Title = "Web Request Activities";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<nav>
+    <ul id="menu">
+        <li>
+            <img src="~/Images/Icons/red-book-icon32.png" style="float:right; margin-right:1%; margin-left:1%"/>
+            <a href="" style="float:right">Web Request Activities</a>
+        </li>
+    </ul>
+</nav>
+<hr />
+@using (Ajax.BeginForm("Index", "WebRequestActivity", new AjaxOptions {
+    InsertionMode = InsertionMode.Replace,
+    UpdateTargetId = "gridPartial",
+    HttpMethod = "POST"},
+    new { @id = "frmDetails" } ))
+{
+    <div id="gridPartial">
+        @{
+            Html.RenderPartial("_WebRequestActivityGrid", Model);
+        }
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).keypress(function (event) {
+            if (event.which == 13) {
+                //$("#btnSearch").click();
+                postWebRequestActivity();
+            }
+        });
+        loadDialog("#divConfirmationDialog", "#dlgConfirmation", "ConfirmDeleteDialog", "WebRequestActivity", 'identifier', '@Guid.Empty');
+        loadDialog("#divEditWebRequestActivity", "#dlgEditWebRequestActivity", "EditDialog", "WebRequestActivity", 'webRequestActivityId', '@null');
+    });
+</script>

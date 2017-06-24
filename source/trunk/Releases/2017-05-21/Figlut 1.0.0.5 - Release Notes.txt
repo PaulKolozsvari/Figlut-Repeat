@@ -1,0 +1,41 @@
+Website Changes/Features:
+
+	1. Added feature to query WHO IS info from a the IP address on each WebRequestActivity.
+	2. Finished Web Request Activity grid for viewing web requests to the Figlut website.
+
+Web Sevice Changes:
+
+
+
+Database Schema Changes:
+
+1.	WebRequestActivity:
+
+	1.1. Added field SourceApplication (varchar(50)) in the WebRequestActivity table.
+	1.2. Added field Comments (varchar(max)) in the WebRequestActivity table.
+	1.3. Added field RequestVerb (varchar(50)) in the WebRequestActivity table.
+	1.4. Added ClientType (varchar(50))
+	1.4. Added IsCrawler (bit)
+	1.5. Added IsMobileDevice (bit)
+	1.6. Added MobileDeviceManufacturer (varchar 250)
+	1.7. Added MobileDeviceModel (varchar 250)
+	1.8. Added Platform (varchar 250)
+	1.9. Added WHO IS fields on this table:
+
+	 	1.9.1 
+
+2.	GlobalSettings added:
+
+	2.1. LogGetWebRequestActivity
+	2.2. LogPostWebRequestActivity
+	2.3. LogPutWebRequestActivity
+	2.4. LogDeleteWebRequestActivity
+	2.5. WebRequestActivityUserAgentsToExclude
+	2.6. EnableWhoIsWebServiceQuery
+	2.7. WhoIsWebServiceUrl
+	2.8. WhoIsWebServiceRequestTimeout
+	2.9. WebRequestActivityPerPageToDisplay
+	2.10. WebRequestActivityDaysToDisplay
+
+
+

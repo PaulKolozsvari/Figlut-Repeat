@@ -1,0 +1,10 @@
+Issues of network card stopping from event log: 
+	"The TCP/IP NetBIOS Helper service was successfully sent a stop control."
+	URL Help: https://answers.microsoft.com/en-us/windows/forum/windows_7-networking/network-randomly-drops-the-tcpip-netbios-helper/a5e0a261-8344-45b2-af3a-75a45332a2ed
+
+Changes made to the server:
+
+	*	SipsEnable set to false
+	*	Changed Power Plan in Control Panel to "High Performance" from "Balanced";
+	*	Upgraded Intel Network Connections drivers from version version 16.3.48.0 to 22.0.18.0.
+	*	Disabled Intel(R) 82574L Gigabit Network Connection (which was previously connected) and Enabled Intel(R) 82579LM Gigabit Network Connection (which was previously connected).

@@ -1,0 +1,48 @@
+Website Changes/Features:
+
+1	Edit Dialog for Organizations. Only Admins should be able to edit an organization.
+2	Security fix: ensure that one organization cannot view another's subscriptions if they know the URL and Organization ID.
+3	Edit Dialog for Users. Only Admins should be able to edit a user.
+4	Feature to edit a user's role.
+5	Create reset password dialog for administrators to be able to reset a password for a user.
+6	Create and add Figlut icon in .ico format and set it as the global icon for the website.
+7	Created manage subscribers page for administrators to be able to view all subscribers.
+8	Create Edit Dialog for Subscribers.
+9	Created page to see a subscriber's subscriptions for administrator to look up.
+10	Created Edit Dialog for Subscriber Subscriptions.
+11	Created Edit Dialog for Organization Subscriptions.
+12	Created page for subscribers to search using their cell number and view all the subscriptions. Also be able to disable an one.
+13	Developed feature for Organizations to go into minus SMS credits i.e. should be able to allow or not allow an Organization to have minus credits.
+14	Developed credit limit system to manage how many SMS an organisation can send.
+15	Developed SMS processor logs page showing logs for all processors.
+16	Develop: ensure that the Received SMS Processor logs errors too, not just success and information messages.
+17	Develop: make the Received SMS Processor logging less verbose.
+18 	Split the SpreadEntityContext methods into separate partial methods for each table - just to get it more organized.
+19	Develop: page for viewing and managing campaigns. An organization user should only be able to view campaigns for their own organization.
+20	Develop: page for creating SMS campaign based on organization subscriptions and enqueuing SMS' to be sent later on.
+
+Web Sevice Changes:
+
+1.	Separated Receive and Delivery Report web methods into a separate web service to allow for authentication to be enabled on sending SMS' only.
+2.	Implemented SMS queueing for sent SMS and developed SMS sent processor for sending the SMS at a later stage.
+3.	Save subscriber with each time an SMS is processed by the SMS Sent Processor i.e. if a subscriber with the given cell phone number doesn't already exist it will create it.
+
+Database Schema Changes:
+
+1.	Organization table:
+
+	1.1.	Added column SmsCreditsBalance (bigint). Default = 0.
+	1.2.	Added column AllowSmsCreditsDebt (bit). Default = 0.
+	1.3. 	Added column SmsPrice (float). Default = 0.
+
+2.	SmsSentLog table:
+
+	1.1. 	SmsSentLog table: modified the Tag column to be Varchar(Max) instead of Varchar(50).
+	1.2.	SubscriberName type changed from varchar(50) to varchar(160).
+	1.3.	Added field Campaign of type varchar(50).
+	1.4.	Added field SmsCampaignId of type uniqueidentifier.
+
+3.	Created SmsSentQueueItem table:
+
+4.	Created SmsCampaign table.
+

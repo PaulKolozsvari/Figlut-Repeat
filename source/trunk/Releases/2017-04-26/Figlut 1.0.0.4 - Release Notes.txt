@@ -1,0 +1,14 @@
+Website Changes/Features:
+
+1.	Develop: keep track of page loads and if person is logged in, keep track of page loads per user and the web pages that they visit.
+
+Database Schema Changes:
+
+1.	Organization table:
+
+	1.1.	Added LastActivityDate (datetime) to the user table.
+
+2.	Added WebRequestActivity table.
+
+
+

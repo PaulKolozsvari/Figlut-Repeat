@@ -1,0 +1,184 @@
+﻿/*Date Picker parent control
+    http://www.hongkiat.com/blog/jquery-ui-datepicker/
+*/
+.ui-datepicker {
+    width: 25%;
+    background-color: #fff;
+    border:none;
+}
+
+/*All links inside the Datepicker*/
+.ui-datepicker a {
+    text-decoration: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+/*.ui-datepicker table {
+    width: 100%;
+}*/
+
+/*Header*/
+.ui-datepicker-header {
+    width: 100%;
+    font: 9pt Arial, sans-serif;
+    background-color: #fff;
+    background-image: -ms-linear-gradient(bottom, #3195c2 0%, #fff 100%);
+    background-image: -o-linear-gradient(bottom, #3195c2 0%, #fff 100%);
+    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #3195c2), color-stop(1, #fff));
+    background-image: -webkit-linear-gradient(bottom, #3195c2 0%, #fff 100%);
+    background-image: linear-gradient(bottom, #3195c2 0%, #fff 100%);
+
+    /*padding-top: 10%;
+    padding-bottom: 1%;*/
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
+    margin-top: auto;
+    text-align:center;
+    border:none;
+}
+
+/*Set the arrows as background for the previous and next links.*/
+.ui-datepicker-prev, .ui-datepicker-next {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    cursor: pointer;
+    background-image: url('./images/arrow.png');
+    background-repeat: no-repeat;
+    line-height: 600%;
+    overflow: hidden;
+    margin-top: 5%;
+}
+
+/*Flip the previous arrow*/
+.ui-datepicker-prev {
+    float: left;
+    background-position: center -30px;
+}
+.ui-datepicker-next {
+    float: right;
+    background-position: center 0px;
+}
+
+/*Links in header*/
+.ui-datepicker-header a {
+    color: #3195c2;
+}
+
+/*Title (Month Name)*/
+.ui-datepicker-title {
+    margin-top: 8%;
+    margin-bottom: 3%;
+    color: #fff;
+}
+
+/*Calendar*/
+.ui-datepicker-calendar {
+    width: 100%;
+    height: auto;
+    /*margin: 5px auto 0;*/
+    font: 9pt Arial, sans-serif;
+    background-image: -ms-linear-gradient(top, #fff 0%, #f3f3f3 100%);
+    background-image: -o-linear-gradient(top, #fff 0%, #f3f3f3 100%);
+    background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #fff), color-stop(1, #f3f3f3));
+    background-image: -webkit-linear-gradient(top, #fff 0%, #f3f3f3 100%);
+    background-image: linear-gradient(top, #fff 0%, #f3f3f3 100%);
+}
+
+/*Day Names*/
+.ui-datepicker th {
+    text-transform: uppercase;
+    font-size: 6pt;
+    /*padding: 5px 0;*/
+    color: #666666;
+    text-shadow: 1px 0px 0px #fff;
+    filter: dropshadow(color=#fff, offx=1, offy=0);
+    padding-bottom: 5%;
+}
+
+/*Date Columns*/
+.ui-datepicker tbody td {
+    padding: 0;
+    /*border-right: 1px solid #bbb;*/
+    text-align: center;
+    /*padding-bottom: 5%;*/
+}
+
+/*Last Date column on the right must not have a border to its right.*/
+.ui-datepicker tbody td:last-child {
+    border-right: 0px;
+}
+
+/*Date Rows*/
+.ui-datepicker tbody tr {
+    /*border-bottom: 1px solid #bbb;*/
+    margin: 100%;
+}
+/*Last Date row on the right must not have a border to its right.*/
+.ui-datepicker tbody tr:last-child {
+    border-bottom: 0px;
+}
+
+/*Default state of the dates in the calendar.*/
+.ui-datepicker td span, .ui-datepicker td a {
+    display: inline-block;
+    font-weight: bold;
+    text-align: center;
+    width: 80%;
+    height: 80%;
+    line-height: 30px;
+    /*color: #666666;*/
+    /*text-shadow: 1px 1px 0px #fff;*/
+    filter: dropshadow(color=#fff, offx=1, offy=1);
+}
+.ui-datepicker-calendar .ui-state-default {
+    background-image: -ms-linear-gradient(top, #fff 60%, #f3f3f3 100%);
+    background-image: -o-linear-gradient(top, #fff 60%, #f3f3f3 100%);
+    background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #fff), color-stop(1, #f3f3f3));
+    background-image: -webkit-linear-gradient(top, #fff 60%, #f3f3f3 100%);
+    background-image: linear-gradient(top, #fff 60%, #f3f3f3 100%);
+
+    -webkit-box-shadow: inset 1px 1px 0px 0px rgba(250, 250, 250, .5);
+    -moz-box-shadow: inset 1px 1px 0px 0px rgba(250, 250, 250, .5);
+    box-shadow: inset 1px 1px 0px 0px rgba(250, 250, 250, .5);
+    border-radius: 10%;
+}
+
+/*Deafult color of a date.*/
+.ui-datepicker-unselectable .ui-state-default {
+    background: #f4f4f4;
+    color: #b4b3b3;
+}
+
+.ui-datepicker-today {
+    color:red;
+}
+
+/*When you hover over a date.*/
+.ui-datepicker-calendar .ui-state-hover {
+    color: #fff;
+    background-image: -ms-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
+    background-image: -o-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
+    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #a30e0e), color-stop(1, #fff));
+    background-image: -webkit-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
+    background-image: linear-gradient(bottom, #a30e0e 0%, #fff 100%);
+}
+
+/*When a date is in active state.*/
+.ui-datepicker-calendar .ui-state-active {
+    color: #fff;
+    background-image: -ms-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
+    background-image: -o-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
+    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #a30e0e), color-stop(1, #fff));
+    background-image: -webkit-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
+    background-image: linear-gradient(bottom, #a30e0e 0%, #fff 100%);
+
+    text-shadow: 0px 1px 0px #4d7a85;
+    filter: dropshadow(color=#4d7a85, offx=0, offy=1);
+    /*border: 1px solid #55838f;*/
+    position: relative;
+    margin: -1px;
+}

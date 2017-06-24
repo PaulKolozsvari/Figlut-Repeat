@@ -1,0 +1,11 @@
+1. Register an account
+2. Access your hosting server and point an "A" record for the desired sub-domain to 95.85.8.5
+Example: sms.yourdomain.co.za points to 95.85.8.5
+3. Login to your account via sms.yourdomain.co.za (or via whichever sub-domain you chose)
+4. Access the "Reseller Management" page by clicking on your company name on the top
+5. Upload your logo, insert site URLs, insert your email settings, and create pricing packages.
+
+Portal: sms.figlut.com
+Email Address: paul.kolozsvari@binarychef.com
+Password: long password
+VLN (Virtual Long Number): 0872405099

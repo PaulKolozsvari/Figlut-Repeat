@@ -1,0 +1,7 @@
+Website Changes/Features:
+
+	1. Added Services and About sections on the home page to also download the White Paper that Greg wrote.
+	2. Changed the main description on the top of the Home page to not mention SMS portal but rather focus on bridging the gap between organizations and users.
+
+
+

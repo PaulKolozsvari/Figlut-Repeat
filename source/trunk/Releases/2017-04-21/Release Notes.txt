@@ -1,0 +1,1 @@
+Removed (commented out) the message ID from the bottom of the sms sent and received grid to allow for more space to display the message contents.

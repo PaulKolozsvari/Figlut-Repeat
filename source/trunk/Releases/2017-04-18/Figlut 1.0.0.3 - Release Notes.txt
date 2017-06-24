@@ -1,0 +1,25 @@
+Website Changes/Features:
+
+1. 	Develop: queueing mechanism for sending SMS for the website and web service. Develop SMS Send processor for it.
+2.	Develop: feature to include the organisation ID in every SMS to say to people how to reply to the organisation e.g. " Include #stndpharma in reply".
+3.	Develop: enable register feature and limit the organisation identifier to be only 10 characters long.
+4.	Develop: generic email notifications across the whole system for error alerts if anything goes wrong in any code.
+
+Web Sevice Changes:
+
+1.	Develop: queueing mechanism for sending SMS for the website and web service. Develop SMS Send processor for it.
+2.	Develop: feature to include the organisation ID in every SMS to say to people how to reply to the organisation e.g. " Include #stndpharma in reply".
+3.	Develop: Create a new email notification when a new SMS is received. It must be sent to admins and well as well as the organisation in question if they specify the organisation handle.
+4.	Develop: generic email notifications across the whole system for error alerts if anything goes wrong in any code.
+
+IT:
+
+1.	IT: setup server monitoring software to monitor the server, services and website and send out email alerts if any of them fail or not working properly.
+2.	IT: create figlut email accounts for notifications to be sent out and for us to receive emails from customers.
+
+Database Schema Changes:
+
+1.	Organization table:
+
+	1.1.	Edited Organization's Identifier field to only varchar(10) not not allow more than 10 characters because this field will be sent out in every SMS.
+

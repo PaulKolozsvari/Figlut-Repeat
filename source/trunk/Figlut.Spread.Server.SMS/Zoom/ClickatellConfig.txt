@@ -1,0 +1,13 @@
+﻿Clickatel:
+
+baseurl = "http://api.clickatell.com/http/sendmsg"
+directUrl = "http://api.clickatell.com/http/sendmsg?user=paulkolo&password=XMRDMMgTCbERFP&api_id=3531847&to=0833958283&text=Message"
+
+User: paulkolo
+Password: XMRDMMgTCbERFP
+API ID: 3531847
+
+Example Success Output Message: 
+	ID: 13f8b9b9f6a1ae270ff22a47537b5f50
+Example Failure Output Message: 
+	ERR: 001, Authentication failed

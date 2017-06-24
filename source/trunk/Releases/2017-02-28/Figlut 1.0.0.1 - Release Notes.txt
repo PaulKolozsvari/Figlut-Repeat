@@ -1,0 +1,14 @@
+Changes/Features:
+
+
+*	Parsing of Received SMS to link to an organisation and subscriber 
+	as well capturing the name.
+
+*	Edit the Sent SMS page to show only current Organization's Sent SMS.
+
+*	Edit the Received SMS page to show only current Organization's Received SMS.
+
+*	Flag sent SMS from a specific organization when sending it from the Compose website page.
+
+*	Create page and main menu link for "Subscriptions" which will show 
+	grid of all subscribers of the currently logged in Organisation.

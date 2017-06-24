@@ -1,0 +1,127 @@
+Huawei Router:
+
+	SSID: WHITE-BOX
+	Wireless Key: short password
+	Username: admin
+	Password: short password
+
+Afrihost Hosting Details:
+
+	URL: https://www.afrihost.com
+	Username: paulkolo@figlut.com
+	Password: long password
+
+Figlut.com Server Admin:
+
+	Username: PaulKolozsvari
+	Password: BPwrhQnjJKasBFnPAAZ7fqPP3sbKzfTBD
+
+	Domain: figlut.com
+	Public IP: 197.242.157.9
+	Username: administrator
+	Password: yN7r~ZMh^:]cUm]c[$aK.K`~pMyQfF,jJ$B
+
+Afrihost backups:
+
+	URL: https://backup202.afrihost.com:8443
+	Username: privaenl
+	Password: REn5xhrW
+
+	Manage current policy by going to
+	1. Click "Protected Machines"
+	2. Click actions Button
+	3. Edit Policy
+	3. You can now manage the felt policy e.g "Exclude files, manage backup times etc. 
+
+	For full documentation please view link below:
+	http://wiki.r1soft.com/display/ServerBackup/Create+policies
+
+OneDrive Microsoft Account:
+
+	https://onedrive.live.com
+	Username: paulkolo@figlut.com
+	Password: long password
+
+SQL Server 2012 Enterprise:
+
+	Username: sa
+	Password: S6As2BcAGrMbXscc
+
+	Username: FiglutSpreadUser
+	Password: pcJ365hmD7h4U9dR
+
+	Port Number: 49867
+
+SQL Server Express 2016:
+
+	Username: sa
+	Password: yN7r~ZMh^:]cUm]c[$aK.K`~pMyQfF,jJ$B
+
+Figlut.com FTP Server Admin:
+
+	URL: ftp://figlut.com
+	Username: PaulKolozsvari
+	Password: BPwrhQnjJKasBFnPAAZ7fqPP3sbKzf
+
+MalwareBytes Password:
+	
+	vFMd8YZ/[n`[NWkQ<>BH
+
+User on Figlut server for running backup scripts daily:
+
+	Username: FiglutSpreadBackup
+	Password: p,6<NxTB)eXWwMPYy8>4H.G9Z%({*4
+
+Zoom Connect Account:
+
+	Portal URL: http://sms.figlut.com
+	Username: paul.kolozsvari@binarychef.com
+	Password: short password
+
+	Callback URLs:
+
+		Message forward URL:
+			http://www.figlut.com:2984/FiglutSpreadReceiver/receive-sms-zoomconnect
+			Authentication (on figlut server): disabled
+
+		Delivery report URL:
+			http://www.figlut.com:2984/FiglutSpreadReceiver/delivery-report-sms-zoomconnect
+			Authentication (on figlut server): disabled
+
+		Send Service (not needed on Zoom):
+			http://www.figlut.com:2983/FiglutSpread
+			Authentication (on figlut server): enabled
+			Organization: figlut
+			Username: monitis
+			Password: m0N1Ti$-T3sT
+
+NO IP Login Details:
+	
+	URL: https://www.noip.com
+	Username: paulkolo
+	Password: short password
+
+GMail Email Users:
+
+	Notifications Users:
+
+		First Name: Figlut
+		Last Name: Notifications
+		Email Address: notifications@figlut.com
+		Password: f!GlUT.n0t!fIKaTiOns27-1
+		Sign in to Figlut services at:
+		https://www.google.com/accounts/AccountChooser?Email=notifications@figlut.com&continue=https://apps.google.com/user/hub
+
+	Figlut Team User:
+
+		First Name: Figlut
+		Last Name: Team
+		Email Address: team@figlut.com
+		Password: F!GlUt.tEAmp-29-1
+
+www.monitis.com: for monitoring the website and web services
+
+	Login Details:
+		Username: paulkolo@figlut.com
+		Password: long password
+	Monitis Agent Key: 5C6D4QETQL97HRL7QDJ69V8PJS

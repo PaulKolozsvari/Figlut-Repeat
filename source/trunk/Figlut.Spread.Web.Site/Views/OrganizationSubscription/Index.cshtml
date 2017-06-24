@@ -1,0 +1,52 @@
+﻿@model Figlut.Spread.Web.Site.Models.FilterModel<OrganizationSubscriptionModel>
+
+@using Figlut.Server.Toolkit.Data;
+@using Figlut.Spread.Web.Site.Configuration;
+@using Figlut.Spread.Web.Site;
+@using Figlut.Spread.Web.Site.Models;
+
+@{
+    ViewBag.Title = "Organization Subscriptions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<nav>
+    <ul id="menu">
+        <li>
+            <img src="~/Images/Icons/red-balloon-plus-icon32.png" style="float:right; margin-right:1%; margin-left:1%"/>
+            <a href="" style="float:right">@Html.Raw(string.Format("Organization Subscriptions: {0}", Model.ParentCaption))</a>
+        </li>
+    </ul>
+</nav>
+<hr />
+@using (Ajax.BeginForm("Index", "OrganizationSubscription", new AjaxOptions{
+    InsertionMode = InsertionMode.Replace,
+    UpdateTargetId = "gridPartial",
+    HttpMethod = "POST"},
+    new { @id = "frmDetails" } ))
+{
+    <div id="gridPartial">
+        @{
+            Html.RenderPartial("_OrganizationSubscriptionGrid", Model);
+        }
+    </div>
+}
+
+<script type="text/javascript">
+    var sendEnabled = false;
+
+    $(document).ready(function () {
+        $(document).keypress(function (event) {
+            if (event.which == 13) {
+                //$("#btnSearch").click();
+                postOrganizationSubscriptions();
+            }
+        });
+        loadDialog("#divConfirmationDialog", "#dlgConfirmation", "ConfirmDeleteDialog", "OrganizationSubscription", 'identifier', '@Guid.Empty');
+        loadDialog("#divEditOrganizationSubscription", "#dlgEditOrganizationSubscription", "EditDialog", "OrganizationSubscription", 'subscriptionId', '@null');
+        loadDialog("#divCreateSmsCampaign", "#dlgCreateSmsCampaign", "CreateSmsCampaignDialog", "OrganizationSubscription", 'searchParametersString', '@null');
+
+        loadDialog("#divWaitDialog", "#dlgWait", "WaitDialog", "SmsSent", 'message', '@string.Empty');
+        loadDialog("#divInformationDialog", "#dlgInformation", "InformationDialog", "SmsSent", 'message', '@string.Empty');
+        sendEnabled = true;
+    });
+</script>

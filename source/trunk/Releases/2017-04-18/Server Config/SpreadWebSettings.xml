@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SpreadWebSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ShowMessageBoxOnException>false</ShowMessageBoxOnException>
+  <ApplicationName>Figlut</ApplicationName>
+  <HowitWorksImageGalleryDirectory>C:\Program Files (x86)\Binary Chef\Figlut.Spread.Web.Site\Images\HowItWorksGallery</HowitWorksImageGalleryDirectory>
+  <WhyItWorksImageGalleryDirectory>C:\Program Files (x86)\Binary Chef\Figlut.Spread.Web.Site\Images\WhyItWorksGallery</WhyItWorksImageGalleryDirectory>
+  <SmsNotificationsEnabled>true</SmsNotificationsEnabled>
+  <SmsDatabaseLoggingEnabled>true</SmsDatabaseLoggingEnabled>
+  <SmsDatabaseLogMessageContents>true</SmsDatabaseLogMessageContents>
+  <SmsProvider>Zoom</SmsProvider><!--Zoom/Clickatell-->
+  <ZoomUrl>https://zoomconnect.com/zoom/api/rest/v1/sms/send</ZoomUrl>
+  <ZoomAccountEmailAddress>paul.kolozsvari@binarychef.com</ZoomAccountEmailAddress>
+  <ZoomAccountToken>14242598-7cd2-470c-80a0-9a8e80c999eb</ZoomAccountToken>
+  <ClickatellUrl>http://api.clickatell.com/http/sendmsg</ClickatellUrl>
+  <ClickatellUser>paulkolo</ClickatellUser>
+  <ClickatellPassword>XMRDMMgTCbERFP</ClickatellPassword>
+  <ClickatellApiId>3531847</ClickatellApiId>
+  <EmailNotificationsEnabled>true</EmailNotificationsEnabled>
+  <EmailDatabaseLoggingEnabled>true</EmailDatabaseLoggingEnabled>
+  <EmailDatabaseLogMessageContents>true</EmailDatabaseLogMessageContents>
+  <ThrowEmailFailExceptions>false</ThrowEmailFailExceptions>
+  <EmailProvider>GMail</EmailProvider><!--GMail-->
+  <GMailSMTPServer>smtp.gmail.com</GMailSMTPServer>
+  <GMailSmtpUserName>notifications@figlut.com</GMailSmtpUserName>
+  <GMailSmtpPassword>f!GlUT.n0t!fIKaTiOns27-1</GMailSmtpPassword>
+  <GMailSmtpPort>587</GMailSmtpPort>
+  <SenderEmailAddress>notifications@figlut.com</SenderEmailAddress>
+  <SenderDisplayName>Figlut Spread Notification</SenderDisplayName>
+  <IncludeDefaultEmailRecipients>true</IncludeDefaultEmailRecipients>
+  <DefaultEmailRecipients>
+    <EmailNotificationRecipient>
+      <EmailAddress>team@figlut.com</EmailAddress>
+      <DisplayName>Figlut Team</DisplayName>
+    </EmailNotificationRecipient>
+  </DefaultEmailRecipients>
+  <LogToFile>false</LogToFile>
+  <LogToWindowsEventLog>true</LogToWindowsEventLog>
+  <LogToConsole>false</LogToConsole>
+  <LogFileName>FSpread.Log.txt</LogFileName>
+  <EventSourceName>FSpread.Source</EventSourceName>
+  <EventLogName>FSpread.Log</EventLogName>
+  <LoggingLevel>Maximum</LoggingLevel>
+  <DatabaseConnectionString>Data Source=PRIVATE105;Initial Catalog=FiglutSpread;Persist Security Info=True;User ID=FiglutSpreadUser;Password=27830529</DatabaseConnectionString>
+  <DatabaseCommandTimeout>30000</DatabaseCommandTimeout>
+  <LinqToSQLClassesAssemblyFileName>Figlut.Spread.ORM.dll</LinqToSQLClassesAssemblyFileName>
+  <LinqToSQLClassesNamespace>Figlut.Spread.ORM</LinqToSQLClassesNamespace>
+</SpreadWebSettings>

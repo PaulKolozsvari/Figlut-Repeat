@@ -1,0 +1,31 @@
+Dear Paul Kolozsvari (Binary Chef),
+
+This is a notice that an invoice has been generated on 17/02/2016.
+
+Your payment method is: Bank Transfer / EFT
+
+Invoice #3704
+Amount Due: R1596.00ZAR
+Due Date: 17/02/2016
+
+Invoice Items
+
+Virtual Long Number (VLN) Setup Fee R1000.00ZAR
+Virtual Long Number (VLN) (17/02/2016 - 16/03/2016) R400.00ZAR
+------------------------------------------------------
+Sub Total: R1400.00ZAR
+14.00% VAT: R196.00ZAR
+Credit: R0.00ZAR
+Total: R1596.00ZAR 
+------------------------------------------------------
+
+You can login to your client area to view and pay the invoice at https://whmcs.zoomconnect.com/viewinvoice.php?id=3704
+
+Alternatively, you can pay the amount owed to the following bank account, quoting the invoice number as the reference:
+
+Banking details
+
+Bank: FNB
+Account Type: Business Cheque
+Account No: 62361070031
+Branch Code: 252145 (Hatfield)

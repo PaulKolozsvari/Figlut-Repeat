@@ -1,0 +1,6 @@
+Website Changes/Features:
+
+	1. Added Contact area and Features area with icons and explanations to the home page.
+
+
+

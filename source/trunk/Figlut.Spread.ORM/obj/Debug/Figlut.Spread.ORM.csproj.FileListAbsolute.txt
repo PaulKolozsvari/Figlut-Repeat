@@ -1,0 +1,5 @@
+C:\Docs\Work\FiglutSpreadRepo\source\trunk\Figlut.Spread.ORM\bin\Debug\Figlut.Spread.ORM.dll.config
+C:\Docs\Work\FiglutSpreadRepo\source\trunk\Figlut.Spread.ORM\bin\Debug\Figlut.Spread.ORM.dll
+C:\Docs\Work\FiglutSpreadRepo\source\trunk\Figlut.Spread.ORM\bin\Debug\Figlut.Spread.ORM.pdb
+C:\Docs\Work\FiglutSpreadRepo\source\trunk\Figlut.Spread.ORM\obj\Debug\Figlut.Spread.ORM.dll
+C:\Docs\Work\FiglutSpreadRepo\source\trunk\Figlut.Spread.ORM\obj\Debug\Figlut.Spread.ORM.pdb

@@ -1,0 +1,2 @@
+Step by step configuration info can be found here: 
+	http://www.monitis.com/support/server-device-monitoring/install-windows-agent

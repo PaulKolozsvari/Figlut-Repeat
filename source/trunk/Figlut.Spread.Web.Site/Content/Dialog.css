@@ -1,0 +1,91 @@
+﻿.ui-dialog {
+    background-image: -ms-linear-gradient(top, #f3f3f3 0%, #fff 100%);
+    background-image: -o-linear-gradient(top, #f3f3f3 0%, #fff 100%);
+    background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #f3f3f3), color-stop(1, #fff));
+    background-image: -webkit-linear-gradient(top, #f3f3f3 0%, #fff 100%);
+    background-image: linear-gradient(top, #f3f3f3 0%, #fff 100%);
+}
+
+.ui-draggable .ui-dialog-titlebar {
+    -moz-box-shadow: 1px 1px 2px #969696; /* Firefox */
+    -webkit-box-shadow: 1px 1px 2px #969696; /* Safari and Chrome */
+
+    background: -ms-linear-gradient(top, #fff 0%, #3195c2 100%);
+    background: -o-linear-gradient(top, #fff 0%, #3195c2 100%);
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #fff), color-stop(1, #3195c2));
+    background: -webkit-linear-gradient(top, #fff 0%, #3195c2 100%);
+    background: linear-gradient(top, #fff 0%, #3195c2 100%);
+    color: #fff;
+}
+
+.ui-button-icon-primary ui-icon ui-icon-closethick {
+    border: none;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+    background-image: -ms-linear-gradient(top, #fff 60%, #f3f3f3 100%);
+    background-image: -o-linear-gradient(top, #fff 60%, #f3f3f3 100%);
+    background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #fff), color-stop(1, #f3f3f3));
+    background-image: -webkit-linear-gradient(top, #fff 60%, #f3f3f3 100%);
+    background-image: linear-gradient(top, #fff 60%, #f3f3f3 100%);
+}
+
+/*.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+   
+}*/
+
+.ok-dialog-button {
+    background: -ms-linear-gradient(top, #fff 0%, #3195c2 100%);
+    background: -o-linear-gradient(top, #fff 0%, #3195c2 100%);
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #fff), color-stop(1, #3195c2));
+    background: -webkit-linear-gradient(top, #fff 0%, #3195c2 100%);
+    background: linear-gradient(top, #fff 0%, #3195c2 100%);
+    color: #fff;
+    margin-right: 10%;
+    border:none;
+
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    -ms-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+.ok-dialog-button:hover {
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.cancel-dialog-button {
+    background: -ms-linear-gradient(top, #fff 0%, #3195c2 100%);
+    background: -o-linear-gradient(top, #fff 0%, #3195c2 100%);
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #fff), color-stop(1, #3195c2));
+    background: -webkit-linear-gradient(top, #fff 0%, #3195c2 100%);
+    background: linear-gradient(top, #fff 0%, #3195c2 100%);
+    color: #fff;
+    margin-left: 100px;
+    border:none;
+
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    -ms-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+.cancel-dialog-button:hover {
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.ui-button-text-only .ui-button-text {
+    color: #fff;
+}
