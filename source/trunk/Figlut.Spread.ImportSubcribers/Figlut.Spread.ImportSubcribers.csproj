@@ -48,7 +48,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\FiglutSuiteRepo\source\trunk\Windows\Figlut.Server.Toolkit.45\Figlut.Server.Toolkit.45.csproj">
+    <ProjectReference Include="..\..\..\..\Figlut-Suite\source\trunk\Windows\Figlut.Server.Toolkit.45\Figlut.Server.Toolkit.45.csproj">
       <Project>{a7c9a24d-e19b-42f5-a298-805a489334ef}</Project>
       <Name>Figlut.Server.Toolkit.45</Name>
     </ProjectReference>

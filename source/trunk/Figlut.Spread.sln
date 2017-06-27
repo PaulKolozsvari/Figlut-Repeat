@@ -20,7 +20,7 @@ Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "Figlut.Spread.Web.Service.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Figlut.Spread.Web.Site", "Figlut.Spread.Web.Site\Figlut.Spread.Web.Site.csproj", "{43C7F345-CC1B-4F40-9025-FD901118A8B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Figlut.Server.Toolkit.45", "..\..\..\FiglutSuiteRepo\source\trunk\Windows\Figlut.Server.Toolkit.45\Figlut.Server.Toolkit.45.csproj", "{A7C9A24D-E19B-42F5-A298-805A489334EF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Figlut.Server.Toolkit.45", "..\..\..\Figlut-Suite\source\trunk\Windows\Figlut.Server.Toolkit.45\Figlut.Server.Toolkit.45.csproj", "{A7C9A24D-E19B-42F5-A298-805A489334EF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Figlut.Spread.SMS.Processor", "Figlut.Spread.SMS.Processor\Figlut.Spread.SMS.Processor.csproj", "{C04F3302-E4A7-4E1E-98EA-7623845231AF}"
 EndProject
