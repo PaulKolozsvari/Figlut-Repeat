@@ -63,6 +63,16 @@ Figlut.com FTP Server Admin:
 	Username: PaulKolozsvari
 	Password: BPwrhQnjJKasBFnPAAZ7fqPP3sbKzf
 
+	Excel Insight Downloads FTP:
+		URL: ftp://197.242.157.9
+		Username: EI
+		Password: p{jx&_$t6vH-cQ53&p_,N-&Y
+
+	Datasmith Downloads:
+		URL: ftp://197.242.157.9
+		Username: Datasmith
+		Password: bRes&aW$eveSAsP6p#ap
+
 MalwareBytes Password:
 	
 	vFMd8YZ/[n`[NWkQ<>BH
