@@ -135,3 +135,27 @@ www.monitis.com: for monitoring the website and web services
 		Username: paulkolo@figlut.com
 		Password: long password
 	Monitis Agent Key: 5C6D4QETQL97HRL7QDJ69V8PJS
+
+PayFast Account:
+
+	URL: https://www.payfast.co.za
+	Email Address: paulkolo@figlut.com
+	Password: long password
+	Account Type: Individual
+	Merchant ID: 12317192
+	Merchant Key: bv0tu3fwzg1mo
+	
+	My Account: https://www.payfast.co.za/acc/account
+	Verify Account: https://payfast.kayako.com/article/25-verify-an-individual-account
+	Pricing: https://www.payfast.co.za/fees/
+	Request Payment (by sending email to someone): https://www.payfast.co.za/acc/request
+
+	Developer Documentation: https://www.payfast.co.za/documentation/
+
+		Getting started: https://www.payfast.co.za/documentation/getting-started/
+		Integration Otions:
+			ITN Callback: https://www.payfast.co.za/documentation/itn/
+			PTD (Deprecated) https://www.payfast.co.za/documentation/pdt/
+
+	Github Project for C# API and samples: 
+		https://github.com/louislewis2/payfast
