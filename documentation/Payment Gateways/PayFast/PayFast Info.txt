@@ -1,0 +1,9 @@
+Website: https://www.payfast.co.za
+
+Developer Documentation: https://www.payfast.co.za/documentation/
+
+	Getting started: https://www.payfast.co.za/documentation/getting-started/
+	Integration Otions:
+		ITN Callback: https://www.payfast.co.za/documentation/itn/
+		PTD (Deprecated) https://www.payfast.co.za/documentation/pdt/
+
