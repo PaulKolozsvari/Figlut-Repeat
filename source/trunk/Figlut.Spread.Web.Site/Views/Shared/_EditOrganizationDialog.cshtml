@@ -61,13 +61,6 @@
                     new { @class = "drop-down-field" })
                     @Html.ValidationMessageFor(m => m.AllowSmsCreditsDebt, "SMS Contents Trim On Grid is required.")
                 </div>
-                <div class="field-label">
-                    @Html.Raw("SMS Price")
-                </div>
-                <div class="editor-field-dialog">
-                    @Html.EditorFor(m => m.SmsPrice)
-                    @Html.ValidationMessageFor(m => m.SmsPrice)
-                </div>
                 <br />
                 <div id="EditOrganizationErrorField" style="color:#8A0808"></div>
             </fieldset>

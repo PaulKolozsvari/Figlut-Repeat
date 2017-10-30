@@ -30,7 +30,7 @@
             @Html.HiddenFor(m => m.OrganizationId)
             @Html.HiddenFor(m => m.SmsCreditsBalance)
             @Html.HiddenFor(m => m.AllowSmsCreditsDebt)
-            @Html.HiddenFor(m => m.SmsPrice)
+            @Html.HiddenFor(m => m.OrganizationSubscriptionEnabled)
             @Html.HiddenFor(m => m.DateCreated)
             <div class="field-label">
                 @Html.Raw("Name")
@@ -79,8 +79,8 @@
                 @Html.Raw("SMS Price")
             </div>
             <div class="editor-field">
-                @Html.TextBoxFor(m => m.SmsPrice, new { disabled = "disabled", @readonly = "readonly" })
-                @Html.ValidationMessageFor(m => m.SmsPrice)
+                @Html.TextBoxFor(m => m.OrganizationSubscriptionEnabled, new { disabled = "disabled", @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.OrganizationSubscriptionEnabled)
             </div>
 
             <div class="buttons">

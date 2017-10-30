@@ -1,0 +1,24 @@
+Database Changes:
+
+	*	Added the following tables:
+
+		-	Invoice
+		-	InvoiceLineItem
+		-	Order
+		-	OrderLineItem
+		-	Product
+		-	OrganizationSubscriptionType
+
+	*	Organization table changes:
+
+		-	Removed:
+
+			-	SmsPrice
+
+		-	Added
+
+			-	OrganizationSubscriptionTypeId
+			-	OrganizationSubscriptionEnabled
+
+
+

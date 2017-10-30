@@ -29,7 +29,9 @@
 
         public bool AllowSmsCreditsDebt { get; set; }
 
-        public double SmsPrice { get; set; }
+        public Nullable<Guid> OrganizationSubscriptionTypeId { get; set; }
+
+        public bool OrganizationSubscriptionEnabled { get;set;}
 
         public DateTime DateCreated { get; set; }
 
@@ -80,7 +82,8 @@
             this.OrganizationAddress = organization.Address;
             this.SmsCreditsBalance = organization.SmsCreditsBalance;
             this.AllowSmsCreditsDebt = organization.AllowSmsCreditsDebt;
-            this.SmsPrice = organization.SmsPrice;
+            this.OrganizationSubscriptionTypeId = organization.OrganizationSubscriptionTypeId;
+            this.OrganizationSubscriptionEnabled = organization.OrganizationSubscriptionEnabled;
             this.DateCreated = organization.DateCreated;
         }
 
@@ -93,7 +96,8 @@
             organization.Address = this.OrganizationAddress;
             organization.SmsCreditsBalance = this.SmsCreditsBalance;
             organization.AllowSmsCreditsDebt = this.AllowSmsCreditsDebt;
-            organization.SmsPrice = this.SmsPrice;
+            organization.OrganizationSubscriptionTypeId = this.OrganizationSubscriptionTypeId;
+            organization.OrganizationSubscriptionEnabled = this.OrganizationSubscriptionEnabled;
             organization.DateCreated = this.DateCreated;
         }
 

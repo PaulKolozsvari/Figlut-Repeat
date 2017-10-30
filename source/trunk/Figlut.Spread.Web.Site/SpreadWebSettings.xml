@@ -2,8 +2,8 @@
 <SpreadWebSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <ShowMessageBoxOnException>false</ShowMessageBoxOnException>
   <ApplicationName>Figlut</ApplicationName>
-  <HowitWorksImageGalleryDirectory>C:\Docs\Work\FiglutSpreadRepo\source\trunk\Figlut.Spread.Web.Site\Images\HowItWorksGallery</HowitWorksImageGalleryDirectory>
-  <WhyItWorksImageGalleryDirectory>C:\Docs\Work\FiglutSpreadRepo\source\trunk\Figlut.Spread.Web.Site\Images\WhyItWorksGallery</WhyItWorksImageGalleryDirectory>
+  <HowitWorksImageGalleryDirectory>C:\Docs\Git\Figlut-Spread\source\trunk\Figlut.Spread.Web.Site\Images\HowItWorksGallery</HowitWorksImageGalleryDirectory>
+  <WhyItWorksImageGalleryDirectory>C:\Docs\Git\Figlut-Spread\source\trunk\Figlut.Spread.Web.Site\Images\WhyItWorksGallery</WhyItWorksImageGalleryDirectory>
   <SmsNotificationsEnabled>true</SmsNotificationsEnabled>
   <SmsDatabaseLoggingEnabled>true</SmsDatabaseLoggingEnabled>
   <SmsDatabaseLogMessageContents>true</SmsDatabaseLogMessageContents>

@@ -117,6 +117,7 @@ using System.Threading.Tasks;
         public string SubscriberIdentifierIndicator
         {
             get { return _subscriberIdentifierIndicator; }
+
         }
 
         public EmailSender EmailSender

@@ -159,3 +159,22 @@ PayFast Account:
 
 	Github Project for C# API and samples: 
 		https://github.com/louislewis2/payfast
+
+Yoco Account:
+
+	URL: https://www.yoco.co.za
+	Email Address: paulkolo@figlut.com
+	Password: long password
+
+	FICA Requirements: https://intercom.help/yoco/getting-started/before-you-have-received-your-reader/fica-requirements
+	Pick Up device in 3/4 business days after receiving email notification: pickup from Postnet, Monument road, Glen Marais
+	
+Twitter: 
+	URL: twitter.com/figlut
+	Email: paulkolo@figlut.com
+	Password: long password
+
+Facebook:
+	URL: facebook.com/figlut
+	Email: paulkolo@figlut.com
+	Password: long password
