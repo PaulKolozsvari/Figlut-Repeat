@@ -1,0 +1,10 @@
+C:\Docs\Git\Figlut-Spread\source\trunk\PayFast\bin\Debug\net461\PayFast.xml
+C:\Docs\Git\Figlut-Spread\source\trunk\PayFast\bin\Debug\net461\PayFast.dll
+C:\Docs\Git\Figlut-Spread\source\trunk\PayFast\bin\Debug\net461\PayFast.pdb
+C:\Docs\Git\Figlut-Spread\source\trunk\PayFast\bin\Debug\net461\Newtonsoft.Json.dll
+C:\Docs\Git\Figlut-Spread\source\trunk\PayFast\obj\Debug\net461\PayFast.csprojResolveAssemblyReference.cache
+C:\Docs\Git\Figlut-Spread\source\trunk\PayFast\obj\Debug\net461\PayFast.csproj.CoreCompileInputs.cache
+C:\Docs\Git\Figlut-Spread\source\trunk\PayFast\obj\Debug\net461\PayFast.AssemblyInfoInputs.cache
+C:\Docs\Git\Figlut-Spread\source\trunk\PayFast\obj\Debug\net461\PayFast.AssemblyInfo.cs
+C:\Docs\Git\Figlut-Spread\source\trunk\PayFast\obj\Debug\net461\PayFast.dll
+C:\Docs\Git\Figlut-Spread\source\trunk\PayFast\obj\Debug\net461\PayFast.pdb
