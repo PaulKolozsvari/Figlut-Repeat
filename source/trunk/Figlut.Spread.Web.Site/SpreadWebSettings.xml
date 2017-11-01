@@ -44,4 +44,15 @@
   <DatabaseCommandTimeout>30000</DatabaseCommandTimeout>
   <LinqToSQLClassesAssemblyFileName>Figlut.Spread.ORM.dll</LinqToSQLClassesAssemblyFileName>
   <LinqToSQLClassesNamespace>Figlut.Spread.ORM</LinqToSQLClassesNamespace>
+  <MerchantId>12317192</MerchantId>
+  <MerchantKey>bv0tu3fwzg1mo</MerchantKey>
+  <PassPhrase>zhhKb4pXcvX8XZmd9p7pMggdtv3KqT</PassPhrase>
+  <ProcessUrl>https://sandbox.payfast.co.za/eng/process?</ProcessUrl>
+  <ValidateUrl>https://sandbox.payfast.co.za/eng/query/validate</ValidateUrl>
+  <ReturnUrl>https://payfast-demo-mvc.azurewebsites.net/home/return</ReturnUrl>
+  <CancelUrl>https://payfast-demo-mvc.azurewebsites.net/home/cancel</CancelUrl>
+  <NotifyUrl>https://payfast-demo-mvc.azurewebsites.net/home/notify</NotifyUrl>
+  <ReturnUrl>https://payfast-demo-mvc.azurewebsites.net/home/return</ReturnUrl>
+  <CancelUrl>https://payfast-demo-mvc.azurewebsites.net/home/cancel</CancelUrl>
+  <NotifyUrl>https://payfast-demo-mvc.azurewebsites.net/home/notify</NotifyUrl>
 </SpreadWebSettings>

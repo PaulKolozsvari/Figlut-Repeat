@@ -144,6 +144,7 @@ PayFast Account:
 	Account Type: Individual
 	Merchant ID: 12317192
 	Merchant Key: bv0tu3fwzg1mo
+	PassPhrase: zhhKb4pXcvX8XZmd9p7pMggdtv3KqT
 	
 	My Account: https://www.payfast.co.za/acc/account
 	Verify Account: https://payfast.kayako.com/article/25-verify-an-individual-account

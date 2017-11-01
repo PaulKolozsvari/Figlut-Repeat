@@ -14,12 +14,14 @@
     <RootNamespace>Figlut.Spread.Web.Site</RootNamespace>
     <AssemblyName>Figlut.Spread.Web.Site</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <MvcBuildViews>true</MvcBuildViews>
+    <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -196,6 +198,7 @@
     <Compile Include="Controllers\GlobalSettingController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InformationController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\OrganizationController.cs" />
     <Compile Include="Controllers\OrganizationSubscriptionController.cs" />
     <Compile Include="Controllers\SmsCampaignController.cs" />
@@ -217,6 +220,7 @@
     <Compile Include="Models\ChangeUserPasswordModel.cs" />
     <Compile Include="Models\ComposeSmsStandaloneModel.cs" />
     <Compile Include="Models\ConfirmationModel.cs" />
+    <Compile Include="Models\CreateOrderModel.cs" />
     <Compile Include="Models\CreateSmsCampaignModel.cs" />
     <Compile Include="Models\EditUserPasswordModel.cs" />
     <Compile Include="Models\FilterModel.cs" />
@@ -227,6 +231,7 @@
     <Compile Include="Models\OrganizationModel.cs" />
     <Compile Include="Models\OrganizationProfileModel.cs" />
     <Compile Include="Models\OrganizationSubscriptionModel.cs" />
+    <Compile Include="Models\ProductName.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\SmsCampaignModel.cs" />
     <Compile Include="Models\SmsProcessorLogModel.cs" />
@@ -512,6 +517,7 @@
     <Content Include="Views\Shared\_WebRequestActivityGrid.cshtml" />
     <Content Include="Views\WebRequestActivity\Index.cshtml" />
     <Content Include="Views\Shared\_EditWebRequestActivityDialog.cshtml" />
+    <Content Include="Views\Order\CreateOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -540,6 +546,14 @@
     <ProjectReference Include="..\Figlut.Spread.Server.SMS\Figlut.Spread.SMS.csproj">
       <Project>{46c82dc4-2e0f-4abd-9ff3-888e6976de20}</Project>
       <Name>Figlut.Spread.SMS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PayFast.AspNet\PayFast.AspNet.csproj">
+      <Project>{4e3099b5-5a7d-4982-b3bf-c4a130086ddb}</Project>
+      <Name>PayFast.AspNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PayFast\PayFast.csproj">
+      <Project>{60a31830-09a8-4c72-b161-1605a5d69861}</Project>
+      <Name>PayFast</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

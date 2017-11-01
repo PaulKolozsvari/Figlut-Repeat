@@ -397,6 +397,10 @@
         {
             try
             {
+                if (!Request.IsAuthenticated)
+                {
+                    return RedirectToHome();
+                }
                 SpreadEntityContext context = SpreadEntityContext.Create();
                 User currentUser = GetCurrentUser(context);
                 Organization organization = null;
@@ -421,6 +425,10 @@
         {
             try
             {
+                if (!Request.IsAuthenticated)
+                {
+                    return RedirectToHome();
+                }
                 string errorMessage = null;
                 if (!model.IsValid(out errorMessage))
                 {

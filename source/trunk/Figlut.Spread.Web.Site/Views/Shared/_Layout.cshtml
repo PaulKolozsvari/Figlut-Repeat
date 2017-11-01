@@ -139,7 +139,7 @@
                                 UserRole role = (UserRole)currentUser.RoleId;
                                 <li>
                                     @*@Html.Raw(User.Identity.Name)*@
-                                    @Html.Raw("ME")
+                                    @Html.Raw("Profile")
                                     <ul style="left:0%">
                                         @*<li>@Html.ActionLink("User Profile", "EditProfile", "User")</li>*@
                                         <li>@Html.ActionLink(currentUser.UserName, "EditProfile", "User")</li>
@@ -148,12 +148,15 @@
                                         <li>@Html.ActionLink(string.Format("{0} (Credits: {1})", currentOrganization.Name, currentOrganization.SmsCreditsBalance), "EditProfile", "Organization")</li>
                                         <br />
                                         <hr />
+                                        <li>@Html.ActionLink(string.Format("Purchase Credits"), "CreateOrder", "Order")</li>
+                                        <br />
+                                        <hr />
                                         <li style="color:white">@Html.ActionLink("Log Off", "LogOff", "User")</li>
                                     </ul>
                                 </li>
                                 <li>
                                     @Html.Raw("SMS")
-                                    <ul style="left:2%">
+                                    <ul style="left:3.5%">
                                         <li>@Html.ActionLink("Sent", "Index", "SmsSent")</li>
                                         <br />
                                         <li>@Html.ActionLink("Received", "Index", "SmsReceived")</li>
@@ -166,7 +169,7 @@
                                 {
                                     <li>
                                         @Html.Raw("Manage")
-                                        <ul style="left:5%">
+                                        <ul style="left:6%">
                                             @if(currentOrganization != null)
                                             {
                                                 <li>@Html.ActionLink("Subscriptions", "Index", "OrganizationSubscription", new { organizationId = currentOrganization.OrganizationId }, null)</li>
@@ -184,7 +187,7 @@
                                     </li>
                                     <li>
                                         @Html.Raw("Tools")
-                                        <ul style="left:9.5%">
+                                        <ul style="left:10.5%">
                                             <li>@Html.ActionLink("SMS Processors", "Index", "SmsProcessor")</li>
                                             <br />
                                             <li>@Html.ActionLink("Web Requests", "Index", "WebRequestActivity")</li>
@@ -198,7 +201,7 @@
                                 {
                                     <li>
                                         @Html.Raw("Manage")
-                                        <ul style="left:5%">
+                                        <ul style="left:6%">
                                             @if (currentOrganization != null)
                                             {
                                                 <li>@Html.ActionLink("Subscriptions", "Index", "OrganizationSubscription", new { organizationId = currentOrganization.OrganizationId }, null)</li>
