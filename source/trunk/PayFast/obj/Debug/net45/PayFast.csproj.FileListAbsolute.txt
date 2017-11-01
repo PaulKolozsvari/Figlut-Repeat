@@ -1,9 +1,0 @@
-C:\Docs\Git\Figlut-Spread\source\trunk\PayFast\bin\Debug\net45\PayFast.xml
-C:\Docs\Git\Figlut-Spread\source\trunk\PayFast\bin\Debug\net45\PayFast.dll
-C:\Docs\Git\Figlut-Spread\source\trunk\PayFast\bin\Debug\net45\PayFast.pdb
-C:\Docs\Git\Figlut-Spread\source\trunk\PayFast\bin\Debug\net45\Newtonsoft.Json.dll
-C:\Docs\Git\Figlut-Spread\source\trunk\PayFast\obj\Debug\net45\PayFast.csproj.CoreCompileInputs.cache
-C:\Docs\Git\Figlut-Spread\source\trunk\PayFast\obj\Debug\net45\PayFast.AssemblyInfoInputs.cache
-C:\Docs\Git\Figlut-Spread\source\trunk\PayFast\obj\Debug\net45\PayFast.AssemblyInfo.cs
-C:\Docs\Git\Figlut-Spread\source\trunk\PayFast\obj\Debug\net45\PayFast.dll
-C:\Docs\Git\Figlut-Spread\source\trunk\PayFast\obj\Debug\net45\PayFast.pdb
