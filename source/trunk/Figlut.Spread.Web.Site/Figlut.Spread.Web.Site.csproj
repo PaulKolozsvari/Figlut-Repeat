@@ -547,14 +547,6 @@
       <Project>{46c82dc4-2e0f-4abd-9ff3-888e6976de20}</Project>
       <Name>Figlut.Spread.SMS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PayFast.AspNet\PayFast.AspNet.csproj">
-      <Project>{4e3099b5-5a7d-4982-b3bf-c4a130086ddb}</Project>
-      <Name>PayFast.AspNet</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PayFast\PayFast.csproj">
-      <Project>{60a31830-09a8-4c72-b161-1605a5d69861}</Project>
-      <Name>PayFast</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
