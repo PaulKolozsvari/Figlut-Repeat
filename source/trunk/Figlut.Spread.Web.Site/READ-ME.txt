@@ -17,5 +17,17 @@ Glimpse Part 1 - Easy Debugging ASP.NET MVC Application:
 	https://www.codeproject.com/tips/1045511/glimpse-part-easy-debugging-asp-net-mvc-applicatio
 
 Glimpse Part 2 - Performance Profiler:
-
 	https://www.codeproject.com/tips/1046623/glimpse-part-performance-profiler
+
+Troubleshooting IIS Worker Process High CPU:
+	https://stackify.com/beyond-iis-logs-find-failed-iis-asp-net-requests/
+
+Google Cloud Hosting:
+	https://cloud.google.com/products/calculator/#id=16ee0516-5971-462a-bbb6-f526a9cdb081
+
+Cloud Hosting SA:
+	Cloud Servers: https://cloud.co.za/cloud-servers/#windows
+	Virtual Servers: https://cloud.co.za/virtual-servers/
+
+SQL Server Versions and differences:
+	https://docs.microsoft.com/en-us/sql/sql-server/editions-and-components-of-sql-server-2017?view=sql-server-2017

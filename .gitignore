@@ -341,3 +341,19 @@ source/trunk/.vs/Figlut.Spread/v15/Server/sqlite3/storage.ide-shm
 source/trunk/.vs/Figlut.Spread/v15/Server/sqlite3/storage.ide
 source/trunk/.vs/Figlut.Spread/v15/.suo
 documentation/Figlut Spread Screenshots/Thumbs.db
+source/trunk/Figlut.Spread.Data/bin/
+source/trunk/Figlut.Spread.Data/obj/
+source/trunk/Figlut.Spread.ImportSubcribers/bin/
+source/trunk/Figlut.Spread.ImportSubcribers/obj/
+source/trunk/Figlut.Spread.ORM/obj/
+source/trunk/Figlut.Spread.Receiver.Web.Service/bin/
+source/trunk/Figlut.Spread.Receiver.Web.Service/obj/
+source/trunk/Figlut.Spread.SMS.Processor/bin/
+source/trunk/Figlut.Spread.Server.Email/bin/
+source/trunk/Figlut.Spread.Server.Email/obj/
+source/trunk/Figlut.Spread.Server.SMS/obj/
+source/trunk/Figlut.Spread.Server.Web.Service.TestDriver/obj/
+source/trunk/Figlut.Spread.Server.Web.Service/bin/
+source/trunk/Figlut.Spread.Server.Web.Service/obj/
+source/trunk/Figlut.Spread.Web.Site/bin/
+source/trunk/Figlut.Spread.Web.Site/obj/

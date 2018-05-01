@@ -1,0 +1,11 @@
+Added tables for implementing Repeat Schedules:
+	RepeatSchedule
+	RepeatScheduleEntry
+	SmsMessageTemplate
+	PublicHoliday
+
+Added fields on the Subscription table:
+	CustomerFullName
+	CustomerIdentifier
+	CustomerPhysicalAddress
+	CustomerNotes

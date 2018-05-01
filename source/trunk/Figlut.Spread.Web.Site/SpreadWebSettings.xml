@@ -34,8 +34,8 @@
     </EmailNotificationRecipient>
   </DefaultEmailRecipients>
   <LogToFile>false</LogToFile>
-  <LogToWindowsEventLog>true</LogToWindowsEventLog>
-  <LogToConsole>true</LogToConsole>
+  <LogToWindowsEventLog>false</LogToWindowsEventLog>
+  <LogToConsole>false</LogToConsole>
   <LogFileName>FSpread.Log.txt</LogFileName>
   <EventSourceName>FSpread.Source</EventSourceName>
   <EventLogName>FSpread.Log</EventLogName>
