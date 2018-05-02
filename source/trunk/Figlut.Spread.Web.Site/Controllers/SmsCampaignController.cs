@@ -21,12 +21,12 @@
 
     public class SmsCampaignController : SpreadController
     {
-        #region Fields
+        #region Constants
 
         private const string SMS_CAMPAIGN_GRID_PARTIAL_VIEW_NAME = "_SmsCampaignGrid";
         private const string EDIT_SMS_CAMPAIGN_DIALOG_PARTIAL_VIEW_NAME = "_EditSmsCampaignDialog";
 
-        #endregion //Fields
+        #endregion //Constants
 
         #region Methods
 

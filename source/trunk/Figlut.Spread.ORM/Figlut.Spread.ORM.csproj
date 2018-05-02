@@ -40,10 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Csv\CountryCsv.cs" />
     <Compile Include="Csv\GlobalSettingCsv.cs" />
     <Compile Include="Csv\OrganizationCsv.cs" />
     <Compile Include="Csv\OrganizationSubscriptionCsv.cs" />
+    <Compile Include="Csv\PublicHolidayCsv.cs" />
     <Compile Include="Csv\SmsCampaignCsv.cs" />
+    <Compile Include="Csv\SmsMessageTemplateCsv.cs" />
     <Compile Include="Csv\SmsProcessorCsv.cs" />
     <Compile Include="Csv\SmsProcessorLogCsv.cs" />
     <Compile Include="Csv\SmsReceivedCsv.cs" />
@@ -69,7 +72,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Views\OrganizationSubscriptionView.cs" />
+    <Compile Include="Views\PublicHolidayView.cs" />
     <Compile Include="Views\SmsCampaignView.cs" />
+    <Compile Include="Views\SmsMessageTemplateView.cs" />
     <Compile Include="Views\SmsProcessorLogView.cs" />
     <Compile Include="Views\SubscriberSubscriptionView.cs" />
   </ItemGroup>

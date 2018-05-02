@@ -3,14 +3,14 @@
     #region Using Directives
 
     using Figlut.Server.Toolkit.Data;
-using Figlut.Server.Toolkit.Data.DB.LINQ;
-using Figlut.Spread.ORM;
-using Figlut.Spread.ORM.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+    using Figlut.Server.Toolkit.Data.DB.LINQ;
+    using Figlut.Spread.ORM;
+    using Figlut.Spread.ORM.Views;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
     using System.Transactions;
 
     #endregion //Using Directives
@@ -30,10 +30,9 @@ using System.Threading.Tasks;
 
         public SmsCampaign GetSmsCampaign(Guid smsCampaignId, bool throwExceptionOnNotFound)
         {
-            List<SmsCampaign> q = (from c in DB.GetTable<SmsCampaign>()
-                                   where c.SmsCampaignId == smsCampaignId
-                                   select c).ToList();
-            SmsCampaign result = q.Count < 1 ? null : q[0];
+            SmsCampaign result = (from c in DB.GetTable<SmsCampaign>()
+                                  where c.SmsCampaignId == smsCampaignId
+                                  select c).FirstOrDefault();
             if (result == null && throwExceptionOnNotFound)
             {
                 throw new NullReferenceException(string.Format("Could not find {0} with {1} of '{2}'.",

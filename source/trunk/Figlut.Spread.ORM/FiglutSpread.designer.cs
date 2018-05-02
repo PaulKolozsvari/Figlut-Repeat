@@ -54,6 +54,12 @@ namespace Figlut.Spread.ORM
     partial void InsertOrganizationSubscriptionType(OrganizationSubscriptionType instance);
     partial void UpdateOrganizationSubscriptionType(OrganizationSubscriptionType instance);
     partial void DeleteOrganizationSubscriptionType(OrganizationSubscriptionType instance);
+    partial void InsertRepeatSchedule(RepeatSchedule instance);
+    partial void UpdateRepeatSchedule(RepeatSchedule instance);
+    partial void DeleteRepeatSchedule(RepeatSchedule instance);
+    partial void InsertRepeatScheduleEntry(RepeatScheduleEntry instance);
+    partial void UpdateRepeatScheduleEntry(RepeatScheduleEntry instance);
+    partial void DeleteRepeatScheduleEntry(RepeatScheduleEntry instance);
     partial void InsertServerAction(ServerAction instance);
     partial void UpdateServerAction(ServerAction instance);
     partial void DeleteServerAction(ServerAction instance);
@@ -66,6 +72,9 @@ namespace Figlut.Spread.ORM
     partial void InsertSmsDeliveryReportLog(SmsDeliveryReportLog instance);
     partial void UpdateSmsDeliveryReportLog(SmsDeliveryReportLog instance);
     partial void DeleteSmsDeliveryReportLog(SmsDeliveryReportLog instance);
+    partial void InsertSmsMessageTemplate(SmsMessageTemplate instance);
+    partial void UpdateSmsMessageTemplate(SmsMessageTemplate instance);
+    partial void DeleteSmsMessageTemplate(SmsMessageTemplate instance);
     partial void InsertSmsProcessor(SmsProcessor instance);
     partial void UpdateSmsProcessor(SmsProcessor instance);
     partial void DeleteSmsProcessor(SmsProcessor instance);
@@ -93,6 +102,12 @@ namespace Figlut.Spread.ORM
     partial void InsertUser(User instance);
     partial void UpdateUser(User instance);
     partial void DeleteUser(User instance);
+    partial void InsertCountry(Country instance);
+    partial void UpdateCountry(Country instance);
+    partial void DeleteCountry(Country instance);
+    partial void InsertPublicHoliday(PublicHoliday instance);
+    partial void UpdatePublicHoliday(PublicHoliday instance);
+    partial void DeletePublicHoliday(PublicHoliday instance);
     #endregion
 		
 		public FiglutSpreadDataContext() : 
@@ -197,6 +212,22 @@ namespace Figlut.Spread.ORM
 			}
 		}
 		
+		public System.Data.Linq.Table<RepeatSchedule> RepeatSchedules
+		{
+			get
+			{
+				return this.GetTable<RepeatSchedule>();
+			}
+		}
+		
+		public System.Data.Linq.Table<RepeatScheduleEntry> RepeatScheduleEntries
+		{
+			get
+			{
+				return this.GetTable<RepeatScheduleEntry>();
+			}
+		}
+		
 		public System.Data.Linq.Table<ServerAction> ServerActions
 		{
 			get
@@ -226,6 +257,14 @@ namespace Figlut.Spread.ORM
 			get
 			{
 				return this.GetTable<SmsDeliveryReportLog>();
+			}
+		}
+		
+		public System.Data.Linq.Table<SmsMessageTemplate> SmsMessageTemplates
+		{
+			get
+			{
+				return this.GetTable<SmsMessageTemplate>();
 			}
 		}
 		
@@ -298,6 +337,22 @@ namespace Figlut.Spread.ORM
 			get
 			{
 				return this.GetTable<User>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Country> Countries
+		{
+			get
+			{
+				return this.GetTable<Country>();
+			}
+		}
+		
+		public System.Data.Linq.Table<PublicHoliday> PublicHolidays
+		{
+			get
+			{
+				return this.GetTable<PublicHoliday>();
 			}
 		}
 	}
@@ -1373,7 +1428,7 @@ namespace Figlut.Spread.ORM
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_WebRequestActivity", Storage="_User", ThisKey="UserId", OtherKey="UserId", IsForeignKey=true, DeleteRule="SET NULL")]
-		public User User
+		internal User User
 		{
 			get
 			{
@@ -1849,7 +1904,7 @@ namespace Figlut.Spread.ORM
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_Invoice", Storage="_Organization", ThisKey="OrganizationId", OtherKey="OrganizationId", IsForeignKey=true, DeleteRule="SET NULL")]
-		public Organization Organization
+		internal Organization Organization
 		{
 			get
 			{
@@ -1883,7 +1938,7 @@ namespace Figlut.Spread.ORM
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Invoice", Storage="_User", ThisKey="CreatedByUserId", OtherKey="UserId", IsForeignKey=true)]
-		public User User
+		internal User User
 		{
 			get
 			{
@@ -2166,7 +2221,7 @@ namespace Figlut.Spread.ORM
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Invoice_InvoiceItem", Storage="_Invoice", ThisKey="InvoiceId", OtherKey="InvoiceId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Invoice Invoice
+		internal Invoice Invoice
 		{
 			get
 			{
@@ -2396,7 +2451,7 @@ namespace Figlut.Spread.ORM
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_Order", Storage="_Organization", ThisKey="OrganizationId", OtherKey="OrganizationId", IsForeignKey=true, DeleteRule="SET NULL")]
-		public Organization Organization
+		internal Organization Organization
 		{
 			get
 			{
@@ -2430,7 +2485,7 @@ namespace Figlut.Spread.ORM
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Order", Storage="_User", ThisKey="CreatedByUserId", OtherKey="UserId", IsForeignKey=true)]
-		public User User
+		internal User User
 		{
 			get
 			{
@@ -2669,6 +2724,8 @@ namespace Figlut.Spread.ORM
 		
 		private EntitySet<Order> _Orders;
 		
+		private EntitySet<SmsMessageTemplate> _SmsMessageTemplates;
+		
 		private EntitySet<SmsReceivedLog> _SmsReceivedLogs;
 		
 		private EntitySet<SmsSentLog> _SmsSentLogs;
@@ -2711,6 +2768,7 @@ namespace Figlut.Spread.ORM
 		{
 			this._Invoices = new EntitySet<Invoice>(new Action<Invoice>(this.attach_Invoices), new Action<Invoice>(this.detach_Invoices));
 			this._Orders = new EntitySet<Order>(new Action<Order>(this.attach_Orders), new Action<Order>(this.detach_Orders));
+			this._SmsMessageTemplates = new EntitySet<SmsMessageTemplate>(new Action<SmsMessageTemplate>(this.attach_SmsMessageTemplates), new Action<SmsMessageTemplate>(this.detach_SmsMessageTemplates));
 			this._SmsReceivedLogs = new EntitySet<SmsReceivedLog>(new Action<SmsReceivedLog>(this.attach_SmsReceivedLogs), new Action<SmsReceivedLog>(this.detach_SmsReceivedLogs));
 			this._SmsSentLogs = new EntitySet<SmsSentLog>(new Action<SmsSentLog>(this.attach_SmsSentLogs), new Action<SmsSentLog>(this.detach_SmsSentLogs));
 			this._Subscriptions = new EntitySet<Subscription>(new Action<Subscription>(this.attach_Subscriptions), new Action<Subscription>(this.detach_Subscriptions));
@@ -2969,6 +3027,19 @@ namespace Figlut.Spread.ORM
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_SmsMessageTemplate", Storage="_SmsMessageTemplates", ThisKey="OrganizationId", OtherKey="OrganizationId")]
+		public EntitySet<SmsMessageTemplate> SmsMessageTemplates
+		{
+			get
+			{
+				return this._SmsMessageTemplates;
+			}
+			set
+			{
+				this._SmsMessageTemplates.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_SmsReceivedLog", Storage="_SmsReceivedLogs", ThisKey="OrganizationId", OtherKey="OrganizationId")]
 		public EntitySet<SmsReceivedLog> SmsReceivedLogs
 		{
@@ -3022,7 +3093,7 @@ namespace Figlut.Spread.ORM
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="OrganizationSubscriptionType_Organization", Storage="_OrganizationSubscriptionType", ThisKey="OrganizationSubscriptionTypeId", OtherKey="OrganizationSubscriptionTypeId", IsForeignKey=true, DeleteRule="SET NULL")]
-		public OrganizationSubscriptionType OrganizationSubscriptionType
+		internal OrganizationSubscriptionType OrganizationSubscriptionType
 		{
 			get
 			{
@@ -3094,6 +3165,18 @@ namespace Figlut.Spread.ORM
 		}
 		
 		private void detach_Orders(Order entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = null;
+		}
+		
+		private void attach_SmsMessageTemplates(SmsMessageTemplate entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = this;
+		}
+		
+		private void detach_SmsMessageTemplates(SmsMessageTemplate entity)
 		{
 			this.SendPropertyChanging();
 			entity.Organization = null;
@@ -3331,6 +3414,648 @@ namespace Figlut.Spread.ORM
 		{
 			this.SendPropertyChanging();
 			entity.OrganizationSubscriptionType = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.RepeatSchedule")]
+	public partial class RepeatSchedule : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _RepeatScheduleId;
+		
+		private System.Guid _CreatedByUserId;
+		
+		private System.Guid _SubscriptionId;
+		
+		private string _NotificationMessage;
+		
+		private string _ScheduleName;
+		
+		private System.Nullable<double> _Quantity;
+		
+		private string _UnitOfMeasure;
+		
+		private int _DaysRepeatInterval;
+		
+		private string _Notes;
+		
+		private System.DateTime _DateCreated;
+		
+		private EntitySet<RepeatScheduleEntry> _RepeatScheduleEntries;
+		
+		private EntityRef<Subscription> _Subscription;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnRepeatScheduleIdChanging(System.Guid value);
+    partial void OnRepeatScheduleIdChanged();
+    partial void OnCreatedByUserIdChanging(System.Guid value);
+    partial void OnCreatedByUserIdChanged();
+    partial void OnSubscriptionIdChanging(System.Guid value);
+    partial void OnSubscriptionIdChanged();
+    partial void OnNotificationMessageChanging(string value);
+    partial void OnNotificationMessageChanged();
+    partial void OnScheduleNameChanging(string value);
+    partial void OnScheduleNameChanged();
+    partial void OnQuantityChanging(System.Nullable<double> value);
+    partial void OnQuantityChanged();
+    partial void OnUnitOfMeasureChanging(string value);
+    partial void OnUnitOfMeasureChanged();
+    partial void OnDaysRepeatIntervalChanging(int value);
+    partial void OnDaysRepeatIntervalChanged();
+    partial void OnNotesChanging(string value);
+    partial void OnNotesChanged();
+    partial void OnDateCreatedChanging(System.DateTime value);
+    partial void OnDateCreatedChanged();
+    #endregion
+		
+		public RepeatSchedule()
+		{
+			this._RepeatScheduleEntries = new EntitySet<RepeatScheduleEntry>(new Action<RepeatScheduleEntry>(this.attach_RepeatScheduleEntries), new Action<RepeatScheduleEntry>(this.detach_RepeatScheduleEntries));
+			this._Subscription = default(EntityRef<Subscription>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RepeatScheduleId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid RepeatScheduleId
+		{
+			get
+			{
+				return this._RepeatScheduleId;
+			}
+			set
+			{
+				if ((this._RepeatScheduleId != value))
+				{
+					this.OnRepeatScheduleIdChanging(value);
+					this.SendPropertyChanging();
+					this._RepeatScheduleId = value;
+					this.SendPropertyChanged("RepeatScheduleId");
+					this.OnRepeatScheduleIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedByUserId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid CreatedByUserId
+		{
+			get
+			{
+				return this._CreatedByUserId;
+			}
+			set
+			{
+				if ((this._CreatedByUserId != value))
+				{
+					this.OnCreatedByUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedByUserId = value;
+					this.SendPropertyChanged("CreatedByUserId");
+					this.OnCreatedByUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SubscriptionId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid SubscriptionId
+		{
+			get
+			{
+				return this._SubscriptionId;
+			}
+			set
+			{
+				if ((this._SubscriptionId != value))
+				{
+					if (this._Subscription.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSubscriptionIdChanging(value);
+					this.SendPropertyChanging();
+					this._SubscriptionId = value;
+					this.SendPropertyChanged("SubscriptionId");
+					this.OnSubscriptionIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NotificationMessage", DbType="VarChar(140) NOT NULL", CanBeNull=false)]
+		public string NotificationMessage
+		{
+			get
+			{
+				return this._NotificationMessage;
+			}
+			set
+			{
+				if ((this._NotificationMessage != value))
+				{
+					this.OnNotificationMessageChanging(value);
+					this.SendPropertyChanging();
+					this._NotificationMessage = value;
+					this.SendPropertyChanged("NotificationMessage");
+					this.OnNotificationMessageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ScheduleName", DbType="VarChar(250)")]
+		public string ScheduleName
+		{
+			get
+			{
+				return this._ScheduleName;
+			}
+			set
+			{
+				if ((this._ScheduleName != value))
+				{
+					this.OnScheduleNameChanging(value);
+					this.SendPropertyChanging();
+					this._ScheduleName = value;
+					this.SendPropertyChanged("ScheduleName");
+					this.OnScheduleNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Quantity", DbType="Float")]
+		public System.Nullable<double> Quantity
+		{
+			get
+			{
+				return this._Quantity;
+			}
+			set
+			{
+				if ((this._Quantity != value))
+				{
+					this.OnQuantityChanging(value);
+					this.SendPropertyChanging();
+					this._Quantity = value;
+					this.SendPropertyChanged("Quantity");
+					this.OnQuantityChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UnitOfMeasure", DbType="VarChar(50)")]
+		public string UnitOfMeasure
+		{
+			get
+			{
+				return this._UnitOfMeasure;
+			}
+			set
+			{
+				if ((this._UnitOfMeasure != value))
+				{
+					this.OnUnitOfMeasureChanging(value);
+					this.SendPropertyChanging();
+					this._UnitOfMeasure = value;
+					this.SendPropertyChanged("UnitOfMeasure");
+					this.OnUnitOfMeasureChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DaysRepeatInterval", DbType="Int NOT NULL")]
+		public int DaysRepeatInterval
+		{
+			get
+			{
+				return this._DaysRepeatInterval;
+			}
+			set
+			{
+				if ((this._DaysRepeatInterval != value))
+				{
+					this.OnDaysRepeatIntervalChanging(value);
+					this.SendPropertyChanging();
+					this._DaysRepeatInterval = value;
+					this.SendPropertyChanged("DaysRepeatInterval");
+					this.OnDaysRepeatIntervalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Notes", DbType="VarChar(MAX)")]
+		public string Notes
+		{
+			get
+			{
+				return this._Notes;
+			}
+			set
+			{
+				if ((this._Notes != value))
+				{
+					this.OnNotesChanging(value);
+					this.SendPropertyChanging();
+					this._Notes = value;
+					this.SendPropertyChanged("Notes");
+					this.OnNotesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
+		public System.DateTime DateCreated
+		{
+			get
+			{
+				return this._DateCreated;
+			}
+			set
+			{
+				if ((this._DateCreated != value))
+				{
+					this.OnDateCreatedChanging(value);
+					this.SendPropertyChanging();
+					this._DateCreated = value;
+					this.SendPropertyChanged("DateCreated");
+					this.OnDateCreatedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RepeatSchedule_RepeatScheduleEntry", Storage="_RepeatScheduleEntries", ThisKey="RepeatScheduleId", OtherKey="RepeatScheduleId")]
+		public EntitySet<RepeatScheduleEntry> RepeatScheduleEntries
+		{
+			get
+			{
+				return this._RepeatScheduleEntries;
+			}
+			set
+			{
+				this._RepeatScheduleEntries.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Subscription_RepeatSchedule", Storage="_Subscription", ThisKey="SubscriptionId", OtherKey="SubscriptionId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		internal Subscription Subscription
+		{
+			get
+			{
+				return this._Subscription.Entity;
+			}
+			set
+			{
+				Subscription previousValue = this._Subscription.Entity;
+				if (((previousValue != value) 
+							|| (this._Subscription.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Subscription.Entity = null;
+						previousValue.RepeatSchedules.Remove(this);
+					}
+					this._Subscription.Entity = value;
+					if ((value != null))
+					{
+						value.RepeatSchedules.Add(this);
+						this._SubscriptionId = value.SubscriptionId;
+					}
+					else
+					{
+						this._SubscriptionId = default(System.Guid);
+					}
+					this.SendPropertyChanged("Subscription");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_RepeatScheduleEntries(RepeatScheduleEntry entity)
+		{
+			this.SendPropertyChanging();
+			entity.RepeatSchedule = this;
+		}
+		
+		private void detach_RepeatScheduleEntries(RepeatScheduleEntry entity)
+		{
+			this.SendPropertyChanging();
+			entity.RepeatSchedule = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.RepeatScheduleEntry")]
+	public partial class RepeatScheduleEntry : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _RepeatScheduleEntryId;
+		
+		private System.Guid _RepeatScheduleId;
+		
+		private System.DateTime _RepeatDate;
+		
+		private System.DateTime _NotificationDate;
+		
+		private bool _SMSNotificationSent;
+		
+		private string _SMSMessageId;
+		
+		private System.Nullable<System.DateTime> _SMSDateSent;
+		
+		private System.Nullable<System.Guid> _SmsSentLogId;
+		
+		private System.DateTime _DateCreated;
+		
+		private EntityRef<RepeatSchedule> _RepeatSchedule;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnRepeatScheduleEntryIdChanging(System.Guid value);
+    partial void OnRepeatScheduleEntryIdChanged();
+    partial void OnRepeatScheduleIdChanging(System.Guid value);
+    partial void OnRepeatScheduleIdChanged();
+    partial void OnRepeatDateChanging(System.DateTime value);
+    partial void OnRepeatDateChanged();
+    partial void OnNotificationDateChanging(System.DateTime value);
+    partial void OnNotificationDateChanged();
+    partial void OnSMSNotificationSentChanging(bool value);
+    partial void OnSMSNotificationSentChanged();
+    partial void OnSMSMessageIdChanging(string value);
+    partial void OnSMSMessageIdChanged();
+    partial void OnSMSDateSentChanging(System.Nullable<System.DateTime> value);
+    partial void OnSMSDateSentChanged();
+    partial void OnSmsSentLogIdChanging(System.Nullable<System.Guid> value);
+    partial void OnSmsSentLogIdChanged();
+    partial void OnDateCreatedChanging(System.DateTime value);
+    partial void OnDateCreatedChanged();
+    #endregion
+		
+		public RepeatScheduleEntry()
+		{
+			this._RepeatSchedule = default(EntityRef<RepeatSchedule>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RepeatScheduleEntryId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid RepeatScheduleEntryId
+		{
+			get
+			{
+				return this._RepeatScheduleEntryId;
+			}
+			set
+			{
+				if ((this._RepeatScheduleEntryId != value))
+				{
+					this.OnRepeatScheduleEntryIdChanging(value);
+					this.SendPropertyChanging();
+					this._RepeatScheduleEntryId = value;
+					this.SendPropertyChanged("RepeatScheduleEntryId");
+					this.OnRepeatScheduleEntryIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RepeatScheduleId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid RepeatScheduleId
+		{
+			get
+			{
+				return this._RepeatScheduleId;
+			}
+			set
+			{
+				if ((this._RepeatScheduleId != value))
+				{
+					if (this._RepeatSchedule.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRepeatScheduleIdChanging(value);
+					this.SendPropertyChanging();
+					this._RepeatScheduleId = value;
+					this.SendPropertyChanged("RepeatScheduleId");
+					this.OnRepeatScheduleIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RepeatDate", DbType="DateTime NOT NULL")]
+		public System.DateTime RepeatDate
+		{
+			get
+			{
+				return this._RepeatDate;
+			}
+			set
+			{
+				if ((this._RepeatDate != value))
+				{
+					this.OnRepeatDateChanging(value);
+					this.SendPropertyChanging();
+					this._RepeatDate = value;
+					this.SendPropertyChanged("RepeatDate");
+					this.OnRepeatDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NotificationDate", DbType="DateTime NOT NULL")]
+		public System.DateTime NotificationDate
+		{
+			get
+			{
+				return this._NotificationDate;
+			}
+			set
+			{
+				if ((this._NotificationDate != value))
+				{
+					this.OnNotificationDateChanging(value);
+					this.SendPropertyChanging();
+					this._NotificationDate = value;
+					this.SendPropertyChanged("NotificationDate");
+					this.OnNotificationDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SMSNotificationSent", DbType="Bit NOT NULL")]
+		public bool SMSNotificationSent
+		{
+			get
+			{
+				return this._SMSNotificationSent;
+			}
+			set
+			{
+				if ((this._SMSNotificationSent != value))
+				{
+					this.OnSMSNotificationSentChanging(value);
+					this.SendPropertyChanging();
+					this._SMSNotificationSent = value;
+					this.SendPropertyChanged("SMSNotificationSent");
+					this.OnSMSNotificationSentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SMSMessageId", DbType="VarChar(100)")]
+		public string SMSMessageId
+		{
+			get
+			{
+				return this._SMSMessageId;
+			}
+			set
+			{
+				if ((this._SMSMessageId != value))
+				{
+					this.OnSMSMessageIdChanging(value);
+					this.SendPropertyChanging();
+					this._SMSMessageId = value;
+					this.SendPropertyChanged("SMSMessageId");
+					this.OnSMSMessageIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SMSDateSent", DbType="DateTime")]
+		public System.Nullable<System.DateTime> SMSDateSent
+		{
+			get
+			{
+				return this._SMSDateSent;
+			}
+			set
+			{
+				if ((this._SMSDateSent != value))
+				{
+					this.OnSMSDateSentChanging(value);
+					this.SendPropertyChanging();
+					this._SMSDateSent = value;
+					this.SendPropertyChanged("SMSDateSent");
+					this.OnSMSDateSentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SmsSentLogId", DbType="UniqueIdentifier")]
+		public System.Nullable<System.Guid> SmsSentLogId
+		{
+			get
+			{
+				return this._SmsSentLogId;
+			}
+			set
+			{
+				if ((this._SmsSentLogId != value))
+				{
+					this.OnSmsSentLogIdChanging(value);
+					this.SendPropertyChanging();
+					this._SmsSentLogId = value;
+					this.SendPropertyChanged("SmsSentLogId");
+					this.OnSmsSentLogIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
+		public System.DateTime DateCreated
+		{
+			get
+			{
+				return this._DateCreated;
+			}
+			set
+			{
+				if ((this._DateCreated != value))
+				{
+					this.OnDateCreatedChanging(value);
+					this.SendPropertyChanging();
+					this._DateCreated = value;
+					this.SendPropertyChanged("DateCreated");
+					this.OnDateCreatedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RepeatSchedule_RepeatScheduleEntry", Storage="_RepeatSchedule", ThisKey="RepeatScheduleId", OtherKey="RepeatScheduleId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		internal RepeatSchedule RepeatSchedule
+		{
+			get
+			{
+				return this._RepeatSchedule.Entity;
+			}
+			set
+			{
+				RepeatSchedule previousValue = this._RepeatSchedule.Entity;
+				if (((previousValue != value) 
+							|| (this._RepeatSchedule.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._RepeatSchedule.Entity = null;
+						previousValue.RepeatScheduleEntries.Remove(this);
+					}
+					this._RepeatSchedule.Entity = value;
+					if ((value != null))
+					{
+						value.RepeatScheduleEntries.Add(this);
+						this._RepeatScheduleId = value.RepeatScheduleId;
+					}
+					else
+					{
+						this._RepeatScheduleId = default(System.Guid);
+					}
+					this.SendPropertyChanged("RepeatSchedule");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	
@@ -3599,7 +4324,7 @@ namespace Figlut.Spread.ORM
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_ServerAction", Storage="_User", ThisKey="UserId", OtherKey="UserId", IsForeignKey=true, DeleteRule="SET NULL")]
-		public User User
+		internal User User
 		{
 			get
 			{
@@ -4451,7 +5176,7 @@ namespace Figlut.Spread.ORM
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SmsSentLog_SmsDeliveryReportLog", Storage="_SmsSentLog", ThisKey="SmsSentLogId", OtherKey="SmsSentLogId", IsForeignKey=true, DeleteRule="SET NULL")]
-		public SmsSentLog SmsSentLog
+		internal SmsSentLog SmsSentLog
 		{
 			get
 			{
@@ -4480,6 +5205,181 @@ namespace Figlut.Spread.ORM
 						this._SmsSentLogId = default(Nullable<System.Guid>);
 					}
 					this.SendPropertyChanged("SmsSentLog");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SmsMessageTemplate")]
+	public partial class SmsMessageTemplate : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _SmsMessageTemplateId;
+		
+		private System.Guid _OrganizationId;
+		
+		private string _Message;
+		
+		private System.DateTime _DateCreated;
+		
+		private EntityRef<Organization> _Organization;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSmsMessageTemplateIdChanging(System.Guid value);
+    partial void OnSmsMessageTemplateIdChanged();
+    partial void OnOrganizationIdChanging(System.Guid value);
+    partial void OnOrganizationIdChanged();
+    partial void OnMessageChanging(string value);
+    partial void OnMessageChanged();
+    partial void OnDateCreatedChanging(System.DateTime value);
+    partial void OnDateCreatedChanged();
+    #endregion
+		
+		public SmsMessageTemplate()
+		{
+			this._Organization = default(EntityRef<Organization>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SmsMessageTemplateId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid SmsMessageTemplateId
+		{
+			get
+			{
+				return this._SmsMessageTemplateId;
+			}
+			set
+			{
+				if ((this._SmsMessageTemplateId != value))
+				{
+					this.OnSmsMessageTemplateIdChanging(value);
+					this.SendPropertyChanging();
+					this._SmsMessageTemplateId = value;
+					this.SendPropertyChanged("SmsMessageTemplateId");
+					this.OnSmsMessageTemplateIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrganizationId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid OrganizationId
+		{
+			get
+			{
+				return this._OrganizationId;
+			}
+			set
+			{
+				if ((this._OrganizationId != value))
+				{
+					if (this._Organization.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnOrganizationIdChanging(value);
+					this.SendPropertyChanging();
+					this._OrganizationId = value;
+					this.SendPropertyChanged("OrganizationId");
+					this.OnOrganizationIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Message", DbType="VarChar(140) NOT NULL", CanBeNull=false)]
+		public string Message
+		{
+			get
+			{
+				return this._Message;
+			}
+			set
+			{
+				if ((this._Message != value))
+				{
+					this.OnMessageChanging(value);
+					this.SendPropertyChanging();
+					this._Message = value;
+					this.SendPropertyChanged("Message");
+					this.OnMessageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
+		public System.DateTime DateCreated
+		{
+			get
+			{
+				return this._DateCreated;
+			}
+			set
+			{
+				if ((this._DateCreated != value))
+				{
+					this.OnDateCreatedChanging(value);
+					this.SendPropertyChanging();
+					this._DateCreated = value;
+					this.SendPropertyChanged("DateCreated");
+					this.OnDateCreatedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_SmsMessageTemplate", Storage="_Organization", ThisKey="OrganizationId", OtherKey="OrganizationId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		internal Organization Organization
+		{
+			get
+			{
+				return this._Organization.Entity;
+			}
+			set
+			{
+				Organization previousValue = this._Organization.Entity;
+				if (((previousValue != value) 
+							|| (this._Organization.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Organization.Entity = null;
+						previousValue.SmsMessageTemplates.Remove(this);
+					}
+					this._Organization.Entity = value;
+					if ((value != null))
+					{
+						value.SmsMessageTemplates.Add(this);
+						this._OrganizationId = value.OrganizationId;
+					}
+					else
+					{
+						this._OrganizationId = default(System.Guid);
+					}
+					this.SendPropertyChanged("Organization");
 				}
 			}
 		}
@@ -4836,7 +5736,7 @@ namespace Figlut.Spread.ORM
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SmsProcessor_SmsProcessorLog", Storage="_SmsProcessor", ThisKey="SmsProcessorId", OtherKey="SmsProcessorId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public SmsProcessor SmsProcessor
+		internal SmsProcessor SmsProcessor
 		{
 			get
 			{
@@ -5330,7 +6230,7 @@ namespace Figlut.Spread.ORM
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_SmsReceivedLog", Storage="_Organization", ThisKey="OrganizationId", OtherKey="OrganizationId", IsForeignKey=true, DeleteRule="SET NULL")]
-		public Organization Organization
+		internal Organization Organization
 		{
 			get
 			{
@@ -5364,7 +6264,7 @@ namespace Figlut.Spread.ORM
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Subscriber_SmsReceivedLog", Storage="_Subscriber", ThisKey="SubscriberId", OtherKey="SubscriberId", IsForeignKey=true, DeleteRule="SET NULL")]
-		public Subscriber Subscriber
+		internal Subscriber Subscriber
 		{
 			get
 			{
@@ -6289,7 +7189,7 @@ namespace Figlut.Spread.ORM
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SmsCampaign_SmsSentLog", Storage="_SmsCampaign", ThisKey="SmsCampaignId", OtherKey="SmsCampaignId", IsForeignKey=true, DeleteRule="SET NULL")]
-		public SmsCampaign SmsCampaign
+		internal SmsCampaign SmsCampaign
 		{
 			get
 			{
@@ -6323,7 +7223,7 @@ namespace Figlut.Spread.ORM
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Subscriber_SmsSentLog", Storage="_Subscriber", ThisKey="SubscriberId", OtherKey="SubscriberId", IsForeignKey=true, DeleteRule="SET NULL")]
-		public Subscriber Subscriber
+		internal Subscriber Subscriber
 		{
 			get
 			{
@@ -6798,7 +7698,7 @@ namespace Figlut.Spread.ORM
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SmsCampaign_SmsSentQueueItem", Storage="_SmsCampaign", ThisKey="SmsCampaignId", OtherKey="SmsCampaignId", IsForeignKey=true, DeleteRule="CASCADE")]
-		public SmsCampaign SmsCampaign
+		internal SmsCampaign SmsCampaign
 		{
 			get
 			{
@@ -7108,7 +8008,17 @@ namespace Figlut.Spread.ORM
 		
 		private bool _Enabled;
 		
+		private string _CustomerFullName;
+		
+		private string _CustomerIdentifier;
+		
+		private string _CustomerPhysicalAddress;
+		
+		private string _CustomerNotes;
+		
 		private System.DateTime _DateCreated;
+		
+		private EntitySet<RepeatSchedule> _RepeatSchedules;
 		
 		private EntityRef<Organization> _Organization;
 		
@@ -7126,12 +8036,21 @@ namespace Figlut.Spread.ORM
     partial void OnSubscriberIdChanged();
     partial void OnEnabledChanging(bool value);
     partial void OnEnabledChanged();
+    partial void OnCustomerFullNameChanging(string value);
+    partial void OnCustomerFullNameChanged();
+    partial void OnCustomerIdentifierChanging(string value);
+    partial void OnCustomerIdentifierChanged();
+    partial void OnCustomerPhysicalAddressChanging(string value);
+    partial void OnCustomerPhysicalAddressChanged();
+    partial void OnCustomerNotesChanging(string value);
+    partial void OnCustomerNotesChanged();
     partial void OnDateCreatedChanging(System.DateTime value);
     partial void OnDateCreatedChanged();
     #endregion
 		
 		public Subscription()
 		{
+			this._RepeatSchedules = new EntitySet<RepeatSchedule>(new Action<RepeatSchedule>(this.attach_RepeatSchedules), new Action<RepeatSchedule>(this.detach_RepeatSchedules));
 			this._Organization = default(EntityRef<Organization>);
 			this._Subscriber = default(EntityRef<Subscriber>);
 			OnCreated();
@@ -7225,6 +8144,86 @@ namespace Figlut.Spread.ORM
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerFullName", DbType="VarChar(100)")]
+		public string CustomerFullName
+		{
+			get
+			{
+				return this._CustomerFullName;
+			}
+			set
+			{
+				if ((this._CustomerFullName != value))
+				{
+					this.OnCustomerFullNameChanging(value);
+					this.SendPropertyChanging();
+					this._CustomerFullName = value;
+					this.SendPropertyChanged("CustomerFullName");
+					this.OnCustomerFullNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerIdentifier", DbType="VarChar(50)")]
+		public string CustomerIdentifier
+		{
+			get
+			{
+				return this._CustomerIdentifier;
+			}
+			set
+			{
+				if ((this._CustomerIdentifier != value))
+				{
+					this.OnCustomerIdentifierChanging(value);
+					this.SendPropertyChanging();
+					this._CustomerIdentifier = value;
+					this.SendPropertyChanged("CustomerIdentifier");
+					this.OnCustomerIdentifierChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerPhysicalAddress", DbType="VarChar(MAX)")]
+		public string CustomerPhysicalAddress
+		{
+			get
+			{
+				return this._CustomerPhysicalAddress;
+			}
+			set
+			{
+				if ((this._CustomerPhysicalAddress != value))
+				{
+					this.OnCustomerPhysicalAddressChanging(value);
+					this.SendPropertyChanging();
+					this._CustomerPhysicalAddress = value;
+					this.SendPropertyChanged("CustomerPhysicalAddress");
+					this.OnCustomerPhysicalAddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerNotes", DbType="VarChar(MAX)")]
+		public string CustomerNotes
+		{
+			get
+			{
+				return this._CustomerNotes;
+			}
+			set
+			{
+				if ((this._CustomerNotes != value))
+				{
+					this.OnCustomerNotesChanging(value);
+					this.SendPropertyChanging();
+					this._CustomerNotes = value;
+					this.SendPropertyChanged("CustomerNotes");
+					this.OnCustomerNotesChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
 		public System.DateTime DateCreated
 		{
@@ -7245,8 +8244,21 @@ namespace Figlut.Spread.ORM
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Subscription_RepeatSchedule", Storage="_RepeatSchedules", ThisKey="SubscriptionId", OtherKey="SubscriptionId")]
+		public EntitySet<RepeatSchedule> RepeatSchedules
+		{
+			get
+			{
+				return this._RepeatSchedules;
+			}
+			set
+			{
+				this._RepeatSchedules.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_Subscription", Storage="_Organization", ThisKey="OrganizationId", OtherKey="OrganizationId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Organization Organization
+		internal Organization Organization
 		{
 			get
 			{
@@ -7331,6 +8343,18 @@ namespace Figlut.Spread.ORM
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_RepeatSchedules(RepeatSchedule entity)
+		{
+			this.SendPropertyChanging();
+			entity.Subscription = this;
+		}
+		
+		private void detach_RepeatSchedules(RepeatSchedule entity)
+		{
+			this.SendPropertyChanging();
+			entity.Subscription = null;
 		}
 	}
 	
@@ -7655,7 +8679,7 @@ namespace Figlut.Spread.ORM
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_User", Storage="_Organization", ThisKey="OrganizationId", OtherKey="OrganizationId", IsForeignKey=true, DeleteRule="SET NULL")]
-		public Organization Organization
+		internal Organization Organization
 		{
 			get
 			{
@@ -7766,6 +8790,463 @@ namespace Figlut.Spread.ORM
 		{
 			this.SendPropertyChanging();
 			entity.User = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Country")]
+	public partial class Country : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _CountryId;
+		
+		private string _CountryCode;
+		
+		private string _CountryName;
+		
+		private System.DateTime _DateCreated;
+		
+		private EntitySet<PublicHoliday> _PublicHolidays;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnCountryIdChanging(System.Guid value);
+    partial void OnCountryIdChanged();
+    partial void OnCountryCodeChanging(string value);
+    partial void OnCountryCodeChanged();
+    partial void OnCountryNameChanging(string value);
+    partial void OnCountryNameChanged();
+    partial void OnDateCreatedChanging(System.DateTime value);
+    partial void OnDateCreatedChanged();
+    #endregion
+		
+		public Country()
+		{
+			this._PublicHolidays = new EntitySet<PublicHoliday>(new Action<PublicHoliday>(this.attach_PublicHolidays), new Action<PublicHoliday>(this.detach_PublicHolidays));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CountryId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid CountryId
+		{
+			get
+			{
+				return this._CountryId;
+			}
+			set
+			{
+				if ((this._CountryId != value))
+				{
+					this.OnCountryIdChanging(value);
+					this.SendPropertyChanging();
+					this._CountryId = value;
+					this.SendPropertyChanged("CountryId");
+					this.OnCountryIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CountryCode", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string CountryCode
+		{
+			get
+			{
+				return this._CountryCode;
+			}
+			set
+			{
+				if ((this._CountryCode != value))
+				{
+					this.OnCountryCodeChanging(value);
+					this.SendPropertyChanging();
+					this._CountryCode = value;
+					this.SendPropertyChanged("CountryCode");
+					this.OnCountryCodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CountryName", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		public string CountryName
+		{
+			get
+			{
+				return this._CountryName;
+			}
+			set
+			{
+				if ((this._CountryName != value))
+				{
+					this.OnCountryNameChanging(value);
+					this.SendPropertyChanging();
+					this._CountryName = value;
+					this.SendPropertyChanged("CountryName");
+					this.OnCountryNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
+		public System.DateTime DateCreated
+		{
+			get
+			{
+				return this._DateCreated;
+			}
+			set
+			{
+				if ((this._DateCreated != value))
+				{
+					this.OnDateCreatedChanging(value);
+					this.SendPropertyChanging();
+					this._DateCreated = value;
+					this.SendPropertyChanged("DateCreated");
+					this.OnDateCreatedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Country_PublicHoliday", Storage="_PublicHolidays", ThisKey="CountryId", OtherKey="CountryId")]
+		public EntitySet<PublicHoliday> PublicHolidays
+		{
+			get
+			{
+				return this._PublicHolidays;
+			}
+			set
+			{
+				this._PublicHolidays.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_PublicHolidays(PublicHoliday entity)
+		{
+			this.SendPropertyChanging();
+			entity.Country = this;
+		}
+		
+		private void detach_PublicHolidays(PublicHoliday entity)
+		{
+			this.SendPropertyChanging();
+			entity.Country = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PublicHoliday")]
+	public partial class PublicHoliday : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _PublicHolidayId;
+		
+		private System.Guid _CountryId;
+		
+		private string _EventName;
+		
+		private string _DateIdentifier;
+		
+		private int _Year;
+		
+		private int _Month;
+		
+		private int _Day;
+		
+		private System.DateTime _HolidayDate;
+		
+		private System.DateTime _DateCreated;
+		
+		private EntityRef<Country> _Country;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPublicHolidayIdChanging(System.Guid value);
+    partial void OnPublicHolidayIdChanged();
+    partial void OnCountryIdChanging(System.Guid value);
+    partial void OnCountryIdChanged();
+    partial void OnEventNameChanging(string value);
+    partial void OnEventNameChanged();
+    partial void OnDateIdentifierChanging(string value);
+    partial void OnDateIdentifierChanged();
+    partial void OnYearChanging(int value);
+    partial void OnYearChanged();
+    partial void OnMonthChanging(int value);
+    partial void OnMonthChanged();
+    partial void OnDayChanging(int value);
+    partial void OnDayChanged();
+    partial void OnHolidayDateChanging(System.DateTime value);
+    partial void OnHolidayDateChanged();
+    partial void OnDateCreatedChanging(System.DateTime value);
+    partial void OnDateCreatedChanged();
+    #endregion
+		
+		public PublicHoliday()
+		{
+			this._Country = default(EntityRef<Country>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PublicHolidayId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid PublicHolidayId
+		{
+			get
+			{
+				return this._PublicHolidayId;
+			}
+			set
+			{
+				if ((this._PublicHolidayId != value))
+				{
+					this.OnPublicHolidayIdChanging(value);
+					this.SendPropertyChanging();
+					this._PublicHolidayId = value;
+					this.SendPropertyChanged("PublicHolidayId");
+					this.OnPublicHolidayIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CountryId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid CountryId
+		{
+			get
+			{
+				return this._CountryId;
+			}
+			set
+			{
+				if ((this._CountryId != value))
+				{
+					if (this._Country.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCountryIdChanging(value);
+					this.SendPropertyChanging();
+					this._CountryId = value;
+					this.SendPropertyChanged("CountryId");
+					this.OnCountryIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EventName", DbType="VarChar(250) NOT NULL", CanBeNull=false)]
+		public string EventName
+		{
+			get
+			{
+				return this._EventName;
+			}
+			set
+			{
+				if ((this._EventName != value))
+				{
+					this.OnEventNameChanging(value);
+					this.SendPropertyChanging();
+					this._EventName = value;
+					this.SendPropertyChanged("EventName");
+					this.OnEventNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateIdentifier", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string DateIdentifier
+		{
+			get
+			{
+				return this._DateIdentifier;
+			}
+			set
+			{
+				if ((this._DateIdentifier != value))
+				{
+					this.OnDateIdentifierChanging(value);
+					this.SendPropertyChanging();
+					this._DateIdentifier = value;
+					this.SendPropertyChanged("DateIdentifier");
+					this.OnDateIdentifierChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Year", DbType="Int NOT NULL")]
+		public int Year
+		{
+			get
+			{
+				return this._Year;
+			}
+			set
+			{
+				if ((this._Year != value))
+				{
+					this.OnYearChanging(value);
+					this.SendPropertyChanging();
+					this._Year = value;
+					this.SendPropertyChanged("Year");
+					this.OnYearChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Month", DbType="Int NOT NULL")]
+		public int Month
+		{
+			get
+			{
+				return this._Month;
+			}
+			set
+			{
+				if ((this._Month != value))
+				{
+					this.OnMonthChanging(value);
+					this.SendPropertyChanging();
+					this._Month = value;
+					this.SendPropertyChanged("Month");
+					this.OnMonthChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Day", DbType="Int NOT NULL")]
+		public int Day
+		{
+			get
+			{
+				return this._Day;
+			}
+			set
+			{
+				if ((this._Day != value))
+				{
+					this.OnDayChanging(value);
+					this.SendPropertyChanging();
+					this._Day = value;
+					this.SendPropertyChanged("Day");
+					this.OnDayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HolidayDate", DbType="DateTime NOT NULL")]
+		public System.DateTime HolidayDate
+		{
+			get
+			{
+				return this._HolidayDate;
+			}
+			set
+			{
+				if ((this._HolidayDate != value))
+				{
+					this.OnHolidayDateChanging(value);
+					this.SendPropertyChanging();
+					this._HolidayDate = value;
+					this.SendPropertyChanged("HolidayDate");
+					this.OnHolidayDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
+		public System.DateTime DateCreated
+		{
+			get
+			{
+				return this._DateCreated;
+			}
+			set
+			{
+				if ((this._DateCreated != value))
+				{
+					this.OnDateCreatedChanging(value);
+					this.SendPropertyChanging();
+					this._DateCreated = value;
+					this.SendPropertyChanged("DateCreated");
+					this.OnDateCreatedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Country_PublicHoliday", Storage="_Country", ThisKey="CountryId", OtherKey="CountryId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		internal Country Country
+		{
+			get
+			{
+				return this._Country.Entity;
+			}
+			set
+			{
+				Country previousValue = this._Country.Entity;
+				if (((previousValue != value) 
+							|| (this._Country.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Country.Entity = null;
+						previousValue.PublicHolidays.Remove(this);
+					}
+					this._Country.Entity = value;
+					if ((value != null))
+					{
+						value.PublicHolidays.Add(this);
+						this._CountryId = value.CountryId;
+					}
+					else
+					{
+						this._CountryId = default(System.Guid);
+					}
+					this.SendPropertyChanged("Country");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

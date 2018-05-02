@@ -1,0 +1,2 @@
+Added referential integrity constraint between Organization and SmsMessageTemplate.
+Added Country table and linked it to the PublicHoliday table. Also moved the fields from the PubliHoliday table to the Country table.

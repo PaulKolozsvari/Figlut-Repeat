@@ -144,6 +144,7 @@ SMS Marketing articles:
 
 	http://www.financialmail.co.za/redzone/2015/10/07/sms-marketing-does-work-if-you-do-it-right
 	http://www.itweb.co.za/index.php?option=com_content&view=article&id=143422
+	https://www.clickz.com/is-sms-marketing-still-relevant-in-2017/112101/
 
 	Tool to get demographics data in SA:
 		http://www.hudlr.co.za/
@@ -152,3 +153,16 @@ SMS Marketing articles:
 WHOIS lookup API providing location data too in multiple formats, and it's for free:
 	http://ip-api.com/docs/api:xml
 	e.g. to a get request (replace with your own IP address) http://ip-api.com/xml/208.80.152.201
+
+Google Cloud Hosting:
+	https://cloud.google.com/products/calculator/#id=16ee0516-5971-462a-bbb6-f526a9cdb081
+
+Cloud Hosting SA:
+	Cloud Servers: https://cloud.co.za/cloud-servers/#windows
+	Virtual Servers: https://cloud.co.za/virtual-servers/
+
+SQL Server Versions and differences:
+	https://docs.microsoft.com/en-us/sql/sql-server/editions-and-components-of-sql-server-2017?view=sql-server-2017
+
+Competitors:
+	https://www.scheduleonce.com/pricing

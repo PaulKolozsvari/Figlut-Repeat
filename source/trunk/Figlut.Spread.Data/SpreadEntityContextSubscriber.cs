@@ -20,10 +20,9 @@
 
         public Subscriber GetSubscriber(Guid subscriberId, bool throwExceptionOnNotFound)
         {
-            List<Subscriber> q = (from s in DB.GetTable<Subscriber>()
-                                  where s.SubscriberId == subscriberId
-                                  select s).ToList();
-            Subscriber result = q.Count < 1 ? null : q[0];
+            Subscriber result = (from s in DB.GetTable<Subscriber>()
+                                 where s.SubscriberId == subscriberId
+                                 select s).FirstOrDefault();
             if (result == null && throwExceptionOnNotFound)
             {
                 throw new NullReferenceException(string.Format("Could not find {0} with {1} of '{2}'.",
