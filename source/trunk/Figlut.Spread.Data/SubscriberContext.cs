@@ -80,7 +80,7 @@
                 result = (from subscriber in DB.GetTable<Subscriber>()
                           where subscriber.CellPhoneNumber.ToLower().Contains(searchFilterLower) ||
                           subscriber.Name.ToLower().Contains(searchFilterLower) ||
-                          subscriber.IsEnabled.ToString().ToLower().Contains(searchFilterLower)
+                          subscriber.Enabled.ToString().ToLower().Contains(searchFilterLower)
                           orderby subscriber.DateCreated descending, subscriber.Name, subscriber.CellPhoneNumber
                           select subscriber).ToList();
             }

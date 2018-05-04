@@ -2,62 +2,62 @@
 {
     #region Using Directives
 
-    using Figlut.Spread.Data;
-    using Figlut.Spread.ORM;
-    using Figlut.Spread.ORM.Csv;
-    using Figlut.Spread.ORM.Views;
-    using Figlut.Spread.Web.Site.Configuration;
-    using Figlut.Spread.Web.Site.Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
-    using Figlut.Server.Toolkit.Data;
+    using Figlut.Spread.Web.Site.Models;
+    using Figlut.Spread.Data;
+    using Figlut.Spread.ORM.Views;
     using Figlut.Server.Toolkit.Utilities;
+    using Figlut.Spread.Web.Site.Configuration;
+    using Figlut.Spread.ORM;
+    using Figlut.Server.Toolkit.Data;
+    using Figlut.Spread.ORM.Csv;
 
     #endregion //Using Directives
 
-    public class PublicHolidayController : SpreadController
+    public class RepeatScheduleEntryController : SpreadController
     {
         #region Constants
 
-        private const string PUBLIC_HOLIDAY_GRID_PARTIAL_VIEW_NAME = "_PublicHolidayGrid";
-        private const string EDIT_PUBLIC_HOLIDAY_PARTIAL_VIEW_NAME = "_EditPublicHolidayDialog";
-        private const string CREATE_PUBLIC_HOLIDAY_PARTIAL_VIEW_NAME = "_CreatePublicHolidayDialog";
+        private const string REPEAT_SCHEDULE_ENTRY_GRID_PARTIAL_VIEW_NAME = "_RepeatScheduleEntryGrid";
+        private const string EDIT_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME = "_EditRepeatScheduleEntryDialog";
+        private const string CREATE_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME = "_CreateRepeatScheduleEntryDialog";
 
         #endregion //Constants
 
         #region Methods
 
-        public FilterModel<PublicHolidayModel> GetPublicHolidayFilterModel(
+        private FilterModel<RepeatScheduleEntryModel> GetRepeatScheduleEntryFilterModel(
             SpreadEntityContext context,
-            FilterModel<PublicHolidayModel> model,
-            Nullable<Guid> countryId)
+            FilterModel<RepeatScheduleEntryModel> model,
+            Nullable<Guid> repeatScheduleId)
         {
             if (context == null)
             {
                 context = SpreadEntityContext.Create();
             }
             model.IsAdministrator = IsCurrentUserAdministrator(context);
-            List<PublicHolidayView> publicHolidayViewList = context.GetPublicHolidaysViewByFilter(model.SearchText, countryId);
-            List<PublicHolidayModel> modelList = new List<PublicHolidayModel>();
-            foreach (PublicHolidayView v in publicHolidayViewList)
+            List<RepeatScheduleEntryView> repeatScheduleEntryViewList = context.GetRepeatScheduleEntryViewsByFilter(model.SearchText, repeatScheduleId);
+            List<RepeatScheduleEntryModel> modelList = new List<RepeatScheduleEntryModel>();
+            foreach (RepeatScheduleEntryView v in repeatScheduleEntryViewList)
             {
-                PublicHolidayModel m = new PublicHolidayModel();
-                m.CopyPropertiesFromPublicHolidayView(v);
+                RepeatScheduleEntryModel m = new RepeatScheduleEntryModel();
+                m.CopyPropertiesFromRepeatScheduleEntryView(v);
                 modelList.Add(m);
             }
             model.DataModel.Clear();
             model.DataModel = modelList;
-            model.TotalTableCount = context.GetAllPublicHolidayCount();
-            if (countryId.HasValue)
+            model.TotalTableCount = context.GetAllRepeatScheduleEntryCount();
+            if (repeatScheduleId.HasValue)
             {
-                Country country = context.GetCountry(countryId.Value, false);
-                if (country != null)
+                RepeatScheduleView repeatSchedule = context.GetRepeatScheduleView(repeatScheduleId.Value, false);
+                if (repeatSchedule != null)
                 {
-                    model.ParentId = country.CountryId;
-                    model.ParentCaption = country.CountryName;
+                    model.ParentId = repeatSchedule.RepeatScheduleId;
+                    model.ParentCaption = string.Format("{0} ({1})", repeatSchedule.ScheduleName, repeatSchedule.CustomerFullName);
                 }
             }
             return model;
@@ -67,7 +67,7 @@
 
         #region Actions
 
-        public ActionResult Index(Guid countryId)
+        public ActionResult Index(Guid repeatScheduleId)
         {
             try
             {
@@ -76,10 +76,10 @@
                 {
                     return RedirectToHome();
                 }
-                FilterModel<PublicHolidayModel> model = GetPublicHolidayFilterModel(
+                FilterModel<RepeatScheduleEntryModel> model = GetRepeatScheduleEntryFilterModel(
                     context,
-                    new FilterModel<PublicHolidayModel>(),
-                    countryId);
+                    new FilterModel<RepeatScheduleEntryModel>(),
+                    repeatScheduleId);
                 ViewBag.SearchFieldIdentifier = model.SearchFieldIdentifier;
                 return View(model);
             }
@@ -92,23 +92,23 @@
         }
 
         [HttpPost]
-        public ActionResult Index(FilterModel<PublicHolidayModel> model)
+        public ActionResult Index(FilterModel<RepeatScheduleEntryModel> model)
         {
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !CurrentUserHasAccessToOrganization(model.ParentId, context))
+                if (!Request.IsAuthenticated)
                 {
                     return RedirectToHome();
                 }
-                FilterModel<PublicHolidayModel> resultModel = model.ParentId != Guid.Empty ?
-                    GetPublicHolidayFilterModel(context, model, model.ParentId) :
-                    GetPublicHolidayFilterModel(context, model, null);
+                FilterModel<RepeatScheduleEntryModel> resultModel = model.ParentId != Guid.Empty ?
+                    GetRepeatScheduleEntryFilterModel(context, model, model.ParentId) :
+                    GetRepeatScheduleEntryFilterModel(context, model, null);
                 if (resultModel == null) //There was an error and ViewBag.ErrorMessage has been set. So just return an empty model.
                 {
-                    return PartialView(PUBLIC_HOLIDAY_GRID_PARTIAL_VIEW_NAME, new FilterModel<PublicHolidayModel>());
+                    return PartialView(REPEAT_SCHEDULE_ENTRY_GRID_PARTIAL_VIEW_NAME, new FilterModel<PublicHolidayModel>());
                 }
-                return PartialView(PUBLIC_HOLIDAY_GRID_PARTIAL_VIEW_NAME, resultModel);
+                return PartialView(REPEAT_SCHEDULE_ENTRY_GRID_PARTIAL_VIEW_NAME, resultModel);
             }
             catch (Exception ex)
             {
@@ -119,17 +119,17 @@
         }
 
         [HttpPost]
-        public ActionResult Delete(Guid publicHolidayId)
+        public ActionResult Delete(Guid repeatScheduleEntryId)
         {
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                PublicHoliday publicHoliday = context.GetPublicHoliday(publicHolidayId, true);
+                RepeatScheduleEntry repeatScheduleEntry = context.GetRepeatScheduleEntry(repeatScheduleEntryId, true);
                 if (!Request.IsAuthenticated)
                 {
                     return RedirectToHome();
                 }
-                context.Delete<PublicHoliday>(publicHoliday);
+                context.Delete<RepeatScheduleEntry>(repeatScheduleEntry);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -149,16 +149,20 @@
                 {
                     return RedirectToHome();
                 }
-                PublicHoliday publicHoliday = context.GetPublicHoliday(identifier, false);
+                RepeatScheduleEntry repeatScheduleEntry = context.GetRepeatScheduleEntry(identifier, false);
                 ConfirmationModel model = new ConfirmationModel();
                 model.PostBackControllerAction = GetCurrentActionName();
                 model.PostBackControllerName = GetCurrentControllerName();
                 model.DialogDivId = CONFIRMATION_DIALOG_DIV_ID;
-                if (publicHoliday != null)
+                if (repeatScheduleEntry != null)
                 {
-                    Country country = context.GetCountry(publicHoliday.CountryId, true);
+                    RepeatScheduleView repeatSchedule = context.GetRepeatScheduleView(repeatScheduleEntry.RepeatScheduleId, true);
                     model.Identifier = identifier;
-                    model.ConfirmationMessage = string.Format("Delete Public Holiday '{0}' for {1} '{2}'?", publicHoliday.EventName, typeof(Country).Name, country.CountryName);
+                    model.ConfirmationMessage = string.Format("Delete Repeat Schedule Entry '{0}' for {1} '{2} ({3})'?",
+                        repeatScheduleEntry.RepeatDate,
+                        DataShaper.ShapeCamelCaseString(typeof(RepeatSchedule).Name),
+                        repeatSchedule.ScheduleName,
+                        repeatSchedule.CustomerFullName);
                 }
                 PartialViewResult result = PartialView(CONFIRMATION_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
@@ -181,8 +185,8 @@
                 {
                     return RedirectToHome();
                 }
-                PublicHoliday publicHoliday = context.GetPublicHoliday(model.Identifier, true);
-                context.Delete<PublicHoliday>(publicHoliday);
+                RepeatScheduleEntry repeatScheduleEntry = context.GetRepeatScheduleEntry(model.Identifier, true);
+                context.Delete<RepeatScheduleEntry>(repeatScheduleEntry);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -211,13 +215,16 @@
                 string searchText;
                 GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
 
-                string countryIdString = searchParameters[searchParameters.Length - 1];
-                Guid countryId = Guid.Parse(countryIdString);
-                Country country = context.GetCountry(countryId, true);
-                model.ParentId = country.CountryId;
-                model.ParentCaption = country.CountryName;
+                string repeatScheduleIdString = searchParameters[searchParameters.Length - 1];
+                Guid repeatScheduleId = Guid.Parse(repeatScheduleIdString);
+                RepeatScheduleView repeatSchedule = context.GetRepeatScheduleView(repeatScheduleId, true);
+                model.ParentId = repeatSchedule.RepeatScheduleId;
+                model.ParentCaption = string.Format("{0} ({1})", repeatSchedule.ScheduleName, repeatSchedule.CustomerFullName);
                 model.SearchText = searchText;
-                model.ConfirmationMessage = string.Format("Delete all Public Holidays currently loaded for {0} '{1}'?", typeof(Country).Name, country.CountryName);
+                model.ConfirmationMessage = string.Format("Delete all Repeat Schedules Entries currently loaded for {0} '{1} ({2})'?", 
+                    DataShaper.ShapeCamelCaseString(typeof(RepeatSchedule).Name), 
+                    repeatSchedule.ScheduleName,
+                    repeatSchedule.CustomerFullName);
                 PartialViewResult result = PartialView(CONFIRMATION_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
             }
@@ -244,7 +251,7 @@
                 {
                     return RedirectToHome();
                 }
-                context.DeletePublicHolidaysByFilter(model.SearchText, model.ParentId);
+                context.DeleteRepeatScheduleEntriesbyFilter(model.SearchText, model.ParentId);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -265,28 +272,28 @@
                 string searchText;
                 GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
 
-                string countryIdString = searchParameters[searchParameters.Length - 1];
-                Guid countryId = Guid.Parse(countryIdString);
-                Country country = context.GetCountry(countryId, true);
-                if (countryId == Guid.Empty)
+                string repeatScheduleIdString = searchParameters[searchParameters.Length - 1];
+                Guid repeatScheduleId = Guid.Parse(repeatScheduleIdString);
+                RepeatSchedule repeatSchedule = context.GetRepeatSchedule(repeatScheduleId, true);
+                if (repeatScheduleId == Guid.Empty)
                 {
                     return RedirectToError(string.Format("{0} not specified.",
-                        EntityReader<PublicHoliday>.GetPropertyName(p => p.CountryId, false)));
+                        EntityReader<RepeatSchedule>.GetPropertyName(p => p.RepeatScheduleId, false)));
                 }
                 if (!Request.IsAuthenticated)
                 {
                     return RedirectToHome();
                 }
                 GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
-                List<PublicHolidayView> publicHolidayViewList = context.GetPublicHolidaysViewByFilter(searchText, countryId);
-                EntityCache<Guid, PublicHolidayCsv> cache = new EntityCache<Guid, PublicHolidayCsv>();
-                foreach (PublicHolidayView v in publicHolidayViewList)
+                List<RepeatScheduleEntryView> repeatScheduleEntryViewList = context.GetRepeatScheduleEntryViewsByFilter(searchText, repeatScheduleId);
+                EntityCache<Guid, RepeatScheduleEntryCsv> cache = new EntityCache<Guid, RepeatScheduleEntryCsv>();
+                foreach (RepeatScheduleEntryView v in repeatScheduleEntryViewList)
                 {
-                    PublicHolidayCsv csv = new PublicHolidayCsv();
-                    csv.CopyPropertiesFromPublicHolidayView(v);
-                    cache.Add(csv.PublicHolidayId, csv);
+                    RepeatScheduleEntryCsv csv = new RepeatScheduleEntryCsv();
+                    csv.CopyPropertiesFromRepeatScheduleEntryView(v);
+                    cache.Add(csv.RepeatScheduleEntryId, csv);
                 }
-                return GetCsvFileResult<PublicHolidayCsv>(cache);
+                return GetCsvFileResult<RepeatScheduleEntryCsv>(cache);
             }
             catch (Exception ex)
             {
@@ -296,7 +303,7 @@
             }
         }
 
-        public ActionResult EditDialog(Nullable<Guid> publicHolidayId)
+        public ActionResult EditDialog(Nullable<Guid> repeatScheduleEntryId)
         {
             try
             {
@@ -305,14 +312,14 @@
                 {
                     return RedirectToHome();
                 }
-                if (!publicHolidayId.HasValue)
+                if (!repeatScheduleEntryId.HasValue)
                 {
-                    return PartialView(EDIT_PUBLIC_HOLIDAY_PARTIAL_VIEW_NAME, new PublicHolidayModel());
+                    return PartialView(EDIT_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME, new RepeatScheduleEntryModel());
                 }
-                PublicHolidayView publicHolidayView = context.GetPublicHolidayView(publicHolidayId.Value, true);
-                PublicHolidayModel model = new PublicHolidayModel();
-                model.CopyPropertiesToPublicHolidayView(publicHolidayView);
-                PartialViewResult result = PartialView(EDIT_PUBLIC_HOLIDAY_PARTIAL_VIEW_NAME, model);
+                RepeatScheduleEntryView repeatScheduleEntryView = context.GetRepeatScheduleEntryView(repeatScheduleEntryId.Value, true);
+                RepeatScheduleEntryModel model = new RepeatScheduleEntryModel();
+                model.CopyPropertiesToRepeatScheduleEntryView(repeatScheduleEntryView);
+                PartialViewResult result = PartialView(EDIT_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME, model);
                 return result;
             }
             catch (Exception ex)
@@ -324,7 +331,7 @@
         }
 
         [HttpPost]
-        public ActionResult EditDialog(PublicHolidayModel model)
+        public ActionResult EditDialog(RepeatScheduleEntryModel model)
         {
             try
             {
@@ -334,9 +341,9 @@
                     return GetJsonResult(false, errorMessage);
                 }
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                PublicHoliday publicHoliday = context.GetPublicHoliday(model.PublicHolidayId, true);
-                model.CopyPropertiesToPublicHoliday(publicHoliday);
-                context.Save<PublicHoliday>(publicHoliday, false);
+                RepeatScheduleEntry repeatScheduleEntry = context.GetRepeatScheduleEntry(model.RepeatScheduleEntryId, true);
+                model.CopyPropertiesToRepeatScheduleEntry(repeatScheduleEntry);
+                context.Save<RepeatScheduleEntry>(repeatScheduleEntry, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -351,7 +358,7 @@
         {
             try
             {
-                return PartialView(CREATE_PUBLIC_HOLIDAY_PARTIAL_VIEW_NAME, new PublicHolidayModel());
+                return PartialView(CREATE_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME, new RepeatScheduleEntryModel());
             }
             catch (Exception ex)
             {
@@ -362,7 +369,7 @@
         }
 
         [HttpPost]
-        public ActionResult CreateDialog(PublicHolidayModel model)
+        public ActionResult CreateDialog(RepeatScheduleEntryModel model)
         {
             try
             {
@@ -372,11 +379,11 @@
                     return GetJsonResult(false, errorMessage);
                 }
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                model.PublicHolidayId = Guid.NewGuid();
+                model.RepeatScheduleId = Guid.NewGuid();
                 model.DateCreated = DateTime.Now;
-                PublicHoliday publicHoliday = new PublicHoliday();
-                model.CopyPropertiesToPublicHoliday(publicHoliday);
-                context.Save<PublicHoliday>(publicHoliday, false);
+                RepeatScheduleEntry repeatScheduleEntry = new RepeatScheduleEntry();
+                model.CopyPropertiesToRepeatScheduleEntry(repeatScheduleEntry);
+                context.Save<RepeatScheduleEntry>(repeatScheduleEntry, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

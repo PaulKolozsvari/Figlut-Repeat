@@ -25,6 +25,14 @@
 
         public bool Enabled { get; set; }
 
+        public string CustomerFullName { get; set; }
+
+        public string CustomerIdentifier { get; set; }
+
+        public string CustomerPhysicalAddress { get; set; }
+
+        public string CustomerNotes { get; set; }
+
         public DateTime DateCreated { get; set; }
 
         #endregion //Subscription Properties
@@ -51,6 +59,10 @@
             this.OrganizationId = view.OrganizationId;
             this.SubscriberId = view.SubscriberId;
             this.Enabled = view.Enabled;
+            this.CustomerFullName = view.CustomerFullName;
+            this.CustomerIdentifier = view.CustomerIdentifier;
+            this.CustomerPhysicalAddress = view.CustomerPhysicalAddress;
+            this.CustomerNotes = view.CustomerNotes;
             this.DateCreated = view.DateCreated;
 
             this.OrganizationName = view.OrganizationName;
@@ -65,6 +77,10 @@
             view.OrganizationId = this.OrganizationId;
             view.SubscriberId = this.SubscriberId;
             view.Enabled = this.Enabled;
+            view.CustomerFullName = this.CustomerFullName;
+            view.CustomerIdentifier = this.CustomerIdentifier;
+            view.CustomerPhysicalAddress = this.CustomerPhysicalAddress;
+            view.CustomerNotes = this.CustomerNotes;
             view.DateCreated = this.DateCreated;
 
             view.OrganizationName = this.OrganizationName;

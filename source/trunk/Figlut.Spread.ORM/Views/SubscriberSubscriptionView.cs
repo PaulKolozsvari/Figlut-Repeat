@@ -24,6 +24,14 @@
 
         public bool Enabled { get; set; }
 
+        public string CustomerFullName { get; set; }
+
+        public string CustomerIdentifier { get; set; }
+
+        public string CustomerPhysicalAddress { get; set; }
+
+        public string CustomerNotes { get; set; }
+
         public DateTime DateCreated { get; set; }
 
         #endregion //Subscription Properties

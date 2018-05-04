@@ -1,14 +1,14 @@
 ﻿namespace Figlut.Spread.Web.Site.Models
 {
-    using Figlut.Server.Toolkit.Data;
-    using Figlut.Spread.ORM;
-    using Figlut.Spread.ORM.Views;
     #region Using Directives
 
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web;
+    using Figlut.Server.Toolkit.Data;
+    using Figlut.Spread.ORM;
+    using Figlut.Spread.ORM.Views;
 
     #endregion //Using Directives
 

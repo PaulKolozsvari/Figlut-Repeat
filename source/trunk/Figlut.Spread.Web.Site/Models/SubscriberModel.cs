@@ -21,7 +21,7 @@
 
         public string Name { get; set; }
 
-        public bool IsEnabled { get; set; }
+        public bool Enabled { get; set; }
 
         public DateTime DateCreated { get; set; }
 
@@ -44,7 +44,7 @@
             this.SubscriberId = subscriber.SubscriberId;
             this.CellPhoneNumber = subscriber.CellPhoneNumber;
             this.Name = subscriber.Name;
-            this.IsEnabled = subscriber.IsEnabled;
+            this.Enabled = subscriber.Enabled;
             this.DateCreated = subscriber.DateCreated;
         }
 
@@ -53,7 +53,7 @@
             subscriber.SubscriberId = this.SubscriberId;
             subscriber.CellPhoneNumber = this.CellPhoneNumber;
             subscriber.Name = this.Name;
-            subscriber.IsEnabled = this.IsEnabled;
+            subscriber.Enabled = this.Enabled;
             subscriber.DateCreated = this.DateCreated;
         }
 

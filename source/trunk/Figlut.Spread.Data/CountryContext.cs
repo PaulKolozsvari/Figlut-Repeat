@@ -1,9 +1,5 @@
 ﻿namespace Figlut.Spread.Data
 {
-    using Figlut.Server.Toolkit.Data;
-    using Figlut.Server.Toolkit.Data.DB.LINQ;
-    using Figlut.Spread.ORM;
-    using Figlut.Spread.ORM.Views;
     #region Using Directives
 
     using System;
@@ -12,6 +8,10 @@
     using System.Text;
     using System.Threading.Tasks;
     using System.Transactions;
+    using Figlut.Server.Toolkit.Data;
+    using Figlut.Server.Toolkit.Data.DB.LINQ;
+    using Figlut.Spread.ORM;
+    using Figlut.Spread.ORM.Views;
 
     #endregion //Using Directives
 

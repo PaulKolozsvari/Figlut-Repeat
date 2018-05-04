@@ -280,7 +280,7 @@
                         {
                             SubscriberId = Guid.NewGuid(),
                             CellPhoneNumber = cellPhoneNumberTrimmed,
-                            IsEnabled = true,
+                            Enabled = true,
                             DateCreated = DateTime.Now
                         };
                         DB.GetTable<Subscriber>().InsertOnSubmit(subscriber);
@@ -305,7 +305,7 @@
                     {
                         SubscriberId = Guid.NewGuid(),
                         CellPhoneNumber = cellPhoneNumberTrimmed,
-                        IsEnabled = true,
+                        Enabled = true,
                         DateCreated = DateTime.Now
                     };
                     DB.GetTable<Subscriber>().InsertOnSubmit(subscriber);

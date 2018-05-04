@@ -122,7 +122,7 @@
                         SubscriberId = Guid.NewGuid(),
                         CellPhoneNumber = cell,
                         Name = null,
-                        IsEnabled = true,
+                        Enabled = true,
                         DateCreated = DateTime.Now
                     };
                     Console.WriteLine("{0} Saving Subscriber: {1}", subscribersCreated, subscriber.CellPhoneNumber);

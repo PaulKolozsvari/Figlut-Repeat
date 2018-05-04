@@ -43,7 +43,7 @@
         {
             PublicHolidayView result = (from p in DB.GetTable<PublicHoliday>()
                                         join c in DB.GetTable<Country>() on p.CountryId equals c.CountryId into set
-                                        from sub in set
+                                        from sub in set.DefaultIfEmpty()
                                         where p.PublicHolidayId == publicHolidayId
                                         select new PublicHolidayView()
                                         {

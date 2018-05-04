@@ -203,6 +203,8 @@
     <Compile Include="Controllers\OrganizationController.cs" />
     <Compile Include="Controllers\OrganizationSubscriptionController.cs" />
     <Compile Include="Controllers\PublicHolidayController.cs" />
+    <Compile Include="Controllers\RepeatScheduleController.cs" />
+    <Compile Include="Controllers\RepeatScheduleEntryController.cs" />
     <Compile Include="Controllers\SmsCampaignController.cs" />
     <Compile Include="Controllers\SmsMessageTemplateController.cs" />
     <Compile Include="Controllers\SmsProcessorController.cs" />
@@ -238,6 +240,8 @@
     <Compile Include="Models\ProductName.cs" />
     <Compile Include="Models\PublicHolidayModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
+    <Compile Include="Models\RepeatScheduleEntryModel.cs" />
+    <Compile Include="Models\RepeatScheduleModel.cs" />
     <Compile Include="Models\SmsCampaignModel.cs" />
     <Compile Include="Models\SmsMessageTemplateModel.cs" />
     <Compile Include="Models\SmsProcessorLogModel.cs" />

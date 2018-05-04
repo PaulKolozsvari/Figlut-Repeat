@@ -65,10 +65,14 @@
                                                        OrganizationId = subscription.OrganizationId,
                                                        SubscriberId = sub.SubscriberId,
                                                        Enabled = subscription.Enabled,
+                                                       CustomerFullName = subscription.CustomerFullName,
+                                                       CustomerIdentifier = subscription.CustomerIdentifier,
+                                                       CustomerPhysicalAddress = subscription.CustomerPhysicalAddress,
+                                                       CustomerNotes = subscription.CustomerNotes,
                                                        DateCreated = subscription.DateCreated,
                                                        SubscriberCellPhoneNumber = sub.CellPhoneNumber,
                                                        SubscriberName = sub.Name,
-                                                       SubscriberIsEnabled = sub.IsEnabled,
+                                                       SubscriberEnabled = sub.Enabled,
                                                        SubscriberDateCreated = sub.DateCreated
                                                    }).FirstOrDefault();
             if (result == null && throwExceptionOnNotFound)
@@ -93,6 +97,10 @@
                                                      OrganizationId = sub.OrganizationId,
                                                      SubscriberId = subscription.SubscriberId,
                                                      Enabled = subscription.Enabled,
+                                                     CustomerFullName = subscription.CustomerFullName,
+                                                     CustomerIdentifier = subscription.CustomerIdentifier,
+                                                     CustomerPhysicalAddress = subscription.CustomerPhysicalAddress,
+                                                     CustomerNotes = subscription.CustomerNotes,
                                                      DateCreated = subscription.DateCreated,
                                                      OrganizationName = sub.Name,
                                                      OrganizationIdentifier = sub.Identifier,
@@ -211,10 +219,14 @@
                               OrganizationId = subscription.OrganizationId,
                               SubscriberId = sub.SubscriberId,
                               Enabled = subscription.Enabled,
+                              CustomerFullName = subscription.CustomerFullName,
+                              CustomerIdentifier = subscription.CustomerIdentifier,
+                              CustomerPhysicalAddress = subscription.CustomerPhysicalAddress,
+                              CustomerNotes = subscription.CustomerNotes,
                               DateCreated = subscription.DateCreated,
                               SubscriberCellPhoneNumber = sub.CellPhoneNumber,
                               SubscriberName = sub.Name,
-                              SubscriberIsEnabled = sub.IsEnabled,
+                              SubscriberEnabled = sub.Enabled,
                               SubscriberDateCreated = sub.DateCreated
                           }).LongCount();
             }
@@ -233,10 +245,14 @@
                               OrganizationId = subscription.OrganizationId,
                               SubscriberId = sub.SubscriberId,
                               Enabled = subscription.Enabled,
+                              CustomerFullName = subscription.CustomerFullName,
+                              CustomerIdentifier = subscription.CustomerIdentifier,
+                              CustomerPhysicalAddress = subscription.CustomerPhysicalAddress,
+                              CustomerNotes = subscription.CustomerNotes,
                               DateCreated = subscription.DateCreated,
                               SubscriberCellPhoneNumber = sub.CellPhoneNumber,
                               SubscriberName = sub.Name,
-                              SubscriberIsEnabled = sub.IsEnabled,
+                              SubscriberEnabled = sub.Enabled,
                               SubscriberDateCreated = sub.DateCreated
                           }).LongCount();
             }
@@ -265,10 +281,14 @@
                                   OrganizationId = subscription.OrganizationId,
                                   SubscriberId = sub.SubscriberId,
                                   Enabled = subscription.Enabled,
+                                  CustomerFullName = subscription.CustomerFullName,
+                                  CustomerIdentifier = subscription.CustomerIdentifier,
+                                  CustomerPhysicalAddress = subscription.CustomerPhysicalAddress,
+                                  CustomerNotes = subscription.CustomerNotes,
                                   DateCreated = subscription.DateCreated,
                                   SubscriberCellPhoneNumber = sub.CellPhoneNumber,
                                   SubscriberName = sub.Name,
-                                  SubscriberIsEnabled = sub.IsEnabled,
+                                  SubscriberEnabled = sub.Enabled,
                                   SubscriberDateCreated = sub.DateCreated
                               }).ToList();
                 }
@@ -288,10 +308,14 @@
                                   OrganizationId = subscription.OrganizationId,
                                   SubscriberId = sub.SubscriberId,
                                   Enabled = subscription.Enabled,
+                                  CustomerFullName = subscription.CustomerFullName,
+                                  CustomerIdentifier = subscription.CustomerIdentifier,
+                                  CustomerPhysicalAddress = subscription.CustomerPhysicalAddress,
+                                  CustomerNotes = subscription.CustomerNotes,
                                   DateCreated = subscription.DateCreated,
                                   SubscriberCellPhoneNumber = sub.CellPhoneNumber,
                                   SubscriberName = sub.Name,
-                                  SubscriberIsEnabled = sub.IsEnabled,
+                                  SubscriberEnabled = sub.Enabled,
                                   SubscriberDateCreated = sub.DateCreated
                               }).ToList();
                 }
@@ -313,10 +337,14 @@
                                   OrganizationId = subscription.OrganizationId,
                                   SubscriberId = sub.SubscriberId,
                                   Enabled = subscription.Enabled,
+                                  CustomerFullName = subscription.CustomerFullName,
+                                  CustomerIdentifier = subscription.CustomerIdentifier,
+                                  CustomerPhysicalAddress = subscription.CustomerPhysicalAddress,
+                                  CustomerNotes = subscription.CustomerNotes,
                                   DateCreated = subscription.DateCreated,
                                   SubscriberCellPhoneNumber = sub.CellPhoneNumber,
                                   SubscriberName = sub.Name,
-                                  SubscriberIsEnabled = sub.IsEnabled,
+                                  SubscriberEnabled = sub.Enabled,
                                   SubscriberDateCreated = sub.DateCreated
                               }).ToList();
                 }
@@ -344,6 +372,10 @@
                               OrganizationId = sub.OrganizationId,
                               SubscriberId = subscription.SubscriberId,
                               Enabled = subscription.Enabled,
+                              CustomerFullName = subscription.CustomerFullName,
+                              CustomerIdentifier = subscription.CustomerIdentifier,
+                              CustomerPhysicalAddress = subscription.CustomerPhysicalAddress,
+                              CustomerNotes = subscription.CustomerNotes,
                               DateCreated = subscription.DateCreated,
                               OrganizationName = sub.Name,
                               OrganizationIdentifier = sub.Identifier,
@@ -367,6 +399,10 @@
                               OrganizationId = sub.OrganizationId,
                               SubscriberId = subscription.SubscriberId,
                               Enabled = subscription.Enabled,
+                              CustomerFullName = subscription.CustomerFullName,
+                              CustomerIdentifier = subscription.CustomerIdentifier,
+                              CustomerPhysicalAddress = subscription.CustomerPhysicalAddress,
+                              CustomerNotes = subscription.CustomerNotes,
                               DateCreated = subscription.DateCreated,
                               OrganizationName = sub.Name,
                               OrganizationIdentifier = sub.Identifier,

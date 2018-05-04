@@ -166,3 +166,7 @@ SQL Server Versions and differences:
 
 Competitors:
 	https://www.scheduleonce.com/pricing
+
+LINQ to SQL queries:
+
+	https://www.c-sharpcorner.com/UploadFile/ff2f08/sql-join-in-linq-linq-to-entity-linq-to-sql/

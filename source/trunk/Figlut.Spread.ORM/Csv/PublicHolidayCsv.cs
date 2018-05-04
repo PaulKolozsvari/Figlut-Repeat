@@ -1,8 +1,8 @@
 ﻿namespace Figlut.Spread.ORM.Csv
 {
-    using Figlut.Spread.ORM.Views;
     #region Using Directives
 
+    using Figlut.Spread.ORM.Views;
     using System;
     using System.Collections.Generic;
     using System.Linq;

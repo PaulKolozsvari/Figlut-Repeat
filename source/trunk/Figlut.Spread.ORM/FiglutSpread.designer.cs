@@ -54,9 +54,6 @@ namespace Figlut.Spread.ORM
     partial void InsertOrganizationSubscriptionType(OrganizationSubscriptionType instance);
     partial void UpdateOrganizationSubscriptionType(OrganizationSubscriptionType instance);
     partial void DeleteOrganizationSubscriptionType(OrganizationSubscriptionType instance);
-    partial void InsertRepeatSchedule(RepeatSchedule instance);
-    partial void UpdateRepeatSchedule(RepeatSchedule instance);
-    partial void DeleteRepeatSchedule(RepeatSchedule instance);
     partial void InsertRepeatScheduleEntry(RepeatScheduleEntry instance);
     partial void UpdateRepeatScheduleEntry(RepeatScheduleEntry instance);
     partial void DeleteRepeatScheduleEntry(RepeatScheduleEntry instance);
@@ -93,9 +90,6 @@ namespace Figlut.Spread.ORM
     partial void InsertSmsSentQueueItem(SmsSentQueueItem instance);
     partial void UpdateSmsSentQueueItem(SmsSentQueueItem instance);
     partial void DeleteSmsSentQueueItem(SmsSentQueueItem instance);
-    partial void InsertSubscriber(Subscriber instance);
-    partial void UpdateSubscriber(Subscriber instance);
-    partial void DeleteSubscriber(Subscriber instance);
     partial void InsertSubscription(Subscription instance);
     partial void UpdateSubscription(Subscription instance);
     partial void DeleteSubscription(Subscription instance);
@@ -108,6 +102,12 @@ namespace Figlut.Spread.ORM
     partial void InsertPublicHoliday(PublicHoliday instance);
     partial void UpdatePublicHoliday(PublicHoliday instance);
     partial void DeletePublicHoliday(PublicHoliday instance);
+    partial void InsertRepeatSchedule(RepeatSchedule instance);
+    partial void UpdateRepeatSchedule(RepeatSchedule instance);
+    partial void DeleteRepeatSchedule(RepeatSchedule instance);
+    partial void InsertSubscriber(Subscriber instance);
+    partial void UpdateSubscriber(Subscriber instance);
+    partial void DeleteSubscriber(Subscriber instance);
     #endregion
 		
 		public FiglutSpreadDataContext() : 
@@ -212,14 +212,6 @@ namespace Figlut.Spread.ORM
 			}
 		}
 		
-		public System.Data.Linq.Table<RepeatSchedule> RepeatSchedules
-		{
-			get
-			{
-				return this.GetTable<RepeatSchedule>();
-			}
-		}
-		
 		public System.Data.Linq.Table<RepeatScheduleEntry> RepeatScheduleEntries
 		{
 			get
@@ -316,14 +308,6 @@ namespace Figlut.Spread.ORM
 			}
 		}
 		
-		public System.Data.Linq.Table<Subscriber> Subscribers
-		{
-			get
-			{
-				return this.GetTable<Subscriber>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Subscription> Subscriptions
 		{
 			get
@@ -353,6 +337,22 @@ namespace Figlut.Spread.ORM
 			get
 			{
 				return this.GetTable<PublicHoliday>();
+			}
+		}
+		
+		public System.Data.Linq.Table<RepeatSchedule> RepeatSchedules
+		{
+			get
+			{
+				return this.GetTable<RepeatSchedule>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Subscriber> Subscribers
+		{
+			get
+			{
+				return this.GetTable<Subscriber>();
 			}
 		}
 	}
@@ -3414,353 +3414,6 @@ namespace Figlut.Spread.ORM
 		{
 			this.SendPropertyChanging();
 			entity.OrganizationSubscriptionType = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.RepeatSchedule")]
-	public partial class RepeatSchedule : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private System.Guid _RepeatScheduleId;
-		
-		private System.Guid _CreatedByUserId;
-		
-		private System.Guid _SubscriptionId;
-		
-		private string _NotificationMessage;
-		
-		private string _ScheduleName;
-		
-		private System.Nullable<double> _Quantity;
-		
-		private string _UnitOfMeasure;
-		
-		private int _DaysRepeatInterval;
-		
-		private string _Notes;
-		
-		private System.DateTime _DateCreated;
-		
-		private EntitySet<RepeatScheduleEntry> _RepeatScheduleEntries;
-		
-		private EntityRef<Subscription> _Subscription;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnRepeatScheduleIdChanging(System.Guid value);
-    partial void OnRepeatScheduleIdChanged();
-    partial void OnCreatedByUserIdChanging(System.Guid value);
-    partial void OnCreatedByUserIdChanged();
-    partial void OnSubscriptionIdChanging(System.Guid value);
-    partial void OnSubscriptionIdChanged();
-    partial void OnNotificationMessageChanging(string value);
-    partial void OnNotificationMessageChanged();
-    partial void OnScheduleNameChanging(string value);
-    partial void OnScheduleNameChanged();
-    partial void OnQuantityChanging(System.Nullable<double> value);
-    partial void OnQuantityChanged();
-    partial void OnUnitOfMeasureChanging(string value);
-    partial void OnUnitOfMeasureChanged();
-    partial void OnDaysRepeatIntervalChanging(int value);
-    partial void OnDaysRepeatIntervalChanged();
-    partial void OnNotesChanging(string value);
-    partial void OnNotesChanged();
-    partial void OnDateCreatedChanging(System.DateTime value);
-    partial void OnDateCreatedChanged();
-    #endregion
-		
-		public RepeatSchedule()
-		{
-			this._RepeatScheduleEntries = new EntitySet<RepeatScheduleEntry>(new Action<RepeatScheduleEntry>(this.attach_RepeatScheduleEntries), new Action<RepeatScheduleEntry>(this.detach_RepeatScheduleEntries));
-			this._Subscription = default(EntityRef<Subscription>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RepeatScheduleId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
-		public System.Guid RepeatScheduleId
-		{
-			get
-			{
-				return this._RepeatScheduleId;
-			}
-			set
-			{
-				if ((this._RepeatScheduleId != value))
-				{
-					this.OnRepeatScheduleIdChanging(value);
-					this.SendPropertyChanging();
-					this._RepeatScheduleId = value;
-					this.SendPropertyChanged("RepeatScheduleId");
-					this.OnRepeatScheduleIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedByUserId", DbType="UniqueIdentifier NOT NULL")]
-		public System.Guid CreatedByUserId
-		{
-			get
-			{
-				return this._CreatedByUserId;
-			}
-			set
-			{
-				if ((this._CreatedByUserId != value))
-				{
-					this.OnCreatedByUserIdChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedByUserId = value;
-					this.SendPropertyChanged("CreatedByUserId");
-					this.OnCreatedByUserIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SubscriptionId", DbType="UniqueIdentifier NOT NULL")]
-		public System.Guid SubscriptionId
-		{
-			get
-			{
-				return this._SubscriptionId;
-			}
-			set
-			{
-				if ((this._SubscriptionId != value))
-				{
-					if (this._Subscription.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnSubscriptionIdChanging(value);
-					this.SendPropertyChanging();
-					this._SubscriptionId = value;
-					this.SendPropertyChanged("SubscriptionId");
-					this.OnSubscriptionIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NotificationMessage", DbType="VarChar(140) NOT NULL", CanBeNull=false)]
-		public string NotificationMessage
-		{
-			get
-			{
-				return this._NotificationMessage;
-			}
-			set
-			{
-				if ((this._NotificationMessage != value))
-				{
-					this.OnNotificationMessageChanging(value);
-					this.SendPropertyChanging();
-					this._NotificationMessage = value;
-					this.SendPropertyChanged("NotificationMessage");
-					this.OnNotificationMessageChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ScheduleName", DbType="VarChar(250)")]
-		public string ScheduleName
-		{
-			get
-			{
-				return this._ScheduleName;
-			}
-			set
-			{
-				if ((this._ScheduleName != value))
-				{
-					this.OnScheduleNameChanging(value);
-					this.SendPropertyChanging();
-					this._ScheduleName = value;
-					this.SendPropertyChanged("ScheduleName");
-					this.OnScheduleNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Quantity", DbType="Float")]
-		public System.Nullable<double> Quantity
-		{
-			get
-			{
-				return this._Quantity;
-			}
-			set
-			{
-				if ((this._Quantity != value))
-				{
-					this.OnQuantityChanging(value);
-					this.SendPropertyChanging();
-					this._Quantity = value;
-					this.SendPropertyChanged("Quantity");
-					this.OnQuantityChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UnitOfMeasure", DbType="VarChar(50)")]
-		public string UnitOfMeasure
-		{
-			get
-			{
-				return this._UnitOfMeasure;
-			}
-			set
-			{
-				if ((this._UnitOfMeasure != value))
-				{
-					this.OnUnitOfMeasureChanging(value);
-					this.SendPropertyChanging();
-					this._UnitOfMeasure = value;
-					this.SendPropertyChanged("UnitOfMeasure");
-					this.OnUnitOfMeasureChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DaysRepeatInterval", DbType="Int NOT NULL")]
-		public int DaysRepeatInterval
-		{
-			get
-			{
-				return this._DaysRepeatInterval;
-			}
-			set
-			{
-				if ((this._DaysRepeatInterval != value))
-				{
-					this.OnDaysRepeatIntervalChanging(value);
-					this.SendPropertyChanging();
-					this._DaysRepeatInterval = value;
-					this.SendPropertyChanged("DaysRepeatInterval");
-					this.OnDaysRepeatIntervalChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Notes", DbType="VarChar(MAX)")]
-		public string Notes
-		{
-			get
-			{
-				return this._Notes;
-			}
-			set
-			{
-				if ((this._Notes != value))
-				{
-					this.OnNotesChanging(value);
-					this.SendPropertyChanging();
-					this._Notes = value;
-					this.SendPropertyChanged("Notes");
-					this.OnNotesChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
-		public System.DateTime DateCreated
-		{
-			get
-			{
-				return this._DateCreated;
-			}
-			set
-			{
-				if ((this._DateCreated != value))
-				{
-					this.OnDateCreatedChanging(value);
-					this.SendPropertyChanging();
-					this._DateCreated = value;
-					this.SendPropertyChanged("DateCreated");
-					this.OnDateCreatedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RepeatSchedule_RepeatScheduleEntry", Storage="_RepeatScheduleEntries", ThisKey="RepeatScheduleId", OtherKey="RepeatScheduleId")]
-		public EntitySet<RepeatScheduleEntry> RepeatScheduleEntries
-		{
-			get
-			{
-				return this._RepeatScheduleEntries;
-			}
-			set
-			{
-				this._RepeatScheduleEntries.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Subscription_RepeatSchedule", Storage="_Subscription", ThisKey="SubscriptionId", OtherKey="SubscriptionId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		internal Subscription Subscription
-		{
-			get
-			{
-				return this._Subscription.Entity;
-			}
-			set
-			{
-				Subscription previousValue = this._Subscription.Entity;
-				if (((previousValue != value) 
-							|| (this._Subscription.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Subscription.Entity = null;
-						previousValue.RepeatSchedules.Remove(this);
-					}
-					this._Subscription.Entity = value;
-					if ((value != null))
-					{
-						value.RepeatSchedules.Add(this);
-						this._SubscriptionId = value.SubscriptionId;
-					}
-					else
-					{
-						this._SubscriptionId = default(System.Guid);
-					}
-					this.SendPropertyChanged("Subscription");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_RepeatScheduleEntries(RepeatScheduleEntry entity)
-		{
-			this.SendPropertyChanging();
-			entity.RepeatSchedule = this;
-		}
-		
-		private void detach_RepeatScheduleEntries(RepeatScheduleEntry entity)
-		{
-			this.SendPropertyChanging();
-			entity.RepeatSchedule = null;
 		}
 	}
 	
@@ -7752,248 +7405,6 @@ namespace Figlut.Spread.ORM
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Subscriber")]
-	public partial class Subscriber : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private System.Guid _SubscriberId;
-		
-		private string _CellPhoneNumber;
-		
-		private string _Name;
-		
-		private bool _IsEnabled;
-		
-		private System.DateTime _DateCreated;
-		
-		private EntitySet<SmsReceivedLog> _SmsReceivedLogs;
-		
-		private EntitySet<SmsSentLog> _SmsSentLogs;
-		
-		private EntitySet<Subscription> _Subscriptions;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnSubscriberIdChanging(System.Guid value);
-    partial void OnSubscriberIdChanged();
-    partial void OnCellPhoneNumberChanging(string value);
-    partial void OnCellPhoneNumberChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnIsEnabledChanging(bool value);
-    partial void OnIsEnabledChanged();
-    partial void OnDateCreatedChanging(System.DateTime value);
-    partial void OnDateCreatedChanged();
-    #endregion
-		
-		public Subscriber()
-		{
-			this._SmsReceivedLogs = new EntitySet<SmsReceivedLog>(new Action<SmsReceivedLog>(this.attach_SmsReceivedLogs), new Action<SmsReceivedLog>(this.detach_SmsReceivedLogs));
-			this._SmsSentLogs = new EntitySet<SmsSentLog>(new Action<SmsSentLog>(this.attach_SmsSentLogs), new Action<SmsSentLog>(this.detach_SmsSentLogs));
-			this._Subscriptions = new EntitySet<Subscription>(new Action<Subscription>(this.attach_Subscriptions), new Action<Subscription>(this.detach_Subscriptions));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SubscriberId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
-		public System.Guid SubscriberId
-		{
-			get
-			{
-				return this._SubscriberId;
-			}
-			set
-			{
-				if ((this._SubscriberId != value))
-				{
-					this.OnSubscriberIdChanging(value);
-					this.SendPropertyChanging();
-					this._SubscriberId = value;
-					this.SendPropertyChanged("SubscriberId");
-					this.OnSubscriberIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CellPhoneNumber", DbType="VarChar(15) NOT NULL", CanBeNull=false)]
-		public string CellPhoneNumber
-		{
-			get
-			{
-				return this._CellPhoneNumber;
-			}
-			set
-			{
-				if ((this._CellPhoneNumber != value))
-				{
-					this.OnCellPhoneNumberChanging(value);
-					this.SendPropertyChanging();
-					this._CellPhoneNumber = value;
-					this.SendPropertyChanged("CellPhoneNumber");
-					this.OnCellPhoneNumberChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(160)")]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsEnabled", DbType="Bit NOT NULL")]
-		public bool IsEnabled
-		{
-			get
-			{
-				return this._IsEnabled;
-			}
-			set
-			{
-				if ((this._IsEnabled != value))
-				{
-					this.OnIsEnabledChanging(value);
-					this.SendPropertyChanging();
-					this._IsEnabled = value;
-					this.SendPropertyChanged("IsEnabled");
-					this.OnIsEnabledChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
-		public System.DateTime DateCreated
-		{
-			get
-			{
-				return this._DateCreated;
-			}
-			set
-			{
-				if ((this._DateCreated != value))
-				{
-					this.OnDateCreatedChanging(value);
-					this.SendPropertyChanging();
-					this._DateCreated = value;
-					this.SendPropertyChanged("DateCreated");
-					this.OnDateCreatedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Subscriber_SmsReceivedLog", Storage="_SmsReceivedLogs", ThisKey="SubscriberId", OtherKey="SubscriberId")]
-		public EntitySet<SmsReceivedLog> SmsReceivedLogs
-		{
-			get
-			{
-				return this._SmsReceivedLogs;
-			}
-			set
-			{
-				this._SmsReceivedLogs.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Subscriber_SmsSentLog", Storage="_SmsSentLogs", ThisKey="SubscriberId", OtherKey="SubscriberId")]
-		public EntitySet<SmsSentLog> SmsSentLogs
-		{
-			get
-			{
-				return this._SmsSentLogs;
-			}
-			set
-			{
-				this._SmsSentLogs.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Subscriber_Subscription", Storage="_Subscriptions", ThisKey="SubscriberId", OtherKey="SubscriberId")]
-		public EntitySet<Subscription> Subscriptions
-		{
-			get
-			{
-				return this._Subscriptions;
-			}
-			set
-			{
-				this._Subscriptions.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_SmsReceivedLogs(SmsReceivedLog entity)
-		{
-			this.SendPropertyChanging();
-			entity.Subscriber = this;
-		}
-		
-		private void detach_SmsReceivedLogs(SmsReceivedLog entity)
-		{
-			this.SendPropertyChanging();
-			entity.Subscriber = null;
-		}
-		
-		private void attach_SmsSentLogs(SmsSentLog entity)
-		{
-			this.SendPropertyChanging();
-			entity.Subscriber = this;
-		}
-		
-		private void detach_SmsSentLogs(SmsSentLog entity)
-		{
-			this.SendPropertyChanging();
-			entity.Subscriber = null;
-		}
-		
-		private void attach_Subscriptions(Subscription entity)
-		{
-			this.SendPropertyChanging();
-			entity.Subscriber = this;
-		}
-		
-		private void detach_Subscriptions(Subscription entity)
-		{
-			this.SendPropertyChanging();
-			entity.Subscriber = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Subscription")]
 	public partial class Subscription : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -8292,7 +7703,7 @@ namespace Figlut.Spread.ORM
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Subscriber_Subscription", Storage="_Subscriber", ThisKey="SubscriberId", OtherKey="SubscriberId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Subscriber Subscriber
+		internal Subscriber Subscriber
 		{
 			get
 			{
@@ -9247,6 +8658,571 @@ namespace Figlut.Spread.ORM
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.RepeatSchedule")]
+	public partial class RepeatSchedule : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _RepeatScheduleId;
+		
+		private System.Guid _SubscriptionId;
+		
+		private string _NotificationMessage;
+		
+		private string _ScheduleName;
+		
+		private System.Nullable<double> _Quantity;
+		
+		private string _UnitOfMeasure;
+		
+		private int _DaysRepeatInterval;
+		
+		private string _Notes;
+		
+		private System.DateTime _DateCreated;
+		
+		private EntitySet<RepeatScheduleEntry> _RepeatScheduleEntries;
+		
+		private EntityRef<Subscription> _Subscription;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnRepeatScheduleIdChanging(System.Guid value);
+    partial void OnRepeatScheduleIdChanged();
+    partial void OnSubscriptionIdChanging(System.Guid value);
+    partial void OnSubscriptionIdChanged();
+    partial void OnNotificationMessageChanging(string value);
+    partial void OnNotificationMessageChanged();
+    partial void OnScheduleNameChanging(string value);
+    partial void OnScheduleNameChanged();
+    partial void OnQuantityChanging(System.Nullable<double> value);
+    partial void OnQuantityChanged();
+    partial void OnUnitOfMeasureChanging(string value);
+    partial void OnUnitOfMeasureChanged();
+    partial void OnDaysRepeatIntervalChanging(int value);
+    partial void OnDaysRepeatIntervalChanged();
+    partial void OnNotesChanging(string value);
+    partial void OnNotesChanged();
+    partial void OnDateCreatedChanging(System.DateTime value);
+    partial void OnDateCreatedChanged();
+    #endregion
+		
+		public RepeatSchedule()
+		{
+			this._RepeatScheduleEntries = new EntitySet<RepeatScheduleEntry>(new Action<RepeatScheduleEntry>(this.attach_RepeatScheduleEntries), new Action<RepeatScheduleEntry>(this.detach_RepeatScheduleEntries));
+			this._Subscription = default(EntityRef<Subscription>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RepeatScheduleId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid RepeatScheduleId
+		{
+			get
+			{
+				return this._RepeatScheduleId;
+			}
+			set
+			{
+				if ((this._RepeatScheduleId != value))
+				{
+					this.OnRepeatScheduleIdChanging(value);
+					this.SendPropertyChanging();
+					this._RepeatScheduleId = value;
+					this.SendPropertyChanged("RepeatScheduleId");
+					this.OnRepeatScheduleIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SubscriptionId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid SubscriptionId
+		{
+			get
+			{
+				return this._SubscriptionId;
+			}
+			set
+			{
+				if ((this._SubscriptionId != value))
+				{
+					if (this._Subscription.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSubscriptionIdChanging(value);
+					this.SendPropertyChanging();
+					this._SubscriptionId = value;
+					this.SendPropertyChanged("SubscriptionId");
+					this.OnSubscriptionIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NotificationMessage", DbType="VarChar(140) NOT NULL", CanBeNull=false)]
+		public string NotificationMessage
+		{
+			get
+			{
+				return this._NotificationMessage;
+			}
+			set
+			{
+				if ((this._NotificationMessage != value))
+				{
+					this.OnNotificationMessageChanging(value);
+					this.SendPropertyChanging();
+					this._NotificationMessage = value;
+					this.SendPropertyChanged("NotificationMessage");
+					this.OnNotificationMessageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ScheduleName", DbType="VarChar(250)")]
+		public string ScheduleName
+		{
+			get
+			{
+				return this._ScheduleName;
+			}
+			set
+			{
+				if ((this._ScheduleName != value))
+				{
+					this.OnScheduleNameChanging(value);
+					this.SendPropertyChanging();
+					this._ScheduleName = value;
+					this.SendPropertyChanged("ScheduleName");
+					this.OnScheduleNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Quantity", DbType="Float")]
+		public System.Nullable<double> Quantity
+		{
+			get
+			{
+				return this._Quantity;
+			}
+			set
+			{
+				if ((this._Quantity != value))
+				{
+					this.OnQuantityChanging(value);
+					this.SendPropertyChanging();
+					this._Quantity = value;
+					this.SendPropertyChanged("Quantity");
+					this.OnQuantityChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UnitOfMeasure", DbType="VarChar(50)")]
+		public string UnitOfMeasure
+		{
+			get
+			{
+				return this._UnitOfMeasure;
+			}
+			set
+			{
+				if ((this._UnitOfMeasure != value))
+				{
+					this.OnUnitOfMeasureChanging(value);
+					this.SendPropertyChanging();
+					this._UnitOfMeasure = value;
+					this.SendPropertyChanged("UnitOfMeasure");
+					this.OnUnitOfMeasureChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DaysRepeatInterval", DbType="Int NOT NULL")]
+		public int DaysRepeatInterval
+		{
+			get
+			{
+				return this._DaysRepeatInterval;
+			}
+			set
+			{
+				if ((this._DaysRepeatInterval != value))
+				{
+					this.OnDaysRepeatIntervalChanging(value);
+					this.SendPropertyChanging();
+					this._DaysRepeatInterval = value;
+					this.SendPropertyChanged("DaysRepeatInterval");
+					this.OnDaysRepeatIntervalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Notes", DbType="VarChar(MAX)")]
+		public string Notes
+		{
+			get
+			{
+				return this._Notes;
+			}
+			set
+			{
+				if ((this._Notes != value))
+				{
+					this.OnNotesChanging(value);
+					this.SendPropertyChanging();
+					this._Notes = value;
+					this.SendPropertyChanged("Notes");
+					this.OnNotesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
+		public System.DateTime DateCreated
+		{
+			get
+			{
+				return this._DateCreated;
+			}
+			set
+			{
+				if ((this._DateCreated != value))
+				{
+					this.OnDateCreatedChanging(value);
+					this.SendPropertyChanging();
+					this._DateCreated = value;
+					this.SendPropertyChanged("DateCreated");
+					this.OnDateCreatedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="RepeatSchedule_RepeatScheduleEntry", Storage="_RepeatScheduleEntries", ThisKey="RepeatScheduleId", OtherKey="RepeatScheduleId")]
+		public EntitySet<RepeatScheduleEntry> RepeatScheduleEntries
+		{
+			get
+			{
+				return this._RepeatScheduleEntries;
+			}
+			set
+			{
+				this._RepeatScheduleEntries.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Subscription_RepeatSchedule", Storage="_Subscription", ThisKey="SubscriptionId", OtherKey="SubscriptionId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		internal Subscription Subscription
+		{
+			get
+			{
+				return this._Subscription.Entity;
+			}
+			set
+			{
+				Subscription previousValue = this._Subscription.Entity;
+				if (((previousValue != value) 
+							|| (this._Subscription.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Subscription.Entity = null;
+						previousValue.RepeatSchedules.Remove(this);
+					}
+					this._Subscription.Entity = value;
+					if ((value != null))
+					{
+						value.RepeatSchedules.Add(this);
+						this._SubscriptionId = value.SubscriptionId;
+					}
+					else
+					{
+						this._SubscriptionId = default(System.Guid);
+					}
+					this.SendPropertyChanged("Subscription");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_RepeatScheduleEntries(RepeatScheduleEntry entity)
+		{
+			this.SendPropertyChanging();
+			entity.RepeatSchedule = this;
+		}
+		
+		private void detach_RepeatScheduleEntries(RepeatScheduleEntry entity)
+		{
+			this.SendPropertyChanging();
+			entity.RepeatSchedule = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Subscriber")]
+	public partial class Subscriber : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _SubscriberId;
+		
+		private string _CellPhoneNumber;
+		
+		private string _Name;
+		
+		private bool _Enabled;
+		
+		private System.DateTime _DateCreated;
+		
+		private EntitySet<SmsReceivedLog> _SmsReceivedLogs;
+		
+		private EntitySet<SmsSentLog> _SmsSentLogs;
+		
+		private EntitySet<Subscription> _Subscriptions;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSubscriberIdChanging(System.Guid value);
+    partial void OnSubscriberIdChanged();
+    partial void OnCellPhoneNumberChanging(string value);
+    partial void OnCellPhoneNumberChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnEnabledChanging(bool value);
+    partial void OnEnabledChanged();
+    partial void OnDateCreatedChanging(System.DateTime value);
+    partial void OnDateCreatedChanged();
+    #endregion
+		
+		public Subscriber()
+		{
+			this._SmsReceivedLogs = new EntitySet<SmsReceivedLog>(new Action<SmsReceivedLog>(this.attach_SmsReceivedLogs), new Action<SmsReceivedLog>(this.detach_SmsReceivedLogs));
+			this._SmsSentLogs = new EntitySet<SmsSentLog>(new Action<SmsSentLog>(this.attach_SmsSentLogs), new Action<SmsSentLog>(this.detach_SmsSentLogs));
+			this._Subscriptions = new EntitySet<Subscription>(new Action<Subscription>(this.attach_Subscriptions), new Action<Subscription>(this.detach_Subscriptions));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SubscriberId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid SubscriberId
+		{
+			get
+			{
+				return this._SubscriberId;
+			}
+			set
+			{
+				if ((this._SubscriberId != value))
+				{
+					this.OnSubscriberIdChanging(value);
+					this.SendPropertyChanging();
+					this._SubscriberId = value;
+					this.SendPropertyChanged("SubscriberId");
+					this.OnSubscriberIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CellPhoneNumber", DbType="VarChar(15) NOT NULL", CanBeNull=false)]
+		public string CellPhoneNumber
+		{
+			get
+			{
+				return this._CellPhoneNumber;
+			}
+			set
+			{
+				if ((this._CellPhoneNumber != value))
+				{
+					this.OnCellPhoneNumberChanging(value);
+					this.SendPropertyChanging();
+					this._CellPhoneNumber = value;
+					this.SendPropertyChanged("CellPhoneNumber");
+					this.OnCellPhoneNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(160)")]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Enabled", DbType="Bit NOT NULL")]
+		public bool Enabled
+		{
+			get
+			{
+				return this._Enabled;
+			}
+			set
+			{
+				if ((this._Enabled != value))
+				{
+					this.OnEnabledChanging(value);
+					this.SendPropertyChanging();
+					this._Enabled = value;
+					this.SendPropertyChanged("Enabled");
+					this.OnEnabledChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
+		public System.DateTime DateCreated
+		{
+			get
+			{
+				return this._DateCreated;
+			}
+			set
+			{
+				if ((this._DateCreated != value))
+				{
+					this.OnDateCreatedChanging(value);
+					this.SendPropertyChanging();
+					this._DateCreated = value;
+					this.SendPropertyChanged("DateCreated");
+					this.OnDateCreatedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Subscriber_SmsReceivedLog", Storage="_SmsReceivedLogs", ThisKey="SubscriberId", OtherKey="SubscriberId")]
+		public EntitySet<SmsReceivedLog> SmsReceivedLogs
+		{
+			get
+			{
+				return this._SmsReceivedLogs;
+			}
+			set
+			{
+				this._SmsReceivedLogs.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Subscriber_SmsSentLog", Storage="_SmsSentLogs", ThisKey="SubscriberId", OtherKey="SubscriberId")]
+		public EntitySet<SmsSentLog> SmsSentLogs
+		{
+			get
+			{
+				return this._SmsSentLogs;
+			}
+			set
+			{
+				this._SmsSentLogs.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Subscriber_Subscription", Storage="_Subscriptions", ThisKey="SubscriberId", OtherKey="SubscriberId")]
+		public EntitySet<Subscription> Subscriptions
+		{
+			get
+			{
+				return this._Subscriptions;
+			}
+			set
+			{
+				this._Subscriptions.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_SmsReceivedLogs(SmsReceivedLog entity)
+		{
+			this.SendPropertyChanging();
+			entity.Subscriber = this;
+		}
+		
+		private void detach_SmsReceivedLogs(SmsReceivedLog entity)
+		{
+			this.SendPropertyChanging();
+			entity.Subscriber = null;
+		}
+		
+		private void attach_SmsSentLogs(SmsSentLog entity)
+		{
+			this.SendPropertyChanging();
+			entity.Subscriber = this;
+		}
+		
+		private void detach_SmsSentLogs(SmsSentLog entity)
+		{
+			this.SendPropertyChanging();
+			entity.Subscriber = null;
+		}
+		
+		private void attach_Subscriptions(Subscription entity)
+		{
+			this.SendPropertyChanging();
+			entity.Subscriber = this;
+		}
+		
+		private void detach_Subscriptions(Subscription entity)
+		{
+			this.SendPropertyChanging();
+			entity.Subscriber = null;
 		}
 	}
 }

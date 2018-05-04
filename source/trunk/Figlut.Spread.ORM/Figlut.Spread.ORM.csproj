@@ -45,6 +45,8 @@
     <Compile Include="Csv\OrganizationCsv.cs" />
     <Compile Include="Csv\OrganizationSubscriptionCsv.cs" />
     <Compile Include="Csv\PublicHolidayCsv.cs" />
+    <Compile Include="Csv\RepeatScheduleCsv.cs" />
+    <Compile Include="Csv\RepeatScheduleEntryCsv.cs" />
     <Compile Include="Csv\SmsCampaignCsv.cs" />
     <Compile Include="Csv\SmsMessageTemplateCsv.cs" />
     <Compile Include="Csv\SmsProcessorCsv.cs" />
@@ -73,6 +75,8 @@
     </Compile>
     <Compile Include="Views\OrganizationSubscriptionView.cs" />
     <Compile Include="Views\PublicHolidayView.cs" />
+    <Compile Include="Views\RepeatScheduleEntryView.cs" />
+    <Compile Include="Views\RepeatScheduleView.cs" />
     <Compile Include="Views\SmsCampaignView.cs" />
     <Compile Include="Views\SmsMessageTemplateView.cs" />
     <Compile Include="Views\SmsProcessorLogView.cs" />

@@ -286,6 +286,10 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated)
+                {
+                    return RedirectToHome();
+                }
                 if (!smsMessageTemplateId.HasValue)
                 {
                     return PartialView(EDIT_COUNTRY_PARTIAL_VIEW_NAME, new SmsMessageTemplateModel());
