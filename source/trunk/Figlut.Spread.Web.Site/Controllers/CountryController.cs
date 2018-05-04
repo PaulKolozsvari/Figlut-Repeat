@@ -95,7 +95,7 @@
                 FilterModel<CountryModel> resultModel = GetCountryFilterModel(context, model);
                 if (resultModel == null) //There was an error and ViewBag.ErrorMessage has been set. So just return an empty model.
                 {
-                    return PartialView(COUNTRY_GRID_PARTIAL_VIEW_NAME, new FilterModel<SmsCampaignModel>());
+                    return PartialView(COUNTRY_GRID_PARTIAL_VIEW_NAME, new FilterModel<CountryModel>());
                 }
                 return PartialView(COUNTRY_GRID_PARTIAL_VIEW_NAME, resultModel);
             }
@@ -209,7 +209,7 @@
                 model.ParentId = organization.OrganizationId;
                 model.ParentCaption = organization.Name;
                 model.SearchText = searchText;
-                model.ConfirmationMessage = string.Format("Delete all SMS Message Templates currently loaded for {0} '{1}'?", typeof(Organization).Name, organization.Name);
+                model.ConfirmationMessage = string.Format("Delete all Countries currently loaded?");
                 PartialViewResult result = PartialView(CONFIRMATION_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
             }
@@ -227,16 +227,11 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (model.ParentId == Guid.Empty)
-                {
-                    return RedirectToError(string.Format("{0} not specified.",
-                        EntityReader<SmsMessageTemplate>.GetPropertyName(p => p.OrganizationId, false)));
-                }
-                if (!Request.IsAuthenticated || !CurrentUserHasAccessToOrganization(model.ParentId, context))
+                if (!Request.IsAuthenticated)
                 {
                     return RedirectToHome();
                 }
-                context.DeleteSmsMessageTemplatesByFilter(model.SearchText, model.ParentId);
+                context.DeleteCountriesByFilter(model.SearchText);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -281,7 +276,7 @@
             }
         }
 
-        public ActionResult EditDialog(Nullable<Guid> smsMessageTemplateId)
+        public ActionResult EditDialog(Nullable<Guid> countryId)
         {
             try
             {
@@ -290,11 +285,11 @@
                 {
                     return RedirectToHome();
                 }
-                if (!smsMessageTemplateId.HasValue)
+                if (!countryId.HasValue)
                 {
-                    return PartialView(EDIT_COUNTRY_PARTIAL_VIEW_NAME, new SmsMessageTemplateModel());
+                    return PartialView(EDIT_COUNTRY_PARTIAL_VIEW_NAME, new CountryModel());
                 }
-                Country country = context.GetCountry(smsMessageTemplateId.Value, true);
+                Country country = context.GetCountry(countryId.Value, true);
                 CountryModel model = new CountryModel();
                 model.CopyPropertiesToCountry(country);
                 PartialViewResult result = PartialView(EDIT_COUNTRY_PARTIAL_VIEW_NAME, model);
@@ -336,7 +331,7 @@
         {
             try
             {
-                return PartialView(CREATE_COUNTRY_PARTIAL_VIEW_NAME, new SmsMessageTemplateModel());
+                return PartialView(CREATE_COUNTRY_PARTIAL_VIEW_NAME, new CountryModel());
             }
             catch (Exception ex)
             {

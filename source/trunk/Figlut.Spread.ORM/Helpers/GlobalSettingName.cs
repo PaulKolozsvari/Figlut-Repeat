@@ -28,6 +28,13 @@
         SmsProcessorLogsPerPageToDisplay,
         WebRequestActivityPerPageToDisplay,
         SmsCampaignsPerPageToDisplay,
+
+        CountriesPerPagePageToDisplay,
+        PublicHolidaysPerPagePageToDisplay,
+        SmsMessageTemplatesPerPagePageToDisplay,
+        RepeatSchedulesPerPageToDisplay,
+        RepeatScheduleEntriesPerPageToDisplay,
+
         GlobalSettingsPerPageToDisplay,
         SmsContentsTrimOnGrid,
         SmsContentsTrimLengthOnGrid,

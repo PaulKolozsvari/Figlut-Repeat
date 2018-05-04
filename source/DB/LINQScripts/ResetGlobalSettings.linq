@@ -322,6 +322,61 @@ GlobalSetting smsCampaignsPerPageToDisplay = new GlobalSetting()
 };
 GlobalSettings.InsertOnSubmit(smsCampaignsPerPageToDisplay);
 
+GlobalSetting countriesPerPageToDisplay = new GlobalSetting()
+{
+	GlobalSettingId = Guid.NewGuid(),
+	Category = "Grid",
+	SettingName = "CountriesPerPagePageToDisplay",
+	SettingValue = "8",
+	DateCreated = DateTime.Now,
+	Description = "Number of Countries to display per grid page."
+};
+GlobalSettings.InsertOnSubmit(countriesPerPageToDisplay);
+
+GlobalSetting publicHolidaysPerPageToDisplay = new GlobalSetting()
+{
+	GlobalSettingId = Guid.NewGuid(),
+	Category = "Grid",
+	SettingName = "PublicHolidaysPerPagePageToDisplay",
+	SettingValue = "8",
+	DateCreated = DateTime.Now,
+	Description = "Number of Public Holidays to display per grid page."
+};
+GlobalSettings.InsertOnSubmit(publicHolidaysPerPageToDisplay);
+
+GlobalSetting smsMessageTemplatesPerPageToDisplay = new GlobalSetting()
+{
+	GlobalSettingId = Guid.NewGuid(),
+	Category = "Grid",
+	SettingName = "SmsMessageTemplatesPerPagePageToDisplay",
+	SettingValue = "8",
+	DateCreated = DateTime.Now,
+	Description = "Number of SMS Message Templates to display per grid page."
+};
+GlobalSettings.InsertOnSubmit(smsMessageTemplatesPerPageToDisplay);
+
+GlobalSetting repeatSchedulesPerPageToDisplay = new GlobalSetting()
+{
+	GlobalSettingId = Guid.NewGuid(),
+	Category = "Grid",
+	SettingName = "RepeatSchedulesPerPageToDisplay",
+	SettingValue = "8",
+	DateCreated = DateTime.Now,
+	Description = "Number of Repeat Schedules to display per grid page."
+};
+GlobalSettings.InsertOnSubmit(repeatSchedulesPerPageToDisplay);
+
+GlobalSetting repeatScheduleEntriesPerPageToDisplay = new GlobalSetting()
+{
+	GlobalSettingId = Guid.NewGuid(),
+	Category = "Grid",
+	SettingName = "RepeatScheduleEntriesPerPageToDisplay",
+	SettingValue = "8",
+	DateCreated = DateTime.Now,
+	Description = "Number of Repeat Schedule Entries to display per grid page."
+};
+GlobalSettings.InsertOnSubmit(repeatScheduleEntriesPerPageToDisplay);
+
 GlobalSetting globalSettingsPerPageToDisplay = new GlobalSetting()
 {
 	GlobalSettingId = Guid.NewGuid(),
@@ -333,6 +388,7 @@ GlobalSetting globalSettingsPerPageToDisplay = new GlobalSetting()
 };
 GlobalSettings.InsertOnSubmit(globalSettingsPerPageToDisplay);
 
+//Other grid settings
 GlobalSetting smsContentsTrimOnGrid = new GlobalSetting()
 {
 	GlobalSettingId = Guid.NewGuid(),

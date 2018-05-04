@@ -356,6 +356,11 @@
                 model.SmsProcessorLogsPerPageToDisplay = Convert.ToInt32(context.GetGlobalSettingBySettingName(GlobalSettingName.SmsProcessorLogsPerPageToDisplay, true).SettingValue);
                 model.WebRequestActivityPerPageToDisplay = Convert.ToInt32(context.GetGlobalSettingBySettingName(GlobalSettingName.WebRequestActivityPerPageToDisplay, true).SettingValue);
                 model.SmsCampaignsPerPageToDisplay = Convert.ToInt32(context.GetGlobalSettingBySettingName(GlobalSettingName.SmsCampaignsPerPageToDisplay, true).SettingValue);
+                model.CountriesPerPagePageToDisplay = Convert.ToInt32(context.GetGlobalSettingBySettingName(GlobalSettingName.CountriesPerPagePageToDisplay, true).SettingValue);
+                model.PublicHolidaysPerPagePageToDisplay = Convert.ToInt32(context.GetGlobalSettingBySettingName(GlobalSettingName.PublicHolidaysPerPagePageToDisplay, true).SettingValue);
+                model.SmsMessageTemplatesPerPagePageToDisplay = Convert.ToInt32(context.GetGlobalSettingBySettingName(GlobalSettingName.SmsMessageTemplatesPerPagePageToDisplay, true).SettingValue);
+                model.RepeatSchedulesPerPageToDisplay = Convert.ToInt32(context.GetGlobalSettingBySettingName(GlobalSettingName.RepeatSchedulesPerPageToDisplay, true).SettingValue);
+                model.RepeatScheduleEntriesPerPageToDisplay = Convert.ToInt32(context.GetGlobalSettingBySettingName(GlobalSettingName.RepeatScheduleEntriesPerPageToDisplay, true).SettingValue);
                 model.GlobalSettingsPerPageToDisplay = Convert.ToInt32(context.GetGlobalSettingBySettingName(GlobalSettingName.GlobalSettingsPerPageToDisplay, true).SettingValue);
 
                 model.SmsContentsTrimOnGrid = Convert.ToBoolean(context.GetGlobalSettingBySettingName(GlobalSettingName.SmsContentsTrimOnGrid, true).SettingValue);
@@ -476,6 +481,21 @@
                 GlobalSetting smsCampaignsPerPageToDisplay = context.GetGlobalSettingBySettingName(GlobalSettingName.SmsCampaignsPerPageToDisplay, true);
                 smsCampaignsPerPageToDisplay.SettingValue = model.SmsCampaignsPerPageToDisplay.ToString();
 
+                GlobalSetting countriesPerPageToDisplay = context.GetGlobalSettingBySettingName(GlobalSettingName.CountriesPerPagePageToDisplay, true);
+                countriesPerPageToDisplay.SettingValue = model.CountriesPerPagePageToDisplay.ToString();
+
+                GlobalSetting publicHolidaysPerPageToDisplay = context.GetGlobalSettingBySettingName(GlobalSettingName.PublicHolidaysPerPagePageToDisplay, true);
+                publicHolidaysPerPageToDisplay.SettingValue = model.PublicHolidaysPerPagePageToDisplay.ToString();
+
+                GlobalSetting smsMessageTemplatesPerPageToDisplay = context.GetGlobalSettingBySettingName(GlobalSettingName.SmsMessageTemplatesPerPagePageToDisplay, true);
+                smsMessageTemplatesPerPageToDisplay.SettingValue = model.SmsMessageTemplatesPerPagePageToDisplay.ToString();
+
+                GlobalSetting repeatSchedulesPerPageToDisplay = context.GetGlobalSettingBySettingName(GlobalSettingName.RepeatSchedulesPerPageToDisplay, true);
+                repeatSchedulesPerPageToDisplay.SettingValue = model.RepeatSchedulesPerPageToDisplay.ToString();
+
+                GlobalSetting repeatScheduleEntriesPerPageToDisplay = context.GetGlobalSettingBySettingName(GlobalSettingName.RepeatScheduleEntriesPerPageToDisplay, true);
+                repeatScheduleEntriesPerPageToDisplay.SettingValue = model.RepeatScheduleEntriesPerPageToDisplay.ToString();
+
                 GlobalSetting globalSettingsPerPageToDisplay = context.GetGlobalSettingBySettingName(GlobalSettingName.GlobalSettingsPerPageToDisplay, true);
                 globalSettingsPerPageToDisplay.SettingValue = model.GlobalSettingsPerPageToDisplay.ToString();
 
@@ -555,6 +575,12 @@
                     smsProcessorLogsPerPageToDisplay,
                     webRequestActivityPerPageToDisplay,
                     smsCampaignsPerPageToDisplay,
+                    countriesPerPageToDisplay,
+                    publicHolidaysPerPageToDisplay,
+                    smsMessageTemplatesPerPageToDisplay,
+                    repeatSchedulesPerPageToDisplay,
+                    repeatScheduleEntriesPerPageToDisplay,
+                    globalSettingsPerPageToDisplay,
                     smsContentsTrimOnGrid,
                     smsContentsTrimLengthOnGrid,
                     smsErrorTrimLengthOnGrid,

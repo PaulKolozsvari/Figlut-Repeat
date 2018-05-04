@@ -66,6 +66,16 @@
 
         public int SmsCampaignsPerPageToDisplay { get; set; }
 
+        public int CountriesPerPagePageToDisplay { get; set; }
+
+        public int PublicHolidaysPerPagePageToDisplay { get; set; }
+
+        public int SmsMessageTemplatesPerPagePageToDisplay { get; set; }
+
+        public int RepeatSchedulesPerPageToDisplay { get; set; }
+
+        public int RepeatScheduleEntriesPerPageToDisplay { get; set; }
+
         public int GlobalSettingsPerPageToDisplay { get; set; }
 
         public bool SmsContentsTrimOnGrid { get; set; }
