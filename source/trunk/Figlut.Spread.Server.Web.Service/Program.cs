@@ -1,5 +1,6 @@
 ﻿namespace Figlut.Spread.Web.Service
 {
+    using Figlut.Server.Toolkit.Data.iCalendar;
     #region Using Directives
 
     using Figlut.Server.Toolkit.Utilities;
@@ -27,6 +28,7 @@
         private const string RESET_SETTINGS_ARGUMENT = "/reset_settings";
         private const string TEST_MODE_ARGUMENT = "/start";
         private const string SEND_SMS = "/send_sms";
+        private const string DOWNLOAD_PUBLIC_HOLIDAYS = "/download_public_holidays";
 
         #endregion //Constants
 
@@ -69,6 +71,19 @@
                         string message = args[i + 2];
                         SendSms(recipientNumber, message);
                         return false;
+                    case DOWNLOAD_PUBLIC_HOLIDAYS:
+                        if (args.Length < i + 4)
+                        {
+                            throw new ArgumentException(string.Format(
+                                @"{0} requires 4 additional parameters: country Code, country Name, start date and end date e.g. /download_icalendar zaf 'South Africa' 01-01-2018 31-12-2018",
+                                DOWNLOAD_PUBLIC_HOLIDAYS));
+                        }
+                        string countryCode = args[i + 1];
+                        string countryName = args[i + 2];
+                        string startDate = args[i + 3];
+                        string endDate = args[i + 4];
+                        DownloadPublicHolidays(countryCode, countryName, startDate, endDate);
+                        return false;
                     default:
                         throw new ArgumentException(string.Format("Invalid argument '{0}'.", a));
                 }
@@ -84,6 +99,7 @@
             Console.WriteLine("{0} : Resets the service's settings file with the default settings (server is not started).", RESET_SETTINGS_ARGUMENT);
             Console.WriteLine("{0} : Starts the service as a console application instead of a windows service.", TEST_MODE_ARGUMENT);
             Console.WriteLine("{0} : Sends an sms to the specified number with the specified message e.g. {0} 0821235432 \"Hello world.\"", SEND_SMS);
+            Console.WriteLine("{0} : Downloads a .ics iCalendar file for a specific country and date range e.g. {0} zaf South Africa 01-01-2018 31-12-2018", DOWNLOAD_PUBLIC_HOLIDAYS);
             Console.WriteLine();
             Console.WriteLine("N.B. Executing without any parameters runs the server as a windows service.");
         }
@@ -164,6 +180,19 @@
                 GOC.Instance.Logger.LogMessage(new LogMessage(logMessage.ToString(), LogMessageType.SuccessAudit, LoggingLevel.Maximum));
             }
             SpreadApp.Instance.LogSmsSentToDB(recipientNumber, message, smsResponse, null, true);
+        }
+
+        private static void DownloadPublicHolidays(string countryCode, string countryName, string startDate, string endDate)
+        {
+            SpreadService.Start(false);
+            GOC.Instance.Logger.LogMessage(new LogMessage("Downloading public holidays Calendar.", LogMessageType.Information, LoggingLevel.Maximum));
+            ICalCalendar calendar = SpreadApp.Instance.CalendarDownloader.DownloadICalCalendar(countryCode, countryName, startDate, endDate, null, true);
+
+            GOC.Instance.Logger.LogMessage(new LogMessage("Saving public holidays calendar to database.", LogMessageType.Information, LoggingLevel.Maximum));
+            SpreadEntityContext context = SpreadEntityContext.Create();
+            context.SavePublicHolidaysFromICalCalendar(calendar);
+
+            GOC.Instance.Logger.LogMessage(new LogMessage("Downloaded and saved public holidays calendar successfully.", LogMessageType.SuccessAudit, LoggingLevel.Normal));
         }
 
         /// <summary>

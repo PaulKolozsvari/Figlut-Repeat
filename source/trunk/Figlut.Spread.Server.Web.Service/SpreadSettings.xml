@@ -2,6 +2,7 @@
 <SpreadSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <ShowMessageBoxOnException>false</ShowMessageBoxOnException>
   <ApplicationName>Figlut Spread REST API</ApplicationName>
+  <ICalendarUrl>http://www.kayaposoft.com/enrico/ics/v1.0?country={0}&amp;fromDate={1}&amp;toDate={2}</ICalendarUrl><!--e.g. http://www.kayaposoft.com/enrico/ics/v1.0?country=zaf&fromDate=01-01-2018&toDate=31-12-2018-->
   <SmsNotificationsEnabled>true</SmsNotificationsEnabled>
   <SmsDatabaseLoggingEnabled>true</SmsDatabaseLoggingEnabled>
   <TrimSmsSentLogResponseTag>true</TrimSmsSentLogResponseTag>

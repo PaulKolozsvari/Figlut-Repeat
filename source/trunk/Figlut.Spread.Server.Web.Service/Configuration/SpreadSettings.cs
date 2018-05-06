@@ -42,6 +42,8 @@
 
         public string ApplicationName { get; set; }
 
+        public string ICalendarUrl { get; set; }
+
         #endregion //Application
 
         #region Sms Sending

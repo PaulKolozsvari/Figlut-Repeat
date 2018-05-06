@@ -12,6 +12,7 @@
     using Figlut.Server.Toolkit.Data;
     using System.Transactions;
     using Figlut.Spread.ORM.Views;
+    using Figlut.Server.Toolkit.Data.iCalendar;
 
     #endregion //Using Directives
 
@@ -150,6 +151,80 @@
                 List<PublicHoliday> publicHolidays = GetPublicHolidaysByFilter(searchFilter, countryId);
                 DB.GetTable<PublicHoliday>().DeleteAllOnSubmit(publicHolidays);
                 DB.SubmitChanges();
+                t.Complete();
+            }
+        }
+
+        private PublicHoliday GetPublicHolidayByCountry(string countryCode, string dateIdentifier, bool throwExceptionOnNotFound)
+        {
+            PublicHoliday result = (from p in DB.GetTable<PublicHoliday>()
+                                    join c in DB.GetTable<Country>() on p.CountryId equals c.CountryId into set
+                                    from sub in set
+                                    where sub.CountryCode.ToLower() == countryCode && p.DateIdentifier == dateIdentifier
+                                    select p).FirstOrDefault();
+            if (result == null && throwExceptionOnNotFound)
+            {
+                throw new NullReferenceException(string.Format("Could not find {0} with {1} of '{2}' and {3} of '{4}'.",
+                    DataShaper.ShapeCamelCaseString(typeof(PublicHoliday).Name),
+                    EntityReader<Country>.GetPropertyName(p => p.CountryCode, false),
+                    countryCode.ToString(),
+                    EntityReader<PublicHoliday>.GetPropertyName(p => p.DateIdentifier, false)));
+            }
+            return result;
+        }
+
+        public void SavePublicHolidaysFromICalCalendar(ICalCalendar calendar)
+        {
+            using (TransactionScope t = new TransactionScope())
+            {
+                Country country = GetCountryByCountryCode(calendar.CountryCode, false);
+                if (country == null)
+                {
+                    country = new Country()
+                    {
+                        CountryId = Guid.NewGuid(),
+                        CountryCode = calendar.CountryCode,
+                        CountryName = calendar.CountryName,
+                        DateCreated = DateTime.Now
+                    };
+                    DB.GetTable<Country>().InsertOnSubmit(country);
+                }
+                else
+                {
+                    country.CountryName = calendar.CountryName;
+                }
+                DB.SubmitChanges();
+                foreach (ICalPublicHoliday p in calendar.PublicHolidays)
+                {
+                    PublicHoliday publicHoliday = GetPublicHolidayByCountry(calendar.CountryCode, p.DateIdentifier, false);
+                    if (publicHoliday == null)
+                    {
+                        publicHoliday = new PublicHoliday()
+                        {
+                            PublicHolidayId = Guid.NewGuid(),
+                            CountryId = country.CountryId,
+                            EventName = p.EventName,
+                            DateIdentifier = p.DateIdentifier,
+                            Year = p.Year,
+                            Month = p.Month,
+                            Day = p.Day,
+                            HolidayDate = p.GetDate(),
+                            DateCreated = DateTime.Now
+                        };
+                        DB.GetTable<PublicHoliday>().InsertOnSubmit(publicHoliday);
+                    }
+                    else
+                    {
+                        publicHoliday.CountryId = country.CountryId;
+                        publicHoliday.EventName = p.EventName;
+                        publicHoliday.DateIdentifier = p.DateIdentifier;
+                        publicHoliday.Year = p.Year;
+                        publicHoliday.Month = p.Month;
+                        publicHoliday.Day = p.Day;
+                        publicHoliday.HolidayDate = p.GetDate();
+                    }
+                    DB.SubmitChanges();
+                }
                 t.Complete();
             }
         }

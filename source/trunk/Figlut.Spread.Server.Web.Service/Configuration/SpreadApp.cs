@@ -25,6 +25,7 @@
     using Figlut.Spread.ORM.Helpers;
 using Figlut.Spread.SMS.Processor;
     using Figlut.Server.Toolkit.Web.Service.Inspector;
+    using Figlut.Server.Toolkit.Data.iCalendar;
 
     #endregion //Using Directives
 
@@ -67,6 +68,7 @@ using Figlut.Spread.SMS.Processor;
         private Dictionary<GlobalSettingName, GlobalSetting> _globalSettings;
         private SmsSender _smsSender;
         private EmailSender _emailSender;
+        private ICalCalendarDownloader _calendarDownloader;
 
         #region SMS Processors
 
@@ -123,6 +125,18 @@ using Figlut.Spread.SMS.Processor;
                     InitializeEmailSender(Settings);
                 }
                 return _emailSender;
+            }
+        }
+
+        public ICalCalendarDownloader CalendarDownloader
+        {
+            get
+            {
+                if (_calendarDownloader == null)
+                {
+                    _calendarDownloader = new ICalCalendarDownloader(Settings.ICalendarUrl);
+                }
+                return _calendarDownloader;
             }
         }
 
