@@ -112,9 +112,10 @@
         {
             try
             {
+
                 SpreadEntityContext context = SpreadEntityContext.Create();
                 Country country = context.GetCountry(countryId, true);
-                if (!Request.IsAuthenticated)
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
                 {
                     return RedirectToHome();
                 }
@@ -134,7 +135,7 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated)
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
                 {
                     return RedirectToHome();
                 }
@@ -165,7 +166,7 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated)
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
                 {
                     return RedirectToHome();
                 }
@@ -186,7 +187,7 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated)
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
                 {
                     return RedirectToHome();
                 }
@@ -217,7 +218,7 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated)
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
                 {
                     return RedirectToHome();
                 }
@@ -268,7 +269,7 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated)
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
                 {
                     return RedirectToHome();
                 }
@@ -295,12 +296,16 @@
         {
             try
             {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
+                {
+                    return RedirectToHome();
+                }
                 string errorMessage = null;
                 if (!model.IsValid(out errorMessage))
                 {
                     return GetJsonResult(false, errorMessage);
                 }
-                SpreadEntityContext context = SpreadEntityContext.Create();
                 Country country = context.GetCountry(model.CountryId, true);
                 model.CopyPropertiesToCountry(country);
                 context.Save<Country>(country, false);
@@ -318,6 +323,11 @@
         {
             try
             {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
+                {
+                    return RedirectToHome();
+                }
                 return PartialView(CREATE_COUNTRY_PARTIAL_VIEW_NAME, new CountryModel());
             }
             catch (Exception ex)
@@ -333,12 +343,16 @@
         {
             try
             {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
+                {
+                    return RedirectToHome();
+                }
                 string errorMessage = null;
                 if (!model.IsValid(out errorMessage))
                 {
                     return GetJsonResult(false, errorMessage);
                 }
-                SpreadEntityContext context = SpreadEntityContext.Create();
                 model.CountryId = Guid.NewGuid();
                 model.DateCreated = DateTime.Now;
                 Country country = new Country();

@@ -37,6 +37,7 @@
             if (event.which == 13) {
                 //$("#btnSearch").click();
                 postUsers();
+                return false; //Cancel the default form's post behaviour when enter key is pressed i.e. if this is not set (or set to true) then the form will be posted twice when pressing the enter key.
             }
         });
         @*loadDialog("#divConfirmationDialog", "#dlgConfirmation", "ConfirmDeleteDialog", "SmsSent", 'identifier', '@smsSent.SmsSentLogId.ToString()');*@

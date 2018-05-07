@@ -125,7 +125,7 @@
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
                 PublicHoliday publicHoliday = context.GetPublicHoliday(publicHolidayId, true);
-                if (!Request.IsAuthenticated)
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
                 {
                     return RedirectToHome();
                 }
@@ -145,7 +145,7 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated)
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
                 {
                     return RedirectToHome();
                 }
@@ -177,7 +177,7 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated)
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
                 {
                     return RedirectToHome();
                 }
@@ -198,7 +198,7 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated)
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
                 {
                     return RedirectToHome();
                 }
@@ -240,7 +240,7 @@
                     return RedirectToError(string.Format("{0} not specified.",
                         EntityReader<Country>.GetPropertyName(p => p.CountryId, false)));
                 }
-                if (!Request.IsAuthenticated)
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
                 {
                     return RedirectToHome();
                 }
@@ -301,7 +301,7 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated)
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
                 {
                     return RedirectToHome();
                 }
@@ -328,12 +328,16 @@
         {
             try
             {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
+                {
+                    return RedirectToHome();
+                }
                 string errorMessage = null;
                 if (!model.IsValid(out errorMessage))
                 {
                     return GetJsonResult(false, errorMessage);
                 }
-                SpreadEntityContext context = SpreadEntityContext.Create();
                 PublicHoliday publicHoliday = context.GetPublicHoliday(model.PublicHolidayId, true);
                 model.CopyPropertiesToPublicHoliday(publicHoliday);
                 context.Save<PublicHoliday>(publicHoliday, false);
@@ -351,6 +355,11 @@
         {
             try
             {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
+                {
+                    return RedirectToHome();
+                }
                 return PartialView(CREATE_PUBLIC_HOLIDAY_PARTIAL_VIEW_NAME, new PublicHolidayModel());
             }
             catch (Exception ex)
@@ -366,12 +375,16 @@
         {
             try
             {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
+                {
+                    return RedirectToHome();
+                }
                 string errorMessage = null;
                 if (!model.IsValid(out errorMessage))
                 {
                     return GetJsonResult(false, errorMessage);
                 }
-                SpreadEntityContext context = SpreadEntityContext.Create();
                 model.PublicHolidayId = Guid.NewGuid();
                 model.DateCreated = DateTime.Now;
                 PublicHoliday publicHoliday = new PublicHoliday();

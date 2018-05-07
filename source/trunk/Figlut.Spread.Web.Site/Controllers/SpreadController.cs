@@ -276,7 +276,6 @@
                     null,
                     whoIsQuery,
                     requestDate);
-                context.DB.SubmitChanges();
             }
             catch (Exception ex)
             {

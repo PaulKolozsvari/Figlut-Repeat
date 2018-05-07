@@ -8,6 +8,7 @@
     using Figlut.Spread.ORM;
     using System;
     using System.Collections.Generic;
+    using System.Data.Linq;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -45,64 +46,72 @@
             DateTime requestDate)
         {
             WebRequestActivity result = null;
-            User currentUser = null;
-            if (!string.IsNullOrEmpty(currentUserName))
+            try
             {
-                currentUser = GetUserByIdentifier(currentUserName, false);
-            }
-            if (logWebRequestActivity)
-            {
-                result = new WebRequestActivity()
+                User currentUser = null;
+                if (!string.IsNullOrEmpty(currentUserName))
                 {
-                    WebRequestActivityId = Guid.NewGuid(),
-                    RequestVerb = requestVerb,
-                    RequestUrl = requestUrl,
-                    RequestReferrerUrl = requestReferrerUrl,
-                    Controller = controllerName,
-                    Action = actionName,
-                    UserAgent = userAgent,
-                    UserHostAddress = userHostAddress,
-                    UserHostName = userHostName,
-                    ClientType = clientType,
-                    IsCrawler = isCrawler,
-                    IsMobileDevice = isMobileDevice,
-                    MobileDeviceManufacturer = mobileDeviceManufacturer,
-                    MobileDeviceModel = mobileDeviceModel,
-                    Platform = platform,
-                    SourceApplication = source,
-                    Comments = comments,
-                    DateCreated = DateTime.Now
-                };
-                if (whoIsQuery != null)
-                {
-                    result.WhoIsStatus = whoIsQuery.status;
-                    result.WhoIsCountry = whoIsQuery.country;
-                    result.WhoIsCountryCode = whoIsQuery.countryCode;
-                    result.WhoIsRegion = whoIsQuery.region;
-                    result.WhoIsRegionName = whoIsQuery.regionName;
-                    result.WhoIsCity = whoIsQuery.city;
-                    result.WhoIsZip = whoIsQuery.zip;
-                    result.WhoIsLatitude = whoIsQuery.lat;
-                    result.WhoIsLongitude = whoIsQuery.lon;
-                    result.WhoIsTimeZone = whoIsQuery.timezone;
-                    result.WhoIsISP = whoIsQuery.isp;
-                    result.WhoIsOrg = whoIsQuery.org;
+                    currentUser = GetUserByIdentifier(currentUserName, false);
                 }
-            }
-            if (currentUser != null)
-            {
-                currentUser.LastActivityDate = requestDate;
                 if (logWebRequestActivity)
+                {
+                    result = new WebRequestActivity()
+                    {
+                        WebRequestActivityId = Guid.NewGuid(),
+                        RequestVerb = requestVerb,
+                        RequestUrl = requestUrl,
+                        RequestReferrerUrl = requestReferrerUrl,
+                        Controller = controllerName,
+                        Action = actionName,
+                        UserAgent = userAgent,
+                        UserHostAddress = userHostAddress,
+                        UserHostName = userHostName,
+                        ClientType = clientType,
+                        IsCrawler = isCrawler,
+                        IsMobileDevice = isMobileDevice,
+                        MobileDeviceManufacturer = mobileDeviceManufacturer,
+                        MobileDeviceModel = mobileDeviceModel,
+                        Platform = platform,
+                        SourceApplication = source,
+                        Comments = comments,
+                        DateCreated = DateTime.Now
+                    };
+                    if (whoIsQuery != null)
+                    {
+                        result.WhoIsStatus = whoIsQuery.status;
+                        result.WhoIsCountry = whoIsQuery.country;
+                        result.WhoIsCountryCode = whoIsQuery.countryCode;
+                        result.WhoIsRegion = whoIsQuery.region;
+                        result.WhoIsRegionName = whoIsQuery.regionName;
+                        result.WhoIsCity = whoIsQuery.city;
+                        result.WhoIsZip = whoIsQuery.zip;
+                        result.WhoIsLatitude = whoIsQuery.lat;
+                        result.WhoIsLongitude = whoIsQuery.lon;
+                        result.WhoIsTimeZone = whoIsQuery.timezone;
+                        result.WhoIsISP = whoIsQuery.isp;
+                        result.WhoIsOrg = whoIsQuery.org;
+                    }
+                }
+                if (currentUser != null)
                 {
                     result.UserId = currentUser.UserId;
                     result.UserName = currentUser.UserName;
                 }
+                if (logWebRequestActivity)
+                {
+                    DB.GetTable<WebRequestActivity>().InsertOnSubmit(result);
+                    DB.SubmitChanges(); //This is a simply insert, hence it should not cause any concurrency conflicts.
+                }
+                if (currentUser != null)
+                {
+                    currentUser.LastActivityDate = requestDate;
+                    DB.SubmitChanges(ConflictMode.ContinueOnConflict); //This submit causes concurrency conflicts, hence it should be a separate submit from the WebRequestActivity insert.
+                }
             }
-            if (logWebRequestActivity)
+            catch (ChangeConflictException cEx)
             {
-                DB.GetTable<WebRequestActivity>().InsertOnSubmit(result);
+                DB.ChangeConflicts.ResolveAll(RefreshMode.OverwriteCurrentValues);
             }
-            DB.SubmitChanges();
             return result;
         }
 
