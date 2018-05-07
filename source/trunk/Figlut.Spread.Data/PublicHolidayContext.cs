@@ -82,6 +82,7 @@
                           where p.CountryId == countryId.Value &&
                           (p.EventName.ToLower().Contains(searchFilterLower) ||
                           p.DateIdentifier.ToLower().Contains(searchFilterLower))
+                          orderby p.HolidayDate ascending
                           select new PublicHolidayView()
                           {
                               PublicHolidayId = Guid.NewGuid(),
@@ -104,6 +105,7 @@
                           from sub in set
                           where (p.EventName.ToLower().Contains(searchFilterLower) ||
                           p.DateIdentifier.ToLower().Contains(searchFilterLower))
+                          orderby p.HolidayDate ascending
                           select new PublicHolidayView()
                           {
                               PublicHolidayId = Guid.NewGuid(),
@@ -132,6 +134,7 @@
                           where p.CountryId == countryId.Value &&
                           (p.DateIdentifier.ToLower().Contains(searchFilterLower) ||
                           p.EventName.ToLower().Contains(searchFilterLower))
+                          orderby p.HolidayDate ascending
                           select p).ToList();
             }
             else
@@ -139,6 +142,7 @@
                 result = (from p in DB.GetTable<PublicHoliday>()
                           where p.DateIdentifier.ToLower().Contains(searchFilterLower) ||
                           p.EventName.ToLower().Contains(searchFilterLower)
+                          orderby p.HolidayDate ascending
                           select p).ToList();
             }
             return result;

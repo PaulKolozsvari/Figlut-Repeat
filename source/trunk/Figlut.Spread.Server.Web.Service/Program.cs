@@ -28,7 +28,8 @@
         private const string RESET_SETTINGS_ARGUMENT = "/reset_settings";
         private const string TEST_MODE_ARGUMENT = "/start";
         private const string SEND_SMS = "/send_sms";
-        private const string DOWNLOAD_PUBLIC_HOLIDAYS = "/download_public_holidays";
+        private const string DOWNLOAD_COUNTRY_PUBLIC_HOLIDAYS = "/download_country_public_holidays";
+        private const string DOWNLOAD_ALL_COUNTRIES_PUBLIC_HOLIDAYS = "/download_all_countries_public_holidays";
 
         #endregion //Constants
 
@@ -42,6 +43,10 @@
 
         private static bool ParseArguments(string[] args)
         {
+            string countryCode = null;
+            string countryName = null;
+            string yearString = null;
+            int year = 0;
             for (int i = 0; i < args.Length; i++)
             {
                 string a = args[i];
@@ -69,20 +74,37 @@
                         }
                         string recipientNumber = args[i + 1];
                         string message = args[i + 2];
-                        SendSms(recipientNumber, message);
+                        SendSms(true, recipientNumber, message);
                         return false;
-                    case DOWNLOAD_PUBLIC_HOLIDAYS:
-                        if (args.Length < i + 4)
+                    case DOWNLOAD_COUNTRY_PUBLIC_HOLIDAYS:
+                        if (args.Length < i + 3)
                         {
                             throw new ArgumentException(string.Format(
-                                @"{0} requires 4 additional parameters: country Code, country Name, start date and end date e.g. /download_icalendar zaf 'South Africa' 01-01-2018 31-12-2018",
-                                DOWNLOAD_PUBLIC_HOLIDAYS));
+                                @"{0} requires 4 additional parameters: country Code, country Name and year e.g. /{0} zaf 'South Africa' 2018",
+                                DOWNLOAD_COUNTRY_PUBLIC_HOLIDAYS));
                         }
-                        string countryCode = args[i + 1];
-                        string countryName = args[i + 2];
-                        string startDate = args[i + 3];
-                        string endDate = args[i + 4];
-                        DownloadPublicHolidays(countryCode, countryName, startDate, endDate);
+                        countryCode = args[i + 1];
+                        countryName = args[i + 2];
+                        yearString = args[i + 3];
+                        if (!int.TryParse(yearString, out year))
+                        {
+                            throw new InvalidCastException(string.Format("Could not parse {0} to an integer for the year parameter.", yearString));
+                        }
+                        DownloadCountryPublicHolidays(true, countryCode, countryName, year);
+                        return false;
+                    case DOWNLOAD_ALL_COUNTRIES_PUBLIC_HOLIDAYS:
+                        if (args.Length < i + 1)
+                        {
+                            throw new ArgumentException(string.Format(
+                                @"{0} requires 1 additional parameter: year e.g. /{0} 'South Africa' 2018",
+                                DOWNLOAD_ALL_COUNTRIES_PUBLIC_HOLIDAYS));
+                        }
+                        yearString = args[i + 1];
+                        if (!int.TryParse(yearString, out year))
+                        {
+                            throw new InvalidCastException(string.Format("Could not parse {0} to an integer for the year parameter.", yearString));
+                        }
+                        DownloadAllCountriesPublicHolidays(true, year);
                         return false;
                     default:
                         throw new ArgumentException(string.Format("Invalid argument '{0}'.", a));
@@ -99,7 +121,8 @@
             Console.WriteLine("{0} : Resets the service's settings file with the default settings (server is not started).", RESET_SETTINGS_ARGUMENT);
             Console.WriteLine("{0} : Starts the service as a console application instead of a windows service.", TEST_MODE_ARGUMENT);
             Console.WriteLine("{0} : Sends an sms to the specified number with the specified message e.g. {0} 0821235432 \"Hello world.\"", SEND_SMS);
-            Console.WriteLine("{0} : Downloads a .ics iCalendar file for a specific country and date range e.g. {0} zaf South Africa 01-01-2018 31-12-2018", DOWNLOAD_PUBLIC_HOLIDAYS);
+            Console.WriteLine("{0} : Downloads a .ics iCalendar file for a specific country and year e.g. {0} zaf South Africa 2018", DOWNLOAD_COUNTRY_PUBLIC_HOLIDAYS);
+            Console.WriteLine("{0} : Downloads a .ics iCalendar file for all countries in the database for a specific year e.g. {0} 2018", DOWNLOAD_ALL_COUNTRIES_PUBLIC_HOLIDAYS);
             Console.WriteLine();
             Console.WriteLine("N.B. Executing without any parameters runs the server as a windows service.");
         }
@@ -167,9 +190,12 @@
             Console.Read();
         }
 
-        private static void SendSms(string recipientNumber, string message)
+        private static void SendSms(bool initializeService, string recipientNumber, string message)
         {
-            SpreadService.Start(false);
+            if (initializeService)
+            {
+                SpreadService.Start(false);
+            }
             GOC.Instance.Logger.LogMessage(new LogMessage(string.Format("Sending SMS to {0}: {1}", recipientNumber, message), LogMessageType.Information, LoggingLevel.Maximum));
             SmsResponse smsResponse = SpreadApp.Instance.SmsSender.SendSms(new SmsRequest(recipientNumber, message, 130, null, null, null));
             if (smsResponse != null)
@@ -182,17 +208,35 @@
             SpreadApp.Instance.LogSmsSentToDB(recipientNumber, message, smsResponse, null, true);
         }
 
-        private static void DownloadPublicHolidays(string countryCode, string countryName, string startDate, string endDate)
+        private static void DownloadAllCountriesPublicHolidays(bool initializeService, int year)
         {
-            SpreadService.Start(false);
-            GOC.Instance.Logger.LogMessage(new LogMessage("Downloading public holidays Calendar.", LogMessageType.Information, LoggingLevel.Maximum));
-            ICalCalendar calendar = SpreadApp.Instance.CalendarDownloader.DownloadICalCalendar(countryCode, countryName, startDate, endDate, null, true);
+            if (initializeService)
+            {
+                SpreadService.Start(false);
+            }
+            GOC.Instance.Logger.LogMessage(new LogMessage("Querying countries in database.", LogMessageType.Information, LoggingLevel.Maximum));
+            SpreadEntityContext context = SpreadEntityContext.Create();
+            List<Country> countries = context.GetCountriesByFilter(string.Empty);
+            foreach (Country c in countries)
+            {
+                DownloadCountryPublicHolidays(false, c.CountryCode, c.CountryName, year);
+            }
+        }
 
-            GOC.Instance.Logger.LogMessage(new LogMessage("Saving public holidays calendar to database.", LogMessageType.Information, LoggingLevel.Maximum));
+        private static void DownloadCountryPublicHolidays(bool initializeService, string countryCode, string countryName, int year)
+        {
+            if (initializeService)
+            {
+                SpreadService.Start(false);
+            }
+            GOC.Instance.Logger.LogMessage(new LogMessage(string.Format("Downloading public holidays calendar for {0}.", countryName), LogMessageType.Information, LoggingLevel.Maximum));
+            ICalCalendar calendar = SpreadApp.Instance.CalendarDownloader.DownloadICalCalendar(countryCode, countryName, year, null, true);
+
+            GOC.Instance.Logger.LogMessage(new LogMessage(string.Format("Saving public holidays calendar to database for {0}.", countryName), LogMessageType.Information, LoggingLevel.Maximum));
             SpreadEntityContext context = SpreadEntityContext.Create();
             context.SavePublicHolidaysFromICalCalendar(calendar);
 
-            GOC.Instance.Logger.LogMessage(new LogMessage("Downloaded and saved public holidays calendar successfully.", LogMessageType.SuccessAudit, LoggingLevel.Normal));
+            GOC.Instance.Logger.LogMessage(new LogMessage(string.Format("Downloaded and saved public holidays calendar successfully for {0}.", countryName), LogMessageType.SuccessAudit, LoggingLevel.Normal));
         }
 
         /// <summary>
@@ -202,6 +246,7 @@
         {
             try
             {
+                ConsoleApplication.Maximize();
                 if (!ParseArguments(args))
                 {
                     return;

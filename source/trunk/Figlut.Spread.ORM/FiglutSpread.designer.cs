@@ -96,9 +96,6 @@ namespace Figlut.Spread.ORM
     partial void InsertUser(User instance);
     partial void UpdateUser(User instance);
     partial void DeleteUser(User instance);
-    partial void InsertPublicHoliday(PublicHoliday instance);
-    partial void UpdatePublicHoliday(PublicHoliday instance);
-    partial void DeletePublicHoliday(PublicHoliday instance);
     partial void InsertRepeatSchedule(RepeatSchedule instance);
     partial void UpdateRepeatSchedule(RepeatSchedule instance);
     partial void DeleteRepeatSchedule(RepeatSchedule instance);
@@ -108,6 +105,9 @@ namespace Figlut.Spread.ORM
     partial void InsertCountry(Country instance);
     partial void UpdateCountry(Country instance);
     partial void DeleteCountry(Country instance);
+    partial void InsertPublicHoliday(PublicHoliday instance);
+    partial void UpdatePublicHoliday(PublicHoliday instance);
+    partial void DeletePublicHoliday(PublicHoliday instance);
     #endregion
 		
 		public FiglutSpreadDataContext() : 
@@ -324,14 +324,6 @@ namespace Figlut.Spread.ORM
 			}
 		}
 		
-		public System.Data.Linq.Table<PublicHoliday> PublicHolidays
-		{
-			get
-			{
-				return this.GetTable<PublicHoliday>();
-			}
-		}
-		
 		public System.Data.Linq.Table<RepeatSchedule> RepeatSchedules
 		{
 			get
@@ -353,6 +345,14 @@ namespace Figlut.Spread.ORM
 			get
 			{
 				return this.GetTable<Country>();
+			}
+		}
+		
+		public System.Data.Linq.Table<PublicHoliday> PublicHolidays
+		{
+			get
+			{
+				return this.GetTable<PublicHoliday>();
 			}
 		}
 	}
@@ -8204,301 +8204,6 @@ namespace Figlut.Spread.ORM
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PublicHoliday")]
-	public partial class PublicHoliday : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private System.Guid _PublicHolidayId;
-		
-		private System.Guid _CountryId;
-		
-		private string _EventName;
-		
-		private string _DateIdentifier;
-		
-		private int _Year;
-		
-		private int _Month;
-		
-		private int _Day;
-		
-		private System.DateTime _HolidayDate;
-		
-		private System.DateTime _DateCreated;
-		
-		private EntityRef<Country> _Country;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnPublicHolidayIdChanging(System.Guid value);
-    partial void OnPublicHolidayIdChanged();
-    partial void OnCountryIdChanging(System.Guid value);
-    partial void OnCountryIdChanged();
-    partial void OnEventNameChanging(string value);
-    partial void OnEventNameChanged();
-    partial void OnDateIdentifierChanging(string value);
-    partial void OnDateIdentifierChanged();
-    partial void OnYearChanging(int value);
-    partial void OnYearChanged();
-    partial void OnMonthChanging(int value);
-    partial void OnMonthChanged();
-    partial void OnDayChanging(int value);
-    partial void OnDayChanged();
-    partial void OnHolidayDateChanging(System.DateTime value);
-    partial void OnHolidayDateChanged();
-    partial void OnDateCreatedChanging(System.DateTime value);
-    partial void OnDateCreatedChanged();
-    #endregion
-		
-		public PublicHoliday()
-		{
-			this._Country = default(EntityRef<Country>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PublicHolidayId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
-		public System.Guid PublicHolidayId
-		{
-			get
-			{
-				return this._PublicHolidayId;
-			}
-			set
-			{
-				if ((this._PublicHolidayId != value))
-				{
-					this.OnPublicHolidayIdChanging(value);
-					this.SendPropertyChanging();
-					this._PublicHolidayId = value;
-					this.SendPropertyChanged("PublicHolidayId");
-					this.OnPublicHolidayIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CountryId", DbType="UniqueIdentifier NOT NULL")]
-		public System.Guid CountryId
-		{
-			get
-			{
-				return this._CountryId;
-			}
-			set
-			{
-				if ((this._CountryId != value))
-				{
-					if (this._Country.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnCountryIdChanging(value);
-					this.SendPropertyChanging();
-					this._CountryId = value;
-					this.SendPropertyChanged("CountryId");
-					this.OnCountryIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EventName", DbType="VarChar(250) NOT NULL", CanBeNull=false)]
-		public string EventName
-		{
-			get
-			{
-				return this._EventName;
-			}
-			set
-			{
-				if ((this._EventName != value))
-				{
-					this.OnEventNameChanging(value);
-					this.SendPropertyChanging();
-					this._EventName = value;
-					this.SendPropertyChanged("EventName");
-					this.OnEventNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateIdentifier", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string DateIdentifier
-		{
-			get
-			{
-				return this._DateIdentifier;
-			}
-			set
-			{
-				if ((this._DateIdentifier != value))
-				{
-					this.OnDateIdentifierChanging(value);
-					this.SendPropertyChanging();
-					this._DateIdentifier = value;
-					this.SendPropertyChanged("DateIdentifier");
-					this.OnDateIdentifierChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Year", DbType="Int NOT NULL")]
-		public int Year
-		{
-			get
-			{
-				return this._Year;
-			}
-			set
-			{
-				if ((this._Year != value))
-				{
-					this.OnYearChanging(value);
-					this.SendPropertyChanging();
-					this._Year = value;
-					this.SendPropertyChanged("Year");
-					this.OnYearChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Month", DbType="Int NOT NULL")]
-		public int Month
-		{
-			get
-			{
-				return this._Month;
-			}
-			set
-			{
-				if ((this._Month != value))
-				{
-					this.OnMonthChanging(value);
-					this.SendPropertyChanging();
-					this._Month = value;
-					this.SendPropertyChanged("Month");
-					this.OnMonthChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Day", DbType="Int NOT NULL")]
-		public int Day
-		{
-			get
-			{
-				return this._Day;
-			}
-			set
-			{
-				if ((this._Day != value))
-				{
-					this.OnDayChanging(value);
-					this.SendPropertyChanging();
-					this._Day = value;
-					this.SendPropertyChanged("Day");
-					this.OnDayChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HolidayDate", DbType="DateTime NOT NULL")]
-		public System.DateTime HolidayDate
-		{
-			get
-			{
-				return this._HolidayDate;
-			}
-			set
-			{
-				if ((this._HolidayDate != value))
-				{
-					this.OnHolidayDateChanging(value);
-					this.SendPropertyChanging();
-					this._HolidayDate = value;
-					this.SendPropertyChanged("HolidayDate");
-					this.OnHolidayDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
-		public System.DateTime DateCreated
-		{
-			get
-			{
-				return this._DateCreated;
-			}
-			set
-			{
-				if ((this._DateCreated != value))
-				{
-					this.OnDateCreatedChanging(value);
-					this.SendPropertyChanging();
-					this._DateCreated = value;
-					this.SendPropertyChanged("DateCreated");
-					this.OnDateCreatedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Country_PublicHoliday", Storage="_Country", ThisKey="CountryId", OtherKey="CountryId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		internal Country Country
-		{
-			get
-			{
-				return this._Country.Entity;
-			}
-			set
-			{
-				Country previousValue = this._Country.Entity;
-				if (((previousValue != value) 
-							|| (this._Country.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Country.Entity = null;
-						previousValue.PublicHolidays.Remove(this);
-					}
-					this._Country.Entity = value;
-					if ((value != null))
-					{
-						value.PublicHolidays.Add(this);
-						this._CountryId = value.CountryId;
-					}
-					else
-					{
-						this._CountryId = default(System.Guid);
-					}
-					this.SendPropertyChanged("Country");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.RepeatSchedule")]
 	public partial class RepeatSchedule : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -9223,6 +8928,301 @@ namespace Figlut.Spread.ORM
 		{
 			this.SendPropertyChanging();
 			entity.Country = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PublicHoliday")]
+	public partial class PublicHoliday : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _PublicHolidayId;
+		
+		private System.Guid _CountryId;
+		
+		private string _EventName;
+		
+		private string _DateIdentifier;
+		
+		private int _Year;
+		
+		private int _Month;
+		
+		private int _Day;
+		
+		private System.DateTime _HolidayDate;
+		
+		private System.DateTime _DateCreated;
+		
+		private EntityRef<Country> _Country;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPublicHolidayIdChanging(System.Guid value);
+    partial void OnPublicHolidayIdChanged();
+    partial void OnCountryIdChanging(System.Guid value);
+    partial void OnCountryIdChanged();
+    partial void OnEventNameChanging(string value);
+    partial void OnEventNameChanged();
+    partial void OnDateIdentifierChanging(string value);
+    partial void OnDateIdentifierChanged();
+    partial void OnYearChanging(int value);
+    partial void OnYearChanged();
+    partial void OnMonthChanging(int value);
+    partial void OnMonthChanged();
+    partial void OnDayChanging(int value);
+    partial void OnDayChanged();
+    partial void OnHolidayDateChanging(System.DateTime value);
+    partial void OnHolidayDateChanged();
+    partial void OnDateCreatedChanging(System.DateTime value);
+    partial void OnDateCreatedChanged();
+    #endregion
+		
+		public PublicHoliday()
+		{
+			this._Country = default(EntityRef<Country>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PublicHolidayId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid PublicHolidayId
+		{
+			get
+			{
+				return this._PublicHolidayId;
+			}
+			set
+			{
+				if ((this._PublicHolidayId != value))
+				{
+					this.OnPublicHolidayIdChanging(value);
+					this.SendPropertyChanging();
+					this._PublicHolidayId = value;
+					this.SendPropertyChanged("PublicHolidayId");
+					this.OnPublicHolidayIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CountryId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid CountryId
+		{
+			get
+			{
+				return this._CountryId;
+			}
+			set
+			{
+				if ((this._CountryId != value))
+				{
+					if (this._Country.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCountryIdChanging(value);
+					this.SendPropertyChanging();
+					this._CountryId = value;
+					this.SendPropertyChanged("CountryId");
+					this.OnCountryIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EventName", DbType="VarChar(250) NOT NULL", CanBeNull=false)]
+		public string EventName
+		{
+			get
+			{
+				return this._EventName;
+			}
+			set
+			{
+				if ((this._EventName != value))
+				{
+					this.OnEventNameChanging(value);
+					this.SendPropertyChanging();
+					this._EventName = value;
+					this.SendPropertyChanged("EventName");
+					this.OnEventNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateIdentifier", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string DateIdentifier
+		{
+			get
+			{
+				return this._DateIdentifier;
+			}
+			set
+			{
+				if ((this._DateIdentifier != value))
+				{
+					this.OnDateIdentifierChanging(value);
+					this.SendPropertyChanging();
+					this._DateIdentifier = value;
+					this.SendPropertyChanged("DateIdentifier");
+					this.OnDateIdentifierChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Year", DbType="Int NOT NULL")]
+		public int Year
+		{
+			get
+			{
+				return this._Year;
+			}
+			set
+			{
+				if ((this._Year != value))
+				{
+					this.OnYearChanging(value);
+					this.SendPropertyChanging();
+					this._Year = value;
+					this.SendPropertyChanged("Year");
+					this.OnYearChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Month", DbType="Int NOT NULL")]
+		public int Month
+		{
+			get
+			{
+				return this._Month;
+			}
+			set
+			{
+				if ((this._Month != value))
+				{
+					this.OnMonthChanging(value);
+					this.SendPropertyChanging();
+					this._Month = value;
+					this.SendPropertyChanged("Month");
+					this.OnMonthChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Day", DbType="Int NOT NULL")]
+		public int Day
+		{
+			get
+			{
+				return this._Day;
+			}
+			set
+			{
+				if ((this._Day != value))
+				{
+					this.OnDayChanging(value);
+					this.SendPropertyChanging();
+					this._Day = value;
+					this.SendPropertyChanged("Day");
+					this.OnDayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HolidayDate", DbType="DateTime NOT NULL")]
+		public System.DateTime HolidayDate
+		{
+			get
+			{
+				return this._HolidayDate;
+			}
+			set
+			{
+				if ((this._HolidayDate != value))
+				{
+					this.OnHolidayDateChanging(value);
+					this.SendPropertyChanging();
+					this._HolidayDate = value;
+					this.SendPropertyChanged("HolidayDate");
+					this.OnHolidayDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
+		public System.DateTime DateCreated
+		{
+			get
+			{
+				return this._DateCreated;
+			}
+			set
+			{
+				if ((this._DateCreated != value))
+				{
+					this.OnDateCreatedChanging(value);
+					this.SendPropertyChanging();
+					this._DateCreated = value;
+					this.SendPropertyChanged("DateCreated");
+					this.OnDateCreatedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Country_PublicHoliday", Storage="_Country", ThisKey="CountryId", OtherKey="CountryId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		internal Country Country
+		{
+			get
+			{
+				return this._Country.Entity;
+			}
+			set
+			{
+				Country previousValue = this._Country.Entity;
+				if (((previousValue != value) 
+							|| (this._Country.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Country.Entity = null;
+						previousValue.PublicHolidays.Remove(this);
+					}
+					this._Country.Entity = value;
+					if ((value != null))
+					{
+						value.PublicHolidays.Add(this);
+						this._CountryId = value.CountryId;
+					}
+					else
+					{
+						this._CountryId = default(System.Guid);
+					}
+					this.SendPropertyChanged("Country");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

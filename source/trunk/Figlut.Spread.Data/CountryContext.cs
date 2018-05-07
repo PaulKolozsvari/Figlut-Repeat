@@ -60,6 +60,7 @@
             List<Country> result = (from c in DB.GetTable<Country>()
                                     where c.CountryName.ToLower().Contains(searchFilterLower) ||
                                     c.CountryCode.ToLower().Contains(searchFilterLower)
+                                    orderby c.CountryName
                                     select c).ToList();
             return result;
         }
