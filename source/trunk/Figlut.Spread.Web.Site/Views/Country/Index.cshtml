@@ -6,13 +6,13 @@
 @using Figlut.Spread.Web.Site.Models;
 
 @{
-    ViewBag.Title = "Organizations";
+    ViewBag.Title = "Country Public Holidays";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <nav>
     <ul id="menu">
         <li>
-            <img src="~/Images/Icons/red-home-icon32.png" style="float:right; margin-right:1%; margin-left:1%" />
+            <img src="~/Images/Icons/red-calendar-icon32.png" style="float:right; margin-right:1%; margin-left:1%" />
             <a href="" style="float:right">Country Public Holidays</a>
         </li>
     </ul>
@@ -41,5 +41,6 @@
         });
         loadDialog("#divConfirmationDialog", "#dlgConfirmation", "ConfirmDeleteDialog", "Country", 'identifier', '@Guid.Empty');
         loadDialog("#divEditCountry", "#dlgEditCountry", "EditDialog", "Country", 'countryId', '@null');
+        loadDialog("#divCreateCountry", "#dlgCreateCountry", "CreateDialog", "Country", 'countryId', '@null');
     });
 </script>

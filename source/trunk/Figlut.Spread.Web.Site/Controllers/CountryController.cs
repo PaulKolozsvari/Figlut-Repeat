@@ -198,16 +198,6 @@
                 string[] searchParameters;
                 string searchText;
                 GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
-
-                string organizationIdString = searchParameters[searchParameters.Length - 1];
-                Guid organizationId = Guid.Parse(organizationIdString);
-                Organization organization = context.GetOrganization(organizationId, true);
-                if (!CurrentUserHasAccessToOrganization(organization.OrganizationId, context))
-                {
-                    return RedirectToHome();
-                }
-                model.ParentId = organization.OrganizationId;
-                model.ParentCaption = organization.Name;
                 model.SearchText = searchText;
                 model.ConfirmationMessage = string.Format("Delete all Countries currently loaded?");
                 PartialViewResult result = PartialView(CONFIRMATION_DIALOG_PARTIAL_VIEW_NAME, model);
@@ -251,19 +241,16 @@
                 string[] searchParameters;
                 string searchText;
                 GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
-
-                string organizationIdString = searchParameters[searchParameters.Length - 1];
                 if (!Request.IsAuthenticated)
                 {
                     return RedirectToHome();
                 }
-                GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
                 List<Country> countryList = context.GetCountriesByFilter(searchText);
                 EntityCache<Guid, CountryCsv> cache = new EntityCache<Guid, CountryCsv>();
                 foreach (Country c in countryList)
                 {
                     CountryCsv csv = new CountryCsv();
-                    csv.CopyPropertiesToCountry(c);
+                    csv.CopyPropertiesFromCountry(c);
                     cache.Add(csv.CountryId, csv);
                 }
                 return GetCsvFileResult<CountryCsv>(cache);
@@ -291,7 +278,7 @@
                 }
                 Country country = context.GetCountry(countryId.Value, true);
                 CountryModel model = new CountryModel();
-                model.CopyPropertiesToCountry(country);
+                model.CopyPropertiesFromCountry(country);
                 PartialViewResult result = PartialView(EDIT_COUNTRY_PARTIAL_VIEW_NAME, model);
                 return result;
             }

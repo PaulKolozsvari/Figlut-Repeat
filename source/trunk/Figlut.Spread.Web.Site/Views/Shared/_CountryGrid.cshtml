@@ -45,19 +45,23 @@
                         if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
                         {
                             country = (CountryModel)grid.Rows[grid.SelectedIndex].Value;
-                            @Html.LinkButtonForSubmit("Subscriptions", "onViewCountryPublicHolidaysClick()", "btnViewCountrySubscriptions", "red-balloon-plus-icon32.png")
+                            @Html.LinkButtonForSubmit("Public Holidays", "onViewCountryPublicHolidaysClick()", "btnViewCountryPublicHolidays", "red-calendar-icon32.png")
                         }
                     }
                 </div>
                 <div style="float: right; margin-left:2%; margin-right:2%">
                     @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
                     {
-                        @Html.LinkButtonForCancel("Delete All", "onDeleteAllCountrysClick()", "btnDeleteAllCountrys")
-                        if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+                        if (Model.IsAdministrator)
                         {
-                            country = (CountryModel)grid.Rows[grid.SelectedIndex].Value;
-                            @Html.LinkButtonForCancel("Delete", "onDeleteCountryClick()", "btnDeleteCountry")
-                            @Html.LinkButtonForSubmit("Edit", "onEditCountryClick()", "btnEditCountry", "red-edit.png")
+                            @Html.LinkButtonForSubmit("Create", "onCreateCountryClick()", "btnCreateCountry", "red-document-plus-icon32.png")
+                            @Html.LinkButtonForCancel("Delete All", "onDeleteAllCountrysClick()", "btnDeleteAllCountrys")
+                            if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+                            {
+                                country = (CountryModel)grid.Rows[grid.SelectedIndex].Value;
+                                @Html.LinkButtonForCancel("Delete", "onDeleteCountryClick()", "btnDeleteCountry")
+                                @Html.LinkButtonForSubmit("Edit", "onEditCountryClick()", "btnEditCountry", "red-edit.png")
+                            }
                         }
                     }
                 </div>
@@ -82,9 +86,9 @@
                 alternatingRowStyle: "alt",
                 selectedRowStyle: "select",
                 columns: grid.Columns(
-                grid.Column("Countrys", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
-                grid.Column(EntityReader<CountryModel>.GetPropertyName(p => p.CountryCode, false), "Name"),
-                grid.Column(EntityReader<CountryModel>.GetPropertyName(p => p.CountryName, false), "Identifier"),
+                grid.Column("Countries", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
+                grid.Column(EntityReader<CountryModel>.GetPropertyName(p => p.CountryCode, false), "Country Code"),
+                grid.Column(EntityReader<CountryModel>.GetPropertyName(p => p.CountryName, false), "Country Name"),
                 grid.Column(EntityReader<CountryModel>.GetPropertyName(p => p.DateCreated, false), "Date Created")
             ))
         </div>
@@ -137,8 +141,18 @@
             '#dlgEditCountry',
             'EditDialog',
             'Country',
-            'CountryId',
+            'countryId',
             '@country.CountryId.ToString()');
+    };
+
+    function onCreateCountryClick() {
+        showDialog(
+            '#divCreateCountry',
+            '#dlgCreateCountry',
+            'CreateDialog',
+            'Country',
+            'countryId',
+            '');
     };
 
     function getSearchParametersString() {

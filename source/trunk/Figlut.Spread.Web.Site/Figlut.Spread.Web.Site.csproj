@@ -530,6 +530,8 @@
     <Content Include="Views\Order\CreateOrder.cshtml" />
     <Content Include="Views\Country\Index.cshtml" />
     <Content Include="Views\Shared\_CountryGrid.cshtml" />
+    <Content Include="Views\Shared\_EditCountryDialog.cshtml" />
+    <Content Include="Views\Shared\_CreateCountryDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

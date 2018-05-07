@@ -229,14 +229,14 @@
             {
                 SpreadService.Start(false);
             }
-            GOC.Instance.Logger.LogMessage(new LogMessage(string.Format("Downloading public holidays calendar for {0}.", countryName), LogMessageType.Information, LoggingLevel.Maximum));
+            GOC.Instance.Logger.LogMessage(new LogMessage(string.Format("Downloading {0} public holidays calendar for {1}.", year, countryName), LogMessageType.Information, LoggingLevel.Maximum));
             ICalCalendar calendar = SpreadApp.Instance.CalendarDownloader.DownloadICalCalendar(countryCode, countryName, year, null, true);
 
-            GOC.Instance.Logger.LogMessage(new LogMessage(string.Format("Saving public holidays calendar to database for {0}.", countryName), LogMessageType.Information, LoggingLevel.Maximum));
+            GOC.Instance.Logger.LogMessage(new LogMessage(string.Format("Saving {0} public holidays calendar to database for {1}.", year, countryName), LogMessageType.Information, LoggingLevel.Maximum));
             SpreadEntityContext context = SpreadEntityContext.Create();
             context.SavePublicHolidaysFromICalCalendar(calendar);
 
-            GOC.Instance.Logger.LogMessage(new LogMessage(string.Format("Downloaded and saved public holidays calendar successfully for {0}.", countryName), LogMessageType.SuccessAudit, LoggingLevel.Normal));
+            GOC.Instance.Logger.LogMessage(new LogMessage(string.Format("Downloaded and saved {0} public holidays calendar successfully for {1}.", year, countryName), LogMessageType.SuccessAudit, LoggingLevel.Normal));
         }
 
         /// <summary>

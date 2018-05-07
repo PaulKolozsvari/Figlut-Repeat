@@ -36,10 +36,10 @@
 
         public void CopyPropertiesToCountry(Country country)
         {
-            country.CountryId = country.CountryId;
-            country.CountryCode = country.CountryCode;
-            country.CountryName = country.CountryName;
-            country.DateCreated = country.DateCreated;
+            country.CountryId = this.CountryId;
+            country.CountryCode = this.CountryCode;
+            country.CountryName = this.CountryName;
+            country.DateCreated = this.DateCreated;
         }
 
         #endregion //Methods

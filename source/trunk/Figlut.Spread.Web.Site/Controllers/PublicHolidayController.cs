@@ -311,7 +311,7 @@
                 }
                 PublicHolidayView publicHolidayView = context.GetPublicHolidayView(publicHolidayId.Value, true);
                 PublicHolidayModel model = new PublicHolidayModel();
-                model.CopyPropertiesToPublicHolidayView(publicHolidayView);
+                model.CopyPropertiesFromPublicHolidayView(publicHolidayView);
                 PartialViewResult result = PartialView(EDIT_PUBLIC_HOLIDAY_PARTIAL_VIEW_NAME, model);
                 return result;
             }

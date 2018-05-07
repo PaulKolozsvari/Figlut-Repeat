@@ -15,7 +15,7 @@
     {
         #region Constants
 
-        public const int MAX_COUNTRY_CODE_LENGTH = 10;
+        public const int MAX_COUNTRY_CODE_LENGTH = 3;
         public const int MAX_COUNTRY_NAME_LENGTH = 100;
 
         #endregion //Constants
@@ -41,9 +41,9 @@
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<CountryModel>.GetPropertyName(p => p.CountryCode, true));
             }
-            if (this.CountryCode.Length > MAX_COUNTRY_CODE_LENGTH)
+            if (this.CountryCode.Length != MAX_COUNTRY_CODE_LENGTH)
             {
-                errorMessage = string.Format("{0} may not be longer than {1} characters.",
+                errorMessage = string.Format("{0} must be {1} characters long as per ISO 3166-1 alpha-3 standard.",
                     EntityReader<CountryModel>.GetPropertyName(p => p.CountryCode, true),
                     MAX_COUNTRY_CODE_LENGTH);
             }
@@ -51,7 +51,7 @@
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<CountryModel>.GetPropertyName(p => p.CountryName, true));
             }
-            if (this.CountryName.Length > MAX_COUNTRY_CODE_LENGTH)
+            if (this.CountryName.Length > MAX_COUNTRY_NAME_LENGTH)
             {
                 errorMessage = string.Format("{0} may not be longer than {1} characters.",
                     EntityReader<CountryModel>.GetPropertyName(p => p.CountryName, true),
@@ -70,10 +70,10 @@
 
         public void CopyPropertiesToCountry(Country country)
         {
-            country.CountryId = country.CountryId;
-            country.CountryCode = country.CountryCode;
-            country.CountryName = country.CountryName;
-            country.DateCreated = country.DateCreated;
+            country.CountryId = this.CountryId;
+            country.CountryCode = this.CountryCode;
+            country.CountryName = this.CountryName;
+            country.DateCreated = this.DateCreated;
         }
 
         #endregion //Methods
