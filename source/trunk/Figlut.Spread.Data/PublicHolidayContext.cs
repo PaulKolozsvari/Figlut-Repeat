@@ -48,7 +48,7 @@
                                         where p.PublicHolidayId == publicHolidayId
                                         select new PublicHolidayView()
                                         {
-                                            PublicHolidayId = Guid.NewGuid(),
+                                            PublicHolidayId = p.PublicHolidayId,
                                             CountryId = p.CountryId,
                                             EventName = p.EventName,
                                             DateIdentifier = p.DateIdentifier,
@@ -85,7 +85,7 @@
                           orderby p.HolidayDate ascending
                           select new PublicHolidayView()
                           {
-                              PublicHolidayId = Guid.NewGuid(),
+                              PublicHolidayId = p.PublicHolidayId,
                               CountryId = p.CountryId,
                               EventName = p.EventName,
                               DateIdentifier = p.DateIdentifier,
@@ -108,7 +108,7 @@
                           orderby p.HolidayDate ascending
                           select new PublicHolidayView()
                           {
-                              PublicHolidayId = Guid.NewGuid(),
+                              PublicHolidayId = p.PublicHolidayId,
                               CountryId = p.CountryId,
                               EventName = p.EventName,
                               DateIdentifier = p.DateIdentifier,

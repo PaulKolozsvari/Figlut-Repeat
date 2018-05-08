@@ -1,0 +1,73 @@
+﻿@model Figlut.Spread.Web.Site.Models.PublicHolidayModel
+
+<div id="dlgEditPublicHoliday">
+    <img src="~/Images/Icons/red-edit32.png" style="float:right; margin-right:1%; margin-left:1%" />
+    <div class="centerForm">
+        <form id="EditPublicHolidayForm">
+            @Html.ValidationSummary(true, "Failed to edit.")
+            <fieldset>
+                <legend>Confirmation Form</legend>
+                @Html.HiddenFor(m => m.PublicHolidayId)
+                @Html.HiddenFor(m => m.CountryId)
+                @Html.HiddenFor(m => m.Year)
+                @Html.HiddenFor(m => m.Month)
+                @Html.HiddenFor(m => m.Day)
+                @Html.HiddenFor(m => m.HolidayDate)
+                @Html.HiddenFor(m => m.DateCreated)
+                <div class="field-label">
+                    @Html.Raw("Event Name")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.EventName)
+                    @Html.ValidationMessageFor(m => m.EventName)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Date")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.DateIdentifier)
+                    @Html.ValidationMessageFor(m => m.DateIdentifier)
+                </div>
+                <br />
+                <div id="EditPublicHolidayErrorField" style="color:#8A0808"></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var dialogName = '#dlgEditPublicHoliday';
+        createDialog(dialogName, 'Edit Public Holiday', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
+    });
+
+    function onConfirmOK() {
+        alert('onConfirmOK')
+        var dialogName = '#dlgEditPublicHoliday';
+        var postBackUrl = '@Url.Action("EditDialog", "PublicHoliday")';
+        $.ajax({
+            url: postBackUrl,
+            type: 'POST',
+            data: $("#EditPublicHolidayForm").serialize(),
+            success: function (data) {
+                if (data.Success) {
+                    $(dialogName).dialog("close");
+                    //Submit the form which will refresh grid to show the change the enabled/disabled.
+                    var form = $('#frmDetails');
+                    form.submit()
+                } else {
+                    $("#EditPublicHolidayErrorField").html(data.ErrorMsg);
+                }
+            }
+        })
+    };
+
+    function onConfirmOpen() {
+
+    }
+
+    function onConfirmCancel() {
+        //$('#confirmation-message').val('');
+        $("#EditPublicHolidayErrorField").html('');
+    }
+</script>

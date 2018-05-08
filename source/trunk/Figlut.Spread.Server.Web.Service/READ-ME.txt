@@ -28,12 +28,6 @@ Public Holiday Websites:
 		NuGet Package (old version): https://www.nuget.org/packages/DDay.iCal/1.0.2.575
 		To get latest version use the NuGet Package Manager by searching for iCal.NET.
 
-Competitors:
-	
-	https://www.eztexting.com
-
-	Facebook SMS: https://www.facebook.com/help/170960386370271/
-
 Example Send SMS Arguments:
 
 	/send_sms 0833958283 "Hello world."
@@ -196,7 +190,26 @@ SQL Server Versions and differences:
 
 Competitors:
 	https://www.scheduleonce.com/pricing
+	https://www.smartmessage.co.za
+	Developed by http://codeco.co.za/wp/index.php/products/ 
+		- 252 Barry Hertzog Ave, Greenside, Johannesburg.
+		- CEO DR. JOUBERT VILJOEN (used to be a vet, worked at Greenside Animal Hospital): https://www.greensidevet.co.za/team/sue-doe/
+		- Co-Founder Ms Lisle Kolesky: https://www.facebook.com/lisle.kolesky
+		https://www.smartmessage.co.za
+		https://www.vetdirectory.co.za
+		https://www.vetwebsites.co.za
+		http://www.vetreceptionist.co.za
+	
+	https://www.eztexting.com
+
+	Facebook SMS: https://www.facebook.com/help/170960386370271/
 
 LINQ to SQL queries:
 
 	https://www.c-sharpcorner.com/UploadFile/ff2f08/sql-join-in-linq-linq-to-entity-linq-to-sql/
+
+Medication Repeat Subscriptions:
+
+	https://www.yodruggist.com/blog/prescription-rules/
+	https://clicks.co.za/myMedicines
+	http://www.tangentsolutions.co.za/case-studies/dis-chem-pharmacies/

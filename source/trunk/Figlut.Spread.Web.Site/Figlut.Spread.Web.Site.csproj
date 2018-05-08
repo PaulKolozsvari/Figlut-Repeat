@@ -532,6 +532,10 @@
     <Content Include="Views\Shared\_CountryGrid.cshtml" />
     <Content Include="Views\Shared\_EditCountryDialog.cshtml" />
     <Content Include="Views\Shared\_CreateCountryDialog.cshtml" />
+    <Content Include="Views\PublicHoliday\Index.cshtml" />
+    <Content Include="Views\Shared\_PublicHolidayGrid.cshtml" />
+    <Content Include="Views\Shared\_EditPublicHolidayDialog.cshtml" />
+    <Content Include="Views\Shared\_CreatePublicHolidayDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

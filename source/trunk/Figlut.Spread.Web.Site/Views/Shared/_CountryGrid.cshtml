@@ -50,18 +50,15 @@
                     }
                 </div>
                 <div style="float: right; margin-left:2%; margin-right:2%">
-                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage) && Model.IsAdministrator)
                     {
-                        if (Model.IsAdministrator)
+                        @Html.LinkButtonForSubmit("Create", "onCreateCountryClick()", "btnCreateCountry", "red-document-plus-icon32.png")
+                        @Html.LinkButtonForCancel("Delete All", "onDeleteAllCountriesClick()", "btnDeleteAllCountries")
+                        if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
                         {
-                            @Html.LinkButtonForSubmit("Create", "onCreateCountryClick()", "btnCreateCountry", "red-document-plus-icon32.png")
-                            @Html.LinkButtonForCancel("Delete All", "onDeleteAllCountrysClick()", "btnDeleteAllCountrys")
-                            if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
-                            {
-                                country = (CountryModel)grid.Rows[grid.SelectedIndex].Value;
-                                @Html.LinkButtonForCancel("Delete", "onDeleteCountryClick()", "btnDeleteCountry")
-                                @Html.LinkButtonForSubmit("Edit", "onEditCountryClick()", "btnEditCountry", "red-edit.png")
-                            }
+                            country = (CountryModel)grid.Rows[grid.SelectedIndex].Value;
+                            @Html.LinkButtonForCancel("Delete", "onDeleteCountryClick()", "btnDeleteCountry")
+                            @Html.LinkButtonForSubmit("Edit", "onEditCountryClick()", "btnEditCountry", "red-edit.png")
                         }
                     }
                 </div>
@@ -88,8 +85,8 @@
                 columns: grid.Columns(
                 grid.Column("Countries", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
                 grid.Column(EntityReader<CountryModel>.GetPropertyName(p => p.CountryCode, false), "Country Code"),
-                grid.Column(EntityReader<CountryModel>.GetPropertyName(p => p.CountryName, false), "Country Name"),
-                grid.Column(EntityReader<CountryModel>.GetPropertyName(p => p.DateCreated, false), "Date Created")
+                grid.Column(EntityReader<CountryModel>.GetPropertyName(p => p.CountryName, false), "Country Name")
+                //grid.Column(EntityReader<CountryModel>.GetPropertyName(p => p.DateCreated, false), "Date Created")
             ))
         </div>
         <div class="country-preview">
@@ -100,7 +97,7 @@
                     <b>@Html.Raw(string.Format("Name: {0}", country.CountryCode))</b>
                 </div>
                 <div style="float:right; margin-left:2%; margin-right:2%; color: #a30e0e;">
-                    @Html.Raw(string.Format("{0}", country.CountryCode))
+                    @Html.Raw(string.Format("{0}", country.CountryName))
                 </div>
             }
         </div>
@@ -151,7 +148,7 @@
             '#dlgCreateCountry',
             'CreateDialog',
             'Country',
-            'countryId',
+            '',
             '');
     };
 
@@ -163,7 +160,7 @@
         return searchParameters;
     }
 
-    function onDeleteAllCountrysClick() {
+    function onDeleteAllCountriesClick() {
         var searchParameters = getSearchParametersString();
         showDialog(
             '#divConfirmationDialog',
@@ -189,7 +186,6 @@
     }
 
     function postCountries() {
-        alert('postCountries');
         $('form#frmDetails').trigger('submit');
     };
 
