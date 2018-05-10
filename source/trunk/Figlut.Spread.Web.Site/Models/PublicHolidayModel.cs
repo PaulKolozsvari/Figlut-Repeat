@@ -9,6 +9,7 @@
     using Figlut.Server.Toolkit.Data;
     using Figlut.Spread.ORM;
     using Figlut.Spread.ORM.Views;
+    using System.ComponentModel.DataAnnotations;
 
     #endregion //Using Directives
 
@@ -30,7 +31,13 @@
 
         public int Day { get; set; }
 
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime HolidayDate { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime HolidayDateCreate { get; set; }
 
         public DateTime DateCreated { get; set; }
 

@@ -17,7 +17,27 @@ function enableDatepickers() {
     //    //If it's an HTML 5 compatible browser, then don't use the jQuery datepicker, just rely on the native datepicker.
     //    $("input[type='date']").datepicker({ dateFormat: 'yy-mm-dd', inline: true }).attr("type", "text")
     //}
-    $("input[type='date']").datepicker({ dateFormat: 'yy-mm-dd', inline:true }).attr("type", "text")
+    $("input[type='date']").datepicker({ dateFormat: 'yy-mm-dd', inline: true }).attr("type", "text");
+    //$("input[type='date']").datepicker({ dateFormat: 'yy-mm-dd', inline: true });
+}
+
+function enableDatepickerOnInputField(inputField) {
+    var test = $('#' + inputField);
+    if ($('#' + inputField).length > 0) {
+        $('#' + inputField).datepicker({ dateFormat: 'yy-mm-dd', inline: true }).attr("type", "text");
+        var test = $('#' + inputField);
+        alert('date picker set');
+    }
+    return;
+    try {
+        //$('#' + inputField).datepicker("destroy");
+        //$('#' + inputField).removeClass('hasDatepicker').datepicker();
+        test = $('#' + inputField);
+        $('#' + inputField).removeClass('hasDatepicker').datepicker({ dateFormat: 'yy-mm-dd', inline: true }).attr("type", "text");
+    }
+    catch (error) {
+        alert(error);
+    }
 }
 
 /*This function is to called by Ajax partial form postbacks on forms showing grids.*/

@@ -92,7 +92,7 @@
             {
                 publicHoliday = (PublicHolidayModel)grid.Rows[grid.SelectedIndex].Value;
                 <div style="float: left; margin-left:2%; margin-right:2%">
-                    <b>@Html.Raw(string.Format("Name: {0}", publicHoliday.EventName))</b>
+                    <b>@Html.Raw(string.Format("Event: {0}", publicHoliday.EventName))</b>
                 </div>
                 <div style="float:right; margin-left:2%; margin-right:2%; color: #a30e0e;">
                     @Html.Raw(string.Format("{0}", publicHoliday.DateIdentifier))
@@ -113,7 +113,6 @@
     $(document).ready(function () {
         $("#SearchText").focus();
         makeGridRowsPostForm();
-        enableDatepickers();
     });
 
     function onSearchPublicHolidaysClick() {
@@ -146,8 +145,8 @@
             '#dlgCreatePublicHoliday',
             'CreateDialog',
             'PublicHoliday',
-            '',
-            '');
+            'countryId',
+            '@Model.ParentId');
     };
 
     function getSearchParametersString() {

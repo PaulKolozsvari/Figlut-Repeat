@@ -15,6 +15,7 @@
                 click: function () {
                     onCancelCallBack();
                     $(this).dialog("close");
+                    //$(this).remove();
                 }
             }
         ];
@@ -27,6 +28,7 @@
                 click: function () {
                     onCancelCallBack();
                     $(this).dialog("close");
+                    //$(this).remove();
                 }
             }
         ];

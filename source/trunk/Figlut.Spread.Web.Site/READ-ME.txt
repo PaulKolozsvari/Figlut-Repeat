@@ -21,3 +21,7 @@ Glimpse Part 2 - Performance Profiler:
 
 Troubleshooting IIS Worker Process High CPU:
 	https://stackify.com/beyond-iis-logs-find-failed-iis-asp-net-requests/
+
+Client-side debugging of ASP.NET projects in Google Chrome
+	https://www.c-sharpcorner.com/article/debugging-with-chrome-in-visual-studio-2017/
+	https://blogs.msdn.microsoft.com/webdev/2016/11/21/client-side-debugging-of-asp-net-projects-in-google-chrome/

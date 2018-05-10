@@ -328,6 +328,10 @@
         {
             try
             {
+                model.DateIdentifier = DataShaper.GetDefaultDateString(model.HolidayDate);
+                model.Year = model.HolidayDate.Year;
+                model.Month = model.HolidayDate.Month;
+                model.Day = model.HolidayDate.Day;
                 SpreadEntityContext context = SpreadEntityContext.Create();
                 if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
                 {
@@ -351,16 +355,26 @@
             }
         }
 
-        public ActionResult CreateDialog()
+        public ActionResult CreateDialog(Nullable<Guid> countryId)
         {
             try
             {
+                if (!countryId.HasValue || countryId.Value == Guid.Empty)
+                {
+                    throw new NullReferenceException(string.Format("{0} not specified for creating a {1}.",
+                        EntityReader<PublicHolidayModel>.GetPropertyName(p => p.CountryId, true),
+                        typeof(PublicHoliday).Name));
+                }
                 SpreadEntityContext context = SpreadEntityContext.Create();
                 if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
                 {
                     return RedirectToHome();
                 }
-                return PartialView(CREATE_PUBLIC_HOLIDAY_PARTIAL_VIEW_NAME, new PublicHolidayModel());
+                return PartialView(CREATE_PUBLIC_HOLIDAY_PARTIAL_VIEW_NAME, new PublicHolidayModel()
+                {
+                    CountryId = countryId.Value,
+                    HolidayDateCreate = DateTime.Now
+                });
             }
             catch (Exception ex)
             {
@@ -375,6 +389,13 @@
         {
             try
             {
+                model.PublicHolidayId = Guid.NewGuid();
+                model.HolidayDate = model.HolidayDateCreate;
+                model.DateIdentifier = DataShaper.GetDefaultDateString(model.HolidayDate);
+                model.Year = model.HolidayDate.Year;
+                model.Month = model.HolidayDate.Month;
+                model.Day = model.HolidayDate.Day;
+                model.DateCreated = DateTime.Now;
                 SpreadEntityContext context = SpreadEntityContext.Create();
                 if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
                 {
@@ -385,8 +406,6 @@
                 {
                     return GetJsonResult(false, errorMessage);
                 }
-                model.PublicHolidayId = Guid.NewGuid();
-                model.DateCreated = DateTime.Now;
                 PublicHoliday publicHoliday = new PublicHoliday();
                 model.CopyPropertiesToPublicHoliday(publicHoliday);
                 context.Save<PublicHoliday>(publicHoliday, false);

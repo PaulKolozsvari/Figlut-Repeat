@@ -42,7 +42,7 @@
             }
         });
         loadDialog("#divConfirmationDialog", "#dlgConfirmation", "ConfirmDeleteDialog", "PublicHoliday", 'identifier', '@Guid.Empty');
+        loadDialog("#divCreatePublicHoliday", "#dlgCreatePublicHoliday", "CreateDialog", "PublicHoliday", 'countryId', '@Model.ParentId');
         loadDialog("#divEditPublicHoliday", "#dlgEditPublicHoliday", "EditDialog", "PublicHoliday", 'publicHolidayId', '@null');
-        loadDialog("#divCreatePublicHoliday", "#dlgCreatePublicHoliday", "CreateDialog", "PublicHoliday", '', '@null');
     });
 </script>

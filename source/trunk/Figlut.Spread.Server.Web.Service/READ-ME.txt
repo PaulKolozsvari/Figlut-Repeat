@@ -13,8 +13,8 @@ Public Holiday Websites:
 		https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3
 		
 		Sample command line to download from Binary Calendar:
-		/download_country_public_holidays zaf "South Africa" 2018
-		/download_all_countries_public_holidays 2018
+			/download_country_public_holidays zaf "South Africa" 2018
+			/download_all_countries_public_holidays 2018
 
 	http://www.calendarlabs.com/ical-calendar-holidays.php
 

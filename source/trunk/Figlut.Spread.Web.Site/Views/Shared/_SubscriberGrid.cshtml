@@ -84,7 +84,6 @@
                 grid.Column("Subscribers", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
                 grid.Column(EntityReader<SubscriberModel>.GetPropertyName(p => p.CellPhoneNumber, false), "Cell Phone Number"),
                 grid.Column(EntityReader<SubscriberModel>.GetPropertyName(p => p.Name, false), "Name"),
-                grid.Column(EntityReader<SubscriberModel>.GetPropertyName(p => p.IsEnabled, false), "Enabled"),
                 grid.Column(EntityReader<SubscriberModel>.GetPropertyName(p => p.DateCreated, false), "Date Created")
             ))
         </div>
