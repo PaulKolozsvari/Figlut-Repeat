@@ -48,6 +48,7 @@
                 <div style="float: right; margin-left:2%; margin-right:2%">
                     @if (string.IsNullOrEmpty(ViewBag.ErrorMessage) && Model.IsAdministrator)
                     {
+                        @Html.LinkButtonForSubmit("Generate", "onGeneratePublicHolidaysForYear()", "btnGeneratePublicHolidaysForYear", "red-calendar-icon32.png")
                         @Html.LinkButtonForSubmit("Create", "onCreatePublicHolidayClick()", "btnCreatePublicHoliday", "red-document-plus-icon32.png")
                         @Html.LinkButtonForCancel("Delete All", "onDeleteAllPublicHolidaysClick()", "btnDeleteAllPublicHolidays")
                         if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
@@ -144,6 +145,16 @@
             '#divCreatePublicHoliday',
             '#dlgCreatePublicHoliday',
             'CreateDialog',
+            'PublicHoliday',
+            'countryId',
+            '@Model.ParentId');
+    };
+
+    function onGeneratePublicHolidaysForYear() {
+        showDialog(
+            '#divGenerateCountryPublicHolidays',
+            '#dlgGenerateCountryPublicHolidays',
+            'GenerateCountryPublicHolidays',
             'PublicHoliday',
             'countryId',
             '@Model.ParentId');

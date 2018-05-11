@@ -4,6 +4,7 @@
 
     using Figlut.Server.Toolkit.Data;
     using Figlut.Server.Toolkit.Data.DB.LINQ;
+    using Figlut.Server.Toolkit.Data.iCalendar;
     using Figlut.Server.Toolkit.Utilities;
     using Figlut.Server.Toolkit.Utilities.Logging;
     using Figlut.Server.Toolkit.Web.Client;
@@ -73,6 +74,7 @@
         private SmsSender _smsSender;
         private EmailSender _emailSender;
         private IP_API_WebServiceClientXml _whoIsWebClient;
+        private ICalCalendarDownloader _calendarDownloader;
 
         #endregion //Fields
 
@@ -135,6 +137,18 @@
                     InitializeWhoIsWebClient();
                 }
                 return _whoIsWebClient;
+            }
+        }
+
+        public ICalCalendarDownloader CalendarDownloader
+        {
+            get
+            {
+                if (_calendarDownloader == null)
+                {
+                    _calendarDownloader = new ICalCalendarDownloader(Settings.ICalendarUrl);
+                }
+                return _calendarDownloader;
             }
         }
 

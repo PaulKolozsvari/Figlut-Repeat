@@ -40,6 +40,8 @@
 
         public string ApplicationName { get; set; }
 
+        public string ICalendarUrl { get; set; }
+
         public string HowitWorksImageGalleryDirectory { get; set; }
 
         public string WhyItWorksImageGalleryDirectory { get; set; }

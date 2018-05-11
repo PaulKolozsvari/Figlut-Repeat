@@ -15,6 +15,7 @@
     using System.Web.Mvc;
     using Figlut.Server.Toolkit.Data;
     using Figlut.Server.Toolkit.Utilities;
+    using Figlut.Server.Toolkit.Data.iCalendar;
 
     #endregion //Using Directives
 
@@ -25,6 +26,7 @@
         private const string PUBLIC_HOLIDAY_GRID_PARTIAL_VIEW_NAME = "_PublicHolidayGrid";
         private const string EDIT_PUBLIC_HOLIDAY_PARTIAL_VIEW_NAME = "_EditPublicHolidayDialog";
         private const string CREATE_PUBLIC_HOLIDAY_PARTIAL_VIEW_NAME = "_CreatePublicHolidayDialog";
+        private const string GENERATE_COUNTRY_PUBLIC_HOLIDAYS_VIEW_NAME = "_GenerateCountryPublicHolidaysDialog";
 
         #endregion //Constants
 
@@ -305,7 +307,7 @@
                 {
                     return RedirectToHome();
                 }
-                if (!publicHolidayId.HasValue)
+                if (!publicHolidayId.HasValue || publicHolidayId.Value == Guid.Empty)
                 {
                     return PartialView(EDIT_PUBLIC_HOLIDAY_PARTIAL_VIEW_NAME, new PublicHolidayModel());
                 }
@@ -363,7 +365,7 @@
                 {
                     throw new NullReferenceException(string.Format("{0} not specified for creating a {1}.",
                         EntityReader<PublicHolidayModel>.GetPropertyName(p => p.CountryId, true),
-                        typeof(PublicHoliday).Name));
+                        DataShaper.ShapeCamelCaseString(typeof(PublicHoliday).Name)));
                 }
                 SpreadEntityContext context = SpreadEntityContext.Create();
                 if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
@@ -380,7 +382,7 @@
             {
                 ExceptionHandler.HandleException(ex);
                 SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
-                return GetJsonResult(true);
+                return GetJsonResult(false, ex.Message);
             }
         }
 
@@ -409,6 +411,71 @@
                 PublicHoliday publicHoliday = new PublicHoliday();
                 model.CopyPropertiesToPublicHoliday(publicHoliday);
                 context.Save<PublicHoliday>(publicHoliday, false);
+                return GetJsonResult(true);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
+
+        public ActionResult GenerateCountryPublicHolidays(Nullable<Guid> countryId)
+        {
+            try
+            {
+                if (!countryId.HasValue || countryId.Value == Guid.Empty)
+                {
+                    throw new NullReferenceException(string.Format("{0} not specified for downloading {1}s.",
+                        EntityReader<GenerateCountryPublicHolidaysModel>.GetPropertyName(p => p.CountryId, true),
+                        DataShaper.ShapeCamelCaseString(typeof(PublicHoliday).Name)));
+                }
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
+                {
+                    return RedirectToHome();
+                }
+                Country country = context.GetCountry(countryId.Value, true);
+                return PartialView(GENERATE_COUNTRY_PUBLIC_HOLIDAYS_VIEW_NAME, new GenerateCountryPublicHolidaysModel()
+                {
+                    CountryId = country.CountryId,
+                    CountryCode = country.CountryCode,
+                    CountryName = country.CountryName,
+                    Year = DateTime.Now.Year
+                });
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(true);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult GenerateCountryPublicHolidays(GenerateCountryPublicHolidaysModel model)
+        {
+            try
+            {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
+                {
+                    return RedirectToHome();
+                }
+                string errorMessage = null;
+                if (!model.IsValid(out errorMessage))
+                {
+                    return GetJsonResult(false, errorMessage);
+                }
+                Country country = context.GetCountry(model.CountryId, true);
+                ICalCalendar calendar = SpreadWebApp.Instance.CalendarDownloader.DownloadICalCalendar(
+                    country.CountryCode, 
+                    country.CountryName, 
+                    model.Year, 
+                    null, 
+                    true);
+                context.SavePublicHolidaysFromICalCalendar(calendar);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

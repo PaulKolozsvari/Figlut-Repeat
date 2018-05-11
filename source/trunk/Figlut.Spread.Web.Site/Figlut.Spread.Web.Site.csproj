@@ -228,6 +228,7 @@
     <Compile Include="Models\CountryModel.cs" />
     <Compile Include="Models\CreateOrderModel.cs" />
     <Compile Include="Models\CreateSmsCampaignModel.cs" />
+    <Compile Include="Models\GenerateCountryPublicHolidaysModel.cs" />
     <Compile Include="Models\EditUserPasswordModel.cs" />
     <Compile Include="Models\FilterModel.cs" />
     <Compile Include="Models\GlobalSettingModel.cs" />
@@ -536,6 +537,7 @@
     <Content Include="Views\Shared\_PublicHolidayGrid.cshtml" />
     <Content Include="Views\Shared\_EditPublicHolidayDialog.cshtml" />
     <Content Include="Views\Shared\_CreatePublicHolidayDialog.cshtml" />
+    <Content Include="Views\Shared\_GenerateCountryPublicHolidaysDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
