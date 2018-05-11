@@ -473,7 +473,7 @@
                     country.CountryCode, 
                     country.CountryName, 
                     model.Year, 
-                    null, 
+                    null,
                     true);
                 context.SavePublicHolidaysFromICalCalendar(calendar);
                 return GetJsonResult(true);

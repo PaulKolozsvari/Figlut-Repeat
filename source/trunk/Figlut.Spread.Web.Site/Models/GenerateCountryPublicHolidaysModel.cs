@@ -45,9 +45,9 @@
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<GenerateCountryPublicHolidaysModel>.GetPropertyName(p => p.Year, true));
             }
-            if (this.Year.ToString().Length != 4)
+            if (this.Year.ToString().Length != 4 || this.Year < DateTime.Now.Year)
             {
-                errorMessage = string.Format("{0} must be 4 digits long and greater than 2000.", EntityReader<GenerateCountryPublicHolidaysModel>.GetPropertyName(p => p.Year, true));
+                errorMessage = string.Format("{0} must be 4 digits long and greater or equal to the current year.", EntityReader<GenerateCountryPublicHolidaysModel>.GetPropertyName(p => p.Year, true));
             }
             return string.IsNullOrEmpty(errorMessage);
         }
