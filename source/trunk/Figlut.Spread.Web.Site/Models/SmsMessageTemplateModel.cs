@@ -41,7 +41,7 @@
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<SmsMessageTemplateModel>.GetPropertyName(p => p.Message, true));
             }
-            if (this.Message.Length > maxSmsSendMessageLength)
+            else if (this.Message.Length > maxSmsSendMessageLength)
             {
                 errorMessage = string.Format("{0} may not be longer {1} characters.",
                     EntityReader<SmsMessageTemplateModel>.GetPropertyName(p => p.Message, true),
@@ -75,7 +75,7 @@
             smsMessageTemplate.SmsMessageTemplateId = this.SmsMessageTemplateId;
             smsMessageTemplate.OrganizationId = this.OrganizationId;
             smsMessageTemplate.Message = this.Message;
-            smsMessageTemplate.DateCreated = smsMessageTemplate.DateCreated;
+            smsMessageTemplate.DateCreated = this.DateCreated;
         }
 
         #endregion //Methods

@@ -107,6 +107,8 @@
         <div id="divEditPublicHoliday"></div>
         <div id="divCreatePublicHoliday"></div>
         <div id="divGenerateCountryPublicHolidays"></div>
+        <div id="divEditSmsMessageTemplate"></div>
+        <div id="divCreateSmsMessageTemplate"></div>
 
         <a id="back-to-top"></a>
         <header>
@@ -181,6 +183,8 @@
                                                 <br />
                                                 <li>@Html.ActionLink("SMS Campaigns", "Index", "SmsCampaign", new { organizationId = currentOrganization.OrganizationId }, null)</li>
                                                 <br />
+                                                <li>@Html.ActionLink("SMS Message Templates", "Index", "SmsMessageTemplate", new { organizationId = currentOrganization.OrganizationId }, null)</li>
+                                                <br />
                                                 <hr />
                                             }
                                             <li>@Html.ActionLink("Organizations", "Index", "Organization")</li>
@@ -214,6 +218,8 @@
                                                 <li>@Html.ActionLink("Subscriptions", "Index", "OrganizationSubscription", new { organizationId = currentOrganization.OrganizationId }, null)</li>
                                                 <br />
                                                 <li>@Html.ActionLink("SMS Campaigns", "Index", "SmsCampaign", new { organizationId = currentOrganization.OrganizationId }, null)</li>
+                                                <br />
+                                                <li>@Html.ActionLink("SMS Message Templates", "Index", "SmsMessageTemplate", new { organizationId = currentOrganization.OrganizationId }, null)</li>
                                             }
                                         </ul>
                                     </li>   

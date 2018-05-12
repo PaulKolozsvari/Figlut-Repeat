@@ -74,7 +74,8 @@
                           join o in DB.GetTable<Organization>() on s.OrganizationId equals o.OrganizationId into set
                           from sub in set.DefaultIfEmpty()
                           where s.OrganizationId == organizationId.Value &&
-                          (s.Message.ToLower().Contains(searchFilterLower))
+                          (s.Message.ToLower().Contains(searchFilterLower) ||
+                          sub.Name.ToLower().Contains(searchFilterLower))
                           orderby s.Message
                           select new SmsMessageTemplateView()
                           {
@@ -90,7 +91,8 @@
                 result = (from s in DB.GetTable<SmsMessageTemplate>()
                           join o in DB.GetTable<Organization>() on s.OrganizationId equals o.OrganizationId into set
                           from sub in set.DefaultIfEmpty()
-                          where (s.Message.ToLower().Contains(searchFilterLower))
+                          where (s.Message.ToLower().Contains(searchFilterLower) ||
+                          sub.Name.ToLower().Contains(searchFilterLower))
                           orderby s.Message
                           select new SmsMessageTemplateView()
                           {

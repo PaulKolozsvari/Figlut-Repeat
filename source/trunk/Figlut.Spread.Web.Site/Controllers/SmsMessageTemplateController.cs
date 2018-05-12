@@ -1,5 +1,12 @@
 ﻿namespace Figlut.Spread.Web.Site.Controllers
 {
+    #region Using Directives
+
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Mvc;
     using Figlut.Server.Toolkit.Data;
     using Figlut.Server.Toolkit.Utilities;
     using Figlut.Spread.Data;
@@ -9,13 +16,6 @@
     using Figlut.Spread.ORM.Views;
     using Figlut.Spread.Web.Site.Configuration;
     using Figlut.Spread.Web.Site.Models;
-    #region Using Directives
-
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
-    using System.Web.Mvc;
 
     #endregion //Using Directives
 
@@ -25,7 +25,7 @@
 
         private const string SMS_MESSAGE_TEMPLATE_GRID_PARTIAL_VIEW_NAME = "_SmsMessageTemplateGrid";
         private const string EDIT_SMS_MESSAGE_TEMPLATE_PARTIAL_VIEW_NAME = "_EditSmsMessageTemplateDialog";
-        private const string CREATE_SMS_MESSAGE_TEMPLATE_PARTIAL_VIEW_NAME = "_InsertSmsMessageTemplateDialog";
+        private const string CREATE_SMS_MESSAGE_TEMPLATE_PARTIAL_VIEW_NAME = "_CreateSmsMessageTemplateDialog";
 
         #endregion //Constants
 
@@ -77,10 +77,9 @@
                 {
                     return RedirectToHome();
                 }
-                FilterModel<SmsMessageTemplateModel> model = GetSmsMessageTemplateFilterModel(
-                    context, 
-                    new FilterModel<SmsMessageTemplateModel>(), 
-                    organizationId);
+                FilterModel<SmsMessageTemplateModel> model = IsCurrentUserAdministrator(context) ?
+                    GetSmsMessageTemplateFilterModel(context, new FilterModel<SmsMessageTemplateModel>(), null) :
+                    GetSmsMessageTemplateFilterModel(context, new FilterModel<SmsMessageTemplateModel>(), organizationId);
                 ViewBag.SearchFieldIdentifier = model.SearchFieldIdentifier;
                 return View(model);
             }
@@ -159,7 +158,7 @@
                 {
                     Organization organization = context.GetOrganization(smsMessageTemplate.OrganizationId, true);
                     model.Identifier = identifier;
-                    model.ConfirmationMessage = string.Format("Delete SMS Message Template '{0}' for {1} '{2}'?", smsMessageTemplate.Message, typeof(Organization).Name, organization.Name);
+                    model.ConfirmationMessage = string.Format("Delete selected SMS Message Template for {0} '{1}'?", typeof(Organization).Name, organization.Name);
                 }
                 PartialViewResult result = PartialView(CONFIRMATION_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
@@ -215,18 +214,24 @@
                 string[] searchParameters;
                 string searchText;
                 GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
-
-                string organizationIdString = searchParameters[searchParameters.Length - 1];
-                Guid organizationId = Guid.Parse(organizationIdString);
-                Organization organization = context.GetOrganization(organizationId, true);
-                if (!CurrentUserHasAccessToOrganization(organization.OrganizationId, context))
+                if (IsCurrentUserAdministrator(context)) //Asministrators
                 {
-                    return RedirectToHome();
+                    model.ConfirmationMessage = string.Format("Delete all SMS Message Templates loaded for all {0}s?", typeof(Organization).Name);
                 }
-                model.ParentId = organization.OrganizationId;
-                model.ParentCaption = organization.Name;
+                else
+                {
+                    string organizationIdString = searchParameters[searchParameters.Length - 1];
+                    Guid organizationId = Guid.Parse(organizationIdString);
+                    Organization organization = context.GetOrganization(organizationId, true);
+                    if (!CurrentUserHasAccessToOrganization(organization.OrganizationId, context))
+                    {
+                        return RedirectToHome();
+                    }
+                    model.ParentId = organization.OrganizationId;
+                    model.ParentCaption = organization.Name;
+                    model.ConfirmationMessage = string.Format("Delete all SMS Message Templates currently loaded for {0} '{1}'?", typeof(Organization).Name, organization.Name);
+                }
                 model.SearchText = searchText;
-                model.ConfirmationMessage = string.Format("Delete all SMS Message Templates currently loaded for {0} '{1}'?", typeof(Organization).Name, organization.Name);
                 PartialViewResult result = PartialView(CONFIRMATION_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
             }
@@ -243,17 +248,28 @@
         {
             try
             {
-                SpreadEntityContext context = SpreadEntityContext.Create();
-                if (model.ParentId == Guid.Empty)
-                {
-                    return RedirectToError(string.Format("{0} not specified.",
-                        EntityReader<SmsMessageTemplate>.GetPropertyName(p => p.OrganizationId, false)));
-                }
-                if (!Request.IsAuthenticated || !CurrentUserHasAccessToOrganization(model.ParentId, context))
+                if (!Request.IsAuthenticated)
                 {
                     return RedirectToHome();
                 }
-                context.DeleteSmsMessageTemplatesByFilter(model.SearchText, model.ParentId);
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (IsCurrentUserAdministrator(context))
+                {
+                    context.DeleteSmsMessageTemplatesByFilter(model.SearchText, null);
+                }
+                else
+                {
+                    if (!CurrentUserHasAccessToOrganization(model.ParentId, context))
+                    {
+                        return RedirectToHome();
+                    }
+                    if (model.ParentId == Guid.Empty)
+                    {
+                        return RedirectToError(string.Format("{0} not specified.",
+                            EntityReader<SmsMessageTemplate>.GetPropertyName(p => p.OrganizationId, false)));
+                    }
+                    context.DeleteSmsMessageTemplatesByFilter(model.SearchText, model.ParentId);
+                }
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -268,26 +284,35 @@
         {
             try
             {
-                SpreadEntityContext context = SpreadEntityContext.Create();
-
-                string[] searchParameters;
-                string searchText;
-                GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
-
-                string organizationIdString = searchParameters[searchParameters.Length - 1];
-                Guid organizationId = Guid.Parse(organizationIdString);
-                Organization organization = context.GetOrganization(organizationId, true);
-                if (organizationId == Guid.Empty)
-                {
-                    return RedirectToError(string.Format("{0} not specified.",
-                        EntityReader<SmsMessageTemplate>.GetPropertyName(p => p.OrganizationId, false)));
-                }
-                if (!Request.IsAuthenticated || !CurrentUserHasAccessToOrganization(organization.OrganizationId, context))
+                if (!Request.IsAuthenticated)
                 {
                     return RedirectToHome();
                 }
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                string[] searchParameters;
+                string searchText;
                 GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
-                List<SmsMessageTemplateView> smsMessageTemplateList = context.GetSmsMessageTemplateViewsByFilter(searchText, organizationId);
+                List<SmsMessageTemplateView> smsMessageTemplateList = null;
+                if (IsCurrentUserAdministrator(context))
+                {
+                    smsMessageTemplateList = context.GetSmsMessageTemplateViewsByFilter(searchText, null);
+                }
+                else
+                {
+                    string organizationIdString = searchParameters[searchParameters.Length - 1];
+                    Guid organizationId = Guid.Parse(organizationIdString);
+                    Organization organization = context.GetOrganization(organizationId, true);
+                    if (organizationId == Guid.Empty)
+                    {
+                        return RedirectToError(string.Format("{0} not specified.",
+                            EntityReader<SmsMessageTemplate>.GetPropertyName(p => p.OrganizationId, false)));
+                    }
+                    if (!CurrentUserHasAccessToOrganization(organization.OrganizationId, context))
+                    {
+                        return RedirectToHome();
+                    }
+                    smsMessageTemplateList = context.GetSmsMessageTemplateViewsByFilter(searchText, organizationId);
+                }
                 EntityCache<Guid, SmsMessageTemplateCsv> cache = new EntityCache<Guid, SmsMessageTemplateCsv>();
                 foreach (SmsMessageTemplateView v in smsMessageTemplateList)
                 {
@@ -310,13 +335,18 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!smsMessageTemplateId.HasValue)
+                if (!smsMessageTemplateId.HasValue || smsMessageTemplateId.Value == Guid.Empty)
                 {
                     return PartialView(EDIT_SMS_MESSAGE_TEMPLATE_PARTIAL_VIEW_NAME, new SmsMessageTemplateModel());
                 }
                 SmsMessageTemplateView smsMessageTemplateView = context.GetSmsMessageTemplateView(smsMessageTemplateId.Value, true);
                 SmsMessageTemplateModel model = new SmsMessageTemplateModel();
                 model.CopyPropertiesFromSmsMessageTemplateView(smsMessageTemplateView);
+                if (IsCurrentUserAdministrator(context))
+                {
+                    Organization organization = context.GetOrganization(model.OrganizationId, true);
+                    RefreshOrganizationsList(context, organization);
+                }
                 PartialViewResult result = PartialView(EDIT_SMS_MESSAGE_TEMPLATE_PARTIAL_VIEW_NAME, model);
                 return result;
             }
@@ -333,13 +363,23 @@
         {
             try
             {
+                if (!Request.IsAuthenticated)
+                {
+                    return RedirectToHome();
+                }
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                RefreshOrganizationsList(context, null);
+                if (IsCurrentUserAdministrator(context))
+                {
+                    Organization organization = context.GetOrganization(model.OrganizationId, true);
+                    RefreshOrganizationsList(context, organization);
+                }
                 string errorMessage = null;
                 int maxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
                 if (!model.IsValid(out errorMessage, maxSmsSendMessageLength))
                 {
                     return GetJsonResult(false, errorMessage);
                 }
-                SpreadEntityContext context = SpreadEntityContext.Create();
                 SmsMessageTemplate smsMessageTemplate = context.GetSmsMessageTemplate(model.SmsMessageTemplateId, true);
                 model.CopyPropertiesToSmsMessageTemplate(smsMessageTemplate);
                 context.Save<SmsMessageTemplate>(smsMessageTemplate, false);
@@ -353,11 +393,35 @@
             }
         }
 
-        public ActionResult CreateDialog()
+        public ActionResult CreateDialog(Nullable<Guid> organizationId)
         {
             try
             {
-                return PartialView(CREATE_SMS_MESSAGE_TEMPLATE_PARTIAL_VIEW_NAME, new SmsMessageTemplateModel());
+                if (!Request.IsAuthenticated)
+                {
+                    return RedirectToHome();
+                }
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                SmsMessageTemplateModel model = new SmsMessageTemplateModel();
+                if (IsCurrentUserAdministrator(context))
+                {
+                    Organization organization = GetCurrentOrganization(context, true);
+                    RefreshOrganizationsList(context, organization);
+                    model = new SmsMessageTemplateModel()
+                    {
+                        SmsMessageTemplateId = Guid.NewGuid(),
+                        OrganizationId = organization.OrganizationId,
+                        OrganizationName = organization.Name,
+                        DateCreated = DateTime.Now
+                    };
+                }
+                else if (!organizationId.HasValue || organizationId.Value == Guid.Empty)
+                {
+                    return RedirectToError(string.Format("{0} not specified.",
+                        EntityReader<SmsMessageTemplate>.GetPropertyName(p => p.OrganizationId, false)));
+                }
+                PartialViewResult result = PartialView(CREATE_SMS_MESSAGE_TEMPLATE_PARTIAL_VIEW_NAME, model);
+                return result;
             }
             catch (Exception ex)
             {
@@ -372,13 +436,22 @@
         {
             try
             {
+                if (!Request.IsAuthenticated)
+                {
+                    return RedirectToHome();
+                }
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (IsCurrentUserAdministrator(context))
+                {
+                    Organization organization = GetCurrentOrganization(context, true);
+                    RefreshOrganizationsList(context, organization);
+                }
                 string errorMessage = null;
                 int maxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
                 if (!model.IsValid(out errorMessage, maxSmsSendMessageLength))
                 {
                     return GetJsonResult(false, errorMessage);
                 }
-                SpreadEntityContext context = SpreadEntityContext.Create();
                 model.SmsMessageTemplateId = Guid.NewGuid();
                 model.DateCreated = DateTime.Now;
                 SmsMessageTemplate smsMessageTemplate = new SmsMessageTemplate();
@@ -395,5 +468,34 @@
         }
 
         #endregion //Actions
+
+        #region Methods
+
+        public void RefreshOrganizationsList(SpreadEntityContext context, Organization defaultOrganization)
+        {
+            if (context == null)
+            {
+                context = SpreadEntityContext.Create();
+            }
+            if (defaultOrganization == null)
+            {
+                defaultOrganization = base.GetCurrentOrganization(context, true);
+            }
+            List<SelectListItem> organizationsList = new List<SelectListItem>();
+            List<Organization> organizations = context.GetOrganizationsByFilter(string.Empty);
+            foreach (Organization o in organizations)
+            {
+                organizationsList.Add(new SelectListItem()
+                {
+                    Text = o.Name,
+                    Value = o.OrganizationId.ToString(),
+                    Selected = false
+                });
+            }
+            ViewBag.OrganizationsList = organizationsList;
+            ViewBag.OrganizationId = defaultOrganization.OrganizationId.ToString();
+        }
+
+        #endregion //Methods
     }
 }

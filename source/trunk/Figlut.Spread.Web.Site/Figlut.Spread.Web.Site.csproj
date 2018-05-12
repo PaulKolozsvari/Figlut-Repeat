@@ -538,6 +538,10 @@
     <Content Include="Views\Shared\_EditPublicHolidayDialog.cshtml" />
     <Content Include="Views\Shared\_CreatePublicHolidayDialog.cshtml" />
     <Content Include="Views\Shared\_GenerateCountryPublicHolidaysDialog.cshtml" />
+    <Content Include="Views\SmsMessageTemplate\Index.cshtml" />
+    <Content Include="Views\Shared\_SmsMessageTemplateGrid.cshtml" />
+    <Content Include="Views\Shared\_EditSmsMessageTemplateDialog.cshtml" />
+    <Content Include="Views\Shared\_CreateSmsMessageTemplateDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
