@@ -1,10 +1,10 @@
 ﻿@model Figlut.Spread.Web.Site.Models.SubscriberModel
 
-<div id="dlgEditSubscriber">
-    <img src="~/Images/Icons/red-edit32.png" style="float:right; margin-right:1%; margin-left:1%"/>
+<div id="dlgCreateSubscriber">
+    <img src="~/Images/Icons/red-document-plus-icon32.png" style="float:right; margin-right:1%; margin-left:1%" />
     <div class="centerForm">
-        <form id="EditSubscriberForm">
-            @Html.ValidationSummary(true, "Failed to edit.")
+        <form id="CreateSubscriberForm">
+            @Html.ValidationSummary(true, "Failed to Create.")
             <fieldset>
                 <legend>Confirmation Form</legend>
                 @Html.HiddenFor(m => m.SubscriberId)
@@ -28,20 +28,20 @@
                 </div>
                 <div class="editor-field">
                     @Html.DropDownListFor(m => m.Enabled, new SelectList(
-                        new[] 
-                        { 
+                        new[]
+                        {
                             new { Value = "true", Text = "Yes" },
                             new { Value = "false", Text = "No" },
                         },
                         "Value",
                         "Text",
                         Model
-                    ), 
+                    ),
                     new { @class = "drop-down-field" })
                     @Html.ValidationMessageFor(m => m.Enabled, "Enabled is required.")
                 </div>
                 <br />
-                <div id="EditSubscriberErrorField" style="color:#8A0808"></div>
+                <div id="CreateSubscriberErrorField" style="color:#8A0808"></div>
             </fieldset>
         </form>
     </div>
@@ -49,17 +49,17 @@
 
 <script type="text/javascript">
     $(function () {
-        var dialogName = '#dlgEditSubscriber';
-        createDialog(dialogName, 'Edit Subscriber', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
+        var dialogName = '#dlgCreateSubscriber';
+        createDialog(dialogName, 'Create Subscriber', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
     });
 
     function onConfirmOK() {
-        var dialogName = '#dlgEditSubscriber';
-        var postBackUrl = '@Url.Action("EditDialog", "Subscriber")';
+        var dialogName = '#dlgCreateSubscriber';
+        var postBackUrl = '@Url.Action("CreateDialog", "Subscriber")';
         $.ajax({
             url: postBackUrl,
             type: 'POST',
-            data: $("#EditSubscriberForm").serialize(),
+            data: $("#CreateSubscriberForm").serialize(),
             success: function (data) {
                 if (data.Success) {
                     $(dialogName).dialog("close");
@@ -67,7 +67,7 @@
                     var form = $('#frmDetails');
                     form.submit()
                 } else {
-                    $("#EditSubscriberErrorField").html(data.ErrorMsg);
+                    $("#CreateSubscriberErrorField").html(data.ErrorMsg);
                 }
             }
         })
@@ -79,6 +79,6 @@
 
     function onConfirmCancel() {
         //$('#confirmation-message').val('');
-        $("#EditSubscriberErrorField").html('');
+        $("#CreateSubscriberErrorField").html('');
     }
 </script>

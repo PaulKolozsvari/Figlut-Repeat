@@ -375,6 +375,8 @@
                 model.SmsProcessorMessageTrimOnGrid = Convert.ToBoolean(context.GetGlobalSettingBySettingName(GlobalSettingName.SmsProcessorMessageTrimOnGrid, true).SettingValue);
                 model.SmsProcessorMessageTrimLengthOnGrid = Convert.ToInt32(context.GetGlobalSettingBySettingName(GlobalSettingName.SmsProcessorMessageTrimLengthOnGrid, true).SettingValue);
 
+                model.DefaultRepeatDaysInterval = Convert.ToInt32(context.GetGlobalSettingBySettingName(GlobalSettingName.DefaultRepeatDaysInterval, true).SettingValue);
+
                 model.FiglutPhoneNumber = context.GetGlobalSettingBySettingName(GlobalSettingName.FiglutPhoneNumber, true).SettingValue;
                 model.FiglutSupportEmailAddress = context.GetGlobalSettingBySettingName(GlobalSettingName.FiglutSupportEmailAddress, true).SettingValue;
                 model.FiglutMarketingEmailAddress = context.GetGlobalSettingBySettingName(GlobalSettingName.FiglutMarketingEmailAddress, true).SettingValue;
@@ -532,6 +534,9 @@
                 GlobalSetting webRequestActivityDaysToDisplay = context.GetGlobalSettingBySettingName(GlobalSettingName.WebRequestActivityDaysToDisplay, true);
                 webRequestActivityDaysToDisplay.SettingValue = model.WebRequestActivityDaysToDisplay.ToString();
 
+                GlobalSetting defaultRepeatDaysInterval = context.GetGlobalSettingBySettingName(GlobalSettingName.DefaultRepeatDaysInterval, true);
+                defaultRepeatDaysInterval.SettingValue = model.DefaultRepeatDaysInterval.ToString();
+
                 GlobalSetting figlutPhoneNumber = context.GetGlobalSettingBySettingName(GlobalSettingName.FiglutPhoneNumber, true);
                 figlutPhoneNumber.SettingValue = model.FiglutPhoneNumber;
 
@@ -592,6 +597,7 @@
                     maximumSmsDateRangeDaysToDisplay,
                     smsProcessorMessageTrimOnGrid,
                     smsProcessorMessageTrimLengthOnGrid,
+                    defaultRepeatDaysInterval,
                     figlutPhoneNumber,
                     figlutSupportEmailAddress,
                     figlutMarketingEmailAddress,

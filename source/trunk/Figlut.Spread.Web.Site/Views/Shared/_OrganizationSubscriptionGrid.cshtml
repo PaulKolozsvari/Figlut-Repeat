@@ -43,6 +43,11 @@
                     @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
                     {
                         @Html.LinkButtonForSubmit("Download", "onDownloadAllOrganizationSubscriptionsCsvFileClick()", "btnDownload", "spreadsheet.png")
+                        if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+                        {
+                            organizationSubscription = (OrganizationSubscriptionModel)grid.Rows[grid.SelectedIndex].Value;
+                            @Html.LinkButtonForSubmit("Repeats", "onViewRepeatSchedulesClick()", "btnViewRepeatSchedules", "red-calendar-icon32.png")
+                        }
                     }
                 </div>
                 <div style="float: right; margin-left:2%; margin-right:2%">
@@ -151,7 +156,7 @@
     function onDeleteAllOrganizationSubscriptionsClick() {
         var searchParameters = getSearchParametersString();
         showDialog(
-            '#divConfirmationDialog', 
+            '#divConfirmationDialog',
             '#dlgConfirmation',
             'ConfirmDeleteAllDialog',
             'OrganizationSubscription',
@@ -174,6 +179,13 @@
         var searchParameters = getSearchParametersString();
         var downloadUrl = '@Url.Action("DownloadCsvFile", "OrganizationSubscription", new { searchParametersString = "_searchValue" })';
         downloadUrl = downloadUrl.replace('_searchValue', searchParameters);
+        window.location = downloadUrl;
+    }
+
+    function onViewRepeatSchedulesClick() {
+        var selectedSubscriptionId = '@organizationSubscription.SubscriptionId';
+        var downloadUrl = '@Url.Action("Index", "RepeatSchedule", new { subscriptionId = "_subscriptionId" })';
+        downloadUrl = downloadUrl.replace('_subscriptionId', selectedSubscriptionId);
         window.location = downloadUrl;
     }
 

@@ -49,8 +49,9 @@
                     }
                 </div>
                 <div style="float: right; margin-left:2%; margin-right:2%">
-                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage) && Model.IsAdministrator)
                     {
+                        @Html.LinkButtonForSubmit("Create", "onCreateSubscriberClick()", "btnCreateSubscriber", "red-document-plus-icon32.png")
                         @Html.LinkButtonForCancel("Delete All", "onDeleteAllSubscribersClick()", "btnDeleteAllSubscribers")
                         if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
                         {
@@ -84,6 +85,7 @@
                 grid.Column("Subscribers", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
                 grid.Column(EntityReader<SubscriberModel>.GetPropertyName(p => p.CellPhoneNumber, false), "Cell Phone Number"),
                 grid.Column(EntityReader<SubscriberModel>.GetPropertyName(p => p.Name, false), "Name"),
+                grid.Column(EntityReader<SubscriberModel>.GetPropertyName(p => p.Enabled, false), "Name"),
                 grid.Column(EntityReader<SubscriberModel>.GetPropertyName(p => p.DateCreated, false), "Date Created")
             ))
         </div>
@@ -139,6 +141,16 @@
             'subscriberId',
             '@subscriber.SubscriberId.ToString()');
     };
+
+    function onCreateSubscriberClick() {
+        showDialog(
+            '#divCreateSubscriber',
+            '#dlgCreateSubscriber',
+            'CreateDialog',
+            'Subscriber',
+            '',
+            '');
+    }
 
     function getSearchParametersString() {
         var searchParameters = '@string.Format("{0}|{1}|{2}",

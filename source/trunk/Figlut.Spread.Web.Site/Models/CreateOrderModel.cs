@@ -1,12 +1,12 @@
 ﻿namespace Figlut.Spread.Web.Site.Models
 {
-    using Figlut.Spread.ORM;
     #region Using Directives
 
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web;
+    using Figlut.Spread.ORM;
 
     #endregion //Using Directives
 

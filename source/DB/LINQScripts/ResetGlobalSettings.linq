@@ -528,5 +528,16 @@ GlobalSetting organizationIdentifierMaxLength = new GlobalSetting()
 };
 GlobalSettings.InsertOnSubmit(organizationIdentifierMaxLength);
 
+GlobalSetting defaultDaysRepeatInterval = new GlobalSetting()
+{
+	GlobalSettingId = Guid.NewGuid(),
+	Category = "Repeat Schedule",
+	SettingName = "DefaultRepeatDaysInterval",
+	SettingValue = "30",
+	DateCreated = DateTime.Now,
+	Description = "The default number of days displayed when creating a Repeat Schedule."
+};
+GlobalSettings.InsertOnSubmit(defaultDaysRepeatInterval);
+
 SubmitChanges();
 GlobalSettings.OrderBy (gs => gs.SettingName).Dump();

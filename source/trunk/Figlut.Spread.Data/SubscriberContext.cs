@@ -72,7 +72,7 @@
                           join subscriber in DB.GetTable<Subscriber>() on subscription.SubscriberId equals subscriber.SubscriberId
                           where (subscription.OrganizationId == organizationId.Value) &&
                           (subscriber.CellPhoneNumber.ToLower().Contains(searchFilterLower))
-                          orderby subscriber.DateCreated descending, subscriber.Name, subscriber.CellPhoneNumber
+                          orderby subscriber.DateCreated descending
                           select subscriber).ToList();
             }
             else
@@ -81,7 +81,7 @@
                           where subscriber.CellPhoneNumber.ToLower().Contains(searchFilterLower) ||
                           subscriber.Name.ToLower().Contains(searchFilterLower) ||
                           subscriber.Enabled.ToString().ToLower().Contains(searchFilterLower)
-                          orderby subscriber.DateCreated descending, subscriber.Name, subscriber.CellPhoneNumber
+                          orderby subscriber.DateCreated descending
                           select subscriber).ToList();
             }
             return result;

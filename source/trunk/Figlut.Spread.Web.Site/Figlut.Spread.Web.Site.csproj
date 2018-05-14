@@ -227,6 +227,7 @@
     <Compile Include="Models\ConfirmationModel.cs" />
     <Compile Include="Models\CountryModel.cs" />
     <Compile Include="Models\CreateOrderModel.cs" />
+    <Compile Include="Models\CreateRepeatScheduleModel.cs" />
     <Compile Include="Models\CreateSmsCampaignModel.cs" />
     <Compile Include="Models\GenerateCountryPublicHolidaysModel.cs" />
     <Compile Include="Models\EditUserPasswordModel.cs" />
@@ -542,6 +543,15 @@
     <Content Include="Views\Shared\_SmsMessageTemplateGrid.cshtml" />
     <Content Include="Views\Shared\_EditSmsMessageTemplateDialog.cshtml" />
     <Content Include="Views\Shared\_CreateSmsMessageTemplateDialog.cshtml" />
+    <Content Include="Views\RepeatSchedule\Index.cshtml" />
+    <Content Include="Views\Shared\_RepeatScheduleGrid.cshtml" />
+    <Content Include="Views\Shared\_EditRepeatScheduleDialog.cshtml" />
+    <Content Include="Views\Shared\_CreateRepeatScheduleDialog.cshtml" />
+    <Content Include="Views\RepeatScheduleEntry\Index.cshtml" />
+    <Content Include="Views\Shared\_RepeatScheduleEntryGrid.cshtml" />
+    <Content Include="Views\Shared\_EditRepeatScheduleEntryDialog.cshtml" />
+    <Content Include="Views\Shared\_CreateRepeatScheduleEntryDialog.cshtml" />
+    <Content Include="Views\Shared\_CreateSubscriberDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

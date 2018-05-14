@@ -1,5 +1,12 @@
 ﻿namespace Figlut.Spread.Web.Site.Controllers
 {
+    #region Using Directives
+
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Mvc;
     using Figlut.Server.Toolkit.Data;
     using Figlut.Server.Toolkit.Utilities;
     using Figlut.Spread.Data;
@@ -8,13 +15,6 @@
     using Figlut.Spread.ORM.Views;
     using Figlut.Spread.Web.Site.Configuration;
     using Figlut.Spread.Web.Site.Models;
-    #region Using Directives
-
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
-    using System.Web.Mvc;
 
     #endregion //Using Directives
 
@@ -350,36 +350,52 @@
             }
         }
 
-        public ActionResult CreateDialog()
+        public ActionResult CreateDialog(Nullable<Guid> subscriptionId)
         {
             try
             {
-                return PartialView(CREATE_REPEAT_SCHEDULE_PARTIAL_VIEW_NAME, new RepeatScheduleModel());
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated)
+                {
+                    return RedirectToHome();
+                }
+                if (!subscriptionId.HasValue || subscriptionId.Value == Guid.Empty)
+                {
+                    return PartialView(CREATE_REPEAT_SCHEDULE_PARTIAL_VIEW_NAME, new CreateRepeatScheduleModel());
+                }
+                CreateRepeatScheduleView view = context.GetCreateRepeatScheduleModelView(subscriptionId.Value, true);
+                CreateRepeatScheduleModel model = new CreateRepeatScheduleModel();
+                model.CopyPropertiesFromCreateRepeatScheduleView(view);
+                model.DaysRepeatInterval = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[ORM.Helpers.GlobalSettingName.DefaultRepeatDaysInterval].SettingValue);
+                PartialViewResult result = PartialView(CREATE_REPEAT_SCHEDULE_PARTIAL_VIEW_NAME, model);
+                return result;
             }
             catch (Exception ex)
             {
                 ExceptionHandler.HandleException(ex);
                 SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
-                return GetJsonResult(true);
+                return GetJsonResult(false, ex.Message);
             }
         }
 
         [HttpPost]
-        public ActionResult CreateDialog(RepeatScheduleModel model)
+        public ActionResult CreateDialog(CreateRepeatScheduleModel model)
         {
             try
             {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated)
+                {
+                    return RedirectToHome();
+                }
                 string errorMessage = null;
                 if (!model.IsValid(out errorMessage))
                 {
                     return GetJsonResult(false, errorMessage);
                 }
-                SpreadEntityContext context = SpreadEntityContext.Create();
-                model.RepeatScheduleId = Guid.NewGuid();
-                model.DateCreated = DateTime.Now;
-                RepeatSchedule repeatSchedule = new RepeatSchedule();
-                model.CopyPropertiesToRepeatSchedule(repeatSchedule);
-                context.Save<RepeatSchedule>(repeatSchedule, false);
+                CreateRepeatScheduleView view = new CreateRepeatScheduleView();
+                model.CopyPropertiesToCreateRepeatScheduleView(view);
+                context.CreateRepeatSchedule(view);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -389,6 +405,47 @@
                 return GetJsonResult(false, ex.Message);
             }
         }
+
+
+        //public ActionResult CreateDialog()
+        //{
+        //    try
+        //    {
+        //        return PartialView(CREATE_REPEAT_SCHEDULE_PARTIAL_VIEW_NAME, new RepeatScheduleModel());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ExceptionHandler.HandleException(ex);
+        //        SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+        //        return GetJsonResult(true);
+        //    }
+        //}
+
+        //[HttpPost]
+        //public ActionResult CreateDialog(RepeatScheduleModel model)
+        //{
+        //    try
+        //    {
+        //        string errorMessage = null;
+        //        if (!model.IsValid(out errorMessage))
+        //        {
+        //            return GetJsonResult(false, errorMessage);
+        //        }
+        //        SpreadEntityContext context = SpreadEntityContext.Create();
+        //        model.RepeatScheduleId = Guid.NewGuid();
+        //        model.DateCreated = DateTime.Now;
+        //        RepeatSchedule repeatSchedule = new RepeatSchedule();
+        //        model.CopyPropertiesToRepeatSchedule(repeatSchedule);
+        //        context.Save<RepeatSchedule>(repeatSchedule, false);
+        //        return GetJsonResult(true);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ExceptionHandler.HandleException(ex);
+        //        SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+        //        return GetJsonResult(false, ex.Message);
+        //    }
+        //}
 
         #endregion //Actions
     }

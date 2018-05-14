@@ -5,6 +5,7 @@
 
     using Figlut.Server.Toolkit.Data.DB.LINQ;
     using Figlut.Spread.ORM;
+    using Figlut.Spread.ORM.Helpers;
     using Figlut.Spread.ORM.Views;
     using System;
     using System.Collections.Generic;
@@ -37,6 +38,53 @@
         public long GetAllRepeatScheduleCount()
         {
             return DB.GetTable<RepeatSchedule>().LongCount();
+        }
+
+        public CreateRepeatScheduleView GetCreateRepeatScheduleModelView(Guid subscriptionId, bool throwExceptionOnNotFound)
+        {
+            CreateRepeatScheduleView result = (from subscription in DB.GetTable<Subscription>()
+                                               join subscriber in DB.GetTable<Subscriber>() on subscription.SubscriberId equals subscriber.SubscriberId into setSubsciber
+                                               from subscriberView in setSubsciber.DefaultIfEmpty()
+                                               join organization in DB.GetTable<Organization>() on subscription.OrganizationId equals organization.OrganizationId into setOrganization
+                                               from organizationView in setOrganization.DefaultIfEmpty()
+                                               where subscription.SubscriptionId == subscriptionId
+                                               select new CreateRepeatScheduleView()
+                                               {
+                                                   //Subscription
+                                                   SubscriptionId = subscription.SubscriptionId,
+                                                   OrganizationId = subscription.OrganizationId,
+                                                   SubscriberId = subscription.SubscriberId,
+                                                   Enabled = subscription.Enabled,
+                                                   CustomerFullName = subscription.CustomerFullName,
+                                                   CustomerIdentifier = subscription.CustomerIdentifier,
+                                                   CustomerPhysicalAddress = subscription.CustomerPhysicalAddress,
+                                                   CustomerNotes = subscription.CustomerNotes,
+                                                   DateCreated = subscription.DateCreated,
+                                                   //Subscriber
+                                                   CellPhoneNumber = subscriberView.CellPhoneNumber,
+                                                   SubscriberName = subscriberView.Name,
+                                                   SubscriberEnabled = subscriberView.Enabled,
+                                                   SubscriberDateCreated = subscriberView.DateCreated,
+                                                   //Organization
+                                                   OrganizationName = organizationView.Name,
+                                                   OrganizationIdentifier = organizationView.Identifier,
+                                                   OrganizationEmailAddress = organizationView.EmailAddress,
+                                                   OrganizationAddress = organizationView.Address,
+                                                   OrganizationSmsCreditsBalance = organizationView.SmsCreditsBalance,
+                                                   OrganizationAllowSmsCreditsDebt = organizationView.AllowSmsCreditsDebt,
+                                                   OrganizationSubscriptionTypeId = organizationView.OrganizationSubscriptionTypeId,
+                                                   OrganizationSubscriptionEnabled = organizationView.OrganizationSubscriptionEnabled,
+                                                   OrganizationBillingDayOfTheMonth = organizationView.BillingDayOfTheMonth,
+                                                   OrganizationDateCreated = organizationView.DateCreated
+                                               }).FirstOrDefault();
+            if (result == null && throwExceptionOnNotFound)
+            {
+                throw new NullReferenceException(string.Format("Could not find {0} with {1} of '{2}'.",
+                    typeof(CreateRepeatScheduleView).Name,
+                    EntityReader<CreateRepeatScheduleView>.GetPropertyName(p => p.SubscriptionId, false),
+                    subscriptionId.ToString()));
+            }
+            return result;
         }
 
         public RepeatScheduleView GetRepeatScheduleView(Guid repeatScheduleId, bool throwExceptionOnNotFound)
@@ -198,6 +246,113 @@
                 t.Complete();
             }
         }
+
+        #region Repeat Schedule Generation
+
+        public RepeatSchedule CreateRepeatSchedule(
+            CreateRepeatScheduleView view)
+        {
+            RepeatSchedule result = null;
+            using (TransactionScope t = new TransactionScope())
+            {
+                Country country = GetCountry(view.CountryId, true);
+                Dictionary<string, RepeatDateSet> dates = GeneraterepeatScheduleDates(view.StartDate, view.EndDate, country.CountryCode, view.DaysRepeatInterval);
+                result = view.ToRepeatSchedule();
+                DB.GetTable<RepeatSchedule>().InsertOnSubmit(result);
+                List<RepeatScheduleEntry> entries = new List<RepeatScheduleEntry>();
+                dates.Values.ToList().ForEach(p => entries.Add(new RepeatScheduleEntry()
+                {
+                    RepeatScheduleEntryId = Guid.NewGuid(),
+                    RepeatScheduleId = result.RepeatScheduleId,
+                    RepeatDate = p.RepeatDate,
+                    NotificationDate = p.NotificationDate,
+                    SMSNotificationSent = false,
+                    SMSMessageId = null,
+                    SMSDateSent = null,
+                    SmsSentLogId = null,
+                    DateCreated = DateTime.Now
+                }));
+                DB.GetTable<RepeatScheduleEntry>().InsertAllOnSubmit(entries);
+                DB.SubmitChanges();
+                t.Complete();
+            }
+            return result;
+        }
+
+        public Dictionary<string, RepeatDateSet> GeneraterepeatScheduleDates(
+            DateTime startDate,
+            DateTime endDate,
+            string countryCode,
+            int daysRepeatInterval)
+        {
+            if (startDate > endDate)
+            {
+                throw new ArgumentOutOfRangeException("Start Date may not be greater than End Date when generating Medication Schedule Dates.");
+            }
+            Dictionary<string, RepeatDateSet> result = new Dictionary<string, RepeatDateSet>();
+            while (startDate.Date <= endDate.Date)
+            {
+                RepeatDateSet dateSet = new RepeatDateSet();
+                dateSet.RepeatDate = startDate;
+                dateSet.NotificationDate = dateSet.RepeatDate;
+                while (!IsDateWorkingDate(dateSet.NotificationDate, countryCode))
+                {
+                    dateSet.NotificationDate = dateSet.NotificationDate.Subtract(new TimeSpan(1, 0, 0, 0));
+                }
+                string dateIdentifier = DataShaper.GetDefaultDateString(dateSet.RepeatDate);
+                if (!result.ContainsKey(dateIdentifier))
+                {
+                    result.Add(dateIdentifier, dateSet);
+                }
+                startDate = startDate.AddDays(daysRepeatInterval);
+            }
+            return result;
+        }
+
+        public bool IsDateWorkingDate(DateTime date, string countryCode)
+        {
+            if (string.IsNullOrEmpty(countryCode))
+            {
+                throw new ArgumentNullException("Country Code may not be null or empty.");
+            }
+            bool isWeekend = IsDateWeekendDay(date);
+            bool isPublicHoliday = IsDatePublicHoliday(date, countryCode);
+            return !(isWeekend || isPublicHoliday);
+        }
+
+        public bool IsDateWeekendDay(DateTime date)
+        {
+            DayOfWeek dayOfWeek = date.DayOfWeek;
+            if ((date.DayOfWeek == DayOfWeek.Saturday) ||
+                (date.DayOfWeek == DayOfWeek.Sunday))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool IsDatePublicHoliday(DateTime date, string countryCode)
+        {
+            if (string.IsNullOrEmpty(countryCode))
+            {
+                throw new ArgumentNullException("Country Code may not be null or empty.");
+            }
+            string dateIdentifier = DataShaper.GetDefaultDateString(date);
+            PublicHoliday result = GetPublicHolidayByCountry(countryCode, dateIdentifier, false);
+            return result != null;
+        }
+
+        public DateTime ComputeNotificationDate(DateTime repeatDate, string countryCode)
+        {
+            DateTime result = repeatDate;
+            while (!IsDateWorkingDate(result, countryCode))
+            {
+                result = result.Subtract(new TimeSpan(1, 0, 0, 0));
+            }
+            return result;
+        }
+
+        #endregion //Repeat Schedule Generation
 
         #endregion //Repeat Schedule
     }

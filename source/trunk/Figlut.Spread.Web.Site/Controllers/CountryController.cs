@@ -26,8 +26,6 @@
         private const string EDIT_COUNTRY_PARTIAL_VIEW_NAME = "_EditCountryDialog";
         private const string CREATE_COUNTRY_PARTIAL_VIEW_NAME = "_CreateCountryDialog";
 
-        public int CountryView { get; private set; }
-
         #endregion //Constants
 
         #region Methods
@@ -323,11 +321,6 @@
         {
             try
             {
-                SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
-                {
-                    return RedirectToHome();
-                }
                 return PartialView(CREATE_COUNTRY_PARTIAL_VIEW_NAME, new CountryModel());
             }
             catch (Exception ex)

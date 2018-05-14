@@ -363,14 +363,7 @@
             {
                 if (!countryId.HasValue || countryId.Value == Guid.Empty)
                 {
-                    throw new NullReferenceException(string.Format("{0} not specified for creating a {1}.",
-                        EntityReader<PublicHolidayModel>.GetPropertyName(p => p.CountryId, true),
-                        DataShaper.ShapeCamelCaseString(typeof(PublicHoliday).Name)));
-                }
-                SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
-                {
-                    return RedirectToHome();
+                    return PartialView(CREATE_PUBLIC_HOLIDAY_PARTIAL_VIEW_NAME, new PublicHolidayModel());
                 }
                 return PartialView(CREATE_PUBLIC_HOLIDAY_PARTIAL_VIEW_NAME, new PublicHolidayModel()
                 {
@@ -427,15 +420,9 @@
             {
                 if (!countryId.HasValue || countryId.Value == Guid.Empty)
                 {
-                    throw new NullReferenceException(string.Format("{0} not specified for downloading {1}s.",
-                        EntityReader<GenerateCountryPublicHolidaysModel>.GetPropertyName(p => p.CountryId, true),
-                        DataShaper.ShapeCamelCaseString(typeof(PublicHoliday).Name)));
+                    return PartialView(GENERATE_COUNTRY_PUBLIC_HOLIDAYS_VIEW_NAME, new GenerateCountryPublicHolidaysModel());
                 }
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
-                {
-                    return RedirectToHome();
-                }
                 Country country = context.GetCountry(countryId.Value, true);
                 return PartialView(GENERATE_COUNTRY_PUBLIC_HOLIDAYS_VIEW_NAME, new GenerateCountryPublicHolidaysModel()
                 {

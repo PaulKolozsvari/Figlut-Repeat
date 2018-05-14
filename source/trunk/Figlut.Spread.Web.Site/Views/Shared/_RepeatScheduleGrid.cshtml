@@ -1,4 +1,4 @@
-﻿@model Figlut.Spread.Web.Site.Models.FilterModel<SmsMessageTemplateModel>
+﻿@model Figlut.Spread.Web.Site.Models.FilterModel<RepeatScheduleModel>
 
 @using Figlut.Server.Toolkit.Data;
 @using Figlut.Spread.Web.Site.Configuration;
@@ -8,11 +8,11 @@
 @using Figlut.Spread.ORM.Helpers;
 
 @{
-    Figlut.Spread.Web.Site.Models.SmsMessageTemplateModel smsMessageTemplate = new SmsMessageTemplateModel();
+    Figlut.Spread.Web.Site.Models.RepeatScheduleModel repeatSchedule = new RepeatScheduleModel();
 }
 @{
-    int smsMessageTemplatesPerPageToDisplay = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.SmsMessageTemplatesPerPagePageToDisplay].SettingValue);
-    var grid = new WebGrid(Model.DataModel, canPage: true, rowsPerPage: smsMessageTemplatesPerPageToDisplay, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+    int repeatSchedulesPerPageToDisplay = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.RepeatSchedulesPerPageToDisplay].SettingName);
+    var grid = new WebGrid(Model.DataModel, canPage: true, rowsPerPage: repeatSchedulesPerPageToDisplay, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
     grid.Pager(WebGridPagerModes.All);
 }
 
@@ -39,37 +39,37 @@
             </div>
             <div class="grid-buttons">
                 <div style="float: left; margin-left:2%; margin-right:2%">
-                    @Html.LinkButtonForSubmit("Search", "onSearchSmsMessageTemplatesClick()", "btnSearch", "search.png")
-                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    @Html.LinkButtonForSubmit("Search", "onSearchRepeatSchedulesClick()", "btnSearch", "search.png")
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage) && Model.IsAdministrator)
                     {
-                        @Html.LinkButtonForSubmit("Download", "onDownloadAllSmsMessageTemplatesCsvFileClick()", "btnDownload", "spreadsheet.png")
+                        @Html.LinkButtonForSubmit("Download", "onDownloadAllRepeatSchedulesCsvFileClick()", "btnDownload", "spreadsheet.png")
                     }
                 </div>
                 <div style="float: right; margin-left:2%; margin-right:2%">
                     @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
                     {
-                        @Html.LinkButtonForSubmit("Create", "onCreateSmsMessageTemplateClick()", "btnCreateSmsMessageTemplate", "red-document-plus-icon32.png")
-                        @Html.LinkButtonForCancel("Delete All", "onDeleteAllSmsMessageTemplatesClick()", "btnDeleteAllSmsMessageTemplates")
+                        @Html.LinkButtonForSubmit("Create", "onCreateRepeatScheduleClick()", "btnCreateRepeatSchedule", "red-document-plus-icon32.png")
+                        @Html.LinkButtonForCancel("Delete All", "onDeleteAllRepeatSchedulesClick()", "btnDeleteAllRepeatSchedules")
                         if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
                         {
-                            smsMessageTemplate = (SmsMessageTemplateModel)grid.Rows[grid.SelectedIndex].Value;
-                            @Html.LinkButtonForCancel("Delete", "onDeleteSmsMessageTemplateClick()", "onDeleteSmsMessageTemplate")
-                            @Html.LinkButtonForSubmit("Edit", "onEditSmsMessageTemplateClick()", "onEditSmsMessageTemplate", "red-edit.png")
+                            repeatSchedule = (RepeatScheduleModel)grid.Rows[grid.SelectedIndex].Value;
+                            @Html.LinkButtonForCancel("Delete", "onDeleteRepeatScheduleClick()", "btnDeleteRepeatSchedule")
+                            @Html.LinkButtonForSubmit("Edit", "onEditRepeatScheduleClick()", "btnEditRepeatSchedule", "red-edit.png")
                         }
                     }
                 </div>
             </div>
         </div>
-        <div class="sms-message-template-preview">
+        <div class="repeat-schedule-preview">
             @if (Model.IsAdministrator && grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
             {
-                smsMessageTemplate = (SmsMessageTemplateModel)grid.Rows[grid.SelectedIndex].Value;
+                repeatSchedule = (RepeatScheduleModel)grid.Rows[grid.SelectedIndex].Value;
                 <div style="float:left; margin-left:2%; margin-right:2%;">
-                    <b>@Html.Raw(string.Format("ID: {0}", smsMessageTemplate.SmsMessageTemplateId.ToString()))</b>
+                    <b>@Html.Raw(string.Format("ID: {0}", repeatSchedule.RepeatScheduleId.ToString()))</b>
                 </div>
             }
             <div style="float: right; margin-left:2%; margin-right:2%">
-                <b>@Html.Raw(string.Format("SMS Message Templates Loaded: {0} of {1}", Model.TotalCount.ToString(), Model.TotalTableCount.ToString()))</b>
+                <b>@Html.Raw(string.Format("Repeat Schedules Loaded: {0} of {1}", Model.TotalCount.ToString(), Model.TotalTableCount.ToString()))</b>
             </div>
         </div>
         <div id="gridTableContainer">
@@ -79,26 +79,28 @@
                 alternatingRowStyle: "alt",
                 selectedRowStyle: "select",
                 columns: grid.Columns(
-                grid.Column("Templates", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
-                grid.Column(EntityReader<SmsMessageTemplateModel>.GetPropertyName(p => p.Message, false), "Message"),
-                grid.Column(EntityReader<SmsMessageTemplateModel>.GetPropertyName(p => p.OrganizationName, false), "Organization"),
-                grid.Column(EntityReader<SmsMessageTemplateModel>.GetPropertyName(p => p.DateCreated, false), "Date Created")
+                grid.Column("Schedules", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
+                grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.ScheduleName, false), "Name"),
+                grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.CellPhoneNumber, false), "Cell Phone"),
+                grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.CustomerFullName, false), "Customer"),
+                grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.DaysRepeatInterval, false), "Days Interval"),
+                grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.DateCreated, false), "Date Created")
             ))
         </div>
-        <div class="sms-message-template-preview">
+        <div class="repeat-schedule-preview">
             @if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
             {
-                smsMessageTemplate = (SmsMessageTemplateModel)grid.Rows[grid.SelectedIndex].Value;
+                repeatSchedule = (RepeatScheduleModel)grid.Rows[grid.SelectedIndex].Value;
                 <div style="float: left; margin-left:2%; margin-right:2%">
-                    <b>@Html.Raw(string.Format("Message: {0}", smsMessageTemplate.Message))</b>
+                    <b>@Html.Raw(string.Format("Name: {0}", repeatSchedule.ScheduleName))</b>
                 </div>
                 <div style="float:right; margin-left:2%; margin-right:2%; color: #a30e0e;">
-                    @Html.Raw(string.Format("{0}", smsMessageTemplate.OrganizationName))
+                    @Html.Raw(string.Format("{0}", repeatSchedule.NotificationMessage))
                 </div>
             }
         </div>
     </div>
-    <div id="SmsMessageTemplateErrorField" style="color:#8A0808">
+    <div id="RepeatSchedulesErrorField" style="color:#8A0808">
         @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
         {
             <br />
@@ -111,41 +113,42 @@
     $(document).ready(function () {
         $("#SearchText").focus();
         makeGridRowsPostForm();
+        enableDatepickers();
     });
 
-    function onSearchSmsMessageTemplatesClick() {
-        postSmsMessageTemplates();
+    function onSearchRepeatSchedulesClick() {
+        postRepeatSchedules();
     }
 
-    function onDeleteSmsMessageTemplateClick() {
+    function onDeleteRepeatScheduleClick() {
         showDialog(
             '#divConfirmationDialog',
             '#dlgConfirmation',
             'ConfirmDeleteDialog',
-            'SmsMessageTemplate',
+            'RepeatSchedule',
             'identifier',
-            '@smsMessageTemplate.SmsMessageTemplateId.ToString()');
+            '@repeatSchedule.RepeatScheduleId.ToString()');
     };
 
-    function onEditSmsMessageTemplateClick() {
+    function onEditRepeatScheduleClick() {
         showDialog(
-            '#divEditSmsMessageTemplate',
-            '#dlgEditSmsMessageTemplate',
+            '#divEditRepeatSchedule',
+            '#dlgEditRepeatSchedule',
             'EditDialog',
-            'SmsMessageTemplate',
-            'smsMessageTemplateId',
-            '@smsMessageTemplate.SmsMessageTemplateId.ToString()');
+            'RepeatSchedule',
+            'repeatScheduleId',
+            '@repeatSchedule.RepeatScheduleId.ToString()');
     };
 
-    function onCreateSmsMessageTemplateClick() {
+    function onCreateRepeatScheduleClick() {
         showDialog(
-            '#divCreateSmsMessageTemplate',
-            '#dlgCreateSmsMessageTemplate',
+            '#divCreateRepeatSchedule',
+            '#dlgCreateRepeatSchedule',
             'CreateDialog',
-            'SmsMessageTemplate',
-            'organizationId',
-            '@Model.ParentId.ToString()');
-    };
+            'RepeatSchedule',
+            'subscriptionId',
+            '@Model.ParentId');
+    }
 
     function getSearchParametersString() {
         var searchParameters = '@string.Format("{0}|{1}|{2}|{3}",
@@ -156,25 +159,25 @@
         return searchParameters;
     }
 
-    function onDeleteAllSmsMessageTemplatesClick() {
+    function onDeleteAllRepeatSchedulesClick() {
         var searchParameters = getSearchParametersString();
         showDialog(
             '#divConfirmationDialog',
             '#dlgConfirmation',
-            'cConfirmDeleteAllDialog',
-            'SmsMessageTemplate',
+            'ConfirmDeleteAllDialog',
+            'RepeatSchedule',
             'searchParametersString',
             searchParameters);
     }
 
-    function onDownloadAllSmsMessageTemplatesCsvFileClick() {
+    function onDownloadAllRepeatSchedulesCsvFileClick() {
         var searchParameters = getSearchParametersString();
-        var downloadUrl = '@Url.Action("DownloadCsvFile", "SmsMessageTemplate", new { searchParametersString = "_searchValue" })';
+        var downloadUrl = '@Url.Action("DownloadCsvFile", "RepeatSchedule", new { searchParametersString = "_searchValue" })';
         downloadUrl = downloadUrl.replace('_searchValue', searchParameters);
         window.location = downloadUrl;
     }
 
-    function postSmsMessageTemplates() {
+    function postRepeatSchedules() {
         $('form#frmDetails').trigger('submit');
     };
 

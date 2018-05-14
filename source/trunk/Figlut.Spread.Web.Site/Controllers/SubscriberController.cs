@@ -23,6 +23,7 @@
 
         private const string SUBSCRIBER_GRID_PARTIAL_VIEW_NAME = "_SubscriberGrid";
         private const string EDIT_SUBSCRIBER_DIALOG_PARTIAL_VIEW_NAME = "_EditSubscriberDialog";
+        private const string CREATE_SUBSCRIBER_PARTIAL_VIEW_NAME = "_CreateSubscriberDialog";
 
         #endregion //Constants
 
@@ -313,6 +314,63 @@
                             model.CellPhoneNumber));
                     }
                 }
+                model.CopyPropertiesToSubsriber(subscriber);
+                context.Save<Subscriber>(subscriber, false);
+                return GetJsonResult(true);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
+
+        public ActionResult CreateDialog()
+        {
+            try
+            {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
+                {
+                    return RedirectToHome();
+                }
+                return PartialView(CREATE_SUBSCRIBER_PARTIAL_VIEW_NAME, new SubscriberModel() { Enabled = true });
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult CreateDialog(SubscriberModel model)
+        {
+            try
+            {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
+                {
+                    return RedirectToHome();
+                }
+                string errorMessage = null;
+                if (!model.IsValid(out errorMessage))
+                {
+                    return GetJsonResult(false, errorMessage);
+                }
+                Subscriber originalSubscriber = context.GetSubscriberByCellPhoneNumber(model.CellPhoneNumber, false);
+                if (originalSubscriber != null)
+                {
+                    return GetJsonResult(false, string.Format("A {0} with the {1} of '{2}' already exists.",
+                        typeof(Subscriber).Name,
+                        EntityReader<Subscriber>.GetPropertyName(p => p.CellPhoneNumber, true),
+                        model.CellPhoneNumber));
+                }
+                model.SubscriberId = Guid.NewGuid();
+                model.DateCreated = DateTime.Now;
+                Subscriber subscriber = new Subscriber();
                 model.CopyPropertiesToSubsriber(subscriber);
                 context.Save<Subscriber>(subscriber, false);
                 return GetJsonResult(true);

@@ -354,7 +354,7 @@
             }
         }
 
-        public ActionResult CreateDialog()
+        public ActionResult CreateDialog(Nullable<Guid> repeatScheduleId)
         {
             try
             {

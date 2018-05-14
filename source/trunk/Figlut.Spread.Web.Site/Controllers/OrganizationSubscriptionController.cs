@@ -313,7 +313,11 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!subscriptionId.HasValue)
+                if (!Request.IsAuthenticated)
+                {
+                    return RedirectToHome();
+                }
+                if (!subscriptionId.HasValue || subscriptionId == Guid.Empty)
                 {
                     return PartialView(EDIT_ORGANIZATION_SUBSCRIPTION_DIALOG_PARTIAL_VIEW_NAME, new OrganizationSubscriptionModel());
                 }
@@ -336,12 +340,16 @@
         {
             try
             {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated)
+                {
+                    return RedirectToHome();
+                }
                 string errorMessage = null;
                 if (!model.IsValid(out errorMessage))
                 {
                     return GetJsonResult(false, errorMessage);
                 }
-                SpreadEntityContext context = SpreadEntityContext.Create();
                 Subscription subscription = context.GetSubscription(model.SubscriptionId, true);
                 model.CopyPropertiesToSubscription(subscription);
                 context.Save<Subscription>(subscription, false);

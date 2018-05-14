@@ -28,13 +28,11 @@
         SmsProcessorLogsPerPageToDisplay,
         WebRequestActivityPerPageToDisplay,
         SmsCampaignsPerPageToDisplay,
-
         CountriesPerPagePageToDisplay,
         PublicHolidaysPerPagePageToDisplay,
         SmsMessageTemplatesPerPagePageToDisplay,
         RepeatSchedulesPerPageToDisplay,
         RepeatScheduleEntriesPerPageToDisplay,
-
         GlobalSettingsPerPageToDisplay,
         SmsContentsTrimOnGrid,
         SmsContentsTrimLengthOnGrid,
@@ -47,10 +45,11 @@
         MaximumSmsDateRangeDaysToDisplay,
         SmsProcessorMessageTrimOnGrid,
         SmsProcessorMessageTrimLengthOnGrid,
+        DefaultRepeatDaysInterval,
         FiglutPhoneNumber,
         FiglutSupportEmailAddress,
         FiglutMarketingEmailAddress,
         FiglutGeneralEmailAddress,
-        FiglutAddress,
+        FiglutAddress
     }
 }

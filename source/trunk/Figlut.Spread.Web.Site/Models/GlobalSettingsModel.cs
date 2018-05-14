@@ -100,6 +100,8 @@
 
         public int SmsProcessorMessageTrimLengthOnGrid { get; set; }
 
+        public int DefaultRepeatDaysInterval { get; set; }
+
         public string FiglutPhoneNumber { get; set; }
 
         public string FiglutSupportEmailAddress { get; set; }

@@ -80,7 +80,7 @@
                 alternatingRowStyle: "alt",
                 selectedRowStyle: "select",
                 columns: grid.Columns(
-                grid.Column("Public Holidays", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
+                grid.Column("Holidays", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
                 grid.Column(EntityReader<PublicHolidayModel>.GetPropertyName(p => p.EventName, false), "Event"),
                 grid.Column(EntityReader<PublicHolidayModel>.GetPropertyName(p => p.DateIdentifier, false), "Date"),
                 grid.Column(EntityReader<PublicHolidayModel>.GetPropertyName(p => p.CountryCode, false), "Country Code"),
