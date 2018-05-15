@@ -62,13 +62,13 @@
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationProfileModel>.GetPropertyName(p => p.OrganizationEmailAddress, true));
             }
+            else if (!DataShaper.IsValidEmail(this.OrganizationEmailAddress))
+            {
+                errorMessage = string.Format("{0} is not a  valid email address.", EntityReader<OrganizationProfileModel>.GetPropertyName(p => p.OrganizationEmailAddress, true));
+            }
             else if (string.IsNullOrEmpty(this.OrganizationAddress))
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationProfileModel>.GetPropertyName(p => p.OrganizationAddress, true));
-            }
-            else if (this.SmsCreditsBalance < 0)
-            {
-                errorMessage = string.Format("{0} may not be less than 0.", EntityReader<OrganizationProfileModel>.GetPropertyName(p => p.SmsCreditsBalance, true));
             }
             return string.IsNullOrEmpty(errorMessage);
         }

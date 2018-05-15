@@ -9,12 +9,47 @@
                 @Html.HiddenFor(m => m.SubscriptionId)
                 @Html.HiddenFor(m => m.OrganizationId)
                 @Html.HiddenFor(m => m.SubscriberId)
-                @Html.HiddenFor(m => m.OrganizationId)
                 @Html.HiddenFor(m => m.DateCreated)
-                @Html.HiddenFor(m => m.OrganizationIdentifier)
                 @Html.HiddenFor(m => m.OrganizationName)
+                @Html.HiddenFor(m => m.OrganizationIdentifier)
                 @Html.HiddenFor(m => m.OrganizationEmailAddress)
                 @Html.HiddenFor(m => m.OrganizationAddress)
+
+                <div class="field-label">
+                    @Html.Raw("Customer Full Name")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.CustomerFullName)
+                    @Html.ValidationMessageFor(m => m.CustomerFullName)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Customer Email Address")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.CustomerEmailAddress)
+                    @Html.ValidationMessageFor(m => m.CustomerEmailAddress)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Customer Identifier")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.CustomerIdentifier)
+                    @Html.ValidationMessageFor(m => m.CustomerIdentifier)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Customer Physical Address")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.CustomerPhysicalAddress)
+                    @Html.ValidationMessageFor(m => m.CustomerPhysicalAddress)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Customer Notes")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.CustomerNotes)
+                    @Html.ValidationMessageFor(m => m.CustomerNotes)
+                </div>
 
                 <div class="field-label">
                     @Html.Raw("Organization Name")

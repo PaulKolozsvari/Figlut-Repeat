@@ -87,8 +87,10 @@
                 grid.Column("Subscriptions", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
                 grid.Column(EntityReader<OrganizationSubscriptionModel>.GetPropertyName(p => p.SubscriberCellPhoneNumber, false), "Cell Phone Number"),
                 grid.Column(EntityReader<OrganizationSubscriptionModel>.GetPropertyName(p => p.SubscriberName, false), "Subscriber Name"),
-                grid.Column(EntityReader<OrganizationSubscriptionModel>.GetPropertyName(p => p.Enabled, false), "Enabled"),
-                grid.Column(EntityReader<OrganizationSubscriptionModel>.GetPropertyName(p => p.DateCreated, false), "Date Created")
+                grid.Column(EntityReader<OrganizationSubscriptionModel>.GetPropertyName(p => p.CustomerFullName, false), "Customer Name"),
+                grid.Column(EntityReader<OrganizationSubscriptionModel>.GetPropertyName(p => p.CustomerEmailAddress, false), "Email"),
+                grid.Column(EntityReader<OrganizationSubscriptionModel>.GetPropertyName(p => p.CustomerIdentifier, false), "Identifier"),
+                grid.Column(EntityReader<OrganizationSubscriptionModel>.GetPropertyName(p => p.Enabled, false), "Enabled")
             ))
         </div>
         <div class="organization-subscription-preview">
@@ -96,10 +98,10 @@
             {
                 organizationSubscription = (OrganizationSubscriptionModel)grid.Rows[grid.SelectedIndex].Value;
                 <div style="float: left; margin-left:2%; margin-right:2%">
-                    <b>@Html.Raw(string.Format("Name: {0}", organizationSubscription.SubscriberName))</b>   
+                    <b>@Html.Raw(string.Format("Cell Phone: {0}", organizationSubscription.SubscriberCellPhoneNumber))</b>   
                 </div>
                 <div style="float:right; margin-left:2%; margin-right:2%; color: #a30e0e;">
-                    @Html.Raw(string.Format("{0}", organizationSubscription.SubscriberCellPhoneNumber))
+                    @Html.Raw(string.Format("{0}", organizationSubscription.CustomerNotes))
                 </div>
             }
         </div>

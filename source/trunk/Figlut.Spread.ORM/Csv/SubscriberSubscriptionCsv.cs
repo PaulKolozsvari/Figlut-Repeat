@@ -27,6 +27,8 @@
 
         public string CustomerFullName { get; set; }
 
+        public string CustomerEmailAddress { get; set; }
+
         public string CustomerIdentifier { get; set; }
 
         public string CustomerPhysicalAddress { get; set; }
@@ -60,6 +62,7 @@
             this.SubscriberId = view.SubscriberId;
             this.Enabled = view.Enabled;
             this.CustomerFullName = view.CustomerFullName;
+            this.CustomerEmailAddress = view.CustomerEmailAddress;
             this.CustomerIdentifier = view.CustomerIdentifier;
             this.CustomerPhysicalAddress = view.CustomerPhysicalAddress;
             this.CustomerNotes = view.CustomerNotes;
@@ -78,6 +81,7 @@
             view.SubscriberId = this.SubscriberId;
             view.Enabled = this.Enabled;
             view.CustomerFullName = this.CustomerFullName;
+            view.CustomerEmailAddress = this.CustomerEmailAddress;
             view.CustomerIdentifier = this.CustomerIdentifier;
             view.CustomerPhysicalAddress = this.CustomerPhysicalAddress;
             view.CustomerNotes = this.CustomerNotes;

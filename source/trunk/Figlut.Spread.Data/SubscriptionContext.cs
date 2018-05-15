@@ -66,6 +66,7 @@
                                                        SubscriberId = sub.SubscriberId,
                                                        Enabled = subscription.Enabled,
                                                        CustomerFullName = subscription.CustomerFullName,
+                                                       CustomerEmailAddress = subscription.CustomerEmailAddress,
                                                        CustomerIdentifier = subscription.CustomerIdentifier,
                                                        CustomerPhysicalAddress = subscription.CustomerPhysicalAddress,
                                                        CustomerNotes = subscription.CustomerNotes,
@@ -98,6 +99,7 @@
                                                      SubscriberId = subscription.SubscriberId,
                                                      Enabled = subscription.Enabled,
                                                      CustomerFullName = subscription.CustomerFullName,
+                                                     CustomerEmailAddress = subscription.CustomerEmailAddress,
                                                      CustomerIdentifier = subscription.CustomerIdentifier,
                                                      CustomerPhysicalAddress = subscription.CustomerPhysicalAddress,
                                                      CustomerNotes = subscription.CustomerNotes,
@@ -210,7 +212,10 @@
                           from sub in set.DefaultIfEmpty()
                           where (subscription.Enabled) &&
                           subscription.OrganizationId == organizationId.Value &&
-                          (sub.CellPhoneNumber.ToLower().Contains(searchFilterLower) ||
+                          (subscription.CustomerFullName.ToLower().Contains(searchFilterLower) ||
+                          subscription.CustomerEmailAddress.ToLower().Contains(searchFilterLower) ||
+                          subscription.CustomerIdentifier.ToLower().Contains(searchFilterLower) ||
+                          sub.CellPhoneNumber.ToLower().Contains(searchFilterLower) ||
                           sub.Name.ToLower().Contains(searchFilterLower))
                           orderby sub.DateCreated descending, sub.CellPhoneNumber, sub.Name
                           select new OrganizationSubscriptionView()
@@ -220,6 +225,7 @@
                               SubscriberId = sub.SubscriberId,
                               Enabled = subscription.Enabled,
                               CustomerFullName = subscription.CustomerFullName,
+                              CustomerEmailAddress = subscription.CustomerEmailAddress,
                               CustomerIdentifier = subscription.CustomerIdentifier,
                               CustomerPhysicalAddress = subscription.CustomerPhysicalAddress,
                               CustomerNotes = subscription.CustomerNotes,
@@ -236,7 +242,10 @@
                           join subscriber in DB.GetTable<Subscriber>() on subscription.SubscriberId equals subscriber.SubscriberId into set
                           from sub in set.DefaultIfEmpty()
                           where (subscription.Enabled) &&
-                          (sub.CellPhoneNumber.ToLower().Contains(searchFilterLower) ||
+                          (subscription.CustomerFullName.ToLower().Contains(searchFilterLower) ||
+                          subscription.CustomerEmailAddress.ToLower().Contains(searchFilterLower) ||
+                          subscription.CustomerIdentifier.ToLower().Contains(searchFilterLower) ||
+                          sub.CellPhoneNumber.ToLower().Contains(searchFilterLower) ||
                           sub.Name.ToLower().Contains(searchFilterLower))
                           orderby sub.DateCreated descending, sub.CellPhoneNumber, sub.Name
                           select new OrganizationSubscriptionView()
@@ -246,6 +255,7 @@
                               SubscriberId = sub.SubscriberId,
                               Enabled = subscription.Enabled,
                               CustomerFullName = subscription.CustomerFullName,
+                              CustomerEmailAddress = subscription.CustomerEmailAddress,
                               CustomerIdentifier = subscription.CustomerIdentifier,
                               CustomerPhysicalAddress = subscription.CustomerPhysicalAddress,
                               CustomerNotes = subscription.CustomerNotes,
@@ -272,7 +282,10 @@
                               from sub in set.DefaultIfEmpty()
                               where (subscription.Enabled) &&
                               subscription.OrganizationId == organizationId.Value &&
-                              (sub.CellPhoneNumber.ToLower().Contains(searchFilterLower) ||
+                              (subscription.CustomerFullName.ToLower().Contains(searchFilterLower) ||
+                              subscription.CustomerEmailAddress.ToLower().Contains(searchFilterLower) ||
+                              subscription.CustomerIdentifier.ToLower().Contains(searchFilterLower) ||
+                              sub.CellPhoneNumber.ToLower().Contains(searchFilterLower) ||
                               sub.Name.ToLower().Contains(searchFilterLower))
                               orderby sub.DateCreated descending, sub.CellPhoneNumber, sub.Name
                               select new OrganizationSubscriptionView()
@@ -282,6 +295,7 @@
                                   SubscriberId = sub.SubscriberId,
                                   Enabled = subscription.Enabled,
                                   CustomerFullName = subscription.CustomerFullName,
+                                  CustomerEmailAddress = subscription.CustomerEmailAddress,
                                   CustomerIdentifier = subscription.CustomerIdentifier,
                                   CustomerPhysicalAddress = subscription.CustomerPhysicalAddress,
                                   CustomerNotes = subscription.CustomerNotes,
@@ -299,7 +313,10 @@
                               from sub in set.DefaultIfEmpty()
                               where 
                               subscription.OrganizationId == organizationId.Value &&
-                              (sub.CellPhoneNumber.ToLower().Contains(searchFilterLower) ||
+                              (subscription.CustomerFullName.ToLower().Contains(searchFilterLower) ||
+                              subscription.CustomerEmailAddress.ToLower().Contains(searchFilterLower) ||
+                              subscription.CustomerIdentifier.ToLower().Contains(searchFilterLower) ||
+                              sub.CellPhoneNumber.ToLower().Contains(searchFilterLower) ||
                               sub.Name.ToLower().Contains(searchFilterLower))
                               orderby sub.DateCreated descending, sub.CellPhoneNumber, sub.Name
                               select new OrganizationSubscriptionView()
@@ -309,6 +326,7 @@
                                   SubscriberId = sub.SubscriberId,
                                   Enabled = subscription.Enabled,
                                   CustomerFullName = subscription.CustomerFullName,
+                                  CustomerEmailAddress = subscription.CustomerEmailAddress,
                                   CustomerIdentifier = subscription.CustomerIdentifier,
                                   CustomerPhysicalAddress = subscription.CustomerPhysicalAddress,
                                   CustomerNotes = subscription.CustomerNotes,
@@ -328,7 +346,10 @@
                               join subscriber in DB.GetTable<Subscriber>() on subscription.SubscriberId equals subscriber.SubscriberId into set
                               from sub in set.DefaultIfEmpty()
                               where 
-                              (sub.CellPhoneNumber.ToLower().Contains(searchFilterLower) ||
+                              (subscription.CustomerFullName.ToLower().Contains(searchFilterLower) ||
+                              subscription.CustomerEmailAddress.ToLower().Contains(searchFilterLower) ||
+                              subscription.CustomerIdentifier.ToLower().Contains(searchFilterLower) ||
+                              sub.CellPhoneNumber.ToLower().Contains(searchFilterLower) ||
                               sub.Name.ToLower().Contains(searchFilterLower))
                               orderby sub.DateCreated descending, sub.CellPhoneNumber, sub.Name
                               select new OrganizationSubscriptionView()
@@ -362,7 +383,10 @@
                           join organization in DB.GetTable<Organization>() on subscription.OrganizationId equals organization.OrganizationId into set
                           from sub in set.DefaultIfEmpty()
                           where subscription.SubscriberId == subscriberId.Value &&
-                          (sub.Name.ToLower().Contains(searchFilterLower) ||
+                          (subscription.CustomerFullName.ToLower().Contains(searchFilterLower) ||
+                          subscription.CustomerEmailAddress.ToLower().Contains(searchFilterLower) ||
+                          subscription.CustomerIdentifier.ToLower().Contains(searchFilterLower) ||
+                          sub.Name.ToLower().Contains(searchFilterLower) ||
                           sub.Identifier.ToLower().Contains(searchFilterLower) ||
                           sub.EmailAddress.ToLower().Contains(searchFilterLower))
                           orderby sub.DateCreated descending, sub.Name, sub.Identifier, sub.EmailAddress
@@ -373,6 +397,7 @@
                               SubscriberId = subscription.SubscriberId,
                               Enabled = subscription.Enabled,
                               CustomerFullName = subscription.CustomerFullName,
+                              CustomerEmailAddress = subscription.CustomerEmailAddress,
                               CustomerIdentifier = subscription.CustomerIdentifier,
                               CustomerPhysicalAddress = subscription.CustomerPhysicalAddress,
                               CustomerNotes = subscription.CustomerNotes,
@@ -389,7 +414,10 @@
                 result = (from subscription in DB.GetTable<Subscription>()
                           join organization in DB.GetTable<Organization>() on subscription.OrganizationId equals organization.OrganizationId into set
                           from sub in set.DefaultIfEmpty()
-                          where (sub.Name.ToLower().Contains(searchFilterLower) ||
+                          where (subscription.CustomerFullName.ToLower().Contains(searchFilterLower) ||
+                          subscription.CustomerEmailAddress.ToLower().Contains(searchFilterLower) ||
+                          subscription.CustomerIdentifier.ToLower().Contains(searchFilterLower) ||
+                          sub.Name.ToLower().Contains(searchFilterLower) ||
                           sub.Identifier.ToLower().Contains(searchFilterLower) ||
                           sub.EmailAddress.ToLower().Contains(searchFilterLower))
                           orderby sub.DateCreated descending, sub.Name, sub.Identifier, sub.EmailAddress
@@ -400,6 +428,7 @@
                               SubscriberId = subscription.SubscriberId,
                               Enabled = subscription.Enabled,
                               CustomerFullName = subscription.CustomerFullName,
+                              CustomerEmailAddress = subscription.CustomerEmailAddress,
                               CustomerIdentifier = subscription.CustomerIdentifier,
                               CustomerPhysicalAddress = subscription.CustomerPhysicalAddress,
                               CustomerNotes = subscription.CustomerNotes,
@@ -434,6 +463,19 @@
                 DB.SubmitChanges();
                 t.Complete();
             }
+        }
+
+        /// <summary>
+        /// Determines whether a subscriber is linked to an organization i.e. whether a subscription exists for the given
+        /// subscrciber to the specified organization.
+        /// </summary>
+        public bool IsSubscriberSubscribedToOrganization(Guid organizationId, Guid subscriberId)
+        {
+            Subscription subscription = (from s in DB.GetTable<Subscription>()
+                                         where s.OrganizationId == organizationId &&
+                                         s.SubscriberId == subscriberId
+                                         select s).FirstOrDefault();
+            return subscription == null;
         }
 
         #endregion //Subscription

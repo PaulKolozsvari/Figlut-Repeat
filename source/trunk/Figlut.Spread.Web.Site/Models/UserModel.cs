@@ -67,13 +67,13 @@
             {
                 errorMessage = string.Format("{0} not entered", EntityReader<UserModel>.GetPropertyName(p => p.UserEmailAddress, true));
             }
+            else if (!DataShaper.IsValidEmail(this.UserEmailAddress))
+            {
+                errorMessage = string.Format("{0} is not a  valid email address.", EntityReader<UserModel>.GetPropertyName(p => p.UserEmailAddress, true));
+            }
             else if (string.IsNullOrEmpty(this.UserPassword))
             {
                 errorMessage = string.Format("{0} not entered", EntityReader<UserModel>.GetPropertyName(p => p.UserPassword, true));
-            }
-            else if (!this.OrganizationId.HasValue)
-            {
-                errorMessage = string.Format("{0} not entered", EntityReader<UserModel>.GetPropertyName(p => p.OrganizationId, true));
             }
             if (this.Role == UserRole.None)
             {

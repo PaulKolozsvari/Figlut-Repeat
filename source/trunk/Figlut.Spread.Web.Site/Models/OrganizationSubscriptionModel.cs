@@ -28,6 +28,8 @@
 
         public string CustomerFullName { get; set; }
 
+        public string CustomerEmailAddress { get; set; }
+
         public string CustomerIdentifier { get; set; }
 
         public string CustomerPhysicalAddress { get; set; }
@@ -57,6 +59,7 @@
         public bool IsValid(out string errorMessage)
         {
             errorMessage = null;
+            //Subscription
             if (this.SubscriptionId == Guid.Empty)
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationSubscriptionModel>.GetPropertyName(p => p.SubscriptionId, true));
@@ -69,13 +72,35 @@
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationSubscriptionModel>.GetPropertyName(p => p.SubscriberId, true));
             }
+            if (!string.IsNullOrEmpty(this.CustomerEmailAddress) && !DataShaper.IsValidEmail(this.CustomerEmailAddress))
+            {
+                errorMessage = string.Format("{0} is not a valid email address.", EntityReader<OrganizationSubscriptionModel>.GetPropertyName(p => p.CustomerEmailAddress, true));
+            }
             if (this.DateCreated == new DateTime())
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationSubscriptionModel>.GetPropertyName(p => p.DateCreated, true));
             }
+            if (string.IsNullOrEmpty(errorMessage))
+            {
+                return IsValidSubscriberDetails(out errorMessage);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool IsValidSubscriberDetails(out string errorMessage)
+        {
+            errorMessage = null;
+            //Subscriber
             if (string.IsNullOrEmpty(this.SubscriberCellPhoneNumber))
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationSubscriptionModel>.GetPropertyName(p => p.SubscriberCellPhoneNumber, true));
+            }
+            if (!DataShaper.IsValidPhoneNumber(this.SubscriberCellPhoneNumber))
+            {
+                errorMessage = string.Format("{0} is not a valid cell phone number.", EntityReader<OrganizationSubscriptionModel>.GetPropertyName(p => p.SubscriberCellPhoneNumber, true));
             }
             if (this.SubscriberDateCreated == new DateTime())
             {
@@ -91,6 +116,7 @@
             this.SubscriberId = view.SubscriberId;
             this.Enabled = view.Enabled;
             this.CustomerFullName = view.CustomerFullName;
+            this.CustomerEmailAddress = view.CustomerEmailAddress;
             this.CustomerIdentifier = view.CustomerIdentifier;
             this.CustomerPhysicalAddress = view.CustomerPhysicalAddress;
             this.CustomerNotes = view.CustomerNotes;
@@ -109,6 +135,7 @@
             view.SubscriberId = this.SubscriberId;
             view.Enabled = this.Enabled;
             view.CustomerFullName = this.CustomerFullName;
+            view.CustomerEmailAddress = this.CustomerEmailAddress;
             view.CustomerIdentifier = this.CustomerIdentifier;
             view.CustomerPhysicalAddress = this.CustomerPhysicalAddress;
             view.CustomerNotes = this.CustomerNotes;
@@ -126,6 +153,11 @@
             subscription.OrganizationId = this.OrganizationId;
             subscription.SubscriberId = this.SubscriberId;
             subscription.Enabled = this.Enabled;
+            subscription.CustomerFullName = this.CustomerFullName;
+            subscription.CustomerEmailAddress = this.CustomerEmailAddress;
+            subscription.CustomerIdentifier = this.CustomerIdentifier;
+            subscription.CustomerPhysicalAddress = this.CustomerPhysicalAddress;
+            subscription.CustomerNotes = this.CustomerNotes;
             subscription.DateCreated = this.DateCreated;
         }
 

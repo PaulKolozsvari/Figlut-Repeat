@@ -87,8 +87,10 @@
                 grid.Column("Subscriptions", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
                 grid.Column(EntityReader<SubscriberSubscriptionModel>.GetPropertyName(p => p.OrganizationName, false), "Organization Name"),
                 grid.Column(EntityReader<SubscriberSubscriptionModel>.GetPropertyName(p => p.OrganizationIdentifier, false), "Organization Identifier"),
-                grid.Column(EntityReader<SubscriberSubscriptionModel>.GetPropertyName(p => p.Enabled, false), "Enabled"),
-                grid.Column(EntityReader<SubscriberSubscriptionModel>.GetPropertyName(p => p.DateCreated, false), "Date Created")
+                grid.Column(EntityReader<SubscriberSubscriptionModel>.GetPropertyName(p => p.CustomerFullName, false), "Customer Name"),
+                grid.Column(EntityReader<SubscriberSubscriptionModel>.GetPropertyName(p => p.CustomerEmailAddress, false), "Email"),
+                grid.Column(EntityReader<SubscriberSubscriptionModel>.GetPropertyName(p => p.CustomerIdentifier, false), "Identifier"),
+                grid.Column(EntityReader<SubscriberSubscriptionModel>.GetPropertyName(p => p.Enabled, false), "Enabled")
             ))
         </div>
         <div class="subscriber-subscription-preview">

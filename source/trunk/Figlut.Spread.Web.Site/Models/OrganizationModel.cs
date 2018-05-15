@@ -62,6 +62,10 @@
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationModel>.GetPropertyName(p => p.EmailAddress, true));
             }
+            else if (!DataShaper.IsValidEmail(this.EmailAddress))
+            {
+                errorMessage = string.Format("{0} is not a  valid email address.", EntityReader<OrganizationModel>.GetPropertyName(p => p.EmailAddress, true));
+            }
             else if (string.IsNullOrEmpty(this.Address))
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationModel>.GetPropertyName(p => p.Address, true));

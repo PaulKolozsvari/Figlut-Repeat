@@ -23,7 +23,6 @@
 
         public string OrganizationIdentifier { get; set; }
 
-        [DataType(DataType.EmailAddress)]
         public string OrganizationEmailAddress { get; set; }
 
         public string OrganizationAddress { get; set; }
@@ -34,7 +33,6 @@
 
         public string UserName { get; set; }
 
-        [DataType(DataType.EmailAddress)]
         public string UserEmailAddress { get; set; }
 
         [DataType(DataType.Password)]
@@ -75,6 +73,10 @@
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<RegisterModel>.GetPropertyName(p => p.OrganizationEmailAddress, true));
             }
+            else if (!DataShaper.IsValidEmail(this.OrganizationEmailAddress))
+            {
+                errorMessage = string.Format("{0} is not a  valid email address.", EntityReader<RegisterModel>.GetPropertyName(p => p.OrganizationEmailAddress, true));
+            }
             else if (string.IsNullOrEmpty(this.OrganizationAddress))
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<RegisterModel>.GetPropertyName(p => p.OrganizationAddress, true));
@@ -90,6 +92,10 @@
             else if (string.IsNullOrEmpty(this.UserEmailAddress))
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<RegisterModel>.GetPropertyName(p => p.UserEmailAddress, true));
+            }
+            else if (!DataShaper.IsValidEmail(this.UserEmailAddress))
+            {
+                errorMessage = string.Format("{0} is not a  valid email address.", EntityReader<RegisterModel>.GetPropertyName(p => p.UserEmailAddress, true));
             }
             return string.IsNullOrEmpty(errorMessage);
         }

@@ -27,6 +27,7 @@
 
         private const string ORGANIZATION_SUBSCRIPTION_GRID_PARTIAL_VIEW_NAME = "_OrganizationSubscriptionGrid";
         private const string EDIT_ORGANIZATION_SUBSCRIPTION_DIALOG_PARTIAL_VIEW_NAME = "_EditOrganizationSubscriptionDialog";
+        private const string CREATE_ORGANIZATION_SUBSCRIPTION_DIALOG_PARTIAL_VIEW_NAME = "_CreateOrganizationSubscriptionDialog";
         private const string CREATE_SMS_CAMPAIGN_DIALOG_PARTIAL_VIEW_NAME = "_CreateSmsCampaignDialog";
 
         #endregion //Constants
@@ -351,6 +352,73 @@
                     return GetJsonResult(false, errorMessage);
                 }
                 Subscription subscription = context.GetSubscription(model.SubscriptionId, true);
+                model.CopyPropertiesToSubscription(subscription);
+                context.Save<Subscription>(subscription, false);
+                return GetJsonResult(true);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
+
+        public ActionResult CreateDialog()
+        {
+            try
+            {
+                return PartialView(CREATE_ORGANIZATION_SUBSCRIPTION_DIALOG_PARTIAL_VIEW_NAME, new OrganizationSubscriptionModel() { Enabled = true });
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult CreateDialog(OrganizationSubscriptionModel model)
+        {
+            try
+            {
+                string errorMessage = null;
+                if (!model.IsValidSubscriberDetails(out errorMessage))
+                {
+                    return GetJsonResult(false, errorMessage);
+                }
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                Subscriber subscriber = context.GetSubscriberByCellPhoneNumber(model.SubscriberCellPhoneNumber, false);
+                if (subscriber == null)
+                {
+                    subscriber = new Subscriber()
+                    {
+                        SubscriberId = Guid.NewGuid(),
+                        CellPhoneNumber = model.SubscriberCellPhoneNumber,
+                        Name = !string.IsNullOrEmpty(model.CustomerFullName) ? model.CustomerFullName : null,
+                        Enabled = true,
+                        DateCreated = DateTime.Now
+                    };
+                    context.Save<Subscriber>(subscriber, false);
+                }
+                Organization currentOrganization = GetCurrentOrganization(context, true);
+                if (context.IsSubscriberSubscribedToOrganization(currentOrganization.OrganizationId, subscriber.SubscriberId))
+                {
+                    return GetJsonResult(false, string.Format("{0} '{1}' is already subscribed to '{2}'.",
+                        typeof(Subscriber).Name,
+                        model.SubscriberCellPhoneNumber,
+                        currentOrganization.Name));
+                }
+                model.SubscriptionId = Guid.NewGuid();
+                model.OrganizationId = currentOrganization.OrganizationId;
+                model.SubscriberId = subscriber.SubscriberId;
+                model.DateCreated = DateTime.Now;
+                if (!model.IsValid(out errorMessage))
+                {
+                    return GetJsonResult(false, errorMessage);
+                }
+                Subscription subscription = new Subscription();
                 model.CopyPropertiesToSubscription(subscription);
                 context.Save<Subscription>(subscription, false);
                 return GetJsonResult(true);

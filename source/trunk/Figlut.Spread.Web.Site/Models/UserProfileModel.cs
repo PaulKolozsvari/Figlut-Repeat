@@ -23,7 +23,6 @@
 
         public string UserName { get; set; }
 
-        [DataType(DataType.EmailAddress)]
         public string UserEmailAddress { get; set; }
 
         [DataType(DataType.Password)]
@@ -66,6 +65,10 @@
             else if (string.IsNullOrEmpty(this.UserEmailAddress))
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<UserProfileModel>.GetPropertyName(p => p.UserEmailAddress, true));
+            }
+            if (!DataShaper.IsValidEmail(this.UserEmailAddress))
+            {
+                errorMessage = string.Format("{0} is not a  valid email address.", EntityReader<UserProfileModel>.GetPropertyName(p => p.UserEmailAddress, true));
             }
             else if (string.IsNullOrEmpty(this.UserPassword))
             {
