@@ -53,7 +53,8 @@
                 <div style="float: right; margin-left:2%; margin-right:2%">
                     @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
                     {
-                        @Html.LinkButtonForSubmit("SMS Campaign", "onCreateSmsCampaignClick()", "btnCreateSmsCampaign", "red-mail-open-icon32.png")
+                        @Html.LinkButtonForSubmit("Campaign", "onCreateSmsCampaignClick()", "btnCreateSmsCampaign", "red-mail-open-icon32.png")
+                        @Html.LinkButtonForSubmit("Create", "onCreateOrganizationSubscriptionClick()", "btnCreateOrganizationSubscription", "red-document-plus-icon32.png")
                         @Html.LinkButtonForCancel("Delete All", "onDeleteAllOrganizationSubscriptionsClick()", "btnDeleteAllOrganizationSubscriptions")
                         if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
                         {
@@ -144,7 +145,17 @@
             'OrganizationSubscription',
             'subscriptionId',
             '@organizationSubscription.SubscriptionId.ToString()');
-        };
+    };
+
+    function onCreateOrganizationSubscriptionClick() {
+        showDialog(
+            '#divCreateOrganizationSubscription',
+            '#dlgCreateOrganizationSubscription',
+            'CreateDialog',
+            'OrganizationSubscription',
+            'organizationId',
+            '@Model.ParentId');
+    }
 
     function getSearchParametersString() {
         var searchParameters = '@string.Format("{0}|{1}|{2}|{3}",

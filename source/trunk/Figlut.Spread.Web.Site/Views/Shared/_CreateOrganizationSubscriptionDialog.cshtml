@@ -1,9 +1,9 @@
 ﻿@model Figlut.Spread.Web.Site.Models.OrganizationSubscriptionModel
-<div id="dlgEditOrganizationSubscription">
-    <img src="~/Images/Icons/red-edit32.png" style="float:right; margin-right:1%; margin-left:1%"/>
+<div id="dlgCreateOrganizationSubscription">
+    <img src="~/Images/Icons/red-document-plus-icon32.png" style="float:right; margin-right:1%; margin-left:1%" />
     <div class="centerForm">
-        <form id="EditOrganizationSubscriptionForm">
-            @Html.ValidationSummary(true, "Failed to edit.")
+        <form id="CreateOrganizationSubscriptionForm">
+            @Html.ValidationSummary(true, "Failed to create.")
             <fieldset>
                 <legend>Confirmation Form</legend>
                 @Html.HiddenFor(m => m.SubscriptionId)
@@ -63,8 +63,8 @@
                 </div>
                 <div class="editor-field">
                     @Html.DropDownListFor(m => m.Enabled, new SelectList(
-                        new[] 
-                        { 
+                        new[]
+                        {
                             new { Value = "true", Text = "Yes" },
                             new { Value = "false", Text = "No" },
                         },
@@ -76,7 +76,7 @@
                     @Html.ValidationMessageFor(m => m.Enabled, "Enabled is required.")
                 </div>
                 <br />
-                <div id="EditOrganizationSubscriptionErrorField" style="color:#8A0808"></div>
+                <div id="CreateOrganizationSubscriptionErrorField" style="color:#8A0808"></div>
             </fieldset>
         </form>
     </div>
@@ -84,17 +84,17 @@
 
 <script type="text/javascript">
     $(function () {
-        var dialogName = '#dlgEditOrganizationSubscription';
-        createDialog(dialogName, 'Edit Organization Subscription', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
+        var dialogName = '#dlgCreateOrganizationSubscription';
+        createDialog(dialogName, 'Create Organization Subscription', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
     });
 
     function onConfirmOK() {
-        var dialogName = '#dlgEditOrganizationSubscription';
-        var postBackUrl = '@Url.Action("EditDialog", "OrganizationSubscription")';
+        var dialogName = '#dlgCreateOrganizationSubscription';
+        var postBackUrl = '@Url.Action("CreateDialog", "OrganizationSubscription")';
         $.ajax({
             url: postBackUrl,
             type: 'POST',
-            data: $("#EditOrganizationSubscriptionForm").serialize(),
+            data: $("#CreateOrganizationSubscriptionForm").serialize(),
             success: function (data) {
                 if (data.Success) {
                     $(dialogName).dialog("close");
@@ -102,7 +102,7 @@
                     var form = $('#frmDetails');
                     form.submit()
                 } else {
-                    $("#EditOrganizationSubscriptionErrorField").html(data.ErrorMsg);
+                    $("#CreateOrganizationSubscriptionErrorField").html(data.ErrorMsg);
                 }
             }
         })
@@ -114,6 +114,6 @@
 
     function onConfirmCancel() {
         //$('#confirmation-message').val('');
-        $("#EditOrganizationSubscriptionErrorField").html('');
+        $("#CreateOrganizationSubscriptionErrorField").html('');
     }
 </script>

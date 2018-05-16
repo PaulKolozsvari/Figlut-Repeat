@@ -43,7 +43,7 @@ new { @id = "frmDetails" }))
             }
         });
         loadDialog("#divConfirmationDialog", "#dlgConfirmation", "ConfirmDeleteDialog", "RepeatSchedule", 'identifier', '@Guid.Empty');
-        loadDialog("#divCreateRepeatSchedule", "#dlgCreateRepeatSchedule", "CreateDialog", "RepeatSchedule", 'repeatScheduleId', '@Model.ParentId');
+        loadDialog("#divCreateRepeatSchedule", "#dlgCreateRepeatSchedule", "CreateDialog", "RepeatSchedule", 'subscriptionId', '@Model.ParentId');
         loadDialog("#divEditRepeatSchedule", "#dlgEditRepeatSchedule", "EditDialog", "RepeatSchedule", 'repeatScheduleId', '@null');
     });
 </script>

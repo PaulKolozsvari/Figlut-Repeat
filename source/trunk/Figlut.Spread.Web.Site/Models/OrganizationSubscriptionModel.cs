@@ -98,13 +98,10 @@
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationSubscriptionModel>.GetPropertyName(p => p.SubscriberCellPhoneNumber, true));
             }
-            if (!DataShaper.IsValidPhoneNumber(this.SubscriberCellPhoneNumber))
+            string formattedPhoneNumber = null;
+            if (!DataShaper.IsValidPhoneNumber(this.SubscriberCellPhoneNumber, out formattedPhoneNumber))
             {
-                errorMessage = string.Format("{0} is not a valid cell phone number.", EntityReader<OrganizationSubscriptionModel>.GetPropertyName(p => p.SubscriberCellPhoneNumber, true));
-            }
-            if (this.SubscriberDateCreated == new DateTime())
-            {
-                errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationSubscriptionModel>.GetPropertyName(p => p.SubscriberDateCreated, true));
+                errorMessage = string.Format("{0} is not a valid.", EntityReader<OrganizationSubscriptionModel>.GetPropertyName(p => p.SubscriberCellPhoneNumber, true));
             }
             return string.IsNullOrEmpty(errorMessage);
         }

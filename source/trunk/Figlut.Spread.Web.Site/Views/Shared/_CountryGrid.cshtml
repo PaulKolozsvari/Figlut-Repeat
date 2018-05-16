@@ -45,7 +45,7 @@
                         if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
                         {
                             country = (CountryModel)grid.Rows[grid.SelectedIndex].Value;
-                            @Html.LinkButtonForSubmit("Public Holidays", "onViewCountryPublicHolidaysClick()", "btnViewCountryPublicHolidays", "red-calendar-icon32.png")
+                            @Html.LinkButtonForSubmit("Holidays", "onViewCountryPublicHolidaysClick()", "btnViewCountryPublicHolidays", "red-calendar-icon32.png")
                         }
                     }
                 </div>

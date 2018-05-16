@@ -352,6 +352,32 @@
                     return GetJsonResult(false, errorMessage);
                 }
                 Subscription subscription = context.GetSubscription(model.SubscriptionId, true);
+                Organization organization = context.GetOrganization(model.OrganizationId, true);
+                Subscriber originalSubscriber = context.GetSubscriber(model.SubscriberId, true);
+                if (originalSubscriber.CellPhoneNumber.ToLower().Trim() != model.SubscriberCellPhoneNumber.ToLower().Trim()) //The cell phone number has changed, hence create a new a subscriber or link to another existing subscriber.
+                {
+                    Subscriber subscriber = context.GetSubscriberByCellPhoneNumber(model.SubscriberCellPhoneNumber, false); //Check if there's annother subscriber with that phone number.
+                    if (subscriber == null) //There's no other subscriber with that phone number, hence create a new subscriber and link this subscription to him.
+                    {
+                        subscriber = new Subscriber()
+                        {
+                            SubscriberId = Guid.NewGuid(),
+                            CellPhoneNumber = model.SubscriberCellPhoneNumber,
+                            Name = !string.IsNullOrEmpty(subscription.CustomerFullName) ? subscription.CustomerFullName : null,
+                            Enabled = true,
+                            DateCreated = DateTime.Now
+                        };
+                        context.Save<Subscriber>(subscriber, false);
+                    }
+                    else if (context.IsSubscriberSubscribedToOrganization(organization.OrganizationId, subscriber.SubscriberId)) //There's another subscriber with this phone number. Hence check if that subsccriber is already linked to this organization i.e. a subscription exists for this other subscriber. 
+                    {
+                        return GetJsonResult(false, string.Format("{0} '{1}' is already subscribed to '{2}'.",
+                            typeof(Subscriber).Name,
+                            model.SubscriberCellPhoneNumber,
+                            organization.Name));
+                    }
+                    model.SubscriberId = subscriber.SubscriberId; //Link the new subscriber or existing subsriber (with this phone number) to this subscription.
+                }
                 model.CopyPropertiesToSubscription(subscription);
                 context.Save<Subscription>(subscription, false);
                 return GetJsonResult(true);
@@ -364,11 +390,19 @@
             }
         }
 
-        public ActionResult CreateDialog()
+        public ActionResult CreateDialog(Nullable<Guid> organizationId)
         {
             try
             {
-                return PartialView(CREATE_ORGANIZATION_SUBSCRIPTION_DIALOG_PARTIAL_VIEW_NAME, new OrganizationSubscriptionModel() { Enabled = true });
+                if (!organizationId.HasValue || organizationId.Value == Guid.Empty)
+                {
+                    return PartialView(CREATE_ORGANIZATION_SUBSCRIPTION_DIALOG_PARTIAL_VIEW_NAME, new PublicHolidayModel());
+                }
+                return PartialView(CREATE_ORGANIZATION_SUBSCRIPTION_DIALOG_PARTIAL_VIEW_NAME, new OrganizationSubscriptionModel()
+                {
+                    OrganizationId = organizationId.Value,
+                    Enabled = true
+                });
             }
             catch (Exception ex)
             {
@@ -402,16 +436,20 @@
                     };
                     context.Save<Subscriber>(subscriber, false);
                 }
-                Organization currentOrganization = GetCurrentOrganization(context, true);
-                if (context.IsSubscriberSubscribedToOrganization(currentOrganization.OrganizationId, subscriber.SubscriberId))
+                if (model.OrganizationId == Guid.Empty)
+                {
+                    return GetJsonResult(false, string.Format("{0} not specified.", EntityReader<OrganizationSubscriptionModel>.GetPropertyName(p => p.OrganizationId, false)));
+                }
+                Organization organization = context.GetOrganization(model.OrganizationId, true);
+                if (context.IsSubscriberSubscribedToOrganization(organization.OrganizationId, subscriber.SubscriberId))
                 {
                     return GetJsonResult(false, string.Format("{0} '{1}' is already subscribed to '{2}'.",
                         typeof(Subscriber).Name,
                         model.SubscriberCellPhoneNumber,
-                        currentOrganization.Name));
+                        organization.Name));
                 }
                 model.SubscriptionId = Guid.NewGuid();
-                model.OrganizationId = currentOrganization.OrganizationId;
+                model.OrganizationId = organization.OrganizationId;
                 model.SubscriberId = subscriber.SubscriberId;
                 model.DateCreated = DateTime.Now;
                 if (!model.IsValid(out errorMessage))

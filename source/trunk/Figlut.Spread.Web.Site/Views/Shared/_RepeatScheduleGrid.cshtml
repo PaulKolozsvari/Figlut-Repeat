@@ -11,7 +11,7 @@
     Figlut.Spread.Web.Site.Models.RepeatScheduleModel repeatSchedule = new RepeatScheduleModel();
 }
 @{
-    int repeatSchedulesPerPageToDisplay = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.RepeatSchedulesPerPageToDisplay].SettingName);
+    int repeatSchedulesPerPageToDisplay = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.PublicHolidaysPerPagePageToDisplay].SettingValue);
     var grid = new WebGrid(Model.DataModel, canPage: true, rowsPerPage: repeatSchedulesPerPageToDisplay, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
     grid.Pager(WebGridPagerModes.All);
 }
@@ -141,6 +141,7 @@
     };
 
     function onCreateRepeatScheduleClick() {
+        alert('show dialog');
         showDialog(
             '#divCreateRepeatSchedule',
             '#dlgCreateRepeatSchedule',
@@ -148,6 +149,7 @@
             'RepeatSchedule',
             'subscriptionId',
             '@Model.ParentId');
+        alert('show dialog after');
     }
 
     function getSearchParametersString() {

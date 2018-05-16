@@ -43,8 +43,8 @@
             }
         });
         loadDialog("#divConfirmationDialog", "#dlgConfirmation", "ConfirmDeleteDialog", "OrganizationSubscription", 'identifier', '@Guid.Empty');
+        loadDialog("#divCreateOrganizationSubscription", "#dlgCreateOrganizationSubscription", "CreateDialog", "OrganizationSubscription", 'organizationId', '@Model.ParentId');
         loadDialog("#divEditOrganizationSubscription", "#dlgEditOrganizationSubscription", "EditDialog", "OrganizationSubscription", 'subscriptionId', '@null');
-        loadDialog("#divCreateSmsCampaign", "#dlgCreateSmsCampaign", "CreateSmsCampaignDialog", "OrganizationSubscription", 'searchParametersString', '@null');
 
         loadDialog("#divWaitDialog", "#dlgWait", "WaitDialog", "SmsSent", 'message', '@string.Empty');
         loadDialog("#divInformationDialog", "#dlgInformation", "InformationDialog", "SmsSent", 'message', '@string.Empty');

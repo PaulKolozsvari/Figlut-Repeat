@@ -475,7 +475,7 @@
                                          where s.OrganizationId == organizationId &&
                                          s.SubscriberId == subscriberId
                                          select s).FirstOrDefault();
-            return subscription == null;
+            return subscription != null;
         }
 
         #endregion //Subscription

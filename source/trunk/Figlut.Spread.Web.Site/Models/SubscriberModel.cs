@@ -36,14 +36,10 @@
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<SubscriberModel>.GetPropertyName(p => p.CellPhoneNumber, true));
             }
-            int parsedCellPhoneInt = 0;
-            if (!int.TryParse(this.CellPhoneNumber, out parsedCellPhoneInt))
+            string formattedPhoneNumber = null;
+            if (!DataShaper.IsValidPhoneNumber(this.CellPhoneNumber, out formattedPhoneNumber))
             {
-                errorMessage = string.Format("{0} must 10 numeric digits.", EntityReader<SubscriberModel>.GetPropertyName(p => p.CellPhoneNumber, true));
-            }
-            if (this.CellPhoneNumber.Length != 10)
-            {
-                errorMessage = string.Format("{0} must be 10 digits.", EntityReader<SubscriberModel>.GetPropertyName(p => p.CellPhoneNumber, true));
+                errorMessage = string.Format("{0} is not a valid.", EntityReader<SubscriberModel>.GetPropertyName(p => p.CellPhoneNumber, true));
             }
             return string.IsNullOrEmpty(errorMessage);
         }
