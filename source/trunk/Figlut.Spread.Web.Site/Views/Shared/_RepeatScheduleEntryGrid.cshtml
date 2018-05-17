@@ -80,8 +80,8 @@
                 selectedRowStyle: "select",
                 columns: grid.Columns(
                 grid.Column("Entries", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
-                grid.Column(EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.RepeatDate, false), "Repeat Date"),
-                grid.Column(EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.NotificationDate, false), "Notification Date"),
+                grid.Column(EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.RepeatDateFormatted, false), "Repeat Date"),
+                grid.Column(EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.NotificationDateFormatted, false), "Notification Date"),
                 grid.Column(EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.SMSNotificationSent, false), "SMS Sent"),
                 grid.Column(EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.SMSMessageId, false), "SMS Message ID"),
                 grid.Column(EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.SMSDateSent, false), "SMS Sent Date"),
@@ -93,10 +93,10 @@
             {
                 repeatScheduleEntry = (RepeatScheduleEntryModel)grid.Rows[grid.SelectedIndex].Value;
                 <div style="float: left; margin-left:2%; margin-right:2%">
-                    <b>@Html.Raw(string.Format("Repeat Date: {0}", repeatScheduleEntry.RepeatDate))</b>
+                    <b>@Html.Raw(string.Format("Repeat Date: {0}", repeatScheduleEntry.RepeatDateFormatted))</b>
                 </div>
                 <div style="float:right; margin-left:2%; margin-right:2%; color: #a30e0e;">
-                    @Html.Raw(string.Format("Notification Date{0}", repeatScheduleEntry.NotificationDate))
+                    @Html.Raw(string.Format("Notification Date: {0}", repeatScheduleEntry.NotificationDateFormatted))
                 </div>
             }
         </div>

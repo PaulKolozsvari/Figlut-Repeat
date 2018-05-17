@@ -57,7 +57,7 @@
                 if (subscription != null)
                 {
                     model.ParentId = subscription.SubscriptionId;
-                    model.ParentCaption = string.Format("{0} ({1})", subscription.CustomerFullName, subscription.SubscriberCellPhoneNumber);
+                    model.ParentCaption = string.Format("{0} {1}", subscription.CustomerFullName, subscription.SubscriberCellPhoneNumber);
                 }
             }
             return model;
@@ -158,10 +158,9 @@
                 {
                     OrganizationSubscriptionView subscription = context.GetOrganizationSubscriptionView(repeatSchedule.SubscriptionId, true);
                     model.Identifier = identifier;
-                    model.ConfirmationMessage = string.Format("Delete Repeat Schedule '{0}' for {1} '{2}'?", 
+                    model.ConfirmationMessage = string.Format("Delete Repeat Schedule '{0}' for {1}?", 
                         repeatSchedule.ScheduleName, 
-                        typeof(Subscriber).Name, 
-                        subscription.CustomerFullName);
+                        subscription.SubscriberCellPhoneNumber);
                 }
                 PartialViewResult result = PartialView(CONFIRMATION_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
@@ -218,9 +217,11 @@
                 Guid subscriptionId = Guid.Parse(subscriptionIdString);
                 OrganizationSubscriptionView subscription = context.GetOrganizationSubscriptionView(subscriptionId, true);
                 model.ParentId = subscription.SubscriptionId;
-                model.ParentCaption = string.Format("{0} ({1})", subscription.CustomerFullName, subscription.SubscriberCellPhoneNumber);
+                model.ParentCaption = string.Format("{0} {1}", subscription.CustomerFullName, subscription.SubscriberCellPhoneNumber);
                 model.SearchText = searchText;
-                model.ConfirmationMessage = string.Format("Delete all Repeat Schedules currently loaded for {0} '{1}'?", typeof(Subscriber).Name, subscription.CustomerFullName);
+                model.ConfirmationMessage = string.Format("Delete all Repeat Schedules currently loaded for {0} {1}?", 
+                    subscription.CustomerFullName,
+                    subscription.SubscriberCellPhoneNumber);
                 PartialViewResult result = PartialView(CONFIRMATION_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
             }
@@ -314,7 +315,7 @@
                 }
                 RepeatScheduleView repeatScheduleView = context.GetRepeatScheduleView(repeatScheduleId.Value, true);
                 RepeatScheduleModel model = new RepeatScheduleModel();
-                model.CopyPropertiesToRepeatScheduleView(repeatScheduleView);
+                model.CopyPropertiesFromRepeatScheduleView(repeatScheduleView);
                 PartialViewResult result = PartialView(EDIT_REPEAT_SCHEDULE_PARTIAL_VIEW_NAME, model);
                 return result;
             }
@@ -364,9 +365,13 @@
                     return PartialView(CREATE_REPEAT_SCHEDULE_PARTIAL_VIEW_NAME, new CreateRepeatScheduleModel());
                 }
                 CreateRepeatScheduleView view = context.GetCreateRepeatScheduleModelView(subscriptionId.Value, true);
+                Country country = context.GetCountryByCountryCode("zaf", true); //TODO Use IP address lookup to determine the country that the user is in, but for now we're only working with South Africa.
                 CreateRepeatScheduleModel model = new CreateRepeatScheduleModel();
                 model.CopyPropertiesFromCreateRepeatScheduleView(view);
                 model.DaysRepeatInterval = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[ORM.Helpers.GlobalSettingName.DefaultRepeatDaysInterval].SettingValue);
+                model.CountryId = country.CountryId;
+                model.StartDateCreate = DateTime.Now;
+                model.EndDateCreate = DateTime.Now.AddDays(365);
                 PartialViewResult result = PartialView(CREATE_REPEAT_SCHEDULE_PARTIAL_VIEW_NAME, model);
                 return result;
             }
@@ -405,7 +410,6 @@
                 return GetJsonResult(false, ex.Message);
             }
         }
-
 
         //public ActionResult CreateDialog()
         //{

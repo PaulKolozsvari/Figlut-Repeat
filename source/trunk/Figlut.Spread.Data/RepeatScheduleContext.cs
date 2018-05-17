@@ -54,12 +54,12 @@
                                                    SubscriptionId = subscription.SubscriptionId,
                                                    OrganizationId = subscription.OrganizationId,
                                                    SubscriberId = subscription.SubscriberId,
-                                                   Enabled = subscription.Enabled,
+                                                   SubscriptionEnabled = subscription.Enabled,
                                                    CustomerFullName = subscription.CustomerFullName,
                                                    CustomerIdentifier = subscription.CustomerIdentifier,
                                                    CustomerPhysicalAddress = subscription.CustomerPhysicalAddress,
                                                    CustomerNotes = subscription.CustomerNotes,
-                                                   DateCreated = subscription.DateCreated,
+                                                   SubscriptionDateCreated = subscription.DateCreated,
                                                    //Subscriber
                                                    CellPhoneNumber = subscriberView.CellPhoneNumber,
                                                    SubscriberName = subscriberView.Name,
@@ -145,9 +145,13 @@
                           from subscriberView in setSubscriber
                           where repeatSchedule.SubscriptionId == subscriptionId.Value &&
                           (repeatSchedule.ScheduleName.ToLower().Contains(searchFilterLower) ||
+                          repeatSchedule.NotificationMessage.ToLower().Contains(searchFilterLower) ||
+                          repeatSchedule.DaysRepeatInterval.ToString().Contains(searchFilterLower) ||
+                          repeatSchedule.UnitOfMeasure.ToLower().Contains(searchFilterLower) ||
                           repeatSchedule.Notes.ToLower().Contains(searchFilterLower))
                           select new RepeatScheduleView()
                           {
+                              //Repeat Schedule
                               RepeatScheduleId = repeatSchedule.RepeatScheduleId,
                               SubscriptionId = repeatSchedule.SubscriptionId,
                               NotificationMessage = repeatSchedule.NotificationMessage,
@@ -181,8 +185,11 @@
                           from subscriptionView in setSubscription.DefaultIfEmpty()
                           join subscriber in DB.GetTable<Subscriber>() on subscriptionView.SubscriberId equals subscriber.SubscriberId into setSubscriber
                           from subscriberView in setSubscriber
-                          where (repeatSchedule.ScheduleName.ToLower().Contains(searchFilterLower) ||
-                          repeatSchedule.Notes.ToLower().Contains(searchFilterLower))
+                          where repeatSchedule.ScheduleName.ToLower().Contains(searchFilterLower) ||
+                          repeatSchedule.NotificationMessage.ToLower().Contains(searchFilterLower) ||
+                          repeatSchedule.DaysRepeatInterval.ToString().Contains(searchFilterLower) ||
+                          repeatSchedule.UnitOfMeasure.ToLower().Contains(searchFilterLower) ||
+                          repeatSchedule.Notes.ToLower().Contains(searchFilterLower)
                           select new RepeatScheduleView()
                           {
                               RepeatScheduleId = repeatSchedule.RepeatScheduleId,
@@ -265,7 +272,9 @@
                     RepeatScheduleEntryId = Guid.NewGuid(),
                     RepeatScheduleId = result.RepeatScheduleId,
                     RepeatDate = p.RepeatDate,
+                    RepeatDateFormatted = DataShaper.GetDefaultDateString(p.RepeatDate),
                     NotificationDate = p.NotificationDate,
+                    NotificationDateFormatted = DataShaper.GetDefaultDateString(p.NotificationDate),
                     SMSNotificationSent = false,
                     SMSMessageId = null,
                     SMSDateSent = null,

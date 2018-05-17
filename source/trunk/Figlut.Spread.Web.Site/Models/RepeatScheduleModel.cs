@@ -9,6 +9,7 @@
     using Figlut.Spread.ORM;
     using Figlut.Spread.ORM.Views;
     using Figlut.Server.Toolkit.Data;
+    using System.ComponentModel.DataAnnotations;
 
     #endregion //Using Directives
 
@@ -75,6 +76,7 @@
         public bool IsValid(out string errorMessage)
         {
             errorMessage = null;
+            //Repeat Schedule
             if (this.RepeatScheduleId == Guid.Empty)
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.RepeatScheduleId, true));
@@ -91,13 +93,13 @@
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.ScheduleName, true));
             }
-            if (this.DaysRepeatInterval == 0)
+            else if (this.DaysRepeatInterval <= 0)
             {
-                errorMessage = string.Format("{0} not entered.", EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.DaysRepeatInterval, true));
+                errorMessage = string.Format("{0} may not be less than or equal to 0.", EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.DaysRepeatInterval, true));
             }
-            if (string.IsNullOrEmpty(this.Notes))
+            else if (this.Quantity.HasValue && this.Quantity.Value < 0.0)
             {
-                errorMessage = string.Format("{0} not entered.", EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.Notes, true));
+                errorMessage = string.Format("{0} may not be less than or equal to 0.", EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.Quantity, true));
             }
             //Subscription
             if (this.OrganizationId == Guid.Empty)
@@ -108,30 +110,10 @@
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.SubscriberId, true));
             }
-            if (string.IsNullOrEmpty(this.CustomerFullName))
-            {
-                errorMessage = string.Format("{0} not entered.", EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.CustomerFullName, true));
-            }
-            if (string.IsNullOrEmpty(this.CustomerIdentifier))
-            {
-                errorMessage = string.Format("{0} not entered.", EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.CustomerIdentifier, true));
-            }
-            if (string.IsNullOrEmpty(this.CustomerPhysicalAddress))
-            {
-                errorMessage = string.Format("{0} not entered.", EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.CustomerPhysicalAddress, true));
-            }
-            if (string.IsNullOrEmpty(this.CustomerNotes))
-            {
-                errorMessage = string.Format("{0} not entered.", EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.CustomerNotes, true));
-            }
             //Subscriber
             if (string.IsNullOrEmpty(this.CellPhoneNumber))
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.CellPhoneNumber, true));
-            }
-            if (string.IsNullOrEmpty(this.SubscriberName))
-            {
-                errorMessage = string.Format("{0} not entered.", EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.SubscriberName, true));
             }
             return string.IsNullOrEmpty(errorMessage);
         }

@@ -57,7 +57,7 @@
                 if (repeatSchedule != null)
                 {
                     model.ParentId = repeatSchedule.RepeatScheduleId;
-                    model.ParentCaption = string.Format("{0} ({1})", repeatSchedule.ScheduleName, repeatSchedule.CustomerFullName);
+                    model.ParentCaption = string.Format("{0} {1} {2}", repeatSchedule.ScheduleName, repeatSchedule.CustomerFullName, repeatSchedule.CellPhoneNumber);
                 }
             }
             return model;
@@ -219,12 +219,13 @@
                 Guid repeatScheduleId = Guid.Parse(repeatScheduleIdString);
                 RepeatScheduleView repeatSchedule = context.GetRepeatScheduleView(repeatScheduleId, true);
                 model.ParentId = repeatSchedule.RepeatScheduleId;
-                model.ParentCaption = string.Format("{0} ({1})", repeatSchedule.ScheduleName, repeatSchedule.CustomerFullName);
+                model.ParentCaption = string.Format("{0} {1} {2}", repeatSchedule.ScheduleName, repeatSchedule.CustomerFullName, repeatSchedule.CellPhoneNumber);
                 model.SearchText = searchText;
-                model.ConfirmationMessage = string.Format("Delete all Repeat Schedules Entries currently loaded for {0} '{1} ({2})'?", 
+                model.ConfirmationMessage = string.Format("Delete all Repeat Schedules Entries currently loaded for {0} '{1}' for subscription {2} {3}'?", 
                     DataShaper.ShapeCamelCaseString(typeof(RepeatSchedule).Name), 
                     repeatSchedule.ScheduleName,
-                    repeatSchedule.CustomerFullName);
+                    repeatSchedule.CustomerFullName,
+                    repeatSchedule.CellPhoneNumber);
                 PartialViewResult result = PartialView(CONFIRMATION_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
             }
@@ -318,7 +319,7 @@
                 }
                 RepeatScheduleEntryView repeatScheduleEntryView = context.GetRepeatScheduleEntryView(repeatScheduleEntryId.Value, true);
                 RepeatScheduleEntryModel model = new RepeatScheduleEntryModel();
-                model.CopyPropertiesToRepeatScheduleEntryView(repeatScheduleEntryView);
+                model.CopyPropertiesFromRepeatScheduleEntryView(repeatScheduleEntryView);
                 PartialViewResult result = PartialView(EDIT_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME, model);
                 return result;
             }

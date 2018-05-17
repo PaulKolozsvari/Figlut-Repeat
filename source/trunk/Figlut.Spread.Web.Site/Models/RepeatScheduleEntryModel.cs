@@ -9,6 +9,7 @@
     using Figlut.Spread.ORM;
     using Figlut.Spread.ORM.Views;
     using Figlut.Server.Toolkit.Data;
+    using System.ComponentModel.DataAnnotations;
 
     #endregion //Using Directives
 
@@ -22,9 +23,17 @@
 
         public Guid RepeatScheduleId { get; set; }
 
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime RepeatDate { get; set; }
 
+        public string RepeatDateFormatted { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime NotificationDate { get; set; }
+
+        public string NotificationDateFormatted { get; set; }
 
         public bool SMSNotificationSent { get; set; }
 
@@ -91,10 +100,12 @@
 
         public void CopyPropertiesFromRepeatScheduleEntryView(RepeatScheduleEntryView view)
         {
-            this.RepeatScheduleEntryId = view.RepeatScheduleId;
+            this.RepeatScheduleEntryId = view.RepeatScheduleEntryId;
             this.RepeatScheduleId = view.RepeatScheduleId;
             this.RepeatDate = view.RepeatDate;
+            this.RepeatDateFormatted = view.RepeatDateFormatted;
             this.NotificationDate = view.NotificationDate;
+            this.NotificationDateFormatted = view.NotificationDateFormatted;
             this.SMSNotificationSent = view.SMSNotificationSent;
             this.SMSMessageId = view.SMSMessageId;
             this.SMSDateSent = view.SMSDateSent;
@@ -117,7 +128,9 @@
             view.RepeatScheduleEntryId = this.RepeatScheduleId;
             view.RepeatScheduleId = this.RepeatScheduleId;
             view.RepeatDate = this.RepeatDate;
+            view.RepeatDateFormatted = this.RepeatDateFormatted;
             view.NotificationDate = this.NotificationDate;
+            view.NotificationDateFormatted = this.NotificationDateFormatted;
             view.SMSNotificationSent = this.SMSNotificationSent;
             view.SMSMessageId = this.SMSMessageId;
             view.SMSDateSent = this.SMSDateSent;
@@ -137,10 +150,12 @@
 
         public void CopyPropertiesToRepeatScheduleEntry(RepeatScheduleEntry repeatScheduleEntry)
         {
-            repeatScheduleEntry.RepeatScheduleEntryId = this.RepeatScheduleId;
+            repeatScheduleEntry.RepeatScheduleEntryId = this.RepeatScheduleEntryId;
             repeatScheduleEntry.RepeatScheduleId = this.RepeatScheduleId;
             repeatScheduleEntry.RepeatDate = this.RepeatDate;
+            repeatScheduleEntry.RepeatDateFormatted = DataShaper.GetDefaultDateString(this.RepeatDate);
             repeatScheduleEntry.NotificationDate = this.NotificationDate;
+            repeatScheduleEntry.NotificationDateFormatted = DataShaper.GetDefaultDateString(this.NotificationDate);
             repeatScheduleEntry.SMSNotificationSent = this.SMSNotificationSent;
             repeatScheduleEntry.SMSMessageId = this.SMSMessageId;
             repeatScheduleEntry.SMSDateSent = this.SMSDateSent;

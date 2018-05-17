@@ -43,6 +43,11 @@
                     @if (string.IsNullOrEmpty(ViewBag.ErrorMessage) && Model.IsAdministrator)
                     {
                         @Html.LinkButtonForSubmit("Download", "onDownloadAllRepeatSchedulesCsvFileClick()", "btnDownload", "spreadsheet.png")
+                        if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+                        {
+                            repeatSchedule = (RepeatScheduleModel)grid.Rows[grid.SelectedIndex].Value;
+                            @Html.LinkButtonForSubmit("Entries", "onViewRepeatScheduleEntriesClick()", "btnViewRepeatScheduleEntries", "red-calendar-icon32.png")
+                        }
                     }
                 </div>
                 <div style="float: right; margin-left:2%; margin-right:2%">
@@ -81,9 +86,9 @@
                 columns: grid.Columns(
                 grid.Column("Schedules", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
                 grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.ScheduleName, false), "Name"),
-                grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.CellPhoneNumber, false), "Cell Phone"),
-                grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.CustomerFullName, false), "Customer"),
                 grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.DaysRepeatInterval, false), "Days Interval"),
+                grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.Quantity, false), "Quantity"),
+                grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.UnitOfMeasure, false), "UOM"),
                 grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.DateCreated, false), "Date Created")
             ))
         </div>
@@ -95,7 +100,7 @@
                     <b>@Html.Raw(string.Format("Name: {0}", repeatSchedule.ScheduleName))</b>
                 </div>
                 <div style="float:right; margin-left:2%; margin-right:2%; color: #a30e0e;">
-                    @Html.Raw(string.Format("{0}", repeatSchedule.NotificationMessage))
+                    @Html.Raw(string.Format("Message: '{0}'", repeatSchedule.NotificationMessage))
                 </div>
             }
         </div>
@@ -141,7 +146,6 @@
     };
 
     function onCreateRepeatScheduleClick() {
-        alert('show dialog');
         showDialog(
             '#divCreateRepeatSchedule',
             '#dlgCreateRepeatSchedule',
@@ -149,7 +153,6 @@
             'RepeatSchedule',
             'subscriptionId',
             '@Model.ParentId');
-        alert('show dialog after');
     }
 
     function getSearchParametersString() {
@@ -176,6 +179,13 @@
         var searchParameters = getSearchParametersString();
         var downloadUrl = '@Url.Action("DownloadCsvFile", "RepeatSchedule", new { searchParametersString = "_searchValue" })';
         downloadUrl = downloadUrl.replace('_searchValue', searchParameters);
+        window.location = downloadUrl;
+    }
+
+    function onViewRepeatScheduleEntriesClick() {
+        var selectedRepeatScheduleId = '@repeatSchedule.RepeatScheduleId';
+        var downloadUrl = '@Url.Action("Index", "RepeatScheduleEntry", new { repeatScheduleId = "_repeatScheduleId" })';
+        downloadUrl = downloadUrl.replace('_repeatScheduleId', selectedRepeatScheduleId);
         window.location = downloadUrl;
     }
 

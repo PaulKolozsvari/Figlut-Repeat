@@ -23,7 +23,11 @@
 
         public DateTime RepeatDate { get; set; }
 
+        public string RepeatDateFormatted { get; set; }
+
         public DateTime NotificationDate { get; set; }
+
+        public string NotificationDateFormatted { get; set; }
 
         public bool SMSNotificationSent { get; set; }
 
@@ -63,10 +67,12 @@
 
         public void CopyPropertiesFromRepeatScheduleEntryView(RepeatScheduleEntryView view)
         {
-            this.RepeatScheduleEntryId = view.RepeatScheduleId;
+            this.RepeatScheduleEntryId = view.RepeatScheduleEntryId;
             this.RepeatScheduleId = view.RepeatScheduleId;
             this.RepeatDate = view.RepeatDate;
+            this.RepeatDateFormatted = view.RepeatDateFormatted;
             this.NotificationDate = view.NotificationDate;
+            this.NotificationDateFormatted = view.NotificationDateFormatted;
             this.SMSNotificationSent = view.SMSNotificationSent;
             this.SMSMessageId = view.SMSMessageId;
             this.SMSDateSent = view.SMSDateSent;
@@ -89,7 +95,9 @@
             view.RepeatScheduleEntryId = this.RepeatScheduleId;
             view.RepeatScheduleId = this.RepeatScheduleId;
             view.RepeatDate = this.RepeatDate;
+            view.RepeatDateFormatted = this.RepeatDateFormatted;
             view.NotificationDate = this.NotificationDate;
+            view.NotificationDateFormatted = this.NotificationDateFormatted;
             view.SMSNotificationSent = this.SMSNotificationSent;
             view.SMSMessageId = this.SMSMessageId;
             view.SMSDateSent = this.SMSDateSent;

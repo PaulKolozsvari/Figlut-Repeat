@@ -1,13 +1,14 @@
 ﻿namespace Figlut.Spread.Web.Site.Models
 {
-    using Figlut.Server.Toolkit.Data;
-    using Figlut.Spread.ORM.Views;
     #region Using Directives
 
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web;
+    using Figlut.Server.Toolkit.Data;
+    using Figlut.Spread.ORM.Views;
+    using System.ComponentModel.DataAnnotations;
 
     #endregion //Using Directives
 
@@ -23,7 +24,7 @@
 
         public Guid SubscriberId { get; set; }
 
-        public bool Enabled { get; set; }
+        public bool SubscriptionEnabled { get; set; }
 
         public string CustomerFullName { get; set; }
 
@@ -33,7 +34,7 @@
 
         public string CustomerNotes { get; set; }
 
-        public DateTime DateCreated { get; set; }
+        public DateTime SubscriptionDateCreated { get; set; }
 
         #endregion //Subscription Properties
 
@@ -87,9 +88,13 @@
 
         public string Notes { get; set; }
 
-        public DateTime StartDate { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime StartDateCreate { get; set; }
 
-        public DateTime EndDate { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime EndDateCreate { get; set; }
 
         public Guid CountryId { get; set; }
 
@@ -107,68 +112,68 @@
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.SubscriptionId, true));
             }
-            if (this.OrganizationId == Guid.Empty)
+            else if (this.OrganizationId == Guid.Empty)
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.OrganizationId, true));
             }
-            if (this.SubscriberId == Guid.Empty)
+            else if (this.SubscriberId == Guid.Empty)
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.SubscriberId, true));
             }
             //Subscriber
-            if (string.IsNullOrEmpty(this.CellPhoneNumber))
+            else if (string.IsNullOrEmpty(this.CellPhoneNumber))
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.CellPhoneNumber, true));
             }
             //Organization
-            if (string.IsNullOrEmpty(this.OrganizationName))
+            else if (string.IsNullOrEmpty(this.OrganizationName))
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.OrganizationName, true));
             }
-            if (string.IsNullOrEmpty(this.OrganizationIdentifier))
+            else if (string.IsNullOrEmpty(this.OrganizationIdentifier))
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.OrganizationIdentifier, true));
             }
-            if (string.IsNullOrEmpty(this.OrganizationEmailAddress))
+            else if (string.IsNullOrEmpty(this.OrganizationEmailAddress))
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.OrganizationEmailAddress, true));
             }
-            if (string.IsNullOrEmpty(this.OrganizationAddress))
+            else if (string.IsNullOrEmpty(this.OrganizationAddress))
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.OrganizationAddress, true));
             }
             //Repeat Schedule
-            if (string.IsNullOrEmpty(this.NotificationMessage))
+            else if (string.IsNullOrEmpty(this.NotificationMessage))
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.NotificationMessage, true));
             }
-            if (string.IsNullOrEmpty(this.ScheduleName))
+            else if (string.IsNullOrEmpty(this.ScheduleName))
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.ScheduleName, true));
             }
-            if (this.DaysRepeatInterval <= 0)
+            else if (this.DaysRepeatInterval <= 0)
             {
                 errorMessage = string.Format("{0} may not be less than or equal to 0.", EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.DaysRepeatInterval, true));
             }
-            if (this.Quantity.HasValue && this.Quantity.Value < 0.0)
+            else if (this.Quantity.HasValue && this.Quantity.Value < 0.0)
             {
-                errorMessage = string.Format("{0} may not be less than 0.", EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.Quantity, true));
+                errorMessage = string.Format("{0} may not be less than or equal to 0.", EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.Quantity, true));
             }
-            if (this.StartDate == new DateTime())
+            else if (this.StartDateCreate == new DateTime())
             {
-                errorMessage = string.Format("{0} not entered.", EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.StartDate, true));
+                errorMessage = string.Format("{0} not entered.", EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.StartDateCreate, true));
             }
-            if (this.EndDate == new DateTime())
+            else if (this.EndDateCreate == new DateTime())
             {
-                errorMessage = string.Format("{0} not entered.", EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.StartDate, true));
+                errorMessage = string.Format("{0} not entered.", EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.StartDateCreate, true));
             }
-            if (this.StartDate.Date > this.EndDate)
+            else if (this.StartDateCreate.Date > this.EndDateCreate)
             {
                 errorMessage = string.Format("{0} may not be greater than the {1}.",
-                    EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.StartDate, true),
-                    EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.EndDate, true));
+                    EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.StartDateCreate, true),
+                    EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.EndDateCreate, true));
             }
-            if (this.CountryId == Guid.Empty)
+            else if (this.CountryId == Guid.Empty)
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.CountryId, true));
             }
@@ -181,12 +186,12 @@
             this.SubscriptionId = view.SubscriptionId;
             this.OrganizationId = view.OrganizationId;
             this.SubscriberId = view.SubscriberId;
-            this.Enabled = view.Enabled;
+            this.SubscriptionEnabled = view.SubscriptionEnabled;
             this.CustomerFullName = view.CustomerFullName;
             this.CustomerIdentifier = view.CustomerIdentifier;
             this.CustomerPhysicalAddress = view.CustomerPhysicalAddress;
             this.CustomerNotes = view.CustomerPhysicalAddress;
-            this.DateCreated = view.DateCreated;
+            this.SubscriptionDateCreated = view.SubscriptionDateCreated;
 
             //Subscriber
             this.CellPhoneNumber = view.CellPhoneNumber;
@@ -213,8 +218,8 @@
             this.UnitOfMeasure = view.UnitOfMeasure;
             this.DaysRepeatInterval = view.DaysRepeatInterval;
             this.Notes = view.Notes;
-            this.StartDate = view.StartDate;
-            this.EndDate = view.EndDate;
+            this.StartDateCreate = view.StartDate;
+            this.EndDateCreate = view.EndDate;
             this.CountryId = view.CountryId;
     }
 
@@ -224,12 +229,12 @@
             view.SubscriptionId = this.SubscriptionId;
             view.OrganizationId = this.OrganizationId;
             view.SubscriberId = this.SubscriberId;
-            view.Enabled = this.Enabled;
+            view.SubscriptionEnabled = this.SubscriptionEnabled;
             view.CustomerFullName = this.CustomerFullName;
             view.CustomerIdentifier = this.CustomerIdentifier;
             view.CustomerPhysicalAddress = this.CustomerPhysicalAddress;
             view.CustomerNotes = this.CustomerPhysicalAddress;
-            view.DateCreated = this.DateCreated;
+            view.SubscriptionDateCreated = this.SubscriptionDateCreated;
 
             //Subscriber
             view.CellPhoneNumber = this.CellPhoneNumber;
@@ -256,8 +261,8 @@
             view.UnitOfMeasure = this.UnitOfMeasure;
             view.DaysRepeatInterval = this.DaysRepeatInterval;
             view.Notes = this.Notes;
-            view.StartDate = this.StartDate;
-            view.EndDate = this.EndDate;
+            view.StartDate = this.StartDateCreate;
+            view.EndDate = this.EndDateCreate;
             view.CountryId = this.CountryId;
         }
 

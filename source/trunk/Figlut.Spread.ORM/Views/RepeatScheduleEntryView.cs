@@ -22,7 +22,11 @@
 
         public DateTime RepeatDate { get; set; }
 
+        public string RepeatDateFormatted { get; set; }
+
         public DateTime NotificationDate { get; set; }
+
+        public string NotificationDateFormatted { get; set; }
 
         public bool SMSNotificationSent { get; set; }
 

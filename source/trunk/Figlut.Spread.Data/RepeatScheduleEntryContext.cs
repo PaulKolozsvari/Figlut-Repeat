@@ -87,16 +87,21 @@
                 result = (from e in DB.GetTable<RepeatScheduleEntry>()
                           join r in DB.GetTable<RepeatSchedule>() on e.RepeatScheduleId equals r.RepeatScheduleId into setRepeatSchedule
                           from repeatScheduleView in setRepeatSchedule.DefaultIfEmpty()
-                          where e.RepeatScheduleId == repeatScheduleId.Value ||
-                          (e.RepeatDate.ToString().ToLower().Contains(searchFilterLower) ||
+                          where e.RepeatScheduleId == repeatScheduleId.Value &&
+                          (e.RepeatDateFormatted.Contains(searchFilterLower) ||
+                          e.NotificationDateFormatted.Contains(searchFilterLower) ||
                           e.SMSNotificationSent.ToString().ToLower().Contains(searchFilterLower) ||
-                          (!string.IsNullOrEmpty(e.SMSMessageId) && e.SMSMessageId.ToLower().Contains(searchFilterLower)))
+                          (e.SMSMessageId != null && e.SMSMessageId.ToLower().Contains(searchFilterLower)))
+                          orderby e.RepeatDate
                           select new RepeatScheduleEntryView()
                           {
+                              //Repeat Schedule Entry
                               RepeatScheduleEntryId = e.RepeatScheduleEntryId,
                               RepeatScheduleId = e.RepeatScheduleId,
                               RepeatDate = e.RepeatDate,
+                              RepeatDateFormatted = e.RepeatDateFormatted,
                               NotificationDate = e.NotificationDate,
+                              NotificationDateFormatted = e.NotificationDateFormatted,
                               SMSNotificationSent = e.SMSNotificationSent,
                               SMSMessageId = e.SMSMessageId,
                               SMSDateSent = e.SMSDateSent,
@@ -119,15 +124,20 @@
                 result = (from e in DB.GetTable<RepeatScheduleEntry>()
                           join r in DB.GetTable<RepeatSchedule>() on e.RepeatScheduleId equals r.RepeatScheduleId into setRepeatSchedule
                           from repeatScheduleView in setRepeatSchedule.DefaultIfEmpty()
-                          where (e.RepeatDate.ToString().ToLower().Contains(searchFilterLower) ||
+                          where (e.RepeatDateFormatted.Contains(searchFilterLower) ||
+                          e.NotificationDateFormatted.Contains(searchFilterLower) ||
                           e.SMSNotificationSent.ToString().ToLower().Contains(searchFilterLower) ||
-                          (!string.IsNullOrEmpty(e.SMSMessageId) && e.SMSMessageId.ToLower().Contains(searchFilterLower)))
+                          (e.SMSMessageId != null && e.SMSMessageId.ToLower().Contains(searchFilterLower)))
+                          orderby e.RepeatDate
                           select new RepeatScheduleEntryView()
                           {
+                              //Repeat Schedule Entry
                               RepeatScheduleEntryId = e.RepeatScheduleEntryId,
                               RepeatScheduleId = e.RepeatScheduleId,
                               RepeatDate = e.RepeatDate,
+                              RepeatDateFormatted = e.RepeatDateFormatted,
                               NotificationDate = e.NotificationDate,
+                              NotificationDateFormatted = e.NotificationDateFormatted,
                               SMSNotificationSent = e.SMSNotificationSent,
                               SMSMessageId = e.SMSMessageId,
                               SMSDateSent = e.SMSDateSent,

@@ -18,7 +18,6 @@ function enableDatepickers() {
     //    $("input[type='date']").datepicker({ dateFormat: 'yy-mm-dd', inline: true }).attr("type", "text")
     //}
     $("input[type='date']").datepicker({ dateFormat: 'yy-mm-dd', inline: true }).attr("type", "text");
-    //$("input[type='date']").datepicker({ dateFormat: 'yy-mm-dd', inline: true });
 }
 
 function enableDatepickerOnInputField(inputField) {
@@ -26,7 +25,7 @@ function enableDatepickerOnInputField(inputField) {
     if ($('#' + inputField).length > 0) {
         $('#' + inputField).datepicker({ dateFormat: 'yy-mm-dd', inline: true }).attr("type", "text");
         var test = $('#' + inputField);
-        alert('date picker set');
+        alert('date picker set: ' + inputField);
     }
     return;
     try {

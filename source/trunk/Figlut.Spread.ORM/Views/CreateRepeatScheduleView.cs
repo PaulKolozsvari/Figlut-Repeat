@@ -22,7 +22,7 @@
 
         public Guid SubscriberId { get; set; }
 
-        public bool Enabled { get; set; }
+        public bool SubscriptionEnabled { get; set; }
 
         public string CustomerFullName { get; set; }
 
@@ -32,7 +32,7 @@
 
         public string CustomerNotes { get; set; }
 
-        public DateTime DateCreated { get; set; }
+        public DateTime SubscriptionDateCreated { get; set; }
 
         #endregion //Subscription Properties
 
