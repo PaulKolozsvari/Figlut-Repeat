@@ -50,7 +50,11 @@
                                                   RepeatScheduleEntryId = repeatScheduleEntry.RepeatScheduleEntryId,
                                                   RepeatScheduleId = repeatScheduleEntry.RepeatScheduleId,
                                                   RepeatDate = repeatScheduleEntry.RepeatDate,
+                                                  RepeatDateFormatted = repeatScheduleEntry.RepeatDateFormatted,
+                                                  RepeatDateDayOfWeek = repeatScheduleEntry.RepeatDateDayOfWeek,
                                                   NotificationDate = repeatScheduleEntry.NotificationDate,
+                                                  NotificationDateFormatted = repeatScheduleEntry.NotificationDateFormatted,
+                                                  NotificationDateDayOfWeek = repeatScheduleEntry.NotificationDateDayOfWeek,
                                                   SMSNotificationSent = repeatScheduleEntry.SMSNotificationSent,
                                                   SMSMessageId = repeatScheduleEntry.SMSMessageId,
                                                   SMSDateSent = repeatScheduleEntry.SMSDateSent,
@@ -90,6 +94,8 @@
                           where e.RepeatScheduleId == repeatScheduleId.Value &&
                           (e.RepeatDateFormatted.Contains(searchFilterLower) ||
                           e.NotificationDateFormatted.Contains(searchFilterLower) ||
+                          e.RepeatDateDayOfWeek.ToLower().Contains(searchFilterLower) ||
+                          e.NotificationDateDayOfWeek.ToLower().Contains(searchFilterLower) ||
                           e.SMSNotificationSent.ToString().ToLower().Contains(searchFilterLower) ||
                           (e.SMSMessageId != null && e.SMSMessageId.ToLower().Contains(searchFilterLower)))
                           orderby e.RepeatDate
@@ -100,8 +106,10 @@
                               RepeatScheduleId = e.RepeatScheduleId,
                               RepeatDate = e.RepeatDate,
                               RepeatDateFormatted = e.RepeatDateFormatted,
+                              RepeatDateDayOfWeek = e.RepeatDateDayOfWeek,
                               NotificationDate = e.NotificationDate,
                               NotificationDateFormatted = e.NotificationDateFormatted,
+                              NotificationDateDayOfWeek = e.NotificationDateDayOfWeek,
                               SMSNotificationSent = e.SMSNotificationSent,
                               SMSMessageId = e.SMSMessageId,
                               SMSDateSent = e.SMSDateSent,
@@ -126,6 +134,8 @@
                           from repeatScheduleView in setRepeatSchedule.DefaultIfEmpty()
                           where (e.RepeatDateFormatted.Contains(searchFilterLower) ||
                           e.NotificationDateFormatted.Contains(searchFilterLower) ||
+                          e.RepeatDateDayOfWeek.ToLower().Contains(searchFilterLower) ||
+                          e.NotificationDateDayOfWeek.ToLower().Contains(searchFilterLower) ||
                           e.SMSNotificationSent.ToString().ToLower().Contains(searchFilterLower) ||
                           (e.SMSMessageId != null && e.SMSMessageId.ToLower().Contains(searchFilterLower)))
                           orderby e.RepeatDate
@@ -136,8 +146,10 @@
                               RepeatScheduleId = e.RepeatScheduleId,
                               RepeatDate = e.RepeatDate,
                               RepeatDateFormatted = e.RepeatDateFormatted,
+                              RepeatDateDayOfWeek = e.RepeatDateDayOfWeek,
                               NotificationDate = e.NotificationDate,
                               NotificationDateFormatted = e.NotificationDateFormatted,
+                              NotificationDateDayOfWeek = e.NotificationDateDayOfWeek,
                               SMSNotificationSent = e.SMSNotificationSent,
                               SMSMessageId = e.SMSMessageId,
                               SMSDateSent = e.SMSDateSent,
@@ -158,7 +170,7 @@
             return result;
         }
 
-        public List<RepeatScheduleEntry> GetRepeatScheduleEntriesbyFilter(string searchFilter, Nullable<Guid> repeatScheduleId)
+        public List<RepeatScheduleEntry> GetRepeatScheduleEntriesByFilter(string searchFilter, Nullable<Guid> repeatScheduleId)
         {
             string searchFilterLower = searchFilter == null ? string.Empty : searchFilter.ToLower();
             List<RepeatScheduleEntry> result = null;
@@ -166,17 +178,23 @@
             {
                 result = (from e in DB.GetTable<RepeatScheduleEntry>()
                           where e.RepeatScheduleId == repeatScheduleId.Value &&
-                          (e.RepeatDate.ToString().ToLower().Contains(searchFilterLower) ||
+                          (e.RepeatDateFormatted.Contains(searchFilterLower) ||
+                          e.NotificationDateFormatted.Contains(searchFilterLower) ||
+                          e.RepeatDateDayOfWeek.ToLower().Contains(searchFilterLower) ||
+                          e.NotificationDateDayOfWeek.ToLower().Contains(searchFilterLower) ||
                           e.SMSNotificationSent.ToString().ToLower().Contains(searchFilterLower) ||
-                          (!string.IsNullOrEmpty(e.SMSMessageId) && e.SMSMessageId.ToLower().Contains(searchFilterLower)))
+                          (e.SMSMessageId != null && e.SMSMessageId.ToLower().Contains(searchFilterLower)))
                           select e).ToList();
             }
             else
             {
                 result = (from e in DB.GetTable<RepeatScheduleEntry>()
-                          where (e.RepeatDate.ToString().ToLower().Contains(searchFilterLower) ||
+                          where (e.RepeatDateFormatted.Contains(searchFilterLower) ||
+                          e.NotificationDateFormatted.Contains(searchFilterLower) ||
+                          e.RepeatDateDayOfWeek.ToLower().Contains(searchFilterLower) ||
+                          e.NotificationDateDayOfWeek.ToLower().Contains(searchFilterLower) ||
                           e.SMSNotificationSent.ToString().ToLower().Contains(searchFilterLower) ||
-                          (!string.IsNullOrEmpty(e.SMSMessageId) && e.SMSMessageId.ToLower().Contains(searchFilterLower)))
+                          (e.SMSMessageId != null && e.SMSMessageId.ToLower().Contains(searchFilterLower)))
                           select e).ToList();
             }
             return result;
@@ -186,7 +204,7 @@
         {
             using (TransactionScope t = new TransactionScope())
             {
-                List<RepeatScheduleEntry> repeatScheduleEntries = GetRepeatScheduleEntriesbyFilter(searchFilter, repeatScheduleId);
+                List<RepeatScheduleEntry> repeatScheduleEntries = GetRepeatScheduleEntriesByFilter(searchFilter, repeatScheduleId);
                 DB.GetTable<RepeatScheduleEntry>().DeleteAllOnSubmit(repeatScheduleEntries);
                 DB.SubmitChanges();
                 t.Complete();

@@ -158,11 +158,12 @@
                 {
                     RepeatScheduleView repeatSchedule = context.GetRepeatScheduleView(repeatScheduleEntry.RepeatScheduleId, true);
                     model.Identifier = identifier;
-                    model.ConfirmationMessage = string.Format("Delete Repeat Schedule Entry '{0}' for {1} '{2} ({3})'?",
+                    model.ConfirmationMessage = string.Format("Delete entry '{0}' for {1} '{2}' ({3} {4})?",
                         repeatScheduleEntry.RepeatDate,
                         DataShaper.ShapeCamelCaseString(typeof(RepeatSchedule).Name),
                         repeatSchedule.ScheduleName,
-                        repeatSchedule.CustomerFullName);
+                        repeatSchedule.CustomerFullName,
+                        repeatSchedule.CellPhoneNumber);
                 }
                 PartialViewResult result = PartialView(CONFIRMATION_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
@@ -343,8 +344,15 @@
                 }
                 SpreadEntityContext context = SpreadEntityContext.Create();
                 RepeatScheduleEntry repeatScheduleEntry = context.GetRepeatScheduleEntry(model.RepeatScheduleEntryId, true);
-                model.CopyPropertiesToRepeatScheduleEntry(repeatScheduleEntry);
+                repeatScheduleEntry.SMSNotificationSent = model.SMSNotificationSent;
+                if (!repeatScheduleEntry.SMSNotificationSent) //Update the other fields (outside of the Repeat and Notification dates).
+                {
+                    repeatScheduleEntry.SMSMessageId = null;
+                    repeatScheduleEntry.SMSDateSent = null;
+                    repeatScheduleEntry.SmsSentLogId = null;
+                }
                 context.Save<RepeatScheduleEntry>(repeatScheduleEntry, false);
+                context.ShiftRepeatScheduleEntry(model.RepeatScheduleEntryId, model.RepeatDate, "zaf", model.DaysToExtend); //Update the Repeat and Notification dates.
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -359,7 +367,16 @@
         {
             try
             {
-                return PartialView(CREATE_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME, new RepeatScheduleEntryModel());
+                if (!repeatScheduleId.HasValue)
+                {
+                    return PartialView(CREATE_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME, new RepeatScheduleEntryModel());
+                }
+                return PartialView(CREATE_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME, new RepeatScheduleEntryModel()
+                {
+                    RepeatScheduleId = repeatScheduleId.Value,
+                    RepeatDateCreate = DateTime.Now,
+                    NotificationDateCreate = DateTime.Now
+                });
             }
             catch (Exception ex)
             {
@@ -374,14 +391,18 @@
         {
             try
             {
+                model.RepeatScheduleEntryId = Guid.NewGuid();
+                model.RepeatDate = model.RepeatDateCreate;
+                model.RepeatDateFormatted = DataShaper.GetDefaultDateString(model.RepeatDate);
+                model.NotificationDate = model.NotificationDateCreate;
+                model.NotificationDateFormatted = DataShaper.GetDefaultDateString(model.NotificationDate);
+                model.DateCreated = DateTime.Now;
                 string errorMessage = null;
                 if (!model.IsValid(out errorMessage))
                 {
                     return GetJsonResult(false, errorMessage);
                 }
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                model.RepeatScheduleId = Guid.NewGuid();
-                model.DateCreated = DateTime.Now;
                 RepeatScheduleEntry repeatScheduleEntry = new RepeatScheduleEntry();
                 model.CopyPropertiesToRepeatScheduleEntry(repeatScheduleEntry);
                 context.Save<RepeatScheduleEntry>(repeatScheduleEntry, false);

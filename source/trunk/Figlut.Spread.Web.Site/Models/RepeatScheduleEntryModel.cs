@@ -27,13 +27,25 @@
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime RepeatDate { get; set; }
 
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime RepeatDateCreate { get; set; }
+
         public string RepeatDateFormatted { get; set; }
+
+        public string RepeatDateDayOfWeek { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime NotificationDate { get; set; }
 
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime NotificationDateCreate { get; set; }
+
         public string NotificationDateFormatted { get; set; }
+
+        public string NotificationDateDayOfWeek { get; set; }
 
         public bool SMSNotificationSent { get; set; }
 
@@ -44,6 +56,8 @@
         public Nullable<Guid> SmsSentLogId { get; set; }
 
         public DateTime DateCreated { get; set; }
+
+        public int DaysToExtend { get; set; }
 
         #endregion //Repeat Schedule Entry Properties
 
@@ -82,19 +96,6 @@
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.RepeatScheduleId, true));
             }
-            //Repeat Schedule
-            if (this.SubscriptionId == Guid.Empty)
-            {
-                errorMessage = string.Format("{0} not entered.", EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.SubscriptionId, true));
-            }
-            if (string.IsNullOrEmpty(this.NotificationMessage))
-            {
-                errorMessage = string.Format("{0} not entered.", EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.NotificationMessage, true));
-            }
-            if (string.IsNullOrEmpty(this.ScheduleName))
-            {
-                errorMessage = string.Format("{0} not entered.", EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.ScheduleName, true));
-            }
             return string.IsNullOrEmpty(errorMessage);
         }
 
@@ -104,8 +105,10 @@
             this.RepeatScheduleId = view.RepeatScheduleId;
             this.RepeatDate = view.RepeatDate;
             this.RepeatDateFormatted = view.RepeatDateFormatted;
+            this.RepeatDateDayOfWeek = view.RepeatDateDayOfWeek;
             this.NotificationDate = view.NotificationDate;
             this.NotificationDateFormatted = view.NotificationDateFormatted;
+            this.NotificationDateDayOfWeek = view.NotificationDateDayOfWeek;
             this.SMSNotificationSent = view.SMSNotificationSent;
             this.SMSMessageId = view.SMSMessageId;
             this.SMSDateSent = view.SMSDateSent;
@@ -129,8 +132,10 @@
             view.RepeatScheduleId = this.RepeatScheduleId;
             view.RepeatDate = this.RepeatDate;
             view.RepeatDateFormatted = this.RepeatDateFormatted;
+            view.RepeatDateDayOfWeek = this.RepeatDateDayOfWeek;
             view.NotificationDate = this.NotificationDate;
             view.NotificationDateFormatted = this.NotificationDateFormatted;
+            view.NotificationDateDayOfWeek = this.NotificationDateDayOfWeek;
             view.SMSNotificationSent = this.SMSNotificationSent;
             view.SMSMessageId = this.SMSMessageId;
             view.SMSDateSent = this.SMSDateSent;
@@ -154,8 +159,10 @@
             repeatScheduleEntry.RepeatScheduleId = this.RepeatScheduleId;
             repeatScheduleEntry.RepeatDate = this.RepeatDate;
             repeatScheduleEntry.RepeatDateFormatted = DataShaper.GetDefaultDateString(this.RepeatDate);
+            repeatScheduleEntry.RepeatDateDayOfWeek = this.RepeatDate.DayOfWeek.ToString();
             repeatScheduleEntry.NotificationDate = this.NotificationDate;
             repeatScheduleEntry.NotificationDateFormatted = DataShaper.GetDefaultDateString(this.NotificationDate);
+            repeatScheduleEntry.NotificationDateDayOfWeek = this.NotificationDate.DayOfWeek.ToString();
             repeatScheduleEntry.SMSNotificationSent = this.SMSNotificationSent;
             repeatScheduleEntry.SMSMessageId = this.SMSMessageId;
             repeatScheduleEntry.SMSDateSent = this.SMSDateSent;

@@ -8969,9 +8969,13 @@ namespace Figlut.Spread.ORM
 		
 		private string _RepeatDateFormatted;
 		
+		private string _RepeatDateDayOfWeek;
+		
 		private System.DateTime _NotificationDate;
 		
 		private string _NotificationDateFormatted;
+		
+		private string _NotificationDateDayOfWeek;
 		
 		private bool _SMSNotificationSent;
 		
@@ -8997,10 +9001,14 @@ namespace Figlut.Spread.ORM
     partial void OnRepeatDateChanged();
     partial void OnRepeatDateFormattedChanging(string value);
     partial void OnRepeatDateFormattedChanged();
+    partial void OnRepeatDateDayOfWeekChanging(string value);
+    partial void OnRepeatDateDayOfWeekChanged();
     partial void OnNotificationDateChanging(System.DateTime value);
     partial void OnNotificationDateChanged();
     partial void OnNotificationDateFormattedChanging(string value);
     partial void OnNotificationDateFormattedChanged();
+    partial void OnNotificationDateDayOfWeekChanging(string value);
+    partial void OnNotificationDateDayOfWeekChanged();
     partial void OnSMSNotificationSentChanging(bool value);
     partial void OnSMSNotificationSentChanged();
     partial void OnSMSMessageIdChanging(string value);
@@ -9103,6 +9111,26 @@ namespace Figlut.Spread.ORM
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RepeatDateDayOfWeek", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string RepeatDateDayOfWeek
+		{
+			get
+			{
+				return this._RepeatDateDayOfWeek;
+			}
+			set
+			{
+				if ((this._RepeatDateDayOfWeek != value))
+				{
+					this.OnRepeatDateDayOfWeekChanging(value);
+					this.SendPropertyChanging();
+					this._RepeatDateDayOfWeek = value;
+					this.SendPropertyChanged("RepeatDateDayOfWeek");
+					this.OnRepeatDateDayOfWeekChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NotificationDate", DbType="DateTime NOT NULL")]
 		public System.DateTime NotificationDate
 		{
@@ -9139,6 +9167,26 @@ namespace Figlut.Spread.ORM
 					this._NotificationDateFormatted = value;
 					this.SendPropertyChanged("NotificationDateFormatted");
 					this.OnNotificationDateFormattedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NotificationDateDayOfWeek", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string NotificationDateDayOfWeek
+		{
+			get
+			{
+				return this._NotificationDateDayOfWeek;
+			}
+			set
+			{
+				if ((this._NotificationDateDayOfWeek != value))
+				{
+					this.OnNotificationDateDayOfWeekChanging(value);
+					this.SendPropertyChanging();
+					this._NotificationDateDayOfWeek = value;
+					this.SendPropertyChanged("NotificationDateDayOfWeek");
+					this.OnNotificationDateDayOfWeekChanged();
 				}
 			}
 		}

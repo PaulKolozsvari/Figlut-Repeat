@@ -81,11 +81,12 @@
                 columns: grid.Columns(
                 grid.Column("Entries", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
                 grid.Column(EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.RepeatDateFormatted, false), "Repeat Date"),
+                grid.Column(EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.RepeatDateDayOfWeek, false), "Repeat Day"),
                 grid.Column(EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.NotificationDateFormatted, false), "Notification Date"),
+                grid.Column(EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.NotificationDateDayOfWeek, false), "Notification Day"),
                 grid.Column(EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.SMSNotificationSent, false), "SMS Sent"),
                 grid.Column(EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.SMSMessageId, false), "SMS Message ID"),
-                grid.Column(EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.SMSDateSent, false), "SMS Sent Date"),
-                grid.Column(EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.DateCreated, false), "Date Created")
+                grid.Column(EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.SMSDateSent, false), "SMS Sent Date")
             ))
         </div>
         <div class="repeat-schedule-entry-preview">
@@ -143,8 +144,8 @@
 
     function onCreateRepeatScheduleEntryClick() {
         showDialog(
-            '#divEditRepeatScheduleEntry',
-            '#dlgEditRepeatScheduleEntry',
+            '#divCreateRepeatScheduleEntry',
+            '#dlgCreateRepeatScheduleEntry',
             'CreateDialog',
             'RepeatScheduleEntry',
             'repeatScheduleId',

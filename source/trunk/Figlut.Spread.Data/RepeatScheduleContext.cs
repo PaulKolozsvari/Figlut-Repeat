@@ -248,7 +248,27 @@
             using (TransactionScope t = new TransactionScope())
             {
                 List<RepeatSchedule> repeatSchedules = GetRepeatScheduleByFilter(searchFilter, subscriptionId);
+                foreach (RepeatSchedule r in repeatSchedules) //Delete all the children first.
+                {
+                    List<RepeatScheduleEntry> repeatScheduleEntries = GetRepeatScheduleEntriesByFilter(null, r.RepeatScheduleId);
+                    DB.GetTable<RepeatScheduleEntry>().DeleteAllOnSubmit(repeatScheduleEntries);
+                    DB.SubmitChanges();
+                }
                 DB.GetTable<RepeatSchedule>().DeleteAllOnSubmit(repeatSchedules);
+                DB.SubmitChanges();
+                t.Complete();
+            }
+        }
+
+        public void DeleteRepeatScheduleAndEntries(Guid repeatScheduleId, bool throwExceptionOnNotFound)
+        {
+            using (TransactionScope t = new TransactionScope())
+            {
+                RepeatSchedule repeatSchedule = GetRepeatSchedule(repeatScheduleId, throwExceptionOnNotFound);
+                List<RepeatScheduleEntry> repeatScheduleEntries = GetRepeatScheduleEntriesByFilter(null, repeatSchedule.RepeatScheduleId);
+                DB.GetTable<RepeatScheduleEntry>().DeleteAllOnSubmit(repeatScheduleEntries); //Delete the children first.
+                DB.SubmitChanges();
+                DB.GetTable<RepeatSchedule>().DeleteOnSubmit(repeatSchedule);
                 DB.SubmitChanges();
                 t.Complete();
             }
@@ -273,8 +293,10 @@
                     RepeatScheduleId = result.RepeatScheduleId,
                     RepeatDate = p.RepeatDate,
                     RepeatDateFormatted = DataShaper.GetDefaultDateString(p.RepeatDate),
+                    RepeatDateDayOfWeek = p.RepeatDate.DayOfWeek.ToString(),
                     NotificationDate = p.NotificationDate,
                     NotificationDateFormatted = DataShaper.GetDefaultDateString(p.NotificationDate),
+                    NotificationDateDayOfWeek = p.NotificationDate.DayOfWeek.ToString(),
                     SMSNotificationSent = false,
                     SMSMessageId = null,
                     SMSDateSent = null,
@@ -357,6 +379,123 @@
             while (!IsDateWorkingDate(result, countryCode))
             {
                 result = result.Subtract(new TimeSpan(1, 0, 0, 0));
+            }
+            return result;
+        }
+
+        private List<RepeatScheduleEntry> GetFutureEntriesForRepeatSchedule(
+            Guid repeatScheduleId,
+            Guid repeatScheduleEntryIdToExclude,
+            DateTime startRepeatDate)
+        {
+            List<RepeatScheduleEntry> queryResult = (from me in DB.GetTable<RepeatScheduleEntry>()
+                                                     where (me.RepeatScheduleId == repeatScheduleId) &&
+                                                     (me.RepeatDate > startRepeatDate) &&
+                                                     (me.RepeatScheduleEntryId != repeatScheduleEntryIdToExclude)
+                                                     orderby me.RepeatDate ascending
+                                                     select me).ToList();
+            return queryResult;
+        }
+
+        private DateTime GetLastRepeatScheduleEntryRepeatDate(Guid repeatScheduleId)
+        {
+            RepeatSchedule repeatSchedule = GetRepeatSchedule(repeatScheduleId, true);
+            RepeatScheduleEntry result = (from e in DB.GetTable<RepeatScheduleEntry>()
+                                          where e.RepeatScheduleId == repeatScheduleId
+                                          orderby e.RepeatDate descending
+                                          select e).FirstOrDefault();
+
+            if (result == null)
+            {
+                throw new Exception(string.Format("No {0} records linked to {1} with {2} of {3}.",
+                    typeof(RepeatScheduleEntry).Name,
+                    typeof(RepeatSchedule).Name,
+                    EntityReader<RepeatSchedule>.GetPropertyName(p => p.RepeatScheduleId, false),
+                    repeatScheduleId));
+            }
+            return result.RepeatDate;
+        }
+
+        private RepeatScheduleEntry GetLastMedicationScheduleEntry(Guid repeatScheduleId)
+        {
+            RepeatScheduleEntry result = (from e in DB.GetTable<RepeatScheduleEntry>()
+                                          where e.RepeatScheduleId == repeatScheduleId
+                                          orderby e.RepeatDate descending
+                                          select e).FirstOrDefault();
+            return result;
+        }
+
+        public RepeatScheduleEntry GetFirstUpcomingMedicationScheduleEntry(Guid repeatScheduleId, DateTime startDate)
+        {
+            RepeatScheduleEntry result = (from e in DB.GetTable<RepeatScheduleEntry>()
+                                          where e.RepeatScheduleId == repeatScheduleId &&
+                                          e.RepeatDate.Date >= startDate.Date
+                                          orderby e.RepeatDate ascending
+                                          select e).FirstOrDefault();
+            return result;
+        }
+
+        public RepeatScheduleEntry ShiftRepeatScheduleEntry(
+            Guid repeatScheduleEntryId,
+            DateTime newRepeatDate,
+            string countryCode,
+            int extraDays)
+        {
+            RepeatScheduleEntry result = null;
+            using (TransactionScope t = new TransactionScope())
+            {
+                RepeatScheduleEntry original = GetRepeatScheduleEntry(repeatScheduleEntryId, true);
+                RepeatSchedule repeatSchedule = GetRepeatSchedule(original.RepeatScheduleId, true);
+
+                DateTime originalRepeatDate = original.RepeatDate.Date;
+                DateTime lastRepeatDate = GetLastRepeatScheduleEntryRepeatDate(original.RepeatScheduleId);
+                int numberOfDaysToMove = newRepeatDate.Subtract(originalRepeatDate).Days;
+
+                //Delete the old entries.
+                List<RepeatScheduleEntry> entriesToDelete = new List<RepeatScheduleEntry>() { original };
+                if (newRepeatDate >= originalRepeatDate) //Repeat date is being moved to a future time. So we need to delete all entries from the original delivery date to the last delivery date. Then recreate entries from the new delivery date to the last delivery date.
+                {
+                    entriesToDelete.AddRange(GetFutureEntriesForRepeatSchedule(
+                        original.RepeatScheduleId,
+                        original.RepeatScheduleEntryId,
+                        originalRepeatDate));
+                }
+                else //Repeat date is being moved to a closer time. So we need to delete all entries from the new repeat date to the last delivery date.
+                {
+                    entriesToDelete.AddRange(GetFutureEntriesForRepeatSchedule(
+                        original.RepeatScheduleId,
+                        original.RepeatScheduleEntryId,
+                        newRepeatDate));
+                }
+                DB.GetTable<RepeatScheduleEntry>().DeleteAllOnSubmit(entriesToDelete);
+                DB.SubmitChanges();
+
+                DateTime startDate = newRepeatDate;
+                DateTime endDate = lastRepeatDate.Date.AddDays(numberOfDaysToMove + extraDays);
+                ///Creating the new medication schedule entries.
+                Dictionary<string, RepeatDateSet> dates = GeneraterepeatScheduleDates(
+                    startDate,
+                    endDate,
+                    countryCode,
+                    repeatSchedule.DaysRepeatInterval);
+                List<RepeatScheduleEntry> entries = new List<RepeatScheduleEntry>();
+                dates.Values.ToList().ForEach(p => entries.Add(new RepeatScheduleEntry()
+                {
+                    RepeatScheduleEntryId = Guid.NewGuid(),
+                    RepeatScheduleId = repeatSchedule.RepeatScheduleId,
+                    RepeatDate = p.RepeatDate,
+                    RepeatDateFormatted = DataShaper.GetDefaultDateString(p.RepeatDate),
+                    RepeatDateDayOfWeek = p.RepeatDate.DayOfWeek.ToString(),
+                    NotificationDate = p.NotificationDate,
+                    NotificationDateFormatted = DataShaper.GetDefaultDateString(p.NotificationDate),
+                    NotificationDateDayOfWeek = p.NotificationDate.DayOfWeek.ToString(),
+                    SMSNotificationSent = false,
+                    DateCreated = DateTime.Now
+                }));
+                result = entries.FirstOrDefault();
+                DB.GetTable<RepeatScheduleEntry>().InsertAllOnSubmit(entries);
+                DB.SubmitChanges();
+                t.Complete();
             }
             return result;
         }

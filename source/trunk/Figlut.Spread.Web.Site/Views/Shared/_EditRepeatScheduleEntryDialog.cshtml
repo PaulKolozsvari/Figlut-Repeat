@@ -9,7 +9,7 @@
                 <legend>Confirmation Form</legend>
                 @Html.HiddenFor(m => m.RepeatScheduleEntryId)
                 @Html.HiddenFor(m => m.RepeatScheduleId)
-                @Html.HiddenFor(m => m.RepeatScheduleEntryId)
+                @Html.HiddenFor(m => m.NotificationDate)
                 @Html.HiddenFor(m => m.RepeatDateFormatted)
                 @Html.HiddenFor(m => m.NotificationDateFormatted)
                 @Html.HiddenFor(m => m.SMSMessageId)
@@ -32,11 +32,11 @@
                     @Html.ValidationMessageFor(m => m.RepeatDate)
                 </div>
                 <div class="field-label">
-                    @Html.Raw("Notification Date")
+                    @Html.Raw(string.Format("Days to extend @ {0} day repeat intervals", Model.DaysRepeatInterval))
                 </div>
                 <div class="editor-field">
-                    @Html.EditorFor(m => m.NotificationDate, new { disabled = "disabled", @readonly = "readonly" })
-                    @Html.ValidationMessageFor(m => m.NotificationDate)
+                    @Html.EditorFor(m => m.DaysToExtend, new { @type = "number" })
+                    @Html.ValidationMessageFor(m => m.DaysToExtend)
                 </div>
                 <div class="field-label">
                     @Html.Raw("SMS Notification Sent")
@@ -45,7 +45,6 @@
                     @Html.CheckBoxFor(m => m.SMSNotificationSent)
                     @Html.ValidationMessageFor(m => m.SMSNotificationSent)
                 </div>
-
                 <br />
                 <div id="EditRepeatScheduleEntryErrorField" style="color:#8A0808"></div>
             </fieldset>

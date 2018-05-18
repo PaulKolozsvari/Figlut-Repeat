@@ -25,9 +25,13 @@
 
         public string RepeatDateFormatted { get; set; }
 
+        public string RepeatDateDayOfWeek { get; set; }
+
         public DateTime NotificationDate { get; set; }
 
         public string NotificationDateFormatted { get; set; }
+
+        public string NotificationDateDayOfWeek { get; set; }
 
         public bool SMSNotificationSent { get; set; }
 
@@ -71,8 +75,10 @@
             this.RepeatScheduleId = view.RepeatScheduleId;
             this.RepeatDate = view.RepeatDate;
             this.RepeatDateFormatted = view.RepeatDateFormatted;
+            this.RepeatDateDayOfWeek = view.RepeatDateDayOfWeek;
             this.NotificationDate = view.NotificationDate;
             this.NotificationDateFormatted = view.NotificationDateFormatted;
+            this.NotificationDateDayOfWeek = view.NotificationDateDayOfWeek;
             this.SMSNotificationSent = view.SMSNotificationSent;
             this.SMSMessageId = view.SMSMessageId;
             this.SMSDateSent = view.SMSDateSent;

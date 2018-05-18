@@ -183,8 +183,7 @@
                 {
                     return RedirectToHome();
                 }
-                RepeatSchedule repeatSchedule = context.GetRepeatSchedule(model.Identifier, true);
-                context.Delete<RepeatSchedule>(repeatSchedule);
+                context.DeleteRepeatScheduleAndEntries(model.Identifier, true);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

@@ -24,9 +24,13 @@
 
         public string RepeatDateFormatted { get; set; }
 
+        public string RepeatDateDayOfWeek { get; set; }
+
         public DateTime NotificationDate { get; set; }
 
         public string NotificationDateFormatted { get; set; }
+
+        public string NotificationDateDayOfWeek { get; set; }
 
         public bool SMSNotificationSent { get; set; }
 

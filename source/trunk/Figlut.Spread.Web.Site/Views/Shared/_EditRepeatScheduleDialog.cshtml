@@ -9,7 +9,6 @@
                 <legend>Confirmation Form</legend>
                 @Html.HiddenFor(m => m.RepeatScheduleId)
                 @Html.HiddenFor(m => m.SubscriptionId)
-                @Html.HiddenFor(m => m.DaysRepeatInterval)
                 @Html.HiddenFor(m => m.DateCreated)
                 @Html.HiddenFor(m => m.OrganizationId)
                 @Html.HiddenFor(m => m.SubscriberId)
@@ -36,6 +35,13 @@
                 <div class="editor-field">
                     @Html.EditorFor(m => m.ScheduleName)
                     @Html.ValidationMessageFor(m => m.ScheduleName)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Days Repeat Interval")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.DaysRepeatInterval, new { @type = "number" })
+                    @Html.ValidationMessageFor(m => m.DaysRepeatInterval)
                 </div>
                 <div class="field-label">
                     @Html.Raw("Quantity")
