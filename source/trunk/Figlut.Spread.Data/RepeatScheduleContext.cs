@@ -318,7 +318,7 @@
         {
             if (startDate > endDate)
             {
-                throw new ArgumentOutOfRangeException("Start Date may not be greater than End Date when generating Medication Schedule Dates.");
+                throw new ArgumentOutOfRangeException("Start Date may not be greater than End Date when generating Repeat Schedule Dates.");
             }
             Dictionary<string, RepeatDateSet> result = new Dictionary<string, RepeatDateSet>();
             while (startDate.Date <= endDate.Date)
@@ -416,7 +416,7 @@
             return result.RepeatDate;
         }
 
-        private RepeatScheduleEntry GetLastMedicationScheduleEntry(Guid repeatScheduleId)
+        private RepeatScheduleEntry GetLastRepeatScheduleEntry(Guid repeatScheduleId)
         {
             RepeatScheduleEntry result = (from e in DB.GetTable<RepeatScheduleEntry>()
                                           where e.RepeatScheduleId == repeatScheduleId
@@ -425,7 +425,7 @@
             return result;
         }
 
-        public RepeatScheduleEntry GetFirstUpcomingMedicationScheduleEntry(Guid repeatScheduleId, DateTime startDate)
+        public RepeatScheduleEntry GetFirstUpcomingRepeatScheduleEntry(Guid repeatScheduleId, DateTime startDate)
         {
             RepeatScheduleEntry result = (from e in DB.GetTable<RepeatScheduleEntry>()
                                           where e.RepeatScheduleId == repeatScheduleId &&
@@ -472,7 +472,7 @@
 
                 DateTime startDate = newRepeatDate;
                 DateTime endDate = lastRepeatDate.Date.AddDays(numberOfDaysToMove + extraDays);
-                ///Creating the new medication schedule entries.
+                ///Creating the new schedule entries.
                 Dictionary<string, RepeatDateSet> dates = GeneraterepeatScheduleDates(
                     startDate,
                     endDate,
