@@ -15,6 +15,10 @@
     using Figlut.Spread.ORM;
     using Figlut.Server.Toolkit.Data;
     using Figlut.Spread.ORM.Csv;
+    using Figlut.Spread.ORM.Helpers;
+    using Figlut.Spread.SMS;
+    using Figlut.Server.Toolkit.Utilities.Logging;
+    using System.Text;
 
     #endregion //Using Directives
 
@@ -110,6 +114,95 @@
                     return PartialView(REPEAT_SCHEDULE_ENTRY_GRID_PARTIAL_VIEW_NAME, new FilterModel<PublicHolidayModel>());
                 }
                 return PartialView(REPEAT_SCHEDULE_ENTRY_GRID_PARTIAL_VIEW_NAME, resultModel);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult SendSms(Nullable<Guid> repeatScheduleEntryId)
+        {
+            try
+            {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated)
+                {
+                    return RedirectToHome();
+                }
+                if (!repeatScheduleEntryId.HasValue || repeatScheduleEntryId.Value == Guid.Empty)
+                {
+                    return GetJsonResult(false, string.Format("{0} not specified for sending an SMS.", EntityReader<RepeatScheduleEntry>.GetPropertyName(p => p.RepeatScheduleEntryId, false)));
+                }
+                string errorMessage = null;
+                int maxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
+                string organizationIdentifierIndicator = SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.OrganizationIdentifierIndicator].SettingValue;
+                string smsSendMessageSuffix = SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.SmsSendMessageSuffix].SettingValue;
+                User currentUser = GetCurrentUser(context);
+                Organization currentOrganization = GetCurrentOrganization(context, true);
+                RepeatScheduleEntry repeatScheduleEntry = context.GetRepeatScheduleEntry(repeatScheduleEntryId.Value, true);
+                RepeatScheduleView repeatScheduleView = context.GetRepeatScheduleView(repeatScheduleEntry.RepeatScheduleId, true);
+                if (currentOrganization.SmsCreditsBalance < 1 && !currentOrganization.AllowSmsCreditsDebt)
+                {
+                    return GetJsonResult(false, string.Format("{0} '{1}' has insufficient SMS credits to send an SMS.", typeof(Organization).Name, currentOrganization.Name));
+                }
+                SmsResponse response;
+                try
+                {
+                    response = SpreadWebApp.Instance.SmsSender.SendSms(new SmsRequest(
+                        repeatScheduleView.CellPhoneNumber, repeatScheduleView.NotificationMessage, maxSmsSendMessageLength, smsSendMessageSuffix, currentOrganization.Identifier, organizationIdentifierIndicator));
+                }
+                catch (Exception exFailed) //Failed to send the SMS Web Request to the provider.
+                {
+                    int smsProviderCode = (int)SpreadWebApp.Instance.Settings.SmsProvider;
+                    context.LogFailedSmsSent(
+                        repeatScheduleView.CellPhoneNumber, repeatScheduleView.NotificationMessage, smsProviderCode, exFailed, currentUser, out errorMessage);
+                    return GetJsonResult(false, errorMessage);
+                }
+                SmsSentLog smsSentLog = SpreadWebApp.Instance.LogSmsSentToDB(
+                    repeatScheduleView.CellPhoneNumber, repeatScheduleView.NotificationMessage, response, currentUser, true); //If this line throws an exception then we don't havea record of the SMS having been sent, therefore cannot deduct credits from the Organization. Therefore there's no point in wrapping this call in a try catch and swallowing any exception i.e. if we don't have a record of the SMS having been sent we cannot charge for it.
+                if (response.success)
+                {
+                    long smsCredits = context.DecrementSmsCreditFromOrganization(currentOrganization.OrganizationId).SmsCreditsBalance;
+                    GOC.Instance.Logger.LogMessage(new LogMessage(
+                        string.Format("{0} '{1}' has sent an SMS. Credits remaining: {2}.",
+                        typeof(Organization).Name,
+                        currentOrganization.Name,
+                        smsCredits),
+                        LogMessageType.SuccessAudit,
+                        LoggingLevel.Normal));
+
+                    repeatScheduleEntry.SMSNotificationSent = true;
+                    repeatScheduleEntry.SMSMessageId = response.messageId;
+                    repeatScheduleEntry.SMSDateSent = DateTime.Now;
+                    if (smsSentLog != null)
+                    {
+                        repeatScheduleEntry.SmsSentLogId = smsSentLog.SmsSentLogId;
+                    }
+                    context.Save<RepeatScheduleEntry>(repeatScheduleEntry, false);
+                }
+                else //Got a response from the provider, but sending the sms failed.
+                {
+                    StringBuilder errorMessageBuilder = new StringBuilder();
+                    if (!string.IsNullOrEmpty(response.error))
+                    {
+                        errorMessageBuilder.AppendFormat("Error: {0}. ", response.error);
+                    }
+                    if (!string.IsNullOrEmpty(response.errorCode))
+                    {
+                        errorMessageBuilder.AppendFormat("Code: {0}. ", response.errorCode);
+                    }
+                    if (!string.IsNullOrEmpty(response.messageId))
+                    {
+                        errorMessageBuilder.AppendFormat("Message ID: {0}", response.messageId);
+                    }
+                    return GetJsonResult(false, errorMessageBuilder.ToString());
+                }
+                //Thread.Sleep(5000);
+                return GetJsonResult(true);
             }
             catch (Exception ex)
             {

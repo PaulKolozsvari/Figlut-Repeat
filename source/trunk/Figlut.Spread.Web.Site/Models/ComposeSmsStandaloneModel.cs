@@ -34,9 +34,10 @@
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<ComposeSmsStandaloneModel>.GetPropertyName(p => p.CellPhoneNumber, true));
             }
-            else if (this.CellPhoneNumber.Length < 10)
+            string formattedPhoneNumber = null;
+            if (!DataShaper.IsValidPhoneNumber(this.CellPhoneNumber, out formattedPhoneNumber))
             {
-                errorMessage = string.Format("{0} must be at least 10 characters long.", EntityReader<ComposeSmsStandaloneModel>.GetPropertyName(p => p.CellPhoneNumber, true));
+                errorMessage = string.Format("{0} is not a valid number.", EntityReader<SubscriberModel>.GetPropertyName(p => p.CellPhoneNumber, true));
             }
             else if (string.IsNullOrEmpty(this.MessageContents))
             {

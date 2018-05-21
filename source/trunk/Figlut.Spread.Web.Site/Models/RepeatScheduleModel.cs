@@ -37,6 +37,24 @@
 
         public DateTime DateCreated { get; set; }
 
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public Nullable<DateTime> StartDate { get; set; }
+
+        public string StartDateFormatted { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public Nullable<DateTime> EndDate { get; set; }
+
+        public string EndDateFormatted { get; set; }
+
+        public int EntryCount { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime ExtendDate { get; set; }
+
         #endregion //Repeat Schedule Properties
 
         #region Subscription Properties
@@ -129,6 +147,17 @@
             this.DaysRepeatInterval = view.DaysRepeatInterval;
             this.Notes = view.Notes;
             this.DateCreated = view.DateCreated;
+            this.StartDate = view.StartDate;
+            if (this.StartDate.HasValue)
+            {
+                this.StartDateFormatted = DataShaper.GetDefaultDateString(view.StartDate.Value);
+            }
+            this.EndDate = view.EndDate;
+            if (this.EndDate.HasValue)
+            {
+                this.EndDateFormatted = DataShaper.GetDefaultDateString(view.EndDate.Value);
+            }
+            this.EntryCount = view.EntryCount;
 
             this.OrganizationId = view.OrganizationId;
             this.SubscriberId = view.SubscriberId;
@@ -155,6 +184,17 @@
             view.DaysRepeatInterval = this.DaysRepeatInterval;
             view.Notes = this.Notes;
             view.DateCreated = this.DateCreated;
+            view.StartDate = this.StartDate;
+            if (view.StartDate.HasValue)
+            {
+                view.StartDateFormatted = DataShaper.GetDefaultDateString(view.StartDate.Value);
+            }
+            view.EndDate = this.EndDate;
+            if (view.EndDate.HasValue)
+            {
+                view.EndDateFormatted = DataShaper.GetDefaultDateString(view.EndDate.Value);
+            }
+            view.EntryCount = this.EntryCount;
 
             view.OrganizationId = this.OrganizationId;
             view.SubscriberId = this.SubscriberId;

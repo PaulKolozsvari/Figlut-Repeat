@@ -87,6 +87,12 @@
 
         #endregion //Repeat Schedule Properties
 
+        #region Subscriber Properties
+
+        public string CellPhoneNumber { get; set; }
+
+        #endregion //Subscriber Properties
+
         #endregion //Properties
 
         #region Methods
@@ -130,6 +136,8 @@
             this.DaysRepeatInterval = view.DaysRepeatInterval;
             this.RepeatScheduleNotes = view.RepeatScheduleNotes;
             this.DateCreated = view.DateCreated;
+
+            this.CellPhoneNumber = view.CellPhoneNumber;
         }
 
         public void CopyPropertiesToRepeatScheduleEntryView(RepeatScheduleEntryView view)
@@ -157,6 +165,8 @@
             view.DaysRepeatInterval = this.DaysRepeatInterval;
             view.RepeatScheduleNotes = this.RepeatScheduleNotes;
             view.DateCreated = this.DateCreated;
+
+            view.CellPhoneNumber = this.CellPhoneNumber;
         }
 
         public void CopyPropertiesToRepeatScheduleEntry(RepeatScheduleEntry repeatScheduleEntry)

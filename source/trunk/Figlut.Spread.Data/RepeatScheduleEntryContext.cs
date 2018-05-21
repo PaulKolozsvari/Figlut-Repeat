@@ -44,9 +44,13 @@
             RepeatScheduleEntryView result = (from repeatScheduleEntry in DB.GetTable<RepeatScheduleEntry>()
                                               join repeatSchedule in DB.GetTable<RepeatSchedule>() on repeatScheduleEntry.RepeatScheduleId equals repeatSchedule.RepeatScheduleId into setRepeatSchedule
                                               from repeatScheduleView in setRepeatSchedule.DefaultIfEmpty()
-                                              where repeatScheduleEntry.RepeatScheduleEntryId == repeatScheduleEntryId
+                                              join subscription in DB.GetTable<Subscription>() on repeatScheduleView.SubscriptionId equals subscription.SubscriptionId into setSubscription
+                                              from subscriptionView in setSubscription.DefaultIfEmpty()
+                                              join subscriber in DB.GetTable<Subscriber>() on subscriptionView.SubscriberId equals subscriber.SubscriberId into setSubscriber
+                                              from subscriberView in setSubscriber.DefaultIfEmpty()
                                               select new RepeatScheduleEntryView()
                                               {
+                                                  //Repeat Schedule Entry
                                                   RepeatScheduleEntryId = repeatScheduleEntry.RepeatScheduleEntryId,
                                                   RepeatScheduleId = repeatScheduleEntry.RepeatScheduleId,
                                                   RepeatDate = repeatScheduleEntry.RepeatDate,
@@ -69,7 +73,10 @@
                                                   UnitOfMeasure = repeatScheduleView.UnitOfMeasure,
                                                   DaysRepeatInterval = repeatScheduleView.DaysRepeatInterval,
                                                   RepeatScheduleNotes = repeatScheduleView.Notes,
-                                                  RepeatScheduleDateCreated = repeatScheduleView.DateCreated
+                                                  RepeatScheduleDateCreated = repeatScheduleView.DateCreated,
+
+                                                  //Subscriber
+                                                  CellPhoneNumber = subscriberView.CellPhoneNumber
                                               }).FirstOrDefault();
 
             if (result == null && throwExceptionOnNotFound)
@@ -88,33 +95,37 @@
             List<RepeatScheduleEntryView> result = null;
             if (repeatScheduleId.HasValue)
             {
-                result = (from e in DB.GetTable<RepeatScheduleEntry>()
-                          join r in DB.GetTable<RepeatSchedule>() on e.RepeatScheduleId equals r.RepeatScheduleId into setRepeatSchedule
+                result = (from repeatScheduleEntry in DB.GetTable<RepeatScheduleEntry>()
+                          join repeatSchedule in DB.GetTable<RepeatSchedule>() on repeatScheduleEntry.RepeatScheduleId equals repeatSchedule.RepeatScheduleId into setRepeatSchedule
                           from repeatScheduleView in setRepeatSchedule.DefaultIfEmpty()
-                          where e.RepeatScheduleId == repeatScheduleId.Value &&
-                          (e.RepeatDateFormatted.Contains(searchFilterLower) ||
-                          e.NotificationDateFormatted.Contains(searchFilterLower) ||
-                          e.RepeatDateDayOfWeek.ToLower().Contains(searchFilterLower) ||
-                          e.NotificationDateDayOfWeek.ToLower().Contains(searchFilterLower) ||
-                          e.SMSNotificationSent.ToString().ToLower().Contains(searchFilterLower) ||
-                          (e.SMSMessageId != null && e.SMSMessageId.ToLower().Contains(searchFilterLower)))
-                          orderby e.RepeatDate
+                          join subscription in DB.GetTable<Subscription>() on repeatScheduleView.SubscriptionId equals subscription.SubscriptionId into setSubscription
+                          from subscriptionView in setSubscription.DefaultIfEmpty()
+                          join subscriber in DB.GetTable<Subscriber>() on subscriptionView.SubscriberId equals subscriber.SubscriberId into setSubscriber
+                          from subscriberView in setSubscriber.DefaultIfEmpty()
+                          where repeatScheduleEntry.RepeatScheduleId == repeatScheduleId.Value &&
+                          (repeatScheduleEntry.RepeatDateFormatted.Contains(searchFilterLower) ||
+                          repeatScheduleEntry.NotificationDateFormatted.Contains(searchFilterLower) ||
+                          repeatScheduleEntry.RepeatDateDayOfWeek.ToLower().Contains(searchFilterLower) ||
+                          repeatScheduleEntry.NotificationDateDayOfWeek.ToLower().Contains(searchFilterLower) ||
+                          repeatScheduleEntry.SMSNotificationSent.ToString().ToLower().Contains(searchFilterLower) ||
+                          (repeatScheduleEntry.SMSMessageId != null && repeatScheduleEntry.SMSMessageId.ToLower().Contains(searchFilterLower)))
+                          orderby repeatScheduleEntry.RepeatDate
                           select new RepeatScheduleEntryView()
                           {
                               //Repeat Schedule Entry
-                              RepeatScheduleEntryId = e.RepeatScheduleEntryId,
-                              RepeatScheduleId = e.RepeatScheduleId,
-                              RepeatDate = e.RepeatDate,
-                              RepeatDateFormatted = e.RepeatDateFormatted,
-                              RepeatDateDayOfWeek = e.RepeatDateDayOfWeek,
-                              NotificationDate = e.NotificationDate,
-                              NotificationDateFormatted = e.NotificationDateFormatted,
-                              NotificationDateDayOfWeek = e.NotificationDateDayOfWeek,
-                              SMSNotificationSent = e.SMSNotificationSent,
-                              SMSMessageId = e.SMSMessageId,
-                              SMSDateSent = e.SMSDateSent,
-                              SmsSentLogId = e.SmsSentLogId,
-                              DateCreated = e.DateCreated,
+                              RepeatScheduleEntryId = repeatScheduleEntry.RepeatScheduleEntryId,
+                              RepeatScheduleId = repeatScheduleEntry.RepeatScheduleId,
+                              RepeatDate = repeatScheduleEntry.RepeatDate,
+                              RepeatDateFormatted = repeatScheduleEntry.RepeatDateFormatted,
+                              RepeatDateDayOfWeek = repeatScheduleEntry.RepeatDateDayOfWeek,
+                              NotificationDate = repeatScheduleEntry.NotificationDate,
+                              NotificationDateFormatted = repeatScheduleEntry.NotificationDateFormatted,
+                              NotificationDateDayOfWeek = repeatScheduleEntry.NotificationDateDayOfWeek,
+                              SMSNotificationSent = repeatScheduleEntry.SMSNotificationSent,
+                              SMSMessageId = repeatScheduleEntry.SMSMessageId,
+                              SMSDateSent = repeatScheduleEntry.SMSDateSent,
+                              SmsSentLogId = repeatScheduleEntry.SmsSentLogId,
+                              DateCreated = repeatScheduleEntry.DateCreated,
 
                               //Repeat Schedule
                               SubscriptionId = repeatScheduleView.SubscriptionId,
@@ -124,37 +135,44 @@
                               UnitOfMeasure = repeatScheduleView.UnitOfMeasure,
                               DaysRepeatInterval = repeatScheduleView.DaysRepeatInterval,
                               RepeatScheduleNotes = repeatScheduleView.Notes,
-                              RepeatScheduleDateCreated = repeatScheduleView.DateCreated
+                              RepeatScheduleDateCreated = repeatScheduleView.DateCreated,
+
+                              //Subscriber
+                              CellPhoneNumber = subscriberView.CellPhoneNumber,
                           }).ToList();
             }
             else
             {
-                result = (from e in DB.GetTable<RepeatScheduleEntry>()
-                          join r in DB.GetTable<RepeatSchedule>() on e.RepeatScheduleId equals r.RepeatScheduleId into setRepeatSchedule
+                result = (from repeatScheduleEntry in DB.GetTable<RepeatScheduleEntry>()
+                          join repeatSchedule in DB.GetTable<RepeatSchedule>() on repeatScheduleEntry.RepeatScheduleId equals repeatSchedule.RepeatScheduleId into setRepeatSchedule
                           from repeatScheduleView in setRepeatSchedule.DefaultIfEmpty()
-                          where (e.RepeatDateFormatted.Contains(searchFilterLower) ||
-                          e.NotificationDateFormatted.Contains(searchFilterLower) ||
-                          e.RepeatDateDayOfWeek.ToLower().Contains(searchFilterLower) ||
-                          e.NotificationDateDayOfWeek.ToLower().Contains(searchFilterLower) ||
-                          e.SMSNotificationSent.ToString().ToLower().Contains(searchFilterLower) ||
-                          (e.SMSMessageId != null && e.SMSMessageId.ToLower().Contains(searchFilterLower)))
-                          orderby e.RepeatDate
+                          join subscription in DB.GetTable<Subscription>() on repeatScheduleView.SubscriptionId equals subscription.SubscriptionId into setSubscription
+                          from subscriptionView in setSubscription.DefaultIfEmpty()
+                          join subscriber in DB.GetTable<Subscriber>() on subscriptionView.SubscriberId equals subscriber.SubscriberId into setSubscriber
+                          from subscriberView in setSubscriber.DefaultIfEmpty()
+                          where (repeatScheduleEntry.RepeatDateFormatted.Contains(searchFilterLower) ||
+                          repeatScheduleEntry.NotificationDateFormatted.Contains(searchFilterLower) ||
+                          repeatScheduleEntry.RepeatDateDayOfWeek.ToLower().Contains(searchFilterLower) ||
+                          repeatScheduleEntry.NotificationDateDayOfWeek.ToLower().Contains(searchFilterLower) ||
+                          repeatScheduleEntry.SMSNotificationSent.ToString().ToLower().Contains(searchFilterLower) ||
+                          (repeatScheduleEntry.SMSMessageId != null && repeatScheduleEntry.SMSMessageId.ToLower().Contains(searchFilterLower)))
+                          orderby repeatScheduleEntry.RepeatDate
                           select new RepeatScheduleEntryView()
                           {
                               //Repeat Schedule Entry
-                              RepeatScheduleEntryId = e.RepeatScheduleEntryId,
-                              RepeatScheduleId = e.RepeatScheduleId,
-                              RepeatDate = e.RepeatDate,
-                              RepeatDateFormatted = e.RepeatDateFormatted,
-                              RepeatDateDayOfWeek = e.RepeatDateDayOfWeek,
-                              NotificationDate = e.NotificationDate,
-                              NotificationDateFormatted = e.NotificationDateFormatted,
-                              NotificationDateDayOfWeek = e.NotificationDateDayOfWeek,
-                              SMSNotificationSent = e.SMSNotificationSent,
-                              SMSMessageId = e.SMSMessageId,
-                              SMSDateSent = e.SMSDateSent,
-                              SmsSentLogId = e.SmsSentLogId,
-                              DateCreated = e.DateCreated,
+                              RepeatScheduleEntryId = repeatScheduleEntry.RepeatScheduleEntryId,
+                              RepeatScheduleId = repeatScheduleEntry.RepeatScheduleId,
+                              RepeatDate = repeatScheduleEntry.RepeatDate,
+                              RepeatDateFormatted = repeatScheduleEntry.RepeatDateFormatted,
+                              RepeatDateDayOfWeek = repeatScheduleEntry.RepeatDateDayOfWeek,
+                              NotificationDate = repeatScheduleEntry.NotificationDate,
+                              NotificationDateFormatted = repeatScheduleEntry.NotificationDateFormatted,
+                              NotificationDateDayOfWeek = repeatScheduleEntry.NotificationDateDayOfWeek,
+                              SMSNotificationSent = repeatScheduleEntry.SMSNotificationSent,
+                              SMSMessageId = repeatScheduleEntry.SMSMessageId,
+                              SMSDateSent = repeatScheduleEntry.SMSDateSent,
+                              SmsSentLogId = repeatScheduleEntry.SmsSentLogId,
+                              DateCreated = repeatScheduleEntry.DateCreated,
 
                               //Repeat Schedule
                               SubscriptionId = repeatScheduleView.SubscriptionId,
@@ -164,7 +182,10 @@
                               UnitOfMeasure = repeatScheduleView.UnitOfMeasure,
                               DaysRepeatInterval = repeatScheduleView.DaysRepeatInterval,
                               RepeatScheduleNotes = repeatScheduleView.Notes,
-                              RepeatScheduleDateCreated = repeatScheduleView.DateCreated
+                              RepeatScheduleDateCreated = repeatScheduleView.DateCreated,
+
+                              //Subscriber
+                              CellPhoneNumber = subscriberView.CellPhoneNumber,
                           }).ToList();
             }
             return result;

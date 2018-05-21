@@ -34,6 +34,16 @@
 
         public DateTime DateCreated { get; set; }
 
+        public Nullable<DateTime> StartDate { get; set; }
+
+        public string StartDateFormatted { get; set; }
+
+        public Nullable<DateTime> EndDate { get; set; }
+
+        public string EndDateFormatted { get; set; }
+
+        public int EntryCount { get; set; }
+
         #endregion //Repeat Schedule Properties
 
         #region Subscription Properties

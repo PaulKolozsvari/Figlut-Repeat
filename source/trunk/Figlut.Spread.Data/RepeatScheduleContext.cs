@@ -1,6 +1,5 @@
 ﻿namespace Figlut.Spread.Data
 {
-    using Figlut.Server.Toolkit.Data;
     #region Using Directives
 
     using Figlut.Server.Toolkit.Data.DB.LINQ;
@@ -13,6 +12,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using System.Transactions;
+    using Figlut.Server.Toolkit.Data;
 
     #endregion //Using Directives
 
@@ -93,10 +93,11 @@
                                          join subscription in DB.GetTable<Subscription>() on repeatSchedule.SubscriptionId equals subscription.SubscriptionId into setSubscription
                                          from subscriptionView in setSubscription.DefaultIfEmpty()
                                          join subscriber in DB.GetTable<Subscriber>() on subscriptionView.SubscriberId equals subscriber.SubscriberId into setSubscriber
-                                         from subscriberView in setSubscriber
+                                         from subscriberView in setSubscriber.DefaultIfEmpty()
                                          where repeatSchedule.RepeatScheduleId == repeatScheduleId
                                          select new RepeatScheduleView()
                                          {
+                                             //Repeat Schedule
                                              RepeatScheduleId = repeatSchedule.RepeatScheduleId,
                                              SubscriptionId = repeatSchedule.SubscriptionId,
                                              NotificationMessage = repeatSchedule.NotificationMessage,
@@ -106,6 +107,9 @@
                                              DaysRepeatInterval = repeatSchedule.DaysRepeatInterval,
                                              Notes = repeatSchedule.Notes,
                                              DateCreated = repeatSchedule.DateCreated,
+                                             StartDate = GetFirstRepeatScheduleEntryRepeatDate(repeatSchedule.RepeatScheduleId, false),
+                                             EndDate = GetLastRepeatScheduleEntryRepeatDate(repeatSchedule.RepeatScheduleId, false),
+                                             EntryCount = GetRepeatScheduleEntriesCount(repeatSchedule.RepeatScheduleId),
 
                                              //Subscription
                                              OrganizationId = subscriptionView.OrganizationId,
@@ -128,6 +132,17 @@
                     typeof(RepeatScheduleView).Name,
                     EntityReader<RepeatScheduleView>.GetPropertyName(p => p.RepeatScheduleId, false),
                     repeatScheduleId.ToString()));
+            }
+            if (result != null)
+            {
+                if (result.StartDate.HasValue)
+                {
+                    result.StartDateFormatted = DataShaper.GetDefaultDateString(result.StartDate.Value);
+                }
+                if (result.EndDate.HasValue)
+                {
+                    result.EndDateFormatted = DataShaper.GetDefaultDateString(result.EndDate.Value);
+                }
             }
             return result;
         }
@@ -161,6 +176,9 @@
                               DaysRepeatInterval = repeatSchedule.DaysRepeatInterval,
                               Notes = repeatSchedule.Notes,
                               DateCreated = repeatSchedule.DateCreated,
+                              StartDate = GetFirstRepeatScheduleEntryRepeatDate(repeatSchedule.RepeatScheduleId, false),
+                              EndDate = GetLastRepeatScheduleEntryRepeatDate(repeatSchedule.RepeatScheduleId, false),
+                              EntryCount = GetRepeatScheduleEntriesCount(repeatSchedule.RepeatScheduleId),
 
                               //Subscription
                               OrganizationId = subscriptionView.OrganizationId,
@@ -192,6 +210,7 @@
                           repeatSchedule.Notes.ToLower().Contains(searchFilterLower)
                           select new RepeatScheduleView()
                           {
+                              //Repeat Schedule
                               RepeatScheduleId = repeatSchedule.RepeatScheduleId,
                               SubscriptionId = repeatSchedule.SubscriptionId,
                               NotificationMessage = repeatSchedule.NotificationMessage,
@@ -201,6 +220,9 @@
                               DaysRepeatInterval = repeatSchedule.DaysRepeatInterval,
                               Notes = repeatSchedule.Notes,
                               DateCreated = repeatSchedule.DateCreated,
+                              StartDate = GetFirstRepeatScheduleEntryRepeatDate(repeatSchedule.RepeatScheduleId, false),
+                              EndDate = GetLastRepeatScheduleEntryRepeatDate(repeatSchedule.RepeatScheduleId, false),
+                              EntryCount = GetRepeatScheduleEntriesCount(repeatSchedule.RepeatScheduleId),
 
                               //Subscription
                               OrganizationId = subscriptionView.OrganizationId,
@@ -217,6 +239,17 @@
                               SubscriberName = subscriberView.Name,
                               SubscriberEnabled = subscriberView.Enabled
                           }).ToList();
+            }
+            foreach (RepeatScheduleView r in result)
+            {
+                if (r.StartDate.HasValue)
+                {
+                    r.StartDateFormatted = DataShaper.GetDefaultDateString(r.StartDate.Value);
+                }
+                if (r.EndDate.HasValue)
+                {
+                    r.EndDateFormatted = DataShaper.GetDefaultDateString(r.EndDate.Value);
+                }
             }
             return result;
         }
@@ -383,7 +416,7 @@
             return result;
         }
 
-        private List<RepeatScheduleEntry> GetFutureEntriesForRepeatSchedule(
+        public List<RepeatScheduleEntry> GetFutureEntriesForRepeatSchedule(
             Guid repeatScheduleId,
             Guid repeatScheduleEntryIdToExclude,
             DateTime startRepeatDate)
@@ -397,15 +430,15 @@
             return queryResult;
         }
 
-        private DateTime GetLastRepeatScheduleEntryRepeatDate(Guid repeatScheduleId)
+        public Nullable<DateTime> GetLastRepeatScheduleEntryRepeatDate(Guid repeatScheduleId, bool throwExceptionOnNotFound)
         {
+            Nullable<DateTime> result = null;
             RepeatSchedule repeatSchedule = GetRepeatSchedule(repeatScheduleId, true);
-            RepeatScheduleEntry result = (from e in DB.GetTable<RepeatScheduleEntry>()
-                                          where e.RepeatScheduleId == repeatScheduleId
-                                          orderby e.RepeatDate descending
-                                          select e).FirstOrDefault();
-
-            if (result == null)
+            RepeatScheduleEntry repeatScheduleEntry = (from e in DB.GetTable<RepeatScheduleEntry>()
+                                                       where e.RepeatScheduleId == repeatScheduleId
+                                                       orderby e.RepeatDate descending
+                                                       select e).FirstOrDefault();
+            if (throwExceptionOnNotFound && repeatScheduleEntry == null)
             {
                 throw new Exception(string.Format("No {0} records linked to {1} with {2} of {3}.",
                     typeof(RepeatScheduleEntry).Name,
@@ -413,14 +446,57 @@
                     EntityReader<RepeatSchedule>.GetPropertyName(p => p.RepeatScheduleId, false),
                     repeatScheduleId));
             }
-            return result.RepeatDate;
+            if (repeatScheduleEntry != null)
+            {
+                result = repeatScheduleEntry.RepeatDate;
+            }
+            return result;
         }
 
-        private RepeatScheduleEntry GetLastRepeatScheduleEntry(Guid repeatScheduleId)
+        public int GetRepeatScheduleEntriesCount(Guid repeatScheduleId)
+        {
+            return (from e in DB.GetTable<RepeatScheduleEntry>()
+                    where e.RepeatScheduleId == repeatScheduleId
+                    select e).Count();
+        }
+
+        public RepeatScheduleEntry GetLastRepeatScheduleEntry(Guid repeatScheduleId)
         {
             RepeatScheduleEntry result = (from e in DB.GetTable<RepeatScheduleEntry>()
                                           where e.RepeatScheduleId == repeatScheduleId
                                           orderby e.RepeatDate descending
+                                          select e).FirstOrDefault();
+            return result;
+        }
+
+        public Nullable<DateTime> GetFirstRepeatScheduleEntryRepeatDate(Guid repeatScheduleId, bool throwExceptionOnNotFound)
+        {
+            Nullable<DateTime> result = null;
+            RepeatSchedule repeatSchedule = GetRepeatSchedule(repeatScheduleId, true);
+            RepeatScheduleEntry repeatScheduleEntry = (from e in DB.GetTable<RepeatScheduleEntry>()
+                                                       where e.RepeatScheduleId == repeatScheduleId
+                                                       orderby e.RepeatDate ascending
+                                                       select e).FirstOrDefault();
+            if (throwExceptionOnNotFound && repeatScheduleEntry == null)
+            {
+                throw new Exception(string.Format("No {0} records linked to {1} with {2} of {3}.",
+                    typeof(RepeatScheduleEntry).Name,
+                    typeof(RepeatSchedule).Name,
+                    EntityReader<RepeatSchedule>.GetPropertyName(p => p.RepeatScheduleId, false),
+                    repeatScheduleId));
+            }
+            if (repeatScheduleEntry != null)
+            {
+                result = repeatScheduleEntry.RepeatDate;
+            }
+            return result;
+        }
+
+        public RepeatScheduleEntry GetFirstRepeatScheduleEntry(Guid repeatScheduleId)
+        {
+            RepeatScheduleEntry result = (from e in DB.GetTable<RepeatScheduleEntry>()
+                                          where e.RepeatScheduleId == repeatScheduleId
+                                          orderby e.RepeatDate ascending
                                           select e).FirstOrDefault();
             return result;
         }
@@ -448,7 +524,7 @@
                 RepeatSchedule repeatSchedule = GetRepeatSchedule(original.RepeatScheduleId, true);
 
                 DateTime originalRepeatDate = original.RepeatDate.Date;
-                DateTime lastRepeatDate = GetLastRepeatScheduleEntryRepeatDate(original.RepeatScheduleId);
+                Nullable<DateTime> lastRepeatDate = GetLastRepeatScheduleEntryRepeatDate(original.RepeatScheduleId, true);
                 int numberOfDaysToMove = newRepeatDate.Subtract(originalRepeatDate).Days;
 
                 //Delete the old entries.
@@ -471,7 +547,7 @@
                 DB.SubmitChanges();
 
                 DateTime startDate = newRepeatDate;
-                DateTime endDate = lastRepeatDate.Date.AddDays(numberOfDaysToMove + extraDays);
+                DateTime endDate = lastRepeatDate.Value.Date.AddDays(numberOfDaysToMove + extraDays);
                 ///Creating the new schedule entries.
                 Dictionary<string, RepeatDateSet> dates = GeneraterepeatScheduleDates(
                     startDate,

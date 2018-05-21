@@ -64,6 +64,12 @@
 
         #endregion //Repeat Schedule Properties
 
+        #region Subscriber Properties
+
+        public string CellPhoneNumber { get; set; }
+
+        #endregion //Subscriber Properties
+
         #endregion //Properties
     }
 }

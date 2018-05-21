@@ -54,6 +54,7 @@
                         {
                             repeatScheduleEntry = (RepeatScheduleEntryModel)grid.Rows[grid.SelectedIndex].Value;
                             @Html.LinkButtonForCancel("Delete", "onDeleteRepeatScheduleEntryClick()", "btnDeleteRepeatScheduleEntry")
+                            @Html.LinkButtonForSubmit("SMS", "onSendSmsRepeatScheduleEntryClick()", "btnSendSmsRepeatScheduleEntry", "red-mail-send-icon32.png")
                             @Html.LinkButtonForSubmit("Shift", "onShiftRepeatScheduleEntryClick()", "btnShiftRepeatScheduleEntry", "red-edit.png")
                             @Html.LinkButtonForSubmit("Edit", "onEditRepeatScheduleEntryClick()", "btnEditRepeatScheduleEntry", "red-edit.png")
                         }
@@ -132,6 +133,51 @@
             'identifier',
             '@repeatScheduleEntry.RepeatScheduleEntryId.ToString()');
     };
+
+    function onSendSmsRepeatScheduleEntryClick() {
+        sendEnabled = false;
+
+        var cellPhoneNumber = '@repeatScheduleEntry.CellPhoneNumber'
+        var waitMessage = 'Sending SMS to ' + cellPhoneNumber + ' ...';
+        var informationMessage = 'SMS sent successfully to ' + cellPhoneNumber + '.';
+        $("#btnSendSmsRepeatScheduleEntry").hide();
+        showDialog(
+            '#divWaitDialog',
+            '#dlgWait',
+            'WaitDialog',
+            'SmsSent',
+            'message',
+            waitMessage);
+
+        //$("#btnComposeStandaloneSmsSend").attr("disabled", true);
+        var url = '@Url.Action("SendSms", "RepeatScheduleEntry", new { repeatScheduleEntryId = "_repeatScheduleEntryId" })';
+        url = url.replace('_repeatScheduleEntryId', '@repeatScheduleEntry.RepeatScheduleEntryId.ToString()');
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            //data: $('form#frmDetails').serialize(),
+            success: function (data) {
+                if (data.Success) {
+                    $("#btnSendSmsRepeatScheduleEntry").show();
+                    $('#dlgWait').dialog("close");
+                    showDialog(
+                        '#divInformationDialog',
+                        '#dlgInformation',
+                        'InformationDialog',
+                        'RepeatScheduleEntry',
+                        'message',
+                        informationMessage);
+                    postRepeatScheduleEntries();
+                } else {
+                    $('#dlgWait').dialog("close");
+                    $("#btnSendSmsRepeatScheduleEntry").show();
+                    $("#RepeatScheduleEntriesErrorField").html(data.ErrorMsg);
+                    sendEnabled = true;
+                }
+            }
+        })
+    }
 
     function onShiftRepeatScheduleEntryClick() {
         showDialog(

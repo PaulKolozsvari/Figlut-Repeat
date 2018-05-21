@@ -35,6 +35,16 @@
 
         public DateTime DateCreated { get; set; }
 
+        public Nullable<DateTime> StartDate { get; set; }
+
+        public string StartDateFormatted { get; set; }
+
+        public Nullable<DateTime> EndDate { get; set; }
+
+        public string EndDateFormatted { get; set; }
+
+        public int EntryCount { get; set; }
+
         #endregion //Repeat Schedule Properties
 
         #region Subscription Properties
@@ -82,6 +92,9 @@
             this.DaysRepeatInterval = view.DaysRepeatInterval;
             this.Notes = view.Notes;
             this.DateCreated = view.DateCreated;
+            this.StartDate = view.StartDate;
+            this.EndDate = view.EndDate;
+            this.EntryCount = view.EntryCount;
 
             this.OrganizationId = view.OrganizationId;
             this.SubscriberId = view.SubscriberId;
@@ -108,6 +121,9 @@
             view.DaysRepeatInterval = this.DaysRepeatInterval;
             view.Notes = this.Notes;
             view.DateCreated = this.DateCreated;
+            view.StartDate = this.StartDate;
+            view.EndDate = this.EndDate;
+            view.EntryCount = this.EntryCount;
 
             view.OrganizationId = this.OrganizationId;
             view.SubscriberId = this.SubscriberId;

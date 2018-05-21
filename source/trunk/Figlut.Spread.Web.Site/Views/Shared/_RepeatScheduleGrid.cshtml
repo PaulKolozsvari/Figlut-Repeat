@@ -60,6 +60,7 @@
                             repeatSchedule = (RepeatScheduleModel)grid.Rows[grid.SelectedIndex].Value;
                             @Html.LinkButtonForCancel("Delete", "onDeleteRepeatScheduleClick()", "btnDeleteRepeatSchedule")
                             @Html.LinkButtonForSubmit("Edit", "onEditRepeatScheduleClick()", "btnEditRepeatSchedule", "red-edit.png")
+                            @Html.LinkButtonForSubmit("Extend", "onExtendRepeatSchedule()", "btnExtendRepeatSchedule", "red-edit.png")
                         }
                     }
                 </div>
@@ -87,6 +88,9 @@
                 grid.Column("Schedules", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
                 grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.ScheduleName, false), "Name"),
                 grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.DaysRepeatInterval, false), "Days Interval"),
+                grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.StartDateFormatted, false), "Start Date"),
+                grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.EndDateFormatted, false), "End Date"),
+                grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.EntryCount, false), "Entries"),
                 grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.Quantity, false), "Quantity"),
                 grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.UnitOfMeasure, false), "UOM"),
                 grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.DateCreated, false), "Date Created")
@@ -144,6 +148,16 @@
             'repeatScheduleId',
             '@repeatSchedule.RepeatScheduleId.ToString()');
     };
+
+    function onExtendRepeatSchedule() {
+        showDialog(
+            '#divExtendRepeatSchedule',
+            '#dlgExtendRepeatSchedule',
+            'ExtendDialog',
+            'RepeatSchedule',
+            'repeatScheduleId',
+            '@repeatSchedule.RepeatScheduleId.ToString()');
+    }
 
     function onCreateRepeatScheduleClick() {
         showDialog(

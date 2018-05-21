@@ -278,7 +278,7 @@
                 settings.DefaultEmailRecipients);
         }
 
-        public void LogSmsSentToDB(
+        public SmsSentLog LogSmsSentToDB(
             string recipientNumber, 
             string message, 
             SmsResponse smsResponse, 
@@ -287,10 +287,10 @@
         {
             if (smsResponse == null || !Settings.SmsDatabaseLoggingEnabled)
             {
-                return;
+                return null;
             }
             string messageContents = Settings.SmsDatabaseLogMessageContents ? message : null;
-            SpreadEntityContext.Create().LogSmsSent(
+            return SpreadEntityContext.Create().LogSmsSent(
                 recipientNumber,
                 messageContents,
                 smsResponse.success,

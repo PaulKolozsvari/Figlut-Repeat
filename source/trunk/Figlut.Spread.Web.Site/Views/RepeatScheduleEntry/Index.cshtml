@@ -34,6 +34,8 @@ new { @id = "frmDetails" }))
 }
 
 <script type="text/javascript">
+    var sendEnabled = false;
+
     $(document).ready(function () {
         $(document).keypress(function (event) {
             if (event.which == 13) {
@@ -46,5 +48,9 @@ new { @id = "frmDetails" }))
         loadDialog("#divCreateRepeatScheduleEntry", "#dlgCreateRepeatScheduleEntry", "CreateDialog", "RepeatScheduleEntry", 'repeatScheduleId', '@Model.ParentId');
         loadDialog("#divShiftRepeatScheduleEntry", "#dlgShiftRepeatScheduleEntry", "ShiftDialog", "RepeatScheduleEntry", 'repeatScheduleEntryId', '@null');
         loadDialog("#divEditRepeatScheduleEntry", "#dlgEditRepeatScheduleEntry", "EditDialog", "RepeatScheduleEntry", 'repeatScheduleEntryId', '@null');
+
+        loadDialog("#divWaitDialog", "#dlgWait", "WaitDialog", "SmsSent", 'message', '@string.Empty');
+        loadDialog("#divInformationDialog", "#dlgInformation", "InformationDialog", "SmsSent", 'message', '@string.Empty');
+        sendEnabled = true;
     });
 </script>

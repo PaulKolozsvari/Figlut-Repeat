@@ -2,11 +2,6 @@
 {
     #region Using Directives
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
-    using System.Web.Mvc;
     using Figlut.Server.Toolkit.Data;
     using Figlut.Server.Toolkit.Utilities;
     using Figlut.Spread.Data;
@@ -15,6 +10,9 @@
     using Figlut.Spread.ORM.Views;
     using Figlut.Spread.Web.Site.Configuration;
     using Figlut.Spread.Web.Site.Models;
+    using System;
+    using System.Collections.Generic;
+    using System.Web.Mvc;
 
     #endregion //Using Directives
 
@@ -24,6 +22,7 @@
 
         private const string REPEAT_SCHEDULE_GRID_PARTIAL_VIEW_NAME = "_RepeatScheduleGrid";
         private const string EDIT_REPEAT_SCHEDULE_PARTIAL_VIEW_NAME = "_EditRepeatScheduleDialog";
+        private const string EXTEND_REPEAT_SCHEDULE_PARTIAL_VIEW_NAME = "_ExtendRepeatScheduleDialog";
         private const string CREATE_REPEAT_SCHEDULE_PARTIAL_VIEW_NAME = "_CreateRepeatScheduleDialog";
 
         #endregion //Constants
@@ -296,6 +295,64 @@
                 ExceptionHandler.HandleException(ex);
                 SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
                 return RedirectToError(ex.Message);
+            }
+        }
+
+        public ActionResult ExtendDialog(Nullable<Guid> repeatScheduleId)
+        {
+            try
+            {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated)
+                {
+                    return RedirectToHome();
+                }
+                if (!repeatScheduleId.HasValue)
+                {
+                    return PartialView(EXTEND_REPEAT_SCHEDULE_PARTIAL_VIEW_NAME, new RepeatScheduleModel());
+                }
+                RepeatScheduleView repeatScheduleView = context.GetRepeatScheduleView(repeatScheduleId.Value, true);
+                RepeatScheduleModel model = new RepeatScheduleModel();
+                model.CopyPropertiesFromRepeatScheduleView(repeatScheduleView);
+                model.ExtendDate = model.EndDate.Value.AddDays(365);
+                PartialViewResult result = PartialView(EXTEND_REPEAT_SCHEDULE_PARTIAL_VIEW_NAME, model);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ExtendDialog(RepeatScheduleModel model)
+        {
+            try
+            {
+                string errorMessage = null;
+                if (!model.IsValid(out errorMessage))
+                {
+                    return GetJsonResult(false, errorMessage);
+                }
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                RepeatScheduleEntry repeatScheduleEntry = context.GetLastRepeatScheduleEntry(model.RepeatScheduleId);
+                if (model.ExtendDate.Date < repeatScheduleEntry.RepeatDate)
+                {
+                    return GetJsonResult(false, string.Format("{0} may not be less than the last entry's date of {0}.",
+                        EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.ExtendDate, true),
+                        DataShaper.GetDefaultDateString(repeatScheduleEntry.RepeatDate)));
+                }
+                int extraDays = model.ExtendDate.Subtract(repeatScheduleEntry.RepeatDate).Days;
+                context.ShiftRepeatScheduleEntry(repeatScheduleEntry.RepeatScheduleEntryId, model.ExtendDate, "zaf", extraDays);
+                return GetJsonResult(true);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
             }
         }
 
