@@ -553,6 +553,7 @@
     <Content Include="Views\Shared\_CreateRepeatScheduleEntryDialog.cshtml" />
     <Content Include="Views\Shared\_CreateSubscriberDialog.cshtml" />
     <Content Include="Views\Shared\_CreateOrganizationSubscriptionDialog.cshtml" />
+    <Content Include="Views\Shared\_ShiftRepeatScheduleEntryDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

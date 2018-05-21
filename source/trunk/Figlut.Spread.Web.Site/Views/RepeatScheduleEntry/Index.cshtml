@@ -44,6 +44,7 @@ new { @id = "frmDetails" }))
         });
         loadDialog("#divConfirmationDialog", "#dlgConfirmation", "ConfirmDeleteDialog", "RepeatScheduleEntry", 'identifier', '@Guid.Empty');
         loadDialog("#divCreateRepeatScheduleEntry", "#dlgCreateRepeatScheduleEntry", "CreateDialog", "RepeatScheduleEntry", 'repeatScheduleId', '@Model.ParentId');
+        loadDialog("#divShiftRepeatScheduleEntry", "#dlgShiftRepeatScheduleEntry", "ShiftDialog", "RepeatScheduleEntry", 'repeatScheduleEntryId', '@null');
         loadDialog("#divEditRepeatScheduleEntry", "#dlgEditRepeatScheduleEntry", "EditDialog", "RepeatScheduleEntry", 'repeatScheduleEntryId', '@null');
     });
 </script>

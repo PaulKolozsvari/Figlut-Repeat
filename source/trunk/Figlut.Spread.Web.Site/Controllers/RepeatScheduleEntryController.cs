@@ -24,6 +24,7 @@
 
         private const string REPEAT_SCHEDULE_ENTRY_GRID_PARTIAL_VIEW_NAME = "_RepeatScheduleEntryGrid";
         private const string EDIT_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME = "_EditRepeatScheduleEntryDialog";
+        private const string SHIFT_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME = "_ShiftRepeatScheduleEntryDialog";
         private const string CREATE_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME = "_CreateRepeatScheduleEntryDialog";
 
         #endregion //Constants
@@ -344,6 +345,58 @@
                 }
                 SpreadEntityContext context = SpreadEntityContext.Create();
                 RepeatScheduleEntry repeatScheduleEntry = context.GetRepeatScheduleEntry(model.RepeatScheduleEntryId, true);
+                model.CopyPropertiesToRepeatScheduleEntry(repeatScheduleEntry);
+                context.Save<RepeatScheduleEntry>(repeatScheduleEntry, false);
+                return GetJsonResult(true);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
+
+        public ActionResult ShiftDialog(Nullable<Guid> repeatScheduleEntryId)
+        {
+            try
+            {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated)
+                {
+                    return RedirectToHome();
+                }
+                if (!repeatScheduleEntryId.HasValue)
+                {
+                    return PartialView(SHIFT_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME, new RepeatScheduleEntryModel());
+                }
+                RepeatScheduleEntryView repeatScheduleEntryView = context.GetRepeatScheduleEntryView(repeatScheduleEntryId.Value, true);
+                RepeatScheduleEntryModel model = new RepeatScheduleEntryModel();
+                model.CopyPropertiesFromRepeatScheduleEntryView(repeatScheduleEntryView);
+                model.RepeatDateShift = model.RepeatDate;
+                PartialViewResult result = PartialView(SHIFT_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME, model);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ShiftDialog(RepeatScheduleEntryModel model)
+        {
+            try
+            {
+                string errorMessage = null;
+                if (!model.IsValid(out errorMessage))
+                {
+                    return GetJsonResult(false, errorMessage);
+                }
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                RepeatScheduleEntry repeatScheduleEntry = context.GetRepeatScheduleEntry(model.RepeatScheduleEntryId, true);
                 repeatScheduleEntry.SMSNotificationSent = model.SMSNotificationSent;
                 if (!repeatScheduleEntry.SMSNotificationSent) //Update the other fields (outside of the Repeat and Notification dates).
                 {
@@ -352,7 +405,7 @@
                     repeatScheduleEntry.SmsSentLogId = null;
                 }
                 context.Save<RepeatScheduleEntry>(repeatScheduleEntry, false);
-                context.ShiftRepeatScheduleEntry(model.RepeatScheduleEntryId, model.RepeatDate, "zaf", model.DaysToExtend); //Update the Repeat and Notification dates.
+                context.ShiftRepeatScheduleEntry(model.RepeatScheduleEntryId, model.RepeatDateShift, "zaf", 0); //Update the Repeat and Notification dates.
                 return GetJsonResult(true);
             }
             catch (Exception ex)

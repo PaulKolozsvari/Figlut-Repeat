@@ -31,6 +31,10 @@
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime RepeatDateCreate { get; set; }
 
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime RepeatDateShift { get; set; }
+
         public string RepeatDateFormatted { get; set; }
 
         public string RepeatDateDayOfWeek { get; set; }
@@ -42,6 +46,10 @@
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime NotificationDateCreate { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime NotificationDateShift { get; set; }
 
         public string NotificationDateFormatted { get; set; }
 
@@ -56,8 +64,6 @@
         public Nullable<Guid> SmsSentLogId { get; set; }
 
         public DateTime DateCreated { get; set; }
-
-        public int DaysToExtend { get; set; }
 
         #endregion //Repeat Schedule Entry Properties
 
@@ -168,6 +174,12 @@
             repeatScheduleEntry.SMSDateSent = this.SMSDateSent;
             repeatScheduleEntry.SmsSentLogId = this.SmsSentLogId;
             repeatScheduleEntry.DateCreated = this.DateCreated;
+            if (!repeatScheduleEntry.SMSNotificationSent)
+            {
+                repeatScheduleEntry.SMSMessageId = null;
+                repeatScheduleEntry.SMSDateSent = null;
+                repeatScheduleEntry.SmsSentLogId = null;
+            }
         }
 
         #endregion //Methods

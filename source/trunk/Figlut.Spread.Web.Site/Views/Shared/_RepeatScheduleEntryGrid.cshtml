@@ -54,6 +54,7 @@
                         {
                             repeatScheduleEntry = (RepeatScheduleEntryModel)grid.Rows[grid.SelectedIndex].Value;
                             @Html.LinkButtonForCancel("Delete", "onDeleteRepeatScheduleEntryClick()", "btnDeleteRepeatScheduleEntry")
+                            @Html.LinkButtonForSubmit("Shift", "onShiftRepeatScheduleEntryClick()", "btnShiftRepeatScheduleEntry", "red-edit.png")
                             @Html.LinkButtonForSubmit("Edit", "onEditRepeatScheduleEntryClick()", "btnEditRepeatScheduleEntry", "red-edit.png")
                         }
                     }
@@ -129,6 +130,16 @@
             'ConfirmDeleteDialog',
             'RepeatScheduleEntry',
             'identifier',
+            '@repeatScheduleEntry.RepeatScheduleEntryId.ToString()');
+    };
+
+    function onShiftRepeatScheduleEntryClick() {
+        showDialog(
+            '#divShiftRepeatScheduleEntry',
+            '#dlgShiftRepeatScheduleEntry',
+            'ShiftDialog',
+            'RepeatScheduleEntry',
+            'repeatScheduleEntryId',
             '@repeatScheduleEntry.RepeatScheduleEntryId.ToString()');
     };
 
