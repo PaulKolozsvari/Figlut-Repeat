@@ -38,6 +38,8 @@
 
         public int WhoIsWebServiceRequestTimeout { get; set; }
 
+        public bool EnableGoogleAnalytics { get; set; }
+
         public string OrganizationIdentifierIndicator { get; set; }
 
         public string SubscriberNameIndicator { get; set; }

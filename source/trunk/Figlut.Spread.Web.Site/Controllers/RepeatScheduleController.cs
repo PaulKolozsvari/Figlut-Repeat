@@ -7,6 +7,7 @@
     using Figlut.Spread.Data;
     using Figlut.Spread.ORM;
     using Figlut.Spread.ORM.Csv;
+    using Figlut.Spread.ORM.Helpers;
     using Figlut.Spread.ORM.Views;
     using Figlut.Spread.Web.Site.Configuration;
     using Figlut.Spread.Web.Site.Models;
@@ -314,7 +315,7 @@
                 RepeatScheduleView repeatScheduleView = context.GetRepeatScheduleView(repeatScheduleId.Value, true);
                 RepeatScheduleModel model = new RepeatScheduleModel();
                 model.CopyPropertiesFromRepeatScheduleView(repeatScheduleView);
-                model.ExtendDate = model.EndDate.Value.AddDays(365);
+                model.ExtendDate = model.EndDate.HasValue ? model.EndDate.Value.AddDays(365) : (DateTime.Now).AddDays(365);
                 PartialViewResult result = PartialView(EXTEND_REPEAT_SCHEDULE_PARTIAL_VIEW_NAME, model);
                 return result;
             }
@@ -331,21 +332,22 @@
         {
             try
             {
+                int maxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
                 string errorMessage = null;
-                if (!model.IsValid(out errorMessage))
+                if (!model.IsValid(out errorMessage, maxSmsSendMessageLength))
                 {
                     return GetJsonResult(false, errorMessage);
                 }
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                RepeatScheduleEntry repeatScheduleEntry = context.GetLastRepeatScheduleEntry(model.RepeatScheduleId);
-                if (model.ExtendDate.Date < repeatScheduleEntry.RepeatDate)
+                RepeatScheduleEntry lastRepeatScheduleEntry = context.GetLastRepeatScheduleEntry(model.RepeatScheduleId);
+                if (model.ExtendDate.Date < lastRepeatScheduleEntry.RepeatDate)
                 {
                     return GetJsonResult(false, string.Format("{0} may not be less than the last entry's date of {0}.",
                         EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.ExtendDate, true),
-                        DataShaper.GetDefaultDateString(repeatScheduleEntry.RepeatDate)));
+                        DataShaper.GetDefaultDateString(lastRepeatScheduleEntry.RepeatDate)));
                 }
-                int extraDays = model.ExtendDate.Subtract(repeatScheduleEntry.RepeatDate).Days;
-                context.ShiftRepeatScheduleEntry(repeatScheduleEntry.RepeatScheduleEntryId, model.ExtendDate, "zaf", extraDays);
+                int extraDays = model.ExtendDate.Subtract(lastRepeatScheduleEntry.RepeatDate).Days;
+                context.ShiftRepeatScheduleEntry(lastRepeatScheduleEntry.RepeatScheduleEntryId, lastRepeatScheduleEntry.RepeatDate, "zaf", extraDays);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -372,6 +374,7 @@
                 RepeatScheduleView repeatScheduleView = context.GetRepeatScheduleView(repeatScheduleId.Value, true);
                 RepeatScheduleModel model = new RepeatScheduleModel();
                 model.CopyPropertiesFromRepeatScheduleView(repeatScheduleView);
+                model.MaxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
                 PartialViewResult result = PartialView(EDIT_REPEAT_SCHEDULE_PARTIAL_VIEW_NAME, model);
                 return result;
             }
@@ -388,8 +391,9 @@
         {
             try
             {
+                int maxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
                 string errorMessage = null;
-                if (!model.IsValid(out errorMessage))
+                if (!model.IsValid(out errorMessage, maxSmsSendMessageLength))
                 {
                     return GetJsonResult(false, errorMessage);
                 }
@@ -428,6 +432,7 @@
                 model.CountryId = country.CountryId;
                 model.StartDateCreate = DateTime.Now;
                 model.EndDateCreate = DateTime.Now.AddDays(365);
+                model.MaxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
                 PartialViewResult result = PartialView(CREATE_REPEAT_SCHEDULE_PARTIAL_VIEW_NAME, model);
                 return result;
             }
@@ -449,8 +454,9 @@
                 {
                     return RedirectToHome();
                 }
+                int maxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
                 string errorMessage = null;
-                if (!model.IsValid(out errorMessage))
+                if (!model.IsValid(out errorMessage, maxSmsSendMessageLength))
                 {
                     return GetJsonResult(false, errorMessage);
                 }

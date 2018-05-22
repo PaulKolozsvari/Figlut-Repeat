@@ -71,6 +71,20 @@
 
         #endregion //Subscriber Properties
 
+        #region Subscription Properties
+
+        public string CustomerFullName { get; set; }
+
+        public string CustomerEmailAddress { get; set; }
+
+        public string CustomerIdentifier { get; set; }
+
+        public string CustomerPhysicalAddress { get; set; }
+
+        public string CustomerNotes { get; set; }
+
+        #endregion //Subscription Properties
+
         #endregion //Properties
 
         #region Methods
@@ -102,6 +116,12 @@
             this.DateCreated = view.DateCreated;
 
             this.CellPhoneNumber = view.CellPhoneNumber;
+
+            this.CustomerFullName = view.CustomerFullName;
+            this.CustomerEmailAddress = view.CustomerEmailAddress;
+            this.CustomerIdentifier = view.CustomerIdentifier;
+            this.CustomerPhysicalAddress = view.CustomerPhysicalAddress;
+            this.CustomerNotes = view.CustomerNotes;
         }
 
         public void CopyPropertiesToRepeatScheduleEntryView(RepeatScheduleEntryView view)
@@ -129,6 +149,12 @@
             view.DateCreated = this.DateCreated;
 
             view.CellPhoneNumber = this.CellPhoneNumber;
+
+            view.CustomerFullName = this.CustomerFullName;
+            view.CustomerEmailAddress = this.CustomerEmailAddress;
+            view.CustomerIdentifier = this.CustomerIdentifier;
+            view.CustomerPhysicalAddress = this.CustomerPhysicalAddress;
+            view.CustomerNotes = this.CustomerNotes;
         }
 
         #endregion //Methods

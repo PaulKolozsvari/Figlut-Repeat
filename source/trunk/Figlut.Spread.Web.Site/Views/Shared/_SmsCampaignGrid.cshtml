@@ -22,7 +22,7 @@
         @Html.HiddenFor(p => p.ParentCaption)
         <div class="centerInformation" style="float:inherit; margin-top:1%; margin-bottom:1%;">
             <div class="grid-search">
-                <table style="width:100%;">
+                <table style="width:99%;">
                     <tr>
                         <td style="width:60%;">
                             <div class="search-text">
@@ -78,7 +78,7 @@
                 alternatingRowStyle: "alt",
                 selectedRowStyle: "select",
                 columns: grid.Columns(
-                grid.Column("SMS Campaigns", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
+                grid.Column("Campaigns", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
                 grid.Column(EntityReader<SmsCampaignModel>.GetPropertyName(p => p.Name, false), "Name"),
                 grid.Column(EntityReader<SmsCampaignModel>.GetPropertyName(p => p.OrganizationSelectedCode, false), "Organization Selected Code"),
                 grid.Column(EntityReader<SmsCampaignModel>.GetPropertyName(p => p.DateCreated, false), "Date Created")

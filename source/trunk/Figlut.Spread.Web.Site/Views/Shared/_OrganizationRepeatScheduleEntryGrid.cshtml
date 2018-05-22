@@ -22,17 +22,25 @@
         @Html.HiddenFor(p => p.ParentCaption)
         <div class="centerInformation" style="float:inherit; margin-top:1%; margin-bottom:1%;">
             <div class="grid-search">
-                <table style="width:99%;">
+                <table style="width:99%">
                     <tr>
                         <td style="width:60%;">
                             <div class="search-text">
                                 @Html.Raw("Search Text")
                             </div>
                         </td>
+                        <td>
+                            <div class="field-label">
+                                @Html.Raw("Date")
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>
                             @Html.EditorFor(m => m.SearchText)
+                        </td>
+                        <td>
+                            @Html.EditorFor(m => m.StartDate, new { disabled = "disabled", @readonly = "readonly" })
                         </td>
                     </tr>
                 </table>
@@ -48,15 +56,12 @@
                 <div style="float: right; margin-left:2%; margin-right:2%">
                     @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
                     {
-                        @Html.LinkButtonForSubmit("Create", "onCreateRepeatScheduleEntryClick()", "btnCreateRepeatScheduleEntry", "red-document-plus-icon32.png")
                         @Html.LinkButtonForCancel("Delete All", "onDeleteAllRepeatScheduleEntriesClick()", "btnDeleteAllRepeatScheduleEntries")
                         if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
                         {
                             repeatScheduleEntry = (RepeatScheduleEntryModel)grid.Rows[grid.SelectedIndex].Value;
                             @Html.LinkButtonForCancel("Delete", "onDeleteRepeatScheduleEntryClick()", "btnDeleteRepeatScheduleEntry")
                             @Html.LinkButtonForSubmit("SMS", "onSendSmsRepeatScheduleEntryClick()", "btnSendSmsRepeatScheduleEntry", "red-mail-send-icon32.png")
-                            @Html.LinkButtonForSubmit("Shift", "onShiftRepeatScheduleEntryClick()", "btnShiftRepeatScheduleEntry", "red-edit.png")
-                            @Html.LinkButtonForSubmit("Edit", "onEditRepeatScheduleEntryClick()", "btnEditRepeatScheduleEntry", "red-edit.png")
                         }
                     }
                 </div>
@@ -82,6 +87,8 @@
                 selectedRowStyle: "select",
                 columns: grid.Columns(
                 grid.Column("Entries", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
+                grid.Column(EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.CustomerFullName, false), "Customer"),
+                grid.Column(EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.ScheduleName, false), "Schedule"),
                 grid.Column(EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.RepeatDateFormatted, false), "Repeat Date"),
                 grid.Column(EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.RepeatDateDayOfWeek, false), "Repeat Day"),
                 grid.Column(EntityReader<RepeatScheduleEntryModel>.GetPropertyName(p => p.NotificationDateFormatted, false), "Notification Date"),
@@ -99,12 +106,12 @@
                     <b>@Html.Raw(string.Format("Repeat Date: {0}", repeatScheduleEntry.RepeatDateFormatted))</b>
                 </div>
                 <div style="float:right; margin-left:2%; margin-right:2%; color: #a30e0e;">
-                    @Html.Raw(string.Format("Notification Date: {0}", repeatScheduleEntry.NotificationDateFormatted))
+                    @Html.Raw(string.Format("Cell Phone: {0}", repeatScheduleEntry.CellPhoneNumber))
                 </div>
             }
         </div>
     </div>
-    <div id="RepeatScheduleEntriesErrorField" style="color:#8A0808">
+    <div id="OrganizationRepeatScheduleEntriesErrorField" style="color:#8A0808">
         @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
         {
             <br />
@@ -121,7 +128,7 @@
     });
 
     function onSearchRepeatScheduleEntriesClick() {
-        postRepeatScheduleEntries();
+        postOrganizationRepeatScheduleEntries();
     }
 
     function onDeleteRepeatScheduleEntryClick() {
@@ -129,7 +136,7 @@
             '#divConfirmationDialog',
             '#dlgConfirmation',
             'ConfirmDeleteDialog',
-            'RepeatScheduleEntry',
+            'OrganizationRepeatScheduleEntry',
             'identifier',
             '@repeatScheduleEntry.RepeatScheduleEntryId.ToString()');
     };
@@ -150,7 +157,7 @@
             waitMessage);
 
         //$("#btnComposeStandaloneSmsSend").attr("disabled", true);
-        var url = '@Url.Action("SendSms", "RepeatScheduleEntry", new { repeatScheduleEntryId = "_repeatScheduleEntryId" })';
+        var url = '@Url.Action("SendSms", "OrganizationRepeatScheduleEntry", new { repeatScheduleEntryId = "_repeatScheduleEntryId" })';
         url = url.replace('_repeatScheduleEntryId', '@repeatScheduleEntry.RepeatScheduleEntryId.ToString()');
 
         $.ajax({
@@ -165,48 +172,18 @@
                         '#divInformationDialog',
                         '#dlgInformation',
                         'InformationDialog',
-                        'RepeatScheduleEntry',
+                        'OrganizationRepeatScheduleEntry',
                         'message',
                         informationMessage);
-                    postRepeatScheduleEntries();
+                    postOrganizationRepeatScheduleEntries();
                 } else {
                     $('#dlgWait').dialog("close");
                     $("#btnSendSmsRepeatScheduleEntry").show();
-                    $("#RepeatScheduleEntriesErrorField").html(data.ErrorMsg);
+                    $("#OrganizationRepeatScheduleEntriesErrorField").html(data.ErrorMsg);
                     sendEnabled = true;
                 }
             }
         })
-    }
-
-    function onShiftRepeatScheduleEntryClick() {
-        showDialog(
-            '#divShiftRepeatScheduleEntry',
-            '#dlgShiftRepeatScheduleEntry',
-            'ShiftDialog',
-            'RepeatScheduleEntry',
-            'repeatScheduleEntryId',
-            '@repeatScheduleEntry.RepeatScheduleEntryId.ToString()');
-    };
-
-    function onEditRepeatScheduleEntryClick() {
-        showDialog(
-            '#divEditRepeatScheduleEntry',
-            '#dlgEditRepeatScheduleEntry',
-            'EditDialog',
-            'RepeatScheduleEntry',
-            'repeatScheduleEntryId',
-            '@repeatScheduleEntry.RepeatScheduleEntryId.ToString()');
-    };
-
-    function onCreateRepeatScheduleEntryClick() {
-        showDialog(
-            '#divCreateRepeatScheduleEntry',
-            '#dlgCreateRepeatScheduleEntry',
-            'CreateDialog',
-            'RepeatScheduleEntry',
-            'repeatScheduleId',
-            '@Model.ParentId');
     }
 
     function getSearchParametersString() {
@@ -224,19 +201,19 @@
             '#divConfirmationDialog',
             '#dlgConfirmation',
             'ConfirmDeleteAllDialog',
-            'RepeatScheduleEntry',
+            'OrganizationRepeatScheduleEntry',
             'searchParametersString',
             searchParameters);
     }
 
     function onDownloadAllRepeatScheduleEntriesCsvFileClick() {
         var searchParameters = getSearchParametersString();
-        var downloadUrl = '@Url.Action("DownloadCsvFile", "RepeatScheduleEntry", new { searchParametersString = "_searchValue" })';
+        var downloadUrl = '@Url.Action("DownloadCsvFile", "OrganizationRepeatScheduleEntry", new { searchParametersString = "_searchValue" })';
         downloadUrl = downloadUrl.replace('_searchValue', searchParameters);
         window.location = downloadUrl;
     }
 
-    function postRepeatScheduleEntries() {
+    function postOrganizationRepeatScheduleEntries() {
         $('form#frmDetails').trigger('submit');
     };
 

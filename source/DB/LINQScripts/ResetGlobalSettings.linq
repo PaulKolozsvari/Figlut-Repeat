@@ -222,6 +222,17 @@ GlobalSetting whoIsWebServiceRequestTimeout = new GlobalSetting()
 };
 GlobalSettings.InsertOnSubmit(whoIsWebServiceRequestTimeout);
 
+GlobalSetting enableGoogleAnalytics = new GlobalSetting()
+{
+	GlobalSettingId = Guid.NewGuid(),
+	Category = "System",
+	SettingName = "EnableGoogleAnalytics",
+	SettingValue = true.ToString(),
+	DateCreated = DateTime.Now,
+	Description = "Whether or not to enable sending web analytics data to Google Analytics."
+};
+GlobalSettings.InsertOnSubmit(enableGoogleAnalytics);
+
 //Grid
 GlobalSetting smsPerPagePageToDisplay = new GlobalSetting()
 {

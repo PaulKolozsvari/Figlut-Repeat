@@ -341,6 +341,8 @@
                 model.WhoIsWebServiceUrl = context.GetGlobalSettingBySettingName(GlobalSettingName.WhoIsWebServiceUrl, true).SettingValue;
                 model.WhoIsWebServiceRequestTimeout = Convert.ToInt32(context.GetGlobalSettingBySettingName(GlobalSettingName.WhoIsWebServiceRequestTimeout, true).SettingValue);
 
+                model.EnableGoogleAnalytics = Convert.ToBoolean(context.GetGlobalSettingBySettingName(GlobalSettingName.EnableGoogleAnalytics, true).SettingValue);
+
                 model.OrganizationIdentifierIndicator = context.GetGlobalSettingBySettingName(GlobalSettingName.OrganizationIdentifierIndicator, true).SettingValue;
                 model.SubscriberNameIndicator = context.GetGlobalSettingBySettingName(GlobalSettingName.SubscriberNameIndicator, true).SettingValue;
                 model.MaxSmsSendMessageLength = Convert.ToInt32(context.GetGlobalSettingBySettingName(GlobalSettingName.MaxSmsSendMessageLength, true).SettingValue);
@@ -443,6 +445,9 @@
 
                 GlobalSetting organizationIdentifierIndicator = context.GetGlobalSettingBySettingName(GlobalSettingName.OrganizationIdentifierIndicator, true);
                 organizationIdentifierIndicator.SettingValue = model.OrganizationIdentifierIndicator;
+
+                GlobalSetting enableGoogleAnalytics = context.GetGlobalSettingBySettingName(GlobalSettingName.EnableGoogleAnalytics, true);
+                enableGoogleAnalytics.SettingValue = model.EnableGoogleAnalytics.ToString();
 
                 GlobalSetting subscriberNameIndicator = context.GetGlobalSettingBySettingName(GlobalSettingName.SubscriberNameIndicator, true);
                 subscriberNameIndicator.SettingValue = model.SubscriberNameIndicator;
@@ -566,6 +571,7 @@
                     enableWhoIsWebServiceQuery,
                     whoIsWebServiceUrl,
                     whoIsWebServiceRequestTimeout,
+                    enableGoogleAnalytics,
                     organizationIdentifierIndicator,
                     subscriberNameIndicator,
                     maxSmsSendMessageLength,

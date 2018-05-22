@@ -7,45 +7,50 @@
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
-    using Figlut.Spread.Web.Site.Models;
-    using Figlut.Spread.Data;
-    using Figlut.Spread.ORM.Views;
     using Figlut.Server.Toolkit.Utilities;
-    using Figlut.Spread.Web.Site.Configuration;
+    using Figlut.Spread.Data;
     using Figlut.Spread.ORM;
-    using Figlut.Server.Toolkit.Data;
-    using Figlut.Spread.ORM.Csv;
-    using Figlut.Spread.ORM.Helpers;
-    using Figlut.Spread.SMS;
+    using Figlut.Spread.ORM.Views;
+    using Figlut.Spread.Web.Site.Configuration;
+    using Figlut.Spread.Web.Site.Models;
     using Figlut.Server.Toolkit.Utilities.Logging;
+    using Figlut.Spread.SMS;
+    using Figlut.Spread.ORM.Helpers;
+    using Figlut.Server.Toolkit.Data;
     using System.Text;
+    using Figlut.Spread.ORM.Csv;
 
     #endregion //Using Directives
 
-    public class RepeatScheduleEntryController : SpreadController
+    public class OrganizationRepeatScheduleEntryController : SpreadController
     {
         #region Constants
 
-        private const string REPEAT_SCHEDULE_ENTRY_GRID_PARTIAL_VIEW_NAME = "_RepeatScheduleEntryGrid";
-        private const string EDIT_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME = "_EditRepeatScheduleEntryDialog";
-        private const string SHIFT_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME = "_ShiftRepeatScheduleEntryDialog";
-        private const string CREATE_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME = "_CreateRepeatScheduleEntryDialog";
+        private const string ORGANIZATION_REPEAT_SCHEDULE_ENTRY_GRID_PARTIAL_VIEW_NAME = "_OrganizationRepeatScheduleEntryGrid";
 
         #endregion //Constants
 
         #region Methods
 
-        private FilterModel<RepeatScheduleEntryModel> GetRepeatScheduleEntryFilterModelForSchedule(
+        private FilterModel<RepeatScheduleEntryModel> GetRepeatScheduleEntryFilterModelForOrganization(
             SpreadEntityContext context,
             FilterModel<RepeatScheduleEntryModel> model,
-            Nullable<Guid> repeatScheduleId)
+            Nullable<Guid> organizationId)
         {
             if (context == null)
             {
                 context = SpreadEntityContext.Create();
             }
+            if (!model.StartDate.HasValue)
+            {
+                model.StartDate = DateTime.Now;
+            }
+            if (!model.EndDate.HasValue)
+            {
+                model.EndDate = DateTime.Now;
+            }
             model.IsAdministrator = IsCurrentUserAdministrator(context);
-            List<RepeatScheduleEntryView> repeatScheduleEntryViewList = context.GetRepeatScheduleEntryViewsForScheduleByFilter(model.SearchText, repeatScheduleId);
+            List<RepeatScheduleEntryView> repeatScheduleEntryViewList = context.GetRepeatScheduleEntryViewsForOrganizationByFilter(model.SearchText, organizationId, model.StartDate.Value);
             List<RepeatScheduleEntryModel> modelList = new List<RepeatScheduleEntryModel>();
             foreach (RepeatScheduleEntryView v in repeatScheduleEntryViewList)
             {
@@ -56,13 +61,13 @@
             model.DataModel.Clear();
             model.DataModel = modelList;
             model.TotalTableCount = context.GetAllRepeatScheduleEntryCount();
-            if (repeatScheduleId.HasValue)
+            if (organizationId.HasValue)
             {
-                RepeatScheduleView repeatSchedule = context.GetRepeatScheduleView(repeatScheduleId.Value, false);
-                if (repeatSchedule != null)
+                Organization organization = context.GetOrganization(organizationId.Value, false);
+                if (organization != null)
                 {
-                    model.ParentId = repeatSchedule.RepeatScheduleId;
-                    model.ParentCaption = string.Format("{0} {1} {2}", repeatSchedule.ScheduleName, repeatSchedule.CustomerFullName, repeatSchedule.CellPhoneNumber);
+                    model.ParentId = organization.OrganizationId;
+                    model.ParentCaption = string.Format("{0}", organization.Name);
                 }
             }
             return model;
@@ -72,7 +77,7 @@
 
         #region Actions
 
-        public ActionResult Index(Guid repeatScheduleId)
+        public ActionResult Index(Guid organizationId)
         {
             try
             {
@@ -81,10 +86,10 @@
                 {
                     return RedirectToHome();
                 }
-                FilterModel<RepeatScheduleEntryModel> model = GetRepeatScheduleEntryFilterModelForSchedule(
+                FilterModel<RepeatScheduleEntryModel> model = GetRepeatScheduleEntryFilterModelForOrganization(
                     context,
                     new FilterModel<RepeatScheduleEntryModel>(),
-                    repeatScheduleId);
+                    organizationId);
                 ViewBag.SearchFieldIdentifier = model.SearchFieldIdentifier;
                 return View(model);
             }
@@ -107,13 +112,13 @@
                     return RedirectToHome();
                 }
                 FilterModel<RepeatScheduleEntryModel> resultModel = model.ParentId != Guid.Empty ?
-                    GetRepeatScheduleEntryFilterModelForSchedule(context, model, model.ParentId) :
-                    GetRepeatScheduleEntryFilterModelForSchedule(context, model, null);
+                    GetRepeatScheduleEntryFilterModelForOrganization(context, model, model.ParentId) :
+                    GetRepeatScheduleEntryFilterModelForOrganization(context, model, null);
                 if (resultModel == null) //There was an error and ViewBag.ErrorMessage has been set. So just return an empty model.
                 {
-                    return PartialView(REPEAT_SCHEDULE_ENTRY_GRID_PARTIAL_VIEW_NAME, new FilterModel<RepeatScheduleEntryModel>());
+                    return PartialView(ORGANIZATION_REPEAT_SCHEDULE_ENTRY_GRID_PARTIAL_VIEW_NAME, new FilterModel<RepeatScheduleEntryModel>());
                 }
-                return PartialView(REPEAT_SCHEDULE_ENTRY_GRID_PARTIAL_VIEW_NAME, resultModel);
+                return PartialView(ORGANIZATION_REPEAT_SCHEDULE_ENTRY_GRID_PARTIAL_VIEW_NAME, resultModel);
             }
             catch (Exception ex)
             {
@@ -308,24 +313,29 @@
 
                 string[] searchParameters;
                 string searchText;
-                GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
+                Nullable< DateTime> startDate = null;
+                Nullable<DateTime> endDate = null;
+                GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText, out startDate, out endDate);
 
-                string repeatScheduleIdString = searchParameters[searchParameters.Length - 1];
-                Guid repeatScheduleId = Guid.Parse(repeatScheduleIdString);
-                if (repeatScheduleId == Guid.Empty)
+                string organizationIdString = searchParameters[searchParameters.Length - 1];
+                Guid organizationId = Guid.Parse(organizationIdString);
+                if (organizationId == Guid.Empty)
                 {
                     return RedirectToError(string.Format("{0} not specified.",
-                        EntityReader<RepeatScheduleEntry>.GetPropertyName(p => p.RepeatScheduleId, false)));
+                        EntityReader<Organization>.GetPropertyName(p => p.OrganizationId, false)));
                 }
-                RepeatScheduleView repeatSchedule = context.GetRepeatScheduleView(repeatScheduleId, true);
-                model.ParentId = repeatSchedule.RepeatScheduleId;
-                model.ParentCaption = string.Format("{0} {1} {2}", repeatSchedule.ScheduleName, repeatSchedule.CustomerFullName, repeatSchedule.CellPhoneNumber);
+                if (!startDate.HasValue || startDate.Value == new DateTime())
+                {
+                    return RedirectToError(string.Format("{0} not specified.",
+                        EntityReader<RepeatScheduleEntry>.GetPropertyName(p => p.RepeatDate, false)));
+                }
+                Organization organization = context.GetOrganization(organizationId, true);
+                model.ParentId = organization.OrganizationId;
+                model.ParentCaption = string.Format("{0}", organization.Name);
                 model.SearchText = searchText;
-                model.ConfirmationMessage = string.Format("Delete all Repeat Schedules Entries currently loaded for {0} '{1}' for subscription {2} {3}'?", 
-                    DataShaper.ShapeCamelCaseString(typeof(RepeatSchedule).Name), 
-                    repeatSchedule.ScheduleName,
-                    repeatSchedule.CustomerFullName,
-                    repeatSchedule.CellPhoneNumber);
+                model.StartDate = startDate;
+                model.EndDate = endDate;
+                model.ConfirmationMessage = string.Format("Delete all Repeat Schedules Entries currently loaded for {0}?", DataShaper.GetDefaultDateString(model.StartDate.Value));
                 PartialViewResult result = PartialView(CONFIRMATION_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
             }
@@ -346,13 +356,18 @@
                 if (model.ParentId == Guid.Empty)
                 {
                     return RedirectToError(string.Format("{0} not specified.",
-                        EntityReader<RepeatScheduleEntry>.GetPropertyName(p => p.RepeatScheduleId, false)));
+                        EntityReader<Organization>.GetPropertyName(p => p.OrganizationId, false)));
+                }
+                if (!model.StartDate.HasValue || model.StartDate == new DateTime())
+                {
+                    return RedirectToError(string.Format("{0} not specified.",
+                        EntityReader<RepeatScheduleEntry>.GetPropertyName(p => p.RepeatDate, false)));
                 }
                 if (!Request.IsAuthenticated)
                 {
                     return RedirectToHome();
                 }
-                context.DeleteRepeatScheduleEntriesForScheduleByFilter(model.SearchText, model.ParentId);
+                context.DeleteRepeatScheduleEntriesForOrganizationByFilter(model.SearchText, model.ParentId, model.StartDate.Value);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -372,21 +387,27 @@
                     return RedirectToHome();
                 }
                 SpreadEntityContext context = SpreadEntityContext.Create();
-
                 string[] searchParameters;
                 string searchText;
-                GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
+                Nullable<DateTime> startDate = null;
+                Nullable<DateTime> endDate = null;
+                GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText, out startDate, out endDate);
 
-                string repeatScheduleIdString = searchParameters[searchParameters.Length - 1];
-                Guid repeatScheduleId = Guid.Parse(repeatScheduleIdString);
-                if (repeatScheduleId == Guid.Empty)
+                string organizationIdString = searchParameters[searchParameters.Length - 1];
+                Guid organizationId = Guid.Parse(organizationIdString);
+                if (organizationId == Guid.Empty)
                 {
                     return RedirectToError(string.Format("{0} not specified.",
-                        EntityReader<RepeatScheduleEntry>.GetPropertyName(p => p.RepeatScheduleId, false)));
+                        EntityReader<Organization>.GetPropertyName(p => p.OrganizationId, false)));
                 }
-                RepeatSchedule repeatSchedule = context.GetRepeatSchedule(repeatScheduleId, true);
+                if (!startDate.HasValue || startDate.Value == new DateTime())
+                {
+                    return RedirectToError(string.Format("{0} not specified.",
+                        EntityReader<RepeatScheduleEntry>.GetPropertyName(p => p.RepeatDate, false)));
+                }
+                Organization organization = context.GetOrganization(organizationId, true);
                 GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
-                List<RepeatScheduleEntryView> repeatScheduleEntryViewList = context.GetRepeatScheduleEntryViewsForScheduleByFilter(searchText, repeatScheduleId);
+                List<RepeatScheduleEntryView> repeatScheduleEntryViewList = context.GetRepeatScheduleEntryViewsForOrganizationByFilter(searchText, organizationId, startDate.Value);
                 EntityCache<Guid, RepeatScheduleEntryCsv> cache = new EntityCache<Guid, RepeatScheduleEntryCsv>();
                 foreach (RepeatScheduleEntryView v in repeatScheduleEntryViewList)
                 {
@@ -404,169 +425,7 @@
             }
         }
 
-        public ActionResult EditDialog(Nullable<Guid> repeatScheduleEntryId)
-        {
-            try
-            {
-                SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated)
-                {
-                    return RedirectToHome();
-                }
-                if (!repeatScheduleEntryId.HasValue)
-                {
-                    return PartialView(EDIT_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME, new RepeatScheduleEntryModel());
-                }
-                RepeatScheduleEntryView repeatScheduleEntryView = context.GetRepeatScheduleEntryView(repeatScheduleEntryId.Value, true);
-                RepeatScheduleEntryModel model = new RepeatScheduleEntryModel();
-                model.CopyPropertiesFromRepeatScheduleEntryView(repeatScheduleEntryView);
-                PartialViewResult result = PartialView(EDIT_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME, model);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                ExceptionHandler.HandleException(ex);
-                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
-                return GetJsonResult(false, ex.Message);
-            }
-        }
-
-        [HttpPost]
-        public ActionResult EditDialog(RepeatScheduleEntryModel model)
-        {
-            try
-            {
-                string errorMessage = null;
-                if (!model.IsValid(out errorMessage))
-                {
-                    return GetJsonResult(false, errorMessage);
-                }
-                SpreadEntityContext context = SpreadEntityContext.Create();
-                RepeatScheduleEntry repeatScheduleEntry = context.GetRepeatScheduleEntry(model.RepeatScheduleEntryId, true);
-                model.CopyPropertiesToRepeatScheduleEntry(repeatScheduleEntry);
-                context.Save<RepeatScheduleEntry>(repeatScheduleEntry, false);
-                return GetJsonResult(true);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHandler.HandleException(ex);
-                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
-                return GetJsonResult(false, ex.Message);
-            }
-        }
-
-        public ActionResult ShiftDialog(Nullable<Guid> repeatScheduleEntryId)
-        {
-            try
-            {
-                SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated)
-                {
-                    return RedirectToHome();
-                }
-                if (!repeatScheduleEntryId.HasValue)
-                {
-                    return PartialView(SHIFT_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME, new RepeatScheduleEntryModel());
-                }
-                RepeatScheduleEntryView repeatScheduleEntryView = context.GetRepeatScheduleEntryView(repeatScheduleEntryId.Value, true);
-                RepeatScheduleEntryModel model = new RepeatScheduleEntryModel();
-                model.CopyPropertiesFromRepeatScheduleEntryView(repeatScheduleEntryView);
-                model.RepeatDateShift = model.RepeatDate;
-                PartialViewResult result = PartialView(SHIFT_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME, model);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                ExceptionHandler.HandleException(ex);
-                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
-                return GetJsonResult(false, ex.Message);
-            }
-        }
-
-        [HttpPost]
-        public ActionResult ShiftDialog(RepeatScheduleEntryModel model)
-        {
-            try
-            {
-                string errorMessage = null;
-                if (!model.IsValid(out errorMessage))
-                {
-                    return GetJsonResult(false, errorMessage);
-                }
-                SpreadEntityContext context = SpreadEntityContext.Create();
-                RepeatScheduleEntry repeatScheduleEntry = context.GetRepeatScheduleEntry(model.RepeatScheduleEntryId, true);
-                repeatScheduleEntry.SMSNotificationSent = model.SMSNotificationSent;
-                if (!repeatScheduleEntry.SMSNotificationSent) //Update the other fields (outside of the Repeat and Notification dates).
-                {
-                    repeatScheduleEntry.SMSMessageId = null;
-                    repeatScheduleEntry.SMSDateSent = null;
-                    repeatScheduleEntry.SmsSentLogId = null;
-                }
-                context.Save<RepeatScheduleEntry>(repeatScheduleEntry, false);
-                context.ShiftRepeatScheduleEntry(model.RepeatScheduleEntryId, model.RepeatDateShift, "zaf", 0); //Update the Repeat and Notification dates.
-                return GetJsonResult(true);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHandler.HandleException(ex);
-                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
-                return GetJsonResult(false, ex.Message);
-            }
-        }
-
-        public ActionResult CreateDialog(Nullable<Guid> repeatScheduleId)
-        {
-            try
-            {
-                if (!repeatScheduleId.HasValue)
-                {
-                    return PartialView(CREATE_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME, new RepeatScheduleEntryModel());
-                }
-                return PartialView(CREATE_REPEAT_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME, new RepeatScheduleEntryModel()
-                {
-                    RepeatScheduleId = repeatScheduleId.Value,
-                    RepeatDateCreate = DateTime.Now,
-                    NotificationDateCreate = DateTime.Now
-                });
-            }
-            catch (Exception ex)
-            {
-                ExceptionHandler.HandleException(ex);
-                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
-                return GetJsonResult(true);
-            }
-        }
-
-        [HttpPost]
-        public ActionResult CreateDialog(RepeatScheduleEntryModel model)
-        {
-            try
-            {
-                model.RepeatScheduleEntryId = Guid.NewGuid();
-                model.RepeatDate = model.RepeatDateCreate;
-                model.RepeatDateFormatted = DataShaper.GetDefaultDateString(model.RepeatDate);
-                model.NotificationDate = model.NotificationDateCreate;
-                model.NotificationDateFormatted = DataShaper.GetDefaultDateString(model.NotificationDate);
-                model.DateCreated = DateTime.Now;
-                string errorMessage = null;
-                if (!model.IsValid(out errorMessage))
-                {
-                    return GetJsonResult(false, errorMessage);
-                }
-                SpreadEntityContext context = SpreadEntityContext.Create();
-                RepeatScheduleEntry repeatScheduleEntry = new RepeatScheduleEntry();
-                model.CopyPropertiesToRepeatScheduleEntry(repeatScheduleEntry);
-                context.Save<RepeatScheduleEntry>(repeatScheduleEntry, false);
-                return GetJsonResult(true);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHandler.HandleException(ex);
-                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
-                return GetJsonResult(false, ex.Message);
-            }
-        }
-
         #endregion //Actions
+
     }
 }

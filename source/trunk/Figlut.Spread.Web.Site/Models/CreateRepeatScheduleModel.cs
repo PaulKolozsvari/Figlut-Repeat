@@ -100,11 +100,17 @@
 
         #endregion //Repeat Schedule
 
+        #region Settings
+
+        public int MaxSmsSendMessageLength { get; set; }
+
+        #endregion //Settings
+
         #endregion Properties
 
         #region Methods
 
-        public bool IsValid(out string errorMessage)
+        public bool IsValid(out string errorMessage, int maxSmsSendMessageLength)
         {
             errorMessage = null;
             //Subscription
@@ -146,6 +152,10 @@
             else if (string.IsNullOrEmpty(this.NotificationMessage))
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.NotificationMessage, true));
+            }
+            else if (this.NotificationMessage.Length > maxSmsSendMessageLength)
+            {
+                errorMessage = string.Format("{0} may not be greater than {1} characters.", EntityReader<CreateRepeatScheduleModel>.GetPropertyName(p => p.NotificationMessage, true), maxSmsSendMessageLength);
             }
             else if (string.IsNullOrEmpty(this.ScheduleName))
             {

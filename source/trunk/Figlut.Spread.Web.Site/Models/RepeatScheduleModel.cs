@@ -87,11 +87,17 @@
 
         #endregion //Subscriber Properties
 
+        #region Settings
+
+        public int MaxSmsSendMessageLength { get; set; }
+
+        #endregion //Settings
+
         #endregion //Properties
 
         #region Methods
 
-        public bool IsValid(out string errorMessage)
+        public bool IsValid(out string errorMessage, int maxSmsSendMessageLength)
         {
             errorMessage = null;
             //Repeat Schedule
@@ -99,15 +105,19 @@
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.RepeatScheduleId, true));
             }
-            if (this.SubscriptionId == Guid.Empty)
+            else if (this.SubscriptionId == Guid.Empty)
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.SubscriptionId, true));
             }
-            if (string.IsNullOrEmpty(this.NotificationMessage))
+            else if (string.IsNullOrEmpty(this.NotificationMessage))
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.NotificationMessage, true));
             }
-            if (string.IsNullOrEmpty(this.ScheduleName))
+            else if (this.NotificationMessage.Length > maxSmsSendMessageLength)
+            {
+                errorMessage = string.Format("{0} may not be greater than {1} characters.", EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.NotificationMessage, true), maxSmsSendMessageLength);
+            }
+            else if (string.IsNullOrEmpty(this.ScheduleName))
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.ScheduleName, true));
             }
@@ -120,16 +130,16 @@
                 errorMessage = string.Format("{0} may not be less than or equal to 0.", EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.Quantity, true));
             }
             //Subscription
-            if (this.OrganizationId == Guid.Empty)
+            else if (this.OrganizationId == Guid.Empty)
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.OrganizationId, true));
             }
-            if (this.SubscriberId == Guid.Empty)
+            else if (this.SubscriberId == Guid.Empty)
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.SubscriberId, true));
             }
             //Subscriber
-            if (string.IsNullOrEmpty(this.CellPhoneNumber))
+            else if (string.IsNullOrEmpty(this.CellPhoneNumber))
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.CellPhoneNumber, true));
             }

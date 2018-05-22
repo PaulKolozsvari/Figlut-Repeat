@@ -70,6 +70,20 @@
 
         #endregion //Subscriber Properties
 
+        #region Subscription Properties
+
+        public string CustomerFullName { get; set; }
+
+        public string CustomerEmailAddress { get; set; }
+
+        public string CustomerIdentifier { get; set; }
+
+        public string CustomerPhysicalAddress { get; set; }
+
+        public string CustomerNotes { get; set; }
+
+        #endregion //Subscription Properties
+
         #endregion //Properties
     }
 }

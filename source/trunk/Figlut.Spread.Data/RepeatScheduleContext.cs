@@ -283,7 +283,7 @@
                 List<RepeatSchedule> repeatSchedules = GetRepeatScheduleByFilter(searchFilter, subscriptionId);
                 foreach (RepeatSchedule r in repeatSchedules) //Delete all the children first.
                 {
-                    List<RepeatScheduleEntry> repeatScheduleEntries = GetRepeatScheduleEntriesByFilter(null, r.RepeatScheduleId);
+                    List<RepeatScheduleEntry> repeatScheduleEntries = GetRepeatScheduleEntriesForScheduleByFilter(null, r.RepeatScheduleId);
                     DB.GetTable<RepeatScheduleEntry>().DeleteAllOnSubmit(repeatScheduleEntries);
                     DB.SubmitChanges();
                 }
@@ -298,7 +298,7 @@
             using (TransactionScope t = new TransactionScope())
             {
                 RepeatSchedule repeatSchedule = GetRepeatSchedule(repeatScheduleId, throwExceptionOnNotFound);
-                List<RepeatScheduleEntry> repeatScheduleEntries = GetRepeatScheduleEntriesByFilter(null, repeatSchedule.RepeatScheduleId);
+                List<RepeatScheduleEntry> repeatScheduleEntries = GetRepeatScheduleEntriesForScheduleByFilter(null, repeatSchedule.RepeatScheduleId);
                 DB.GetTable<RepeatScheduleEntry>().DeleteAllOnSubmit(repeatScheduleEntries); //Delete the children first.
                 DB.SubmitChanges();
                 DB.GetTable<RepeatSchedule>().DeleteOnSubmit(repeatSchedule);

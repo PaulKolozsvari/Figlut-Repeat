@@ -14,6 +14,7 @@
         EnableWhoIsWebServiceQuery,
         WhoIsWebServiceUrl,
         WhoIsWebServiceRequestTimeout,
+        EnableGoogleAnalytics,
         OrganizationIdentifierIndicator,
         SubscriberNameIndicator,
         MaxSmsSendMessageLength,

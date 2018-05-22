@@ -29,9 +29,11 @@
                 @Html.HiddenFor(m => m.OrganizationBillingDayOfTheMonth)
                 @Html.HiddenFor(m => m.OrganizationDateCreated)
                 @Html.HiddenFor(m => m.CountryId)
+                @Html.HiddenFor(m => m.MaxSmsSendMessageLength)
+
 
                 <div class="field-label">
-                    @Html.Raw("Notification Message *")
+                    @Html.Raw(string.Format("Notification Message (max {0} characters) *", Model.MaxSmsSendMessageLength))
                 </div>
                 <div class="editor-field">
                     @Html.EditorFor(m => m.NotificationMessage)

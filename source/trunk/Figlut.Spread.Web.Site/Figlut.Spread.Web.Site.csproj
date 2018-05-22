@@ -201,6 +201,7 @@
     <Compile Include="Controllers\InformationController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\OrganizationController.cs" />
+    <Compile Include="Controllers\OrganizationRepeatScheduleEntryController.cs" />
     <Compile Include="Controllers\OrganizationSubscriptionController.cs" />
     <Compile Include="Controllers\PublicHolidayController.cs" />
     <Compile Include="Controllers\RepeatScheduleController.cs" />
@@ -555,6 +556,8 @@
     <Content Include="Views\Shared\_CreateOrganizationSubscriptionDialog.cshtml" />
     <Content Include="Views\Shared\_ShiftRepeatScheduleEntryDialog.cshtml" />
     <Content Include="Views\Shared\_ExtendRepeatScheduleDialog.cshtml" />
+    <Content Include="Views\Shared\_OrganizationRepeatScheduleEntryGrid.cshtml" />
+    <Content Include="Views\OrganizationRepeatScheduleEntry\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
