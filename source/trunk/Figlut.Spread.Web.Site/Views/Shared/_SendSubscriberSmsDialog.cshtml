@@ -1,0 +1,89 @@
+﻿@model Figlut.Spread.Web.Site.Models.SendSubscriberSmsModel
+<div id="dlgSendSubscriberSmsDialog">
+    <img src="~/Images/Icons/red-mail-open-icon32.png" style="float:right; margin-right:1%; margin-left:1%" />
+    <div class="centerForm">
+        <form id="SendSubscriberSmsForm">
+            @Html.ValidationSummary(true, "Failed to edit.")
+            <fieldset>
+                <legend>Confirmation Form</legend>
+                @Html.HiddenFor(m => m.SubscriberId)
+                @Html.HiddenFor(m => m.CellPhoneNumber)
+                @Html.HiddenFor(m => m.MaxSmsSendMessageLength)
+
+                <div class="field-label">
+                    @Html.Raw(string.Format("Message ({0} characters)", Model.MaxSmsSendMessageLength))
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.MessageContents)
+                    @Html.ValidationMessageFor(m => m.MessageContents)
+                </div>
+                <br />
+                <div id="SendSubscriberSmsErrorField" style="color:#8A0808"></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var dialogName = '#dlgSendSubscriberSmsDialog';
+        createDialog(dialogName, 'Send SMS to Subscriber ', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
+        $("#MessageContents").focus();
+    });
+
+    function onConfirmOK() {
+        sendEnabled = false;
+
+        var cellPhoneNumber = $("#CellPhoneNumber").val();
+        var waitMessage = 'Sending SMS to ' + cellPhoneNumber + ' ...';
+        var informationMessage = 'SMS sent successfully to ' + cellPhoneNumber + '.';
+
+        $(".ui-dialog-buttonpane button:contains('OK')").hide();
+        showDialog(
+            '#divWaitDialog',
+            '#dlgWait',
+            'WaitDialog',
+            'SmsSent',
+            'message',
+            waitMessage);
+
+        var dialogName = '#dlgSendSubscriberSmsDialog';
+        var postBackUrl = '@Url.Action("SendSms", "Subscriber")';
+        $.ajax({
+            url: postBackUrl,
+            type: 'POST',
+            data: $("#SendSubscriberSmsForm").serialize(),
+            success: function (data) {
+                if (data.Success) {
+                    $(".ui-dialog-buttonpane button:contains('OK')").show();
+                    $('#dlgWait').dialog("close");
+                    $(dialogName).dialog("close");
+                    showDialog(
+                        '#divInformationDialog',
+                        '#dlgInformation',
+                        'InformationDialog',
+                        'SmsSent',
+                        'message',
+                        informationMessage);
+                    $("#MessageContents").val('');
+                    //Submit the form which will refresh grid to show the change the enabled/disabled.
+                    var form = $('#frmDetails');
+                    form.submit()
+                } else {
+                    $('#dlgWait').dialog("close");
+                    $(".ui-dialog-buttonpane button:contains('OK')").show();
+                    $("#SendSubscriberSmsErrorField").html(data.ErrorMsg);
+                    sendEnabled = true;
+                }
+            }
+        })
+    };
+
+    function onConfirmOpen() {
+    }
+
+    function onConfirmCancel() {
+        //$('#confirmation-message').val('');
+        $("#SendSubscriberSmsErrorField").html('');
+    }
+</script>

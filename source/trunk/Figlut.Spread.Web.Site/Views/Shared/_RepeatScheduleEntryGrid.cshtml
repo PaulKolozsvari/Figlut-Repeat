@@ -54,9 +54,9 @@
                         {
                             repeatScheduleEntry = (RepeatScheduleEntryModel)grid.Rows[grid.SelectedIndex].Value;
                             @Html.LinkButtonForCancel("Delete", "onDeleteRepeatScheduleEntryClick()", "btnDeleteRepeatScheduleEntry")
-                            @Html.LinkButtonForSubmit("SMS", "onSendSmsRepeatScheduleEntryClick()", "btnSendSmsRepeatScheduleEntry", "red-mail-send-icon32.png")
                             @Html.LinkButtonForSubmit("Shift", "onShiftRepeatScheduleEntryClick()", "btnShiftRepeatScheduleEntry", "red-edit.png")
                             @Html.LinkButtonForSubmit("Edit", "onEditRepeatScheduleEntryClick()", "btnEditRepeatScheduleEntry", "red-edit.png")
+                            @Html.LinkButtonForSubmit("SMS", "onSendSmsRepeatScheduleEntryClick()", "btnSendSmsRepeatScheduleEntry", "red-mail-send-icon32.png")
                         }
                     }
                 </div>

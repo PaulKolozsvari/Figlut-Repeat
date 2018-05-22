@@ -10,7 +10,7 @@ div.buttons
 {
     display: block;
     float: inherit;
-    width: 100px;
+    width: 90px;
     display:inline-block;
     max-width: 120px;
     text-align: center;
@@ -21,7 +21,7 @@ div.buttons
     /*background-color: #f1f6f1;*/
     background-color : transparent;
     font-family: Verdana, Helvetica, sans-serif;
-    font-size: 85%;
+    font-size: 75%;
     line-height: 110%;
     text-decoration: none !important;
     color: #fff !important;

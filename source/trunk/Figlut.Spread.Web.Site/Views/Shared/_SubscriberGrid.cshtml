@@ -58,6 +58,7 @@
                             subscriber = (SubscriberModel)grid.Rows[grid.SelectedIndex].Value;
                             @Html.LinkButtonForCancel("Delete", "onDeleteSubscriberClick()", "btnDeleteSubscriber")
                             @Html.LinkButtonForSubmit("Edit", "onEditSubscriberClick()", "btnEditSubscriber", "red-edit.png")
+                            @Html.LinkButtonForSubmit("SMS", "onSendSmsClick()", "btnSendSms", "red-mail-send-icon32.png")
                         }
                     }
                 </div>
@@ -131,6 +132,16 @@
             'identifier',
             '@subscriber.SubscriberId.ToString()');
     };
+
+    function onSendSmsClick() {
+        showDialog(
+            '#divSendSubscriberSmsDialog',
+            '#dlgSendSubscriberSmsDialog',
+            'SendSms',
+            'Subscriber',
+            'subscriberId',
+            '@subscriber.SubscriberId.ToString()');
+    }
 
     function onEditSubscriberClick() {
         showDialog(

@@ -32,6 +32,8 @@
 }
 
 <script type="text/javascript">
+    var sendEnabled = false;
+
     $(document).ready(function () {
         $(document).keypress(function (event) {
             if (event.which == 13) {
@@ -42,6 +44,11 @@
         });
         loadDialog("#divConfirmationDialog", "#dlgConfirmation", "ConfirmDeleteDialog", "Subscriber", 'identifier', '@Guid.Empty');
         loadDialog("#divCreateSubscriber", "#dlgCreateSubscriber", "CreateDialog", "Subscriber", '', '@null');
+        loadDialog("#divSendSubscriberSmsDialog", "#dlgSendSubscriberSmsDialog", "SendSms", "Subscriber", '', '@null');
         loadDialog("#divEditSubscriber", "#dlgEditSubscriber", "EditDialog", "Subscriber", 'subscriberId', '@null');
+
+        loadDialog("#divWaitDialog", "#dlgWait", "WaitDialog", "SmsSent", 'message', '@string.Empty');
+        loadDialog("#divInformationDialog", "#dlgInformation", "InformationDialog", "SmsSent", 'message', '@string.Empty');
+        sendEnabled = true;
     });
 </script>

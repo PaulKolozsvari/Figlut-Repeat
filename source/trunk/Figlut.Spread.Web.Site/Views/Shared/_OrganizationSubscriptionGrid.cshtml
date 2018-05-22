@@ -61,6 +61,7 @@
                             organizationSubscription = (OrganizationSubscriptionModel)grid.Rows[grid.SelectedIndex].Value;
                             @Html.LinkButtonForCancel("Delete", "onDeleteOrganizationSubscriptionClick()", "btnDeleteOrganizationSubscription")
                             @Html.LinkButtonForSubmit("Edit", "onEditOrganizationSubscriptionClick()", "btnEditOrganizationSubscription", "red-edit.png")
+                            @Html.LinkButtonForSubmit("SMS", "onSendSmsClick()", "btnSendSms", "red-mail-send-icon32.png")
                         }
                     }
                 </div>
@@ -136,6 +137,16 @@
             'identifier',
             '@organizationSubscription.SubscriptionId.ToString()');
     };
+
+    function onSendSmsClick() {
+        showDialog(
+            '#divSendSubscriberSmsDialog',
+            '#dlgSendSubscriberSmsDialog',
+            'SendSms',
+            'Subscriber',
+            'subscriberId',
+            '@organizationSubscription.SubscriberId.ToString()');
+    }
 
     function onEditOrganizationSubscriptionClick() {
         showDialog(

@@ -159,6 +159,10 @@
                 }
                 User currentUser = GetCurrentUser(context);
                 Organization currentOrganization = GetCurrentOrganization(context, true);
+                if (!CurrentUserHasAccessToOrganization(currentOrganization.OrganizationId, context))
+                {
+                    return RedirectToHome();
+                }
                 if (currentOrganization.SmsCreditsBalance < 1 && !currentOrganization.AllowSmsCreditsDebt)
                 {
                     return GetJsonResult(false, string.Format("{0} '{1}' has insufficient SMS credits to send an SMS.", typeof(Organization).Name, currentOrganization.Name));

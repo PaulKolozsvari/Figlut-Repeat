@@ -4,14 +4,18 @@
 
     using Figlut.Server.Toolkit.Data;
     using Figlut.Server.Toolkit.Utilities;
+    using Figlut.Server.Toolkit.Utilities.Logging;
     using Figlut.Spread.Data;
     using Figlut.Spread.ORM;
     using Figlut.Spread.ORM.Csv;
+    using Figlut.Spread.ORM.Helpers;
+    using Figlut.Spread.SMS;
     using Figlut.Spread.Web.Site.Configuration;
     using Figlut.Spread.Web.Site.Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Web;
     using System.Web.Mvc;
 
@@ -22,6 +26,7 @@
         #region Constants
 
         private const string SUBSCRIBER_GRID_PARTIAL_VIEW_NAME = "_SubscriberGrid";
+        private const string SEND_SMS_DIALOG_PARTIAL_VIEW_NAME = "_SendSubscriberSmsDialog";
         private const string EDIT_SUBSCRIBER_DIALOG_PARTIAL_VIEW_NAME = "_EditSubscriberDialog";
         private const string CREATE_SUBSCRIBER_PARTIAL_VIEW_NAME = "_CreateSubscriberDialog";
 
@@ -260,6 +265,116 @@
                 ExceptionHandler.HandleException(ex);
                 SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
                 return RedirectToError(ex.Message);
+            }
+        }
+
+        public ActionResult SendSms(Nullable<Guid> subscriberId)
+        {
+            try
+            {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated)
+                {
+                    return RedirectToHome();
+                }
+                if (!subscriberId.HasValue || subscriberId == Guid.Empty)
+                {
+                    return PartialView(SEND_SMS_DIALOG_PARTIAL_VIEW_NAME, new SendSubscriberSmsModel());
+                }
+                Subscriber subscriber = context.GetSubscriber(subscriberId.Value, true);
+                SendSubscriberSmsModel model = new SendSubscriberSmsModel();
+                model.CopyPropertiesFromSubscriber(subscriber);
+                model.MaxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
+                PartialViewResult result = PartialView(SEND_SMS_DIALOG_PARTIAL_VIEW_NAME, model);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult SendSms(SendSubscriberSmsModel model)
+        {
+            try
+            {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated)
+                {
+                    return RedirectToHome();
+                }
+                string errorMessage = null;
+                int maxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
+                string organizationIdentifierIndicator = SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.OrganizationIdentifierIndicator].SettingValue;
+                string smsSendMessageSuffix = SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.SmsSendMessageSuffix].SettingValue;
+                if (!model.IsValid(out errorMessage, maxSmsSendMessageLength))
+                {
+                    return GetJsonResult(false, errorMessage);
+                }
+                User currentUser = GetCurrentUser(context);
+                Organization currentOrganization = GetCurrentOrganization(context, true);
+                if (!CurrentUserHasAccessToOrganization(currentOrganization.OrganizationId, context))
+                {
+                    return RedirectToHome();
+                }
+                if (currentOrganization.SmsCreditsBalance < 1 && !currentOrganization.AllowSmsCreditsDebt)
+                {
+                    return GetJsonResult(false, string.Format("{0} '{1}' has insufficient SMS credits to send an SMS.", typeof(Organization).Name, currentOrganization.Name));
+                }
+                SmsResponse response;
+                try
+                {
+                    response = SpreadWebApp.Instance.SmsSender.SendSms(new SmsRequest(
+                        model.CellPhoneNumber, model.MessageContents, maxSmsSendMessageLength, smsSendMessageSuffix, currentOrganization.Identifier, organizationIdentifierIndicator));
+                }
+                catch (Exception exFailed) //Failed to send the SMS Web Request to the provider.
+                {
+                    int smsProviderCode = (int)SpreadWebApp.Instance.Settings.SmsProvider;
+                    context.LogFailedSmsSent(
+                        model.CellPhoneNumber, model.MessageContents, smsProviderCode, exFailed, currentUser, out errorMessage);
+                    return GetJsonResult(false, errorMessage);
+                }
+                SmsSentLog smsSentLog = SpreadWebApp.Instance.LogSmsSentToDB(
+                    model.CellPhoneNumber, model.MessageContents, response, currentUser, true); //If this line throws an exception then we don't havea record of the SMS having been sent, therefore cannot deduct credits from the Organization. Therefore there's no point in wrapping this call in a try catch and swallowing any exception i.e. if we don't have a record of the SMS having been sent we cannot charge for it.
+                if (response.success)
+                {
+                    long smsCredits = context.DecrementSmsCreditFromOrganization(currentOrganization.OrganizationId).SmsCreditsBalance;
+                    GOC.Instance.Logger.LogMessage(new LogMessage(
+                        string.Format("{0} '{1}' has sent an SMS. Credits remaining: {2}.",
+                        typeof(Organization).Name,
+                        currentOrganization.Name,
+                        smsCredits),
+                        LogMessageType.SuccessAudit,
+                        LoggingLevel.Normal));
+                }
+                else //Got a response from the provider, but sending the sms failed.
+                {
+                    StringBuilder errorMessageBuilder = new StringBuilder();
+                    if (!string.IsNullOrEmpty(response.error))
+                    {
+                        errorMessageBuilder.AppendFormat("Error: {0}. ", response.error);
+                    }
+                    if (!string.IsNullOrEmpty(response.errorCode))
+                    {
+                        errorMessageBuilder.AppendFormat("Code: {0}. ", response.errorCode);
+                    }
+                    if (!string.IsNullOrEmpty(response.messageId))
+                    {
+                        errorMessageBuilder.AppendFormat("Message ID: {0}", response.messageId);
+                    }
+                    return GetJsonResult(false, errorMessageBuilder.ToString());
+                }
+                //Thread.Sleep(5000);
+                return GetJsonResult(true);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
             }
         }
 

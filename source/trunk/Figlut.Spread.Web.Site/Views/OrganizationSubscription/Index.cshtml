@@ -45,6 +45,7 @@
         loadDialog("#divConfirmationDialog", "#dlgConfirmation", "ConfirmDeleteDialog", "OrganizationSubscription", 'identifier', '@Guid.Empty');
         loadDialog("#divCreateSmsCampaign", "#dlgCreateSmsCampaign", "CreateSmsCampaignDialog", "OrganizationSubscription", 'searchParametersString', '');
         loadDialog("#divCreateOrganizationSubscription", "#dlgCreateOrganizationSubscription", "CreateDialog", "OrganizationSubscription", 'organizationId', '@Model.ParentId');
+        loadDialog("#divSendSubscriberSmsDialog", "#dlgSendSubscriberSmsDialog", "SendSms", "Subscriber", '', '@null');
         loadDialog("#divEditOrganizationSubscription", "#dlgEditOrganizationSubscription", "EditDialog", "OrganizationSubscription", 'subscriptionId', '@null');
 
         loadDialog("#divWaitDialog", "#dlgWait", "WaitDialog", "SmsSent", 'message', '@string.Empty');

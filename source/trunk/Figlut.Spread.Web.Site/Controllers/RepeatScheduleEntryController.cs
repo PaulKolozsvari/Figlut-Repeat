@@ -143,6 +143,10 @@
                 string smsSendMessageSuffix = SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.SmsSendMessageSuffix].SettingValue;
                 User currentUser = GetCurrentUser(context);
                 Organization currentOrganization = GetCurrentOrganization(context, true);
+                if (!CurrentUserHasAccessToOrganization(currentOrganization.OrganizationId, context))
+                {
+                    return RedirectToHome();
+                }
                 RepeatScheduleEntry repeatScheduleEntry = context.GetRepeatScheduleEntry(repeatScheduleEntryId.Value, true);
                 RepeatScheduleView repeatScheduleView = context.GetRepeatScheduleView(repeatScheduleEntry.RepeatScheduleId, true);
                 if (currentOrganization.SmsCreditsBalance < 1 && !currentOrganization.AllowSmsCreditsDebt)
