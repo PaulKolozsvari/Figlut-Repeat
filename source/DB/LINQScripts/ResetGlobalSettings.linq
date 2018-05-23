@@ -125,6 +125,16 @@ GlobalSetting logAllHttpHeaders = new GlobalSetting()
 	Description = "Whether or not to write all HTTP headers to the event log."
 };
 GlobalSettings.InsertOnSubmit(logAllHttpHeaders);
+GlobalSetting logUserLastActivityDate = new GlobalSetting()
+{
+	GlobalSettingId = Guid.NewGuid(),
+	Category = "System",
+	SettingName = "LogUserLastActivityDate",
+	SettingValue = true.ToString(),
+	DateCreated = DateTime.Now,
+	Description = "Whether or not to log the date of the last activity of users."
+};
+GlobalSettings.InsertOnSubmit(logUserLastActivityDate);
 GlobalSetting defaultCurrencySymbol = new GlobalSetting()
 {
 	GlobalSettingId = Guid.NewGuid(),
