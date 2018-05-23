@@ -33,26 +33,38 @@
 
         public bool OrganizationSubscriptionEnabled { get; set; }
 
+        public int BillingDayOfTheMonth { get; set; }
+
         public DateTime DateCreated { get; set; }
+
+        #region Settings
+
+        public int OrganizationIdentifierMaxLength { get; set; }
+
+        #endregion //Settings
 
         #endregion //Properties
 
         #region Methods
 
-        public bool IsValid(out string errorMessage)
+        public bool IsValid(out string errorMessage, int organizationIdentifierMaxLength)
         {
             errorMessage = null;
+            if (this.OrganizationId == Guid.Empty)
+            {
+                errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationModel>.GetPropertyName(p => p.OrganizationId, true));
+            }
             if (string.IsNullOrEmpty(this.Name))
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationModel>.GetPropertyName(p => p.Name, true));
             }
             else if (string.IsNullOrEmpty(this.Identifier))
             {
-                errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationModel>.GetPropertyName(p => p.Name, true));
+                errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationModel>.GetPropertyName(p => p.Identifier, true));
             }
-            else if (this.Identifier.Length > 20)
+            else if (this.Identifier.Length > organizationIdentifierMaxLength)
             {
-                errorMessage = string.Format("{0} must be shorter than 20 characters.", EntityReader<OrganizationModel>.GetPropertyName(p => p.Identifier, true));
+                errorMessage = string.Format("{0} must be {1} characters or less.", EntityReader<OrganizationModel>.GetPropertyName(p => p.Identifier, true), organizationIdentifierMaxLength);
             }
             else if (this.Identifier.Contains(' '))
             {
@@ -74,6 +86,7 @@
             {
                 errorMessage = string.Format("SMS Credits Balance may not be a negative number if SMS Credits Debt is not allowed.");
             }
+
             return string.IsNullOrEmpty(errorMessage);
         }
 
@@ -88,6 +101,7 @@
             this.AllowSmsCreditsDebt = organization.AllowSmsCreditsDebt;
             this.OrganizationSubscriptionTypeId = organization.OrganizationSubscriptionTypeId;
             this.OrganizationSubscriptionEnabled = organization.OrganizationSubscriptionEnabled;
+            this.BillingDayOfTheMonth = organization.BillingDayOfTheMonth;
             this.DateCreated = organization.DateCreated;
         }
 
@@ -102,6 +116,7 @@
             organization.AllowSmsCreditsDebt = this.AllowSmsCreditsDebt;
             organization.OrganizationSubscriptionTypeId = this.OrganizationSubscriptionTypeId;
             organization.OrganizationSubscriptionEnabled = this.OrganizationSubscriptionEnabled;
+            organization.BillingDayOfTheMonth = this.BillingDayOfTheMonth;
             organization.DateCreated = this.DateCreated;
         }
 

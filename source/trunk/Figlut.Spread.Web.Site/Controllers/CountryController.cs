@@ -23,8 +23,8 @@
         #region Constants
 
         private const string COUNTRY_GRID_PARTIAL_VIEW_NAME = "_CountryGrid";
-        private const string EDIT_COUNTRY_PARTIAL_VIEW_NAME = "_EditCountryDialog";
-        private const string CREATE_COUNTRY_PARTIAL_VIEW_NAME = "_CreateCountryDialog";
+        private const string EDIT_COUNTRY_DIALOG_PARTIAL_VIEW_NAME = "_EditCountryDialog";
+        private const string CREATE_COUNTRY_DIALOG_PARTIAL_VIEW_NAME = "_CreateCountryDialog";
 
         #endregion //Constants
 
@@ -273,12 +273,12 @@
                 }
                 if (!countryId.HasValue)
                 {
-                    return PartialView(EDIT_COUNTRY_PARTIAL_VIEW_NAME, new CountryModel());
+                    return PartialView(EDIT_COUNTRY_DIALOG_PARTIAL_VIEW_NAME, new CountryModel());
                 }
                 Country country = context.GetCountry(countryId.Value, true);
                 CountryModel model = new CountryModel();
                 model.CopyPropertiesFromCountry(country);
-                PartialViewResult result = PartialView(EDIT_COUNTRY_PARTIAL_VIEW_NAME, model);
+                PartialViewResult result = PartialView(EDIT_COUNTRY_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
             }
             catch (Exception ex)
@@ -321,7 +321,7 @@
         {
             try
             {
-                return PartialView(CREATE_COUNTRY_PARTIAL_VIEW_NAME, new CountryModel());
+                return PartialView(CREATE_COUNTRY_DIALOG_PARTIAL_VIEW_NAME, new CountryModel());
             }
             catch (Exception ex)
             {

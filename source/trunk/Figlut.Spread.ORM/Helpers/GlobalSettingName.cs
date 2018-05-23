@@ -5,6 +5,7 @@
         DisableScreenScalingForMobileDevices,
         CreatePersistentAuthenticationCookie,
         LogAllHttpHeaders,
+        LogUserLastActivityDate,
         DefaultCurrencySymbol,
         LogGetWebRequestActivity,
         LogPostWebRequestActivity,

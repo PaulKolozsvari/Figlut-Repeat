@@ -23,6 +23,7 @@
         #region Constants
 
         private const string ORGANIZATION_GRID_PARTIAL_VIEW_NAME = "_OrganizationGrid";
+        private const string CREATE_ORGANIZATION_DIALOG_PARTIAL_VIEW_NAME = "_CreateOrganizationDialog";
         private const string EDIT_ORGANIZATION_DIALOG_PARTIAL_VIEW_NAME = "_EditOrganizationDialog";
 
         #endregion //Constants
@@ -322,6 +323,57 @@
             }
         }
 
+        public ActionResult CreateDialog()
+        {
+            try
+            {
+                int organizationIdentifierMaxLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.OrganizationIdentifierMaxLength].SettingValue);
+                return PartialView(CREATE_ORGANIZATION_DIALOG_PARTIAL_VIEW_NAME, new OrganizationModel()
+                {
+                    OrganizationSubscriptionEnabled = true,
+                    BillingDayOfTheMonth = 1,
+                    OrganizationIdentifierMaxLength = organizationIdentifierMaxLength,
+                });
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(true);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult CreateDialog(OrganizationModel model)
+        {
+            try
+            {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
+                {
+                    return RedirectToHome();
+                }
+                int organizationIdentifierMaxLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.OrganizationIdentifierMaxLength].SettingValue);
+                model.OrganizationId = Guid.NewGuid();
+                model.DateCreated = DateTime.Now;
+                string errorMessage = null;
+                if (!model.IsValid(out errorMessage, organizationIdentifierMaxLength))
+                {
+                    return GetJsonResult(false, errorMessage);
+                }
+                Organization organization = new Organization();
+                model.CopyPropertiesToOrganization(organization);
+                context.Save<Organization>(organization, false);
+                return GetJsonResult(true);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
+
         public ActionResult EditDialog(Nullable<Guid> organizationId)
         {
             try
@@ -337,8 +389,10 @@
                 }
                 Organization organization = context.GetOrganization(organizationId.Value, true);
                 string currencySymbol = SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.DefaultCurrencySymbol].SettingValue;
+                int organizationIdentifierMaxLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.OrganizationIdentifierMaxLength].SettingValue);
                 OrganizationModel model = new OrganizationModel();
                 model.CopyPropertiesFromOrganization(organization, currencySymbol);
+                model.OrganizationIdentifierMaxLength = organizationIdentifierMaxLength;
                 PartialViewResult result = PartialView(EDIT_ORGANIZATION_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
             }
@@ -355,8 +409,9 @@
         {
             try
             {
+                int organizationIdentifierMaxLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.OrganizationIdentifierMaxLength].SettingValue);
                 string errorMessage = null;
-                if (!model.IsValid(out errorMessage))
+                if (!model.IsValid(out errorMessage, organizationIdentifierMaxLength))
                 {
                     return GetJsonResult(false, errorMessage);
                 }

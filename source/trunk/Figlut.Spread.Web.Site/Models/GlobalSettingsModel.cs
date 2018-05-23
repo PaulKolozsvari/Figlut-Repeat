@@ -20,6 +20,8 @@
 
         public bool LogAllHttpHeaders { get; set; }
 
+        public bool LogUserLastActivityDate { get; set; }
+
         public string DefaultCurrencySymbol { get; set; }
 
         public bool LogGetWebRequestActivity { get; set; }

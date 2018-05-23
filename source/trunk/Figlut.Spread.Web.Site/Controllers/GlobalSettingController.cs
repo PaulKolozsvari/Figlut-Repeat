@@ -330,6 +330,7 @@
                 model.DisableScreenScalingForMobileDevices = Convert.ToBoolean(context.GetGlobalSettingBySettingName(GlobalSettingName.DisableScreenScalingForMobileDevices, true).SettingValue);
                 model.CreatePersistentAuthenticationCookie = Convert.ToBoolean(context.GetGlobalSettingBySettingName(GlobalSettingName.CreatePersistentAuthenticationCookie, true).SettingValue);
                 model.LogAllHttpHeaders = Convert.ToBoolean(context.GetGlobalSettingBySettingName(GlobalSettingName.LogAllHttpHeaders, true).SettingValue);
+                model.LogUserLastActivityDate = Convert.ToBoolean(context.GetGlobalSettingBySettingName(GlobalSettingName.LogUserLastActivityDate, true).SettingValue);
                 model.DefaultCurrencySymbol = context.GetGlobalSettingBySettingName(GlobalSettingName.DefaultCurrencySymbol, true).SettingValue;
                 model.LogGetWebRequestActivity = Convert.ToBoolean(context.GetGlobalSettingBySettingName(GlobalSettingName.LogGetWebRequestActivity, true).SettingValue);
                 model.LogPostWebRequestActivity = Convert.ToBoolean(context.GetGlobalSettingBySettingName(GlobalSettingName.LogPostWebRequestActivity, true).SettingValue);
@@ -415,6 +416,9 @@
 
                 GlobalSetting logAllHttpHeaders = context.GetGlobalSettingBySettingName(GlobalSettingName.LogAllHttpHeaders, true);
                 logAllHttpHeaders.SettingValue = model.LogAllHttpHeaders.ToString();
+
+                GlobalSetting logUserLastActivityDate = context.GetGlobalSettingBySettingName(GlobalSettingName.LogUserLastActivityDate, true);
+                logUserLastActivityDate.SettingValue = model.LogUserLastActivityDate.ToString();
 
                 GlobalSetting defaultCurrencySymbol = context.GetGlobalSettingBySettingName(GlobalSettingName.DefaultCurrencySymbol, true);
                 defaultCurrencySymbol.SettingValue = model.DefaultCurrencySymbol.ToString();
@@ -562,6 +566,7 @@
                     disableScreenScalingForMobileDevices,
                     createPersistentAuthenticationCookie,
                     logAllHttpHeaders,
+                    logUserLastActivityDate,
                     defaultCurrencySymbol,
                     logGetWebRequestActivity,
                     logPostWebRequestActivity,

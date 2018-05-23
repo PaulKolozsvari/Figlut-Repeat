@@ -51,6 +51,7 @@
                 <div style="float: right; margin-left:2%; margin-right:2%">
                     @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
                     {
+                        @Html.LinkButtonForSubmit("Create", "onCreateOrganizationClick()", "btnCreateOrganization", "red-document-plus-icon32.png")
                         @Html.LinkButtonForCancel("Delete All", "onDeleteAllOrganizationsClick()", "btnDeleteAllOrganizations")
                         if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
                         {
@@ -88,6 +89,8 @@
                 //grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.Address, false), "Address"),
                 grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.SmsCreditsBalance, false), "Balance"),
                 grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.AllowSmsCreditsDebt, false), "Allow Debt"),
+                grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.OrganizationSubscriptionEnabled, false), "Enabled"),
+                grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.BillingDayOfTheMonth, false), "Billing Day"),
                 grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.DateCreated, false), "Date Created")
             ))
         </div>
@@ -142,6 +145,16 @@
             'Organization',
             'organizationId',
             '@organization.OrganizationId.ToString()');
+    };
+
+    function onCreateOrganizationClick() {
+        showDialog(
+            '#divCreateOrganization',
+            '#dlgCreateOrganization',
+            'CreateDialog',
+            'Organization',
+            '',
+            '');
     };
 
     function getSearchParametersString() {

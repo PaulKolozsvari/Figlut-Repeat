@@ -25,6 +25,7 @@
         /// </summary>
         public WebRequestActivity LogWebRequestActivity(
             bool logWebRequestActivity,
+            bool logUserLastActivityDate,
             string requestVerb,
             string requestUrl,
             string requestReferrerUrl,
@@ -102,7 +103,7 @@
                     DB.GetTable<WebRequestActivity>().InsertOnSubmit(result);
                     DB.SubmitChanges(); //This is a simply insert, hence it should not cause any concurrency conflicts.
                 }
-                if (currentUser != null)
+                if (currentUser != null && logUserLastActivityDate)
                 {
                     currentUser.LastActivityDate = requestDate;
                     DB.SubmitChanges(ConflictMode.ContinueOnConflict); //This submit causes concurrency conflicts, hence it should be a separate submit from the WebRequestActivity insert.

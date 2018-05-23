@@ -42,6 +42,7 @@
         });
         @*loadDialog("#divConfirmationDialog", "#dlgConfirmation", "ConfirmDeleteDialog", "SmsSent", 'identifier', '@smsSent.SmsSentLogId.ToString()');*@
         loadDialog("#divConfirmationDialog", "#dlgConfirmation", "ConfirmDeleteDialog", "Organization", 'identifier', '@Guid.Empty');
+        loadDialog("#divCreateOrganization", "#dlgCreateOrganization", "CreateDialog", "Organization", '', '@null');
         loadDialog("#divEditOrganization", "#dlgEditOrganization", "EditDialog", "Organization", 'organizationId', '@null');
     });
 </script>

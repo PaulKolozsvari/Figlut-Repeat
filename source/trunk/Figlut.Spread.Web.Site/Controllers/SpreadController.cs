@@ -248,6 +248,7 @@
                 string platform = GetPlatform();
                 string clientType = GetClientType(isCrawler, isMobileDevice);
                 bool logWebRequestActivity = !(ExcludeWebRequestActivityByUserAgent(userAgent) || ExcludeWebRequestActivityByRequestVerb(requestVerb));
+                bool logUserLastActivityDate = Convert.ToBoolean(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.LogUserLastActivityDate].SettingValue);
                 query whoIsQuery = null;
                 if (logWebRequestActivity)
                 {
@@ -257,6 +258,7 @@
                 SpreadEntityContext context = SpreadEntityContext.Create();
                 WebRequestActivity webRequestActivity = context.LogWebRequestActivity(
                     logWebRequestActivity,
+                    logUserLastActivityDate,
                     requestVerb,
                     requestUrl,
                     requestReferrerUrl,
@@ -350,6 +352,10 @@
 
         public User GetCurrentUser(SpreadEntityContext context, bool throwExceptionOnNotFound)
         {
+            if (!Request.IsAuthenticated)
+            {
+                return null;
+            }
             return GetUser(this.User.Identity.Name, context, throwExceptionOnNotFound);
         }
 
