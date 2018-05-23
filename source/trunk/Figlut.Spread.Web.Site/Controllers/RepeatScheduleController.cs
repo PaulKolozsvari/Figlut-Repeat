@@ -362,7 +362,6 @@
         {
             try
             {
-                SpreadEntityContext context = SpreadEntityContext.Create();
                 if (!Request.IsAuthenticated)
                 {
                     return RedirectToHome();
@@ -371,9 +370,12 @@
                 {
                     return PartialView(EDIT_REPEAT_SCHEDULE_PARTIAL_VIEW_NAME, new RepeatScheduleModel());
                 }
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                RefreshSmsMessageTemplatesList(context);
                 RepeatScheduleView repeatScheduleView = context.GetRepeatScheduleView(repeatScheduleId.Value, true);
                 RepeatScheduleModel model = new RepeatScheduleModel();
                 model.CopyPropertiesFromRepeatScheduleView(repeatScheduleView);
+                model.NotificationMessageEdit = model.NotificationMessage;
                 model.MaxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
                 PartialViewResult result = PartialView(EDIT_REPEAT_SCHEDULE_PARTIAL_VIEW_NAME, model);
                 return result;
@@ -391,6 +393,7 @@
         {
             try
             {
+                model.NotificationMessage = model.NotificationMessageEdit;
                 int maxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
                 string errorMessage = null;
                 if (!model.IsValid(out errorMessage, maxSmsSendMessageLength))
@@ -398,6 +401,7 @@
                     return GetJsonResult(false, errorMessage);
                 }
                 SpreadEntityContext context = SpreadEntityContext.Create();
+                RefreshSmsMessageTemplatesList(context);
                 RepeatSchedule repeatSchedule = context.GetRepeatSchedule(model.RepeatScheduleId, true);
                 model.CopyPropertiesToRepeatSchedule(repeatSchedule);
                 context.Save<RepeatSchedule>(repeatSchedule, false);
@@ -415,7 +419,6 @@
         {
             try
             {
-                SpreadEntityContext context = SpreadEntityContext.Create();
                 if (!Request.IsAuthenticated)
                 {
                     return RedirectToHome();
@@ -424,6 +427,8 @@
                 {
                     return PartialView(CREATE_REPEAT_SCHEDULE_PARTIAL_VIEW_NAME, new CreateRepeatScheduleModel());
                 }
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                RefreshSmsMessageTemplatesList(context);
                 CreateRepeatScheduleView view = context.GetCreateRepeatScheduleModelView(subscriptionId.Value, true);
                 Country country = context.GetCountryByCountryCode("zaf", true); //TODO Use IP address lookup to determine the country that the user is in, but for now we're only working with South Africa.
                 CreateRepeatScheduleModel model = new CreateRepeatScheduleModel();
@@ -449,11 +454,13 @@
         {
             try
             {
-                SpreadEntityContext context = SpreadEntityContext.Create();
                 if (!Request.IsAuthenticated)
                 {
                     return RedirectToHome();
                 }
+                model.NotificationMessage = model.NotificationMessageCreate;
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                RefreshSmsMessageTemplatesList(context);
                 int maxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
                 string errorMessage = null;
                 if (!model.IsValid(out errorMessage, maxSmsSendMessageLength))
@@ -472,46 +479,6 @@
                 return GetJsonResult(false, ex.Message);
             }
         }
-
-        //public ActionResult CreateDialog()
-        //{
-        //    try
-        //    {
-        //        return PartialView(CREATE_REPEAT_SCHEDULE_PARTIAL_VIEW_NAME, new RepeatScheduleModel());
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ExceptionHandler.HandleException(ex);
-        //        SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
-        //        return GetJsonResult(true);
-        //    }
-        //}
-
-        //[HttpPost]
-        //public ActionResult CreateDialog(RepeatScheduleModel model)
-        //{
-        //    try
-        //    {
-        //        string errorMessage = null;
-        //        if (!model.IsValid(out errorMessage))
-        //        {
-        //            return GetJsonResult(false, errorMessage);
-        //        }
-        //        SpreadEntityContext context = SpreadEntityContext.Create();
-        //        model.RepeatScheduleId = Guid.NewGuid();
-        //        model.DateCreated = DateTime.Now;
-        //        RepeatSchedule repeatSchedule = new RepeatSchedule();
-        //        model.CopyPropertiesToRepeatSchedule(repeatSchedule);
-        //        context.Save<RepeatSchedule>(repeatSchedule, false);
-        //        return GetJsonResult(true);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ExceptionHandler.HandleException(ex);
-        //        SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
-        //        return GetJsonResult(false, ex.Message);
-        //    }
-        //}
 
         #endregion //Actions
     }

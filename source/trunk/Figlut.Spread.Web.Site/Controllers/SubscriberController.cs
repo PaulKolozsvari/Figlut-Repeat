@@ -272,7 +272,6 @@
         {
             try
             {
-                SpreadEntityContext context = SpreadEntityContext.Create();
                 if (!Request.IsAuthenticated)
                 {
                     return RedirectToHome();
@@ -281,6 +280,8 @@
                 {
                     return PartialView(SEND_SUBSCRIBER_SMS_DIALOG_PARTIAL_VIEW_NAME, new SendSubscriberSmsModel());
                 }
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                RefreshSmsMessageTemplatesList(context);
                 Subscriber subscriber = context.GetSubscriber(subscriberId.Value, true);
                 SendSubscriberSmsModel model = new SendSubscriberSmsModel();
                 model.CopyPropertiesFromSubscriber(subscriber);
@@ -328,17 +329,17 @@
                 try
                 {
                     response = SpreadWebApp.Instance.SmsSender.SendSms(new SmsRequest(
-                        model.CellPhoneNumber, model.MessageContents, maxSmsSendMessageLength, smsSendMessageSuffix, currentOrganization.Identifier, organizationIdentifierIndicator));
+                        model.CellPhoneNumberSendSubscriberSmsDialog, model.MessageContentsSendSubscriberSmsDialog, maxSmsSendMessageLength, smsSendMessageSuffix, currentOrganization.Identifier, organizationIdentifierIndicator));
                 }
                 catch (Exception exFailed) //Failed to send the SMS Web Request to the provider.
                 {
                     int smsProviderCode = (int)SpreadWebApp.Instance.Settings.SmsProvider;
                     context.LogFailedSmsSent(
-                        model.CellPhoneNumber, model.MessageContents, smsProviderCode, exFailed, currentUser, out errorMessage);
+                        model.CellPhoneNumberSendSubscriberSmsDialog, model.MessageContentsSendSubscriberSmsDialog, smsProviderCode, exFailed, currentUser, out errorMessage);
                     return GetJsonResult(false, errorMessage);
                 }
                 SmsSentLog smsSentLog = SpreadWebApp.Instance.LogSmsSentToDB(
-                    model.CellPhoneNumber, model.MessageContents, response, currentUser, true); //If this line throws an exception then we don't havea record of the SMS having been sent, therefore cannot deduct credits from the Organization. Therefore there's no point in wrapping this call in a try catch and swallowing any exception i.e. if we don't have a record of the SMS having been sent we cannot charge for it.
+                    model.CellPhoneNumberSendSubscriberSmsDialog, model.MessageContentsSendSubscriberSmsDialog, response, currentUser, true); //If this line throws an exception then we don't havea record of the SMS having been sent, therefore cannot deduct credits from the Organization. Therefore there's no point in wrapping this call in a try catch and swallowing any exception i.e. if we don't have a record of the SMS having been sent we cannot charge for it.
                 if (response.success)
                 {
                     long smsCredits = context.DecrementSmsCreditFromOrganization(currentOrganization.OrganizationId).SmsCreditsBalance;
@@ -391,6 +392,7 @@
                 {
                     return PartialView(EDIT_SUBSCRIBER_DIALOG_PARTIAL_VIEW_NAME, new SubscriberModel());
                 }
+                RefreshSmsMessageTemplatesList(context);
                 Subscriber subscriber = context.GetSubscriber(subscriberId.Value, true);
                 SubscriberModel model = new SubscriberModel();
                 model.CopyPropertiesFromSubscriber(subscriber);

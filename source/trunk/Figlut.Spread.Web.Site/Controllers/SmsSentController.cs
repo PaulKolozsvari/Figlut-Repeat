@@ -124,11 +124,12 @@
         {
             try
             {
-                SpreadEntityContext context = SpreadEntityContext.Create();
                 if (!Request.IsAuthenticated)
                 {
                     return RedirectToHome();
                 }
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                RefreshSmsMessageTemplatesList(context);
                 SendSmsModel model = new SendSmsModel();
                 model.MaxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
                 PartialViewResult result = PartialView(SEND_SMS_DIALOG_PARTIAL_VIEW_NAME, model);
@@ -143,15 +144,16 @@
         }
 
         [HttpPost]
-        public ActionResult SendSms(SendSubscriberSmsModel model)
+        public ActionResult SendSms(SendSmsModel model)
         {
             try
             {
-                SpreadEntityContext context = SpreadEntityContext.Create();
                 if (!Request.IsAuthenticated)
                 {
                     return RedirectToHome();
                 }
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                RefreshSmsMessageTemplatesList(context);
                 string errorMessage = null;
                 int maxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
                 string organizationIdentifierIndicator = SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.OrganizationIdentifierIndicator].SettingValue;
@@ -174,17 +176,17 @@
                 try
                 {
                     response = SpreadWebApp.Instance.SmsSender.SendSms(new SmsRequest(
-                        model.CellPhoneNumber, model.MessageContents, maxSmsSendMessageLength, smsSendMessageSuffix, currentOrganization.Identifier, organizationIdentifierIndicator));
+                        model.CellPhoneNumberSendSmsDialog, model.MessageContentsSendSmsDialog, maxSmsSendMessageLength, smsSendMessageSuffix, currentOrganization.Identifier, organizationIdentifierIndicator));
                 }
                 catch (Exception exFailed) //Failed to send the SMS Web Request to the provider.
                 {
                     int smsProviderCode = (int)SpreadWebApp.Instance.Settings.SmsProvider;
                     context.LogFailedSmsSent(
-                        model.CellPhoneNumber, model.MessageContents, smsProviderCode, exFailed, currentUser, out errorMessage);
+                        model.CellPhoneNumberSendSmsDialog, model.MessageContentsSendSmsDialog, smsProviderCode, exFailed, currentUser, out errorMessage);
                     return GetJsonResult(false, errorMessage);
                 }
                 SmsSentLog smsSentLog = SpreadWebApp.Instance.LogSmsSentToDB(
-                    model.CellPhoneNumber, model.MessageContents, response, currentUser, true); //If this line throws an exception then we don't havea record of the SMS having been sent, therefore cannot deduct credits from the Organization. Therefore there's no point in wrapping this call in a try catch and swallowing any exception i.e. if we don't have a record of the SMS having been sent we cannot charge for it.
+                    model.CellPhoneNumberSendSmsDialog, model.MessageContentsSendSmsDialog, response, currentUser, true); //If this line throws an exception then we don't havea record of the SMS having been sent, therefore cannot deduct credits from the Organization. Therefore there's no point in wrapping this call in a try catch and swallowing any exception i.e. if we don't have a record of the SMS having been sent we cannot charge for it.
                 if (response.success)
                 {
                     long smsCredits = context.DecrementSmsCreditFromOrganization(currentOrganization.OrganizationId).SmsCreditsBalance;

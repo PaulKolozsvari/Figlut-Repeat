@@ -417,6 +417,33 @@
             return false;
         }
 
+        protected void RefreshSmsMessageTemplatesList(SpreadEntityContext context)
+        {
+            if (context == null)
+            {
+                context = SpreadEntityContext.Create();
+            }
+            Organization currentOrganization = GetCurrentOrganization(context, true);
+            List<SelectListItem> smsMessageTemplatesList = new List<SelectListItem>();
+            List<SmsMessageTemplate> smsMessageTemplates = context.GetSmsMessageTemplatesByFilter(null, currentOrganization.OrganizationId);
+            smsMessageTemplatesList.Add(new SelectListItem() //Add an empty entry i.e. a template not selected, or if selecting this one it will clear the Notification Message.
+            {
+                Text = string.Empty,
+                Value = string.Empty,
+                Selected = true
+            });
+            foreach (SmsMessageTemplate t in smsMessageTemplates)
+            {
+                smsMessageTemplatesList.Add(new SelectListItem()
+                {
+                    Text = t.Message,
+                    Value = t.Message,
+                    Selected = false
+                });
+            }
+            ViewBag.SmsMessageTemplateList = smsMessageTemplatesList;
+        }
+
         #region Header Methods
 
         public string GetAllHeadersFullString()

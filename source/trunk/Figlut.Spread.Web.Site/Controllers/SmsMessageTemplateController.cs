@@ -342,6 +342,7 @@
                 SmsMessageTemplateView smsMessageTemplateView = context.GetSmsMessageTemplateView(smsMessageTemplateId.Value, true);
                 SmsMessageTemplateModel model = new SmsMessageTemplateModel();
                 model.CopyPropertiesFromSmsMessageTemplateView(smsMessageTemplateView);
+                model.MaxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
                 if (IsCurrentUserAdministrator(context))
                 {
                     Organization organization = context.GetOrganization(model.OrganizationId, true);
@@ -414,6 +415,7 @@
                         OrganizationName = organization.Name,
                         DateCreated = DateTime.Now
                     };
+                    model.MaxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
                 }
                 else if (!organizationId.HasValue || organizationId.Value == Guid.Empty)
                 {

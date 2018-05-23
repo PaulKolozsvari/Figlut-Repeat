@@ -58,7 +58,7 @@
                 @Html.Raw("Cell Phone Number")
             </div>
             <div class="editor-field">
-                @Html.EditorFor(m => m.SubscriberCellPhoneNumber, new{ onkeydown = "return searchKeyPress(event)"})
+                @Html.TextBoxFor(m => m.SubscriberCellPhoneNumber, new { onkeydown = "return searchKeyPress(event)", style = "width:50%" })
                 @Html.ValidationMessageFor(m => m.SubscriberCellPhoneNumber)
             </div>
             <div class="buttons">

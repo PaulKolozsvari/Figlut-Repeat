@@ -16,11 +16,13 @@
         #region Properties
 
         [DataType(DataType.PhoneNumber)]
-        public string CellPhoneNumber { get; set; }
+        public string CellPhoneNumberSendSmsDialog { get; set; }
 
-        public string MessageContents { get; set; }
+        public string MessageContentsSendSmsDialog { get; set; }
 
         public int MaxSmsSendMessageLength { get; set; }
+
+        public string SmsMessageTemplateIdSendSms { get; set; }
 
         #endregion //Properties
 
@@ -29,22 +31,22 @@
         public bool IsValid(out string errorMessage, int maxSmsSendMessageLength)
         {
             errorMessage = null;
-            if (string.IsNullOrEmpty(this.CellPhoneNumber))
+            if (string.IsNullOrEmpty(this.CellPhoneNumberSendSmsDialog))
             {
-                errorMessage = string.Format("{0} not entered.", EntityReader<SendSmsModel>.GetPropertyName(p => p.CellPhoneNumber, true));
+                errorMessage = string.Format("{0} not entered.", EntityReader<SendSmsModel>.GetPropertyName(p => p.CellPhoneNumberSendSmsDialog, true));
             }
             string formattedPhoneNumber = null;
-            if (!DataShaper.IsValidPhoneNumber(this.CellPhoneNumber, out formattedPhoneNumber))
+            if (!DataShaper.IsValidPhoneNumber(this.CellPhoneNumberSendSmsDialog, out formattedPhoneNumber))
             {
-                errorMessage = string.Format("{0} is not a valid number.", EntityReader<SendSmsModel>.GetPropertyName(p => p.CellPhoneNumber, true));
+                errorMessage = string.Format("{0} is not a valid number.", EntityReader<SendSmsModel>.GetPropertyName(p => p.CellPhoneNumberSendSmsDialog, true));
             }
-            else if (string.IsNullOrEmpty(this.MessageContents))
+            else if (string.IsNullOrEmpty(this.MessageContentsSendSmsDialog))
             {
-                errorMessage = string.Format("{0} not entered.", EntityReader<SendSmsModel>.GetPropertyName(p => p.MessageContents, true));
+                errorMessage = string.Format("{0} not entered.", EntityReader<SendSmsModel>.GetPropertyName(p => p.MessageContentsSendSmsDialog, true));
             }
-            else if (this.MessageContents.Length > maxSmsSendMessageLength)
+            else if (this.MessageContentsSendSmsDialog.Length > maxSmsSendMessageLength)
             {
-                errorMessage = string.Format("{0} may not be greater than {1} characters.", EntityReader<SendSubscriberSmsModel>.GetPropertyName(p => p.MessageContents, true), maxSmsSendMessageLength);
+                errorMessage = string.Format("{0} may not be greater than {1} characters.", EntityReader<SendSubscriberSmsModel>.GetPropertyName(p => p.MessageContentsSendSubscriberSmsDialog, true), maxSmsSendMessageLength);
             }
             return string.IsNullOrEmpty(errorMessage);
         }

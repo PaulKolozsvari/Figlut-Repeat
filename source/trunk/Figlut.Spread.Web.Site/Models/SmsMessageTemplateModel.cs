@@ -32,6 +32,12 @@
 
         #endregion //Organization Properties
 
+        #region Settings
+
+        public int MaxSmsSendMessageLength { get; set; }
+
+        #endregion //Settings
+
         #region Methods
 
         public bool IsValid(out string errorMessage, int maxSmsSendMessageLength)

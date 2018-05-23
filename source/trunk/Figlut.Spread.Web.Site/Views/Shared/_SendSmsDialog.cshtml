@@ -9,19 +9,32 @@
                 @Html.HiddenFor(m => m.MaxSmsSendMessageLength)
 
                 <div class="field-label">
-                    @Html.Raw(string.Format("Cell Phone Number", Model.CellPhoneNumber))
+                    @Html.Raw(string.Format("Cell Phone Number", Model.CellPhoneNumberSendSmsDialog))
                 </div>
                 <div class="editor-field">
-                    @Html.EditorFor(m => m.CellPhoneNumber, new { onKeyPress = "return disableEnterKey(event)" })
-                    @Html.ValidationMessageFor(m => m.MessageContents)
+                    @Html.EditorFor(m => m.CellPhoneNumberSendSmsDialog, new { onKeyPress = "return disableEnterKey(event)" })
+                    @Html.ValidationMessageFor(m => m.MessageContentsSendSmsDialog)
                 </div>
 
+                @if (ViewBag.SmsMessageTemplateList != null)
+                {
+                    <div class="field-label">
+                        @Html.Raw("SMS Message Templates")
+                    </div>
+                    <div class="editor-field">
+                        @Html.DropDownList("SmsMessageTemplateIdSendSms", ViewBag.SmsMessageTemplateList as List<SelectListItem>, new { @class = "drop-down-field", @onchange = "onSmsMessageTemplateSendSmsChanged()" })
+                    </div>
+                }
+                else
+                {
+                    @Html.HiddenFor(m => m.SmsMessageTemplateIdSendSms)
+                }
                 <div class="field-label">
                     @Html.Raw(string.Format("Message (max {0} characters)", Model.MaxSmsSendMessageLength))
                 </div>
                 <div class="editor-field">
-                    @Html.TextAreaFor(m => m.MessageContents, new { style = "height: 100px;width:80%", onKeyPress = "return disableEnterKey(event)" })
-                    @Html.ValidationMessageFor(m => m.MessageContents)
+                    @Html.TextAreaFor(m => m.MessageContentsSendSmsDialog, new { style = "height: 100px;width:80%", onKeyPress = "return disableEnterKey(event)" })
+                    @Html.ValidationMessageFor(m => m.MessageContentsSendSmsDialog)
                 </div>
                 <br />
                 <div id="SendSmsErrorField" style="color:#8A0808"></div>
@@ -33,14 +46,19 @@
 <script type="text/javascript">
     $(function () {
         var dialogName = '#dlgSendSmsDialog';
-        createDialog(dialogName, 'Send SMS', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
+        createDialog(dialogName, 'Send SMS', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 600);
         //$("#MessageContents").focus();
     });
+
+    function onSmsMessageTemplateSendSmsChanged() {
+        var smsMessageTemplate = $('#SmsMessageTemplateIdSendSms').val();
+        $("#MessageContentsSendSmsDialog").val(smsMessageTemplate)
+    }
 
     function onConfirmOK() {
         sendEnabled = false;
 
-        var cellPhoneNumber = $("#CellPhoneNumber").val();
+        var cellPhoneNumber = $("#CellPhoneNumberSendSmsDialog").val();
         var waitMessage = 'Sending SMS to ' + cellPhoneNumber + ' ...';
         var informationMessage = 'SMS sent successfully to ' + cellPhoneNumber + '.';
 

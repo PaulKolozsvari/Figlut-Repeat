@@ -25,6 +25,8 @@
 
         public string NotificationMessage { get; set; }
 
+        public string NotificationMessageEdit { get; set; }
+
         public string ScheduleName { get; set; }
 
         public Nullable<double> Quantity { get; set; }
@@ -90,6 +92,8 @@
         #region Settings
 
         public int MaxSmsSendMessageLength { get; set; }
+
+        public string SmsMessageTemplateId { get; set; }
 
         #endregion //Settings
 

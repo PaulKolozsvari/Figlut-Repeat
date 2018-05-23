@@ -81,8 +81,7 @@
                 columns: grid.Columns(
                 grid.Column("Templates", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
                 grid.Column(EntityReader<SmsMessageTemplateModel>.GetPropertyName(p => p.Message, false), "Message"),
-                grid.Column(EntityReader<SmsMessageTemplateModel>.GetPropertyName(p => p.OrganizationName, false), "Organization"),
-                grid.Column(EntityReader<SmsMessageTemplateModel>.GetPropertyName(p => p.DateCreated, false), "Date Created")
+                grid.Column(EntityReader<SmsMessageTemplateModel>.GetPropertyName(p => p.OrganizationName, false), "Organization")
             ))
         </div>
         <div class="sms-message-template-preview">

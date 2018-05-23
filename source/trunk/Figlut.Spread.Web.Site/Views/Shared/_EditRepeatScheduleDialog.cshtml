@@ -23,12 +23,25 @@
                 @Html.HiddenFor(m => m.SubscriberEnabled)
                 @Html.HiddenFor(m => m.MaxSmsSendMessageLength)
 
+                @if (ViewBag.SmsMessageTemplateList != null)
+                {
+                    <div class="field-label">
+                        @Html.Raw("SMS Message Templates")
+                    </div>
+                    <div class="editor-field">
+                        @Html.DropDownList("SmsMessageTemplateId", ViewBag.SmsMessageTemplateList as List<SelectListItem>, new { @class = "drop-down-field", @onchange = "onSmsMessageTemplateChanged()" })
+                    </div>
+                }
+                else
+                {
+                    @Html.HiddenFor(m => m.SmsMessageTemplateId)
+                }
                 <div class="field-label">
                     @Html.Raw(string.Format("Notification Message (max {0} characters) *", Model.MaxSmsSendMessageLength))
                 </div>
                 <div class="editor-field">
-                    @Html.EditorFor(m => m.NotificationMessage)
-                    @Html.ValidationMessageFor(m => m.NotificationMessage)
+                    @Html.EditorFor(m => m.NotificationMessageEdit)
+                    @Html.ValidationMessageFor(m => m.NotificationMessageEdit)
                 </div>
                 <div class="field-label">
                     @Html.Raw("Schedule Name *")
@@ -75,9 +88,14 @@
 <script type="text/javascript">
     $(function () {
         var dialogName = '#dlgEditRepeatSchedule';
-        createDialog(dialogName, 'Edit Repeat Schedule', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
+        createDialog(dialogName, 'Edit Repeat Schedule', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 600);
         enableDatepickers();
     });
+
+    function onSmsMessageTemplateChanged() {
+        var smsMessageTemplate = $('#SmsMessageTemplateId').val();
+        $("#NotificationMessageEdit").val(smsMessageTemplate);
+    }
 
     function onConfirmOK() {
         var dialogName = '#dlgEditRepeatSchedule';
