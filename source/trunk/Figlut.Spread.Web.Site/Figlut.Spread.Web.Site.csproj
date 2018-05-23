@@ -245,6 +245,7 @@
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\RepeatScheduleEntryModel.cs" />
     <Compile Include="Models\RepeatScheduleModel.cs" />
+    <Compile Include="Models\SendSmsModel.cs" />
     <Compile Include="Models\SendSubscriberSmsModel.cs" />
     <Compile Include="Models\SmsCampaignModel.cs" />
     <Compile Include="Models\SmsMessageTemplateModel.cs" />
@@ -560,6 +561,7 @@
     <Content Include="Views\Shared\_OrganizationRepeatScheduleEntryGrid.cshtml" />
     <Content Include="Views\OrganizationRepeatScheduleEntry\Index.cshtml" />
     <Content Include="Views\Shared\_SendSubscriberSmsDialog.cshtml" />
+    <Content Include="Views\Shared\_SendSmsDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -27,6 +27,7 @@
         #region Constants
 
         private const string SMS_SENT_GRID_PARTIAL_VIEW_NAME = "_SmsSentGrid";
+        private const string SEND_SMS_DIALOG_PARTIAL_VIEW_NAME = "_SendSmsDialog";
 
         #endregion //Constants
 
@@ -118,6 +119,110 @@
         #region Actions
 
         #region Compose
+
+        public ActionResult SendSms()
+        {
+            try
+            {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated)
+                {
+                    return RedirectToHome();
+                }
+                SendSmsModel model = new SendSmsModel();
+                model.MaxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
+                PartialViewResult result = PartialView(SEND_SMS_DIALOG_PARTIAL_VIEW_NAME, model);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult SendSms(SendSubscriberSmsModel model)
+        {
+            try
+            {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated)
+                {
+                    return RedirectToHome();
+                }
+                string errorMessage = null;
+                int maxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
+                string organizationIdentifierIndicator = SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.OrganizationIdentifierIndicator].SettingValue;
+                string smsSendMessageSuffix = SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.SmsSendMessageSuffix].SettingValue;
+                if (!model.IsValid(out errorMessage, maxSmsSendMessageLength))
+                {
+                    return GetJsonResult(false, errorMessage);
+                }
+                User currentUser = GetCurrentUser(context);
+                Organization currentOrganization = GetCurrentOrganization(context, true);
+                if (!CurrentUserHasAccessToOrganization(currentOrganization.OrganizationId, context))
+                {
+                    return RedirectToHome();
+                }
+                if (currentOrganization.SmsCreditsBalance < 1 && !currentOrganization.AllowSmsCreditsDebt)
+                {
+                    return GetJsonResult(false, string.Format("{0} '{1}' has insufficient SMS credits to send an SMS.", typeof(Organization).Name, currentOrganization.Name));
+                }
+                SmsResponse response;
+                try
+                {
+                    response = SpreadWebApp.Instance.SmsSender.SendSms(new SmsRequest(
+                        model.CellPhoneNumber, model.MessageContents, maxSmsSendMessageLength, smsSendMessageSuffix, currentOrganization.Identifier, organizationIdentifierIndicator));
+                }
+                catch (Exception exFailed) //Failed to send the SMS Web Request to the provider.
+                {
+                    int smsProviderCode = (int)SpreadWebApp.Instance.Settings.SmsProvider;
+                    context.LogFailedSmsSent(
+                        model.CellPhoneNumber, model.MessageContents, smsProviderCode, exFailed, currentUser, out errorMessage);
+                    return GetJsonResult(false, errorMessage);
+                }
+                SmsSentLog smsSentLog = SpreadWebApp.Instance.LogSmsSentToDB(
+                    model.CellPhoneNumber, model.MessageContents, response, currentUser, true); //If this line throws an exception then we don't havea record of the SMS having been sent, therefore cannot deduct credits from the Organization. Therefore there's no point in wrapping this call in a try catch and swallowing any exception i.e. if we don't have a record of the SMS having been sent we cannot charge for it.
+                if (response.success)
+                {
+                    long smsCredits = context.DecrementSmsCreditFromOrganization(currentOrganization.OrganizationId).SmsCreditsBalance;
+                    GOC.Instance.Logger.LogMessage(new LogMessage(
+                        string.Format("{0} '{1}' has sent an SMS. Credits remaining: {2}.",
+                        typeof(Organization).Name,
+                        currentOrganization.Name,
+                        smsCredits),
+                        LogMessageType.SuccessAudit,
+                        LoggingLevel.Normal));
+                }
+                else //Got a response from the provider, but sending the sms failed.
+                {
+                    StringBuilder errorMessageBuilder = new StringBuilder();
+                    if (!string.IsNullOrEmpty(response.error))
+                    {
+                        errorMessageBuilder.AppendFormat("Error: {0}. ", response.error);
+                    }
+                    if (!string.IsNullOrEmpty(response.errorCode))
+                    {
+                        errorMessageBuilder.AppendFormat("Code: {0}. ", response.errorCode);
+                    }
+                    if (!string.IsNullOrEmpty(response.messageId))
+                    {
+                        errorMessageBuilder.AppendFormat("Message ID: {0}", response.messageId);
+                    }
+                    return GetJsonResult(false, errorMessageBuilder.ToString());
+                }
+                //Thread.Sleep(5000);
+                return GetJsonResult(true);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
 
         public ActionResult ComposeStandalone()
         {

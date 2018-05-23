@@ -26,7 +26,7 @@
         #region Constants
 
         private const string SUBSCRIBER_GRID_PARTIAL_VIEW_NAME = "_SubscriberGrid";
-        private const string SEND_SMS_DIALOG_PARTIAL_VIEW_NAME = "_SendSubscriberSmsDialog";
+        private const string SEND_SUBSCRIBER_SMS_DIALOG_PARTIAL_VIEW_NAME = "_SendSubscriberSmsDialog";
         private const string EDIT_SUBSCRIBER_DIALOG_PARTIAL_VIEW_NAME = "_EditSubscriberDialog";
         private const string CREATE_SUBSCRIBER_PARTIAL_VIEW_NAME = "_CreateSubscriberDialog";
 
@@ -279,13 +279,13 @@
                 }
                 if (!subscriberId.HasValue || subscriberId == Guid.Empty)
                 {
-                    return PartialView(SEND_SMS_DIALOG_PARTIAL_VIEW_NAME, new SendSubscriberSmsModel());
+                    return PartialView(SEND_SUBSCRIBER_SMS_DIALOG_PARTIAL_VIEW_NAME, new SendSubscriberSmsModel());
                 }
                 Subscriber subscriber = context.GetSubscriber(subscriberId.Value, true);
                 SendSubscriberSmsModel model = new SendSubscriberSmsModel();
                 model.CopyPropertiesFromSubscriber(subscriber);
                 model.MaxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
-                PartialViewResult result = PartialView(SEND_SMS_DIALOG_PARTIAL_VIEW_NAME, model);
+                PartialViewResult result = PartialView(SEND_SUBSCRIBER_SMS_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
             }
             catch (Exception ex)

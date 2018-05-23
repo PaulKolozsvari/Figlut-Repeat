@@ -37,10 +37,10 @@
                     @Html.ValidationMessageFor(m => m.OrganizationSelectedCode)
                 </div>
                 <div class="field-label">
-                    @Html.Raw(string.Format("Message ({0} characters)", Model.MaxSmsSendMessageLength))
+                    @Html.Raw(string.Format("Message (max {0} characters)", Model.MaxSmsSendMessageLength))
                 </div>
                 <div class="editor-field">
-                    @Html.TextBoxFor(m => m.MessageContents)
+                    @Html.TextAreaFor(m => m.MessageContents, new { style = "height: 100px;width:80%", onKeyPress = "return disableEnterKey(event)" })
                     @Html.ValidationMessageFor(m => m.MessageContents)
                 </div>
                 <br />
@@ -53,7 +53,7 @@
 <script type="text/javascript">
     $(function () {
         var dialogName = '#dlgCreateSmsCampaign';
-        createDialog(dialogName, 'Create SMS Campaign', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
+        createDialog(dialogName, 'Create SMS Campaign', onConfirmOK, onConfirmOpen, onConfirmCancel, 550, 450);
         $("#Name").focus();
     });
 
