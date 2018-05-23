@@ -562,6 +562,7 @@
     <Content Include="Views\OrganizationRepeatScheduleEntry\Index.cshtml" />
     <Content Include="Views\Shared\_SendSubscriberSmsDialog.cshtml" />
     <Content Include="Views\Shared\_SendSmsDialog.cshtml" />
+    <Content Include="Views\Shared\_LogingDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

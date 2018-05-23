@@ -63,7 +63,7 @@
             }
 
             $(document).ready(function () {
-                //loadDialog("#divLogin", "#dlgLogin", "LoginDialog", "User");
+                loadDialog("#divLogin", "#dlgLogin", "LoginDialog", "User");
                 @if (Request.IsAuthenticated)
                 {
                     <text>
@@ -76,6 +76,7 @@
         </script>
 
         @*Dialogs*@
+        <div id="divLogin"></div>
         <div id="divSendSmsDialog"></div>
         <div id='divConfirmationDialog'></div>
         <div id="divWaitDialog"></div>
@@ -135,7 +136,7 @@
                             }
                             @if (currentUser == null)
                             {
-                                <li>@Html.ActionLink("Login", "Login", "User")</li>
+                                <li><a id="lnkLogin" onclick="onLoginClick()">Login</a></li>
                                 <li>@Html.ActionLink("Register", "Register", "User")</li>
                             }
                             else
@@ -333,6 +334,16 @@
                     }
                 });
             });
+
+            function onLoginClick() {
+                showDialog(
+                    '#divLogin',
+                    '#dlgLogin',
+                    'LoginDialog',
+                    'User',
+                    '',
+                    '@null');
+            }
 
             function onSendSmsClick() {
                 showDialog(

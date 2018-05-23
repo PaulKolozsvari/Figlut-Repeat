@@ -26,6 +26,7 @@
         #region Constants
 
         private const string USER_GRID_PARTIAL_VIEW_NAME = "_UserGrid";
+        private const string LOGIN_DIALOG_PARTIAL_VIEW_NAME = "_LogingDialog";
         private const string EDIT_USER_DIALOG_PARTIAL_VIEW_NAME = "_EditUserDialog";
         private const string EDIT_USER_PASSWORD_DIALOG_PARTIAL_VIEW_NAME = "_EditUserPasswordDialog";
 
@@ -279,6 +280,56 @@
             }
         }
 
+        public ActionResult LoginDialog()
+        {
+            try
+            {
+                PartialViewResult result = PartialView(LOGIN_DIALOG_PARTIAL_VIEW_NAME, new User());
+                return result;
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult LoginDialog(User model)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(model.UserName))
+                {
+                    return GetJsonResult(false, string.Format("{0}/{1} not entered.", 
+                        EntityReader<User>.GetPropertyName(p => p.UserName, true),
+                        EntityReader<User>.GetPropertyName(p => p.EmailAddress, true)));
+                }
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (context.IsUserAuthenticated(model.UserName, model.Password))
+                {
+                    User originalUser = context.GetUserByIdentifier(model.UserName, true); //The UserName in the model specified by the user may be the UserName or the EmailAddress. Hence we need to get the original user from the database to set the UserName as the auth cookie.
+                    originalUser.LastLoginDate = DateTime.Now;
+                    originalUser.LastActivityDate = DateTime.Now;
+                    context.DB.SubmitChanges();
+                    FormsAuthentication.SetAuthCookie(
+                        originalUser.UserName,
+                        Convert.ToBoolean(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.CreatePersistentAuthenticationCookie].SettingValue));
+                    return GetJsonResult(true);
+                }
+                return GetJsonResult(false, string.Format("Invalid {0}/{1} or password.",
+                    EntityReader<User>.GetPropertyName(p => p.UserName, true),
+                        EntityReader<User>.GetPropertyName(p => p.EmailAddress, true)));
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
+
         public ActionResult Login()
         {
             try
@@ -304,20 +355,25 @@
             {
                 if (string.IsNullOrEmpty(model.UserName))
                 {
-                    return GetJsonResult(false, string.Format("{0} not entered.", EntityReader<User>.GetPropertyName(p => p.UserName, true)));
+                    return GetJsonResult(false, string.Format("{0}/{1} not entered.",
+                        EntityReader<User>.GetPropertyName(p => p.UserName, true),
+                        EntityReader<User>.GetPropertyName(p => p.EmailAddress, true)));
                 }
                 SpreadEntityContext context = SpreadEntityContext.Create();
                 if (context.IsUserAuthenticated(model.UserName, model.Password))
                 {
                     User originalUser = context.GetUserByIdentifier(model.UserName, true); //The UserName in the model specified by the user may be the UserName or the EmailAddress. Hence we need to get the original user from the database to set the UserName as the auth cookie.
                     originalUser.LastLoginDate = DateTime.Now;
+                    originalUser.LastActivityDate = DateTime.Now;
                     context.DB.SubmitChanges();
                     FormsAuthentication.SetAuthCookie(
                         originalUser.UserName,
                         Convert.ToBoolean(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.CreatePersistentAuthenticationCookie].SettingValue));
                     return GetJsonResult(true);
                 }
-                return GetJsonResult(false, "Invalid user name or password.");
+                return GetJsonResult(false, string.Format("Invalid {0}/{1} or password.",
+                    EntityReader<User>.GetPropertyName(p => p.UserName, true),
+                        EntityReader<User>.GetPropertyName(p => p.EmailAddress, true)));
             }
             catch (Exception ex)
             {
