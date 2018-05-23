@@ -39,7 +39,7 @@
                 @Html.Raw(string.Format("Message ({0} characters)", Model.MaxSmsSendMessageLength))
             </div>
             <div class="editor-field">
-                @Html.TextAreaFor(m => m.MessageContents, new { style = "height: 100px;" })
+                @Html.TextAreaFor(m => m.MessageContents, new { style = "height: 100px;width:80%" })
                 @Html.ValidationMessageFor(m => m.MessageContents)
             </div>
             <div class="buttons">

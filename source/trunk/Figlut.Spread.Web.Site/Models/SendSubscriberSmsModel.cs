@@ -59,6 +59,7 @@
 
         public void CopyPropertiesFromSubscriber(Subscriber subscriber)
         {
+            this.SubscriberId = subscriber.SubscriberId;
             this.CellPhoneNumber = subscriber.CellPhoneNumber;
         }
 

@@ -11,10 +11,18 @@
                 @Html.HiddenFor(m => m.MaxSmsSendMessageLength)
 
                 <div class="field-label">
-                    @Html.Raw(string.Format("Message ({0} characters)", Model.MaxSmsSendMessageLength))
+                    @Html.Raw(string.Format("Subscriber Cell Phone Number", Model.CellPhoneNumber))
                 </div>
                 <div class="editor-field">
-                    @Html.TextBoxFor(m => m.MessageContents)
+                    @Html.TextBoxFor(m => m.CellPhoneNumber, new { disabled = "disabled", @readonly = "readonly", onKeyPress = "return disableEnterKey(event)" })
+                    @Html.ValidationMessageFor(m => m.MessageContents)
+                </div>
+
+                <div class="field-label">
+                    @Html.Raw(string.Format("Message (max {0} characters)", Model.MaxSmsSendMessageLength))
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(m => m.MessageContents, new { style = "height: 100px;width:80%", onKeyPress = "return disableEnterKey(event)" })
                     @Html.ValidationMessageFor(m => m.MessageContents)
                 </div>
                 <br />
@@ -34,7 +42,7 @@
     function onConfirmOK() {
         sendEnabled = false;
 
-        var cellPhoneNumber = $("#CellPhoneNumber").val();
+        var cellPhoneNumber = '@Model.CellPhoneNumber';
         var waitMessage = 'Sending SMS to ' + cellPhoneNumber + ' ...';
         var informationMessage = 'SMS sent successfully to ' + cellPhoneNumber + '.';
 
