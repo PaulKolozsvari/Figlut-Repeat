@@ -90,9 +90,7 @@
                         'message',
                         informationMessage);
                     $("#MessageContents").val('');
-                    //Submit the form which will refresh grid to show the change the enabled/disabled.
-                    var form = $('#frmDetails');
-                    form.submit()
+                    refreshSmsCreditsBalanceMenu();
                 } else {
                     $('#dlgWait').dialog("close");
                     $(".ui-dialog-buttonpane button:contains('OK')").show();

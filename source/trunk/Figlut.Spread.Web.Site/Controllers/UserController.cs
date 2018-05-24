@@ -34,14 +34,17 @@
 
         #region Methods
 
-        private FilterModel<UserModel> GetUserFilterModel(SpreadEntityContext context, FilterModel<UserModel> model)
+        private FilterModel<UserModel> GetUserFilterModel(
+            SpreadEntityContext context, 
+            FilterModel<UserModel> model, 
+            Nullable<Guid> organizationId)
         {
             if (context == null)
             {
                 context = SpreadEntityContext.Create();
             }
             model.IsAdministrator = IsCurrentUserAdministrator(context);
-            List<User> userList = context.GetUsersByFilter(model.SearchText);
+            List<User> userList = context.GetUsersByFilter(model.SearchText, organizationId);
             List<UserModel> modelList = new List<UserModel>();
             foreach (User u in userList)
             {
@@ -57,6 +60,15 @@
             model.DataModel.Clear();
             model.DataModel = modelList;
             model.TotalTableCount = context.GetAllUserCount();
+            if (organizationId.HasValue)
+            {
+                Organization organization = context.GetOrganization(organizationId.Value, false);
+                if (organization != null)
+                {
+                    model.ParentId = organization.OrganizationId;
+                    model.ParentCaption = string.Format("{0}", organization.Name);
+                }
+            }
             return model;
         }
 
@@ -64,16 +76,16 @@
 
         #region Actions
 
-        public ActionResult Index()
+        public ActionResult Index(Nullable<Guid> organizationId)
         {
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
+                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
                 {
                     return RedirectToHome();
                 }
-                FilterModel<UserModel> model = GetUserFilterModel(context, new FilterModel<UserModel>());
+                FilterModel<UserModel> model = GetUserFilterModel(context, new FilterModel<UserModel>(), organizationId);
                 if (model == null) //There was an error and ViewBag.ErrorMessage has been set. So just return an empty model.
                 {
                     return View(new FilterModel<OrganizationModel>());
@@ -90,17 +102,17 @@
         }
 
         [HttpPost]
-        public ActionResult Index(FilterModel<UserModel> model)
+        public ActionResult Index(FilterModel<UserModel> model, Nullable<Guid> organizationId)
         {
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
+                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
                 {
                     return RedirectToHome();
                 }
                 ViewBag.SearchFieldIdentifier = model.SearchFieldIdentifier;
-                FilterModel<UserModel> resultModel = GetUserFilterModel(context, model);
+                FilterModel<UserModel> resultModel = GetUserFilterModel(context, model, organizationId);
                 if (resultModel == null) //There was an error and ViewBag.ErrorMessage has been set. So just return an empty model.
                 {
                     return PartialView(USER_GRID_PARTIAL_VIEW_NAME, new FilterModel<SmsSentLogModel>());
@@ -121,7 +133,7 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
+                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
                 {
                     return RedirectToHome();
                 }
@@ -142,7 +154,7 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
+                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
                 {
                     return RedirectToHome();
                 }
@@ -173,7 +185,7 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
+                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
                 {
                     return RedirectToHome();
                 }
@@ -198,7 +210,7 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
+                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
                 {
                     return RedirectToHome();
                 }
@@ -229,7 +241,7 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
+                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
                 {
                     return RedirectToHome();
                 }
@@ -245,19 +257,19 @@
             }
         }
 
-        public ActionResult DownloadCsvFile(string searchParametersString)
+        public ActionResult DownloadCsvFile(string searchParametersString, Nullable<Guid> organizationId)
         {
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
+                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
                 {
                     return RedirectToHome();
                 }
                 string[] searchParameters;
                 string searchText;
                 GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
-                List<User> userList = context.GetUsersByFilter(searchText);
+                List<User> userList = context.GetUsersByFilter(searchText, organizationId);
                 EntityCache<Guid, UserCsv> cache = new EntityCache<Guid, UserCsv>();
                 foreach (User u in userList)
                 {
@@ -607,7 +619,7 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!IsCurrentUserAdministrator(context))
+                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
                 {
                     return RedirectToHome();
                 }
@@ -637,14 +649,22 @@
         {
             try
             {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
+                {
+                    return RedirectToHome();
+                }
                 string errorMessage = null;
                 if (!model.IsValid(out errorMessage))
                 {
                     return GetJsonResult(false, errorMessage);
                 }
-                SpreadEntityContext context = SpreadEntityContext.Create();
                 User currentUser = GetCurrentUser(context);
                 User user = context.GetUser(model.UserId, true);
+                if (currentUser.UserId == user.UserId && ((int)model.Role) < user.RoleId) //Current user is editing their own user profile and assigning a lower role.
+                {
+                    return GetJsonResult(false, string.Format("You may not assign a lower role to the user profile that you are currently logged in as."));
+                }
                 bool userNameHasChanged = (user.UserName.ToLower() != model.UserName.ToLower());
                 if (userNameHasChanged && context.UserExistsByUserName(model.UserName))
                 {
@@ -686,7 +706,7 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!IsCurrentUserAdministrator(context))
+                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
                 {
                     return RedirectToHome();
                 }
@@ -712,12 +732,16 @@
         {
             try
             {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
+                {
+                    return RedirectToHome();
+                }
                 string errorMessage = null;
                 if (!model.IsValid(out errorMessage))
                 {
                     return GetJsonResult(false, errorMessage);
                 }
-                SpreadEntityContext context = SpreadEntityContext.Create();
                 User user = context.GetUser(model.UserId, true);
                 user.Password = model.NewPassword;
                 context.Save<User>(user, false);

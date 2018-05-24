@@ -13,7 +13,14 @@
     <ul id="menu">
         <li>
             <img src="~/Images/Icons/red-user-icon32.png" style="float:right; margin-right:1%; margin-left:1%"/>
-            <a href="" style="float:right">Users</a>
+            @if (!string.IsNullOrEmpty(Model.ParentCaption))
+            {
+                <a href="" style="float:right">@Html.Raw(string.Format("Organization Users: {0}", Model.ParentCaption))</a>
+            }
+            else
+            {
+                <a href="" style="float:right">Users</a>
+            }
         </li>
     </ul>
 </nav>

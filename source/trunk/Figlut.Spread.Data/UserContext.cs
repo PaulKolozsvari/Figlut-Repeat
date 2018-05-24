@@ -148,32 +148,65 @@
             return DB.GetTable<User>().LongCount();
         }
 
-        public List<User> GetUsersByFilter(string searchFilter)
+        public List<User> GetUsersByFilter(string searchFilter, Nullable<Guid> organizationId)
         {
             string searchFilterLower = searchFilter == null ? string.Empty : searchFilter.ToLower();
-            List<User> result = (from u in DB.GetTable<User>()
-                                 join o in DB.GetTable<Organization>() on u.OrganizationId equals o.OrganizationId into set
-                                 from uo in set.DefaultIfEmpty()
-                                 where u.UserName.ToLower().Contains(searchFilterLower) ||
-                                 u.EmailAddress.ToLower().Contains(searchFilterLower) ||
-                                 uo.Name.ToLower().Contains(searchFilterLower)
-                                 orderby u.UserName, u.EmailAddress, u.DateCreated
-                                 select u).ToList();
+            List<User> result = null;
+            if (organizationId.HasValue)
+            {
+                result = (from user in DB.GetTable<User>()
+                          join organization in DB.GetTable<Organization>() on user.OrganizationId equals organization.OrganizationId into setOrganization
+                          from organizationView in setOrganization.DefaultIfEmpty()
+                          where organizationView.OrganizationId == organizationId.Value &&
+                          (user.UserName.ToLower().Contains(searchFilterLower) ||
+                          user.EmailAddress.ToLower().Contains(searchFilterLower) ||
+                          organizationView.Name.ToLower().Contains(searchFilterLower))
+                          orderby user.UserName, user.EmailAddress, user.DateCreated
+                          select user).ToList();
+            }
+            else
+            {
+                result = (from user in DB.GetTable<User>()
+                          join organization in DB.GetTable<Organization>() on user.OrganizationId equals organization.OrganizationId into setOrganization
+                          from organizationView in setOrganization.DefaultIfEmpty()
+                          where (user.UserName.ToLower().Contains(searchFilterLower) ||
+                          user.EmailAddress.ToLower().Contains(searchFilterLower) ||
+                          organizationView.Name.ToLower().Contains(searchFilterLower))
+                          orderby user.UserName, user.EmailAddress, user.DateCreated
+                          select user).ToList();
+            }
             return result;
         }
 
-        public List<User> GetUsersByFilter(string searchFilter, Guid userIdToExclude)
+        public List<User> GetUsersByFilter(string searchFilter, Guid userIdToExclude, Nullable<Guid> organizationId)
         {
             string searchFilterLower = searchFilter == null ? string.Empty : searchFilter.ToLower();
-            List<User> result = (from u in DB.GetTable<User>()
-                                 join o in DB.GetTable<Organization>() on u.OrganizationId equals o.OrganizationId into set
-                                 from uo in set.DefaultIfEmpty()
-                                 where u.UserId != userIdToExclude &&
-                                 (u.UserName.ToLower().Contains(searchFilterLower) ||
-                                 u.EmailAddress.ToLower().Contains(searchFilterLower) ||
-                                 uo.Name.ToLower().Contains(searchFilterLower))
-                                 orderby u.UserName, u.EmailAddress, u.DateCreated
-                                 select u).ToList();
+            List<User> result = null;
+            if (organizationId.HasValue)
+            {
+                result = (from user in DB.GetTable<User>()
+                          join organization in DB.GetTable<Organization>() on user.OrganizationId equals organization.OrganizationId into setOrganization
+                          from organizationView in setOrganization.DefaultIfEmpty()
+                          where organizationView.OrganizationId == organizationId.Value &&
+                          user.UserId != userIdToExclude &&
+                          (user.UserName.ToLower().Contains(searchFilterLower) ||
+                          user.EmailAddress.ToLower().Contains(searchFilterLower) ||
+                          organizationView.Name.ToLower().Contains(searchFilterLower))
+                          orderby user.UserName, user.EmailAddress, user.DateCreated
+                          select user).ToList();
+            }
+            else
+            {
+                result = (from user in DB.GetTable<User>()
+                          join organization in DB.GetTable<Organization>() on user.OrganizationId equals organization.OrganizationId into setOrganization
+                          from organizationView in setOrganization.DefaultIfEmpty()
+                          where user.UserId != userIdToExclude &&
+                          (user.UserName.ToLower().Contains(searchFilterLower) ||
+                          user.EmailAddress.ToLower().Contains(searchFilterLower) ||
+                          organizationView.Name.ToLower().Contains(searchFilterLower))
+                          orderby user.UserName, user.EmailAddress, user.DateCreated
+                          select user).ToList();
+            }
             return result;
         }
 

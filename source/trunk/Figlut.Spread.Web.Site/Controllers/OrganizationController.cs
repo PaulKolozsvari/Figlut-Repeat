@@ -441,6 +441,32 @@
             }
         }
 
+        /// <summary>
+        /// Uses a post because of this security exception: System.InvalidOperationException: This request has been blocked because sensitive information could be disclosed to third party web sites when this is used in a GET request. To allow GET requests, set JsonRequestBehavior to AllowGet.
+        /// https://stackoverflow.com/questions/21452925/what-sensitive-information-could-be-disclosed-when-setting-jsonrequestbehavior
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GetCurrentOrganizationSmsCreditsBalance()
+        {
+            try
+            {
+                if (!Request.IsAuthenticated)
+                {
+                    return RedirectToHome();
+                }
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                Organization currentOrganization = GetCurrentOrganization(context, true);
+                return GetJsonResult(true, string.Format("SMS Credits: {0}", currentOrganization.SmsCreditsBalance));
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return RedirectToError(ex.Message);
+            }
+        }
+
         #endregion //Actions
     }
 }

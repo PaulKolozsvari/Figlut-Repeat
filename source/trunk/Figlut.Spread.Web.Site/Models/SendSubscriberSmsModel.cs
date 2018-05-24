@@ -46,7 +46,7 @@
             string formattedPhoneNumber = null;
             if (!DataShaper.IsValidPhoneNumber(this.CellPhoneNumberSendSubscriberSmsDialog, out formattedPhoneNumber))
             {
-                errorMessage = string.Format("{0} is not a valid number.", EntityReader<SendSubscriberSmsModel>.GetPropertyName(p => p.CellPhoneNumberSendSubscriberSmsDialog, true));
+                errorMessage = string.Format("{0} is not a valid cell phone number.", this.CellPhoneNumberSendSubscriberSmsDialog);
             }
             else if (string.IsNullOrEmpty(this.MessageContentsSendSubscriberSmsDialog))
             {

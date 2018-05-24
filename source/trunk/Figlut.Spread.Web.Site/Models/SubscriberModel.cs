@@ -39,7 +39,7 @@
             string formattedPhoneNumber = null;
             if (!DataShaper.IsValidPhoneNumber(this.CellPhoneNumber, out formattedPhoneNumber))
             {
-                errorMessage = string.Format("{0} is not a valid number.", EntityReader<SubscriberModel>.GetPropertyName(p => p.CellPhoneNumber, true));
+                errorMessage = string.Format("{0} is not a valid cell phone number.", this.CellPhoneNumber);
             }
             return string.IsNullOrEmpty(errorMessage);
         }

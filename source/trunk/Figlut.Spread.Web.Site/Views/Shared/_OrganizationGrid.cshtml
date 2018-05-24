@@ -45,6 +45,7 @@
                         {
                             organization = (OrganizationModel)grid.Rows[grid.SelectedIndex].Value;
                             @Html.LinkButtonForSubmit("Subscriptions", "onViewOrganizationSubscriptionsClick()", "btnViewOrganizationSubscriptions", "red-balloon-plus-icon32.png")
+                            @Html.LinkButtonForSubmit("Users", "onViewOrganizationUsersClick()", "btnViewOrganizationUsers", "red-user-icon32.png")
                         }
                     }
                 </div>
@@ -186,6 +187,13 @@
     function onViewOrganizationSubscriptionsClick() {
         var selectedOrganizationId = '@organization.OrganizationId';
         var downloadUrl = '@Url.Action("Index", "OrganizationSubscription", new { organizationId = "_organizationId" })';
+        downloadUrl = downloadUrl.replace('_organizationId', selectedOrganizationId);
+        window.location = downloadUrl;
+    }
+
+    function onViewOrganizationUsersClick() {
+        var selectedOrganizationId = '@organization.OrganizationId';
+        var downloadUrl = '@Url.Action("Index", "User", new { organizationId = "_organizationId" })';
         downloadUrl = downloadUrl.replace('_organizationId', selectedOrganizationId);
         window.location = downloadUrl;
     }
