@@ -444,6 +444,7 @@
         /// <summary>
         /// Uses a post because of this security exception: System.InvalidOperationException: This request has been blocked because sensitive information could be disclosed to third party web sites when this is used in a GET request. To allow GET requests, set JsonRequestBehavior to AllowGet.
         /// https://stackoverflow.com/questions/21452925/what-sensitive-information-could-be-disclosed-when-setting-jsonrequestbehavior
+        /// https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
         /// </summary>
         /// <returns></returns>
         [HttpPost]

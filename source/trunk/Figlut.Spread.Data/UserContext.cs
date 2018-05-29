@@ -210,11 +210,11 @@
             return result;
         }
 
-        public void DeleteUsersByFilter(string searchFilter, User currentUser)
+        public void DeleteUsersByFilter(string searchFilter, User currentUser, Nullable<Guid> organizationId)
         {
             using (TransactionScope t = new TransactionScope())
             {
-                List<User> users = GetUsersByFilter(searchFilter, currentUser.UserId);
+                List<User> users = GetUsersByFilter(searchFilter, currentUser.UserId, organizationId);
                 DB.GetTable<User>().DeleteAllOnSubmit(users);
                 DB.SubmitChanges();
                 t.Complete();

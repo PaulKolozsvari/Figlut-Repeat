@@ -46,6 +46,10 @@
                 <div style="float: right; margin-left:2%; margin-right:2%">
                     @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
                     {
+                        if (Model.ParentId != Guid.Empty)
+                        {
+                            @Html.LinkButtonForSubmit("Create", "onCreateUserClick()", "btnCreateUser", "red-document-plus-icon32.png")
+                        }
                         @Html.LinkButtonForCancel("Delete All", "onDeleteAllUsersClick()", "btnDeleteAllUsers")
                         if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
                         {
@@ -70,6 +74,8 @@
                 <b>@Html.Raw(string.Format("Users Loaded: {0} of {1}", Model.TotalCount.ToString(), Model.TotalTableCount.ToString()))</b>
             </div>
         </div>
+        @Html.HiddenFor(p => p.ParentId)
+        @Html.HiddenFor(p => p.ParentCaption)
         <div id="gridTableContainer">
             @grid.GetHtml(
                 tableStyle: "webGrid",
@@ -137,6 +143,16 @@
             '@user.UserId.ToString()');
     };
 
+    function onCreateUserClick() {
+        showDialog(
+            '#divCreateUser',
+            '#dlgCreateUser',
+            'CreateDialog',
+            'User',
+            'organizationId',
+            '@Model.ParentId');
+    }
+
     function onEditUserClick() {
         showDialog(
             '#divEditUser',
@@ -158,10 +174,11 @@
         };
 
     function getSearchParametersString() {
-        var searchParameters = '@string.Format("{0}|{1}|{2}",
+        var searchParameters = '@string.Format("{0}|{1}|{2}|{3}",
         Model.SearchText != null ? Model.SearchText : string.Empty,
         Model.StartDate.HasValue ? Model.StartDate.Value.Date.ToString() : string.Empty,
-        Model.EndDate.HasValue ? Model.EndDate.Value.Date.ToString() : string.Empty)'
+        Model.EndDate.HasValue ? Model.EndDate.Value.Date.ToString() : string.Empty,
+        Model.ParentId)'
         return searchParameters;
     }
 

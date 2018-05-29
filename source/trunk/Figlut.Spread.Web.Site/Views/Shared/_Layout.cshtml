@@ -84,6 +84,7 @@
         <div id="divEditGlobalSetting"></div>
         <div id="divCreateOrganization"></div>
         <div id="divEditOrganization"></div>
+        <div id="divCreateUser"></div>
         <div id="divEditUser"></div>
         <div id="divEditUserPassword"></div>
         <div id="divCreateSubscriber"></div>
@@ -125,20 +126,22 @@
                             {
                                 SpreadEntityContext context = SpreadEntityContext.Create();
                                 currentUser = context.GetUserByIdentifier(User.Identity.Name, false);
-                                if (currentUser.OrganizationId.HasValue)
-                                {
-                                    currentOrganization = context.GetOrganization(currentUser.OrganizationId.Value, false);
-                                }
                                 if (currentUser == null)
                                 {
-                                    //If the request is authenticated, but the user does not exist in the database, sign out the user.
+                                    //If the request is authenticated, but the user does not exist in the database, sign out the user. This will happen when the user's name or email address has been changed by an administrator or an organization administrator and this user is still currently logged.
                                     FormsAuthentication.SignOut();
+                                    Response.Redirect("~/Home");
+                                    return;
+                                }
+                                else if (currentUser.OrganizationId.HasValue)
+                                {
+                                    currentOrganization = context.GetOrganization(currentUser.OrganizationId.Value, false);
                                 }
                             }
                             @if (currentUser == null)
                             {
                                 <li><a id="lnkLogin" onclick="onLoginClick()">Login</a></li>
-                                <li>@Html.ActionLink("Register", "Register", "User")</li>
+                                @*<li>@Html.ActionLink("Register", "Register", "User")</li>*@
                             }
                             else
                             {

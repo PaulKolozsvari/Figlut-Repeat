@@ -160,7 +160,8 @@
             {
                 return;
             }
-            LogWebRequestActivity(controllerName, actionName, true);
+            SpreadEntityContext context = SpreadEntityContext.Create();
+            LogWebRequestActivity(context, controllerName, actionName, true);
             if (Convert.ToBoolean(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.LogAllHttpHeaders].SettingValue))
             {
                 LogHeaders();
@@ -172,7 +173,7 @@
         {
             string currentUserAgentLower = currentUserAgent.Trim().ToLower();
             string userAgentsToExcludeCsv = SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.WebRequestActivityUserAgentsToExclude].SettingValue;
-            foreach(string userAgentText in userAgentsToExcludeCsv.Split(','))
+            foreach (string userAgentText in userAgentsToExcludeCsv.Split(','))
             {
                 string s = userAgentText.Trim().ToLower();
                 if (currentUserAgentLower.Contains(s))
@@ -229,10 +230,14 @@
             return result;
         }
 
-        private void LogWebRequestActivity(string controllerName, string actionName, bool handleExceptions)
+        private void LogWebRequestActivity(SpreadEntityContext context, string controllerName, string actionName, bool handleExceptions)
         {
             try
             {
+                if (context == null)
+                {
+                    context = SpreadEntityContext.Create();
+                }
                 DateTime requestDate = DateTime.Now;
                 string requestVerb = GetWebRequestVerb();
                 string requestUrl = GetFullRequestUrl();
@@ -255,7 +260,6 @@
                     whoIsQuery = GetWhoIsQuery(userHostAddress, true);
                 }
                 string currentUserName = this.Request.IsAuthenticated ? this.User.Identity.Name : null;
-                SpreadEntityContext context = SpreadEntityContext.Create();
                 WebRequestActivity webRequestActivity = context.LogWebRequestActivity(
                     logWebRequestActivity,
                     logUserLastActivityDate,
@@ -357,6 +361,16 @@
                 return null;
             }
             return GetUser(this.User.Identity.Name, context, throwExceptionOnNotFound);
+        }
+
+        public Organization GetOrganizationFromUser(SpreadEntityContext context, Guid userId, bool throwExceptionOnNotFound)
+        {
+            if (context == null)
+            {
+                context = SpreadEntityContext.Create();
+            }
+            User user = context.GetUser(userId, true);
+            return GetOrganizationFromUser(context, user, throwExceptionOnNotFound);
         }
 
         public Organization GetOrganizationFromUser(SpreadEntityContext context, User user, bool throwExceptionOnNotFound)

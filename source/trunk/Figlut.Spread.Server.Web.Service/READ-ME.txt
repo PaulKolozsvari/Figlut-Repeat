@@ -201,6 +201,7 @@ Competitors:
 		http://www.vetreceptionist.co.za
 		https://business.yocale.com
 		https://www.timetap.com/create-repeating-appointments.html
+			https://www.timetap.com/pricing.html
 			https://www.timetap.com/web-scheduler-features.html
 			https://www.timetap.com/industries.html
 			https://www.timetap.com/create-repeating-appointments.html

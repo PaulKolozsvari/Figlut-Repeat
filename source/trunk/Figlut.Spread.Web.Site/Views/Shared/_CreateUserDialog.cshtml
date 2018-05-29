@@ -1,14 +1,13 @@
 ﻿@model Figlut.Spread.Web.Site.Models.UserModel
 
-<div id="dlgEditUser">
-    <img src="~/Images/Icons/red-edit32.png" style="float:right; margin-right:1%; margin-left:1%"/>
+<div id="dlgCreateUser">
+    <img src="~/Images/Icons/red-document-plus-icon32.png" style="float:right; margin-right:1%; margin-left:1%" />
     <div class="centerForm">
-        <form id="EditUserForm">
-            @Html.ValidationSummary(true, "Failed to edit.")
+        <form id="CreateUserForm">
+            @Html.ValidationSummary(true, "Failed to create.")
             <fieldset>
                 <legend>Confirmation Form</legend>
                 @Html.HiddenFor(m => m.UserId)
-                @Html.HiddenFor(m => m.UserPassword)
                 @Html.HiddenFor(m => m.OrganizationId)
                 @Html.HiddenFor(m => m.LastLoginDate)
                 @Html.HiddenFor(m => m.LastActivityDate)
@@ -27,6 +26,20 @@
                     @Html.EditorFor(m => m.UserEmailAddress)
                     @Html.ValidationMessageFor(m => m.UserEmailAddress)
                 </div>
+                <div class="field-label">
+                    @Html.Raw("Password *")
+                </div>
+                <div class="editor-field">
+                    @Html.PasswordFor(m => m.UserPassword)
+                    @Html.ValidationMessageFor(m => m.UserPassword)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Confirm Password *")
+                </div>
+                <div class="editor-field">
+                    @Html.PasswordFor(m => m.UserPasswordConfirm)
+                    @Html.ValidationMessageFor(m => m.UserPasswordConfirm)
+                </div>
                 @if (ViewBag.UserRolesList != null)
                 {
                     <div class="field-label">
@@ -37,7 +50,7 @@
                     </div>
                 }
                 <br />
-                <div id="EditUserErrorField" style="color:#8A0808"></div>
+                <div id="CreateUserErrorField" style="color:#8A0808"></div>
             </fieldset>
         </form>
     </div>
@@ -45,17 +58,17 @@
 
 <script type="text/javascript">
     $(function () {
-        var dialogName = '#dlgEditUser';
-        createDialog(dialogName, 'Edit User', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
+        var dialogName = '#dlgCreateUser';
+        createDialog(dialogName, 'Create User', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
     });
 
     function onConfirmOK() {
-        var dialogName = '#dlgEditUser';
-        var postBackUrl = '@Url.Action("EditDialog", "User")';
+        var dialogName = '#dlgCreateUser';
+        var postBackUrl = '@Url.Action("CreateDialog", "User")';
         $.ajax({
             url: postBackUrl,
             type: 'POST',
-            data: $("#EditUserForm").serialize(),
+            data: $("#CreateUserForm").serialize(),
             success: function (data) {
                 if (data.Success) {
                     $(dialogName).dialog("close");
@@ -63,7 +76,7 @@
                     var form = $('#frmDetails');
                     form.submit()
                 } else {
-                    $("#EditUserErrorField").html(data.ErrorMsg);
+                    $("#CreateUserErrorField").html(data.ErrorMsg);
                 }
             }
         })
@@ -75,6 +88,6 @@
 
     function onConfirmCancel() {
         //$('#confirmation-message').val('');
-        $("#EditUserErrorField").html('');
+        $("#CreateUserErrorField").html('');
     }
 </script>

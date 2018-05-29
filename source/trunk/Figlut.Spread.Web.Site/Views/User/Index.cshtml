@@ -49,6 +49,7 @@
         });
         @*loadDialog("#divConfirmationDialog", "#dlgConfirmation", "ConfirmDeleteDialog", "SmsSent", 'identifier', '@smsSent.SmsSentLogId.ToString()');*@
         loadDialog("#divConfirmationDialog", "#dlgConfirmation", "ConfirmDeleteDialog", "User", 'identifier', '@Guid.Empty');
+        loadDialog("#divCreateUser", "#dlgCreateUser", "CreateDialog", "User", 'userId', '@null');
         loadDialog("#divEditUser", "#dlgEditUser", "EditDialog", "User", 'userId', '@null');
         loadDialog("#divEditUserPassword", "#dlgEditUserPassword", "EditUserPasswordDialog", "User", 'userId', '@null');
     });

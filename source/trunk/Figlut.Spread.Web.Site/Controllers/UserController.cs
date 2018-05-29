@@ -28,6 +28,7 @@
         private const string USER_GRID_PARTIAL_VIEW_NAME = "_UserGrid";
         private const string LOGIN_DIALOG_PARTIAL_VIEW_NAME = "_LogingDialog";
         private const string EDIT_USER_DIALOG_PARTIAL_VIEW_NAME = "_EditUserDialog";
+        private const string CREATE_USER_DIALOG_PARTIAL_VIEW_NAME = "_CreateUserDialog";
         private const string EDIT_USER_PASSWORD_DIALOG_PARTIAL_VIEW_NAME = "_EditUserPasswordDialog";
 
         #endregion //Constants
@@ -72,6 +73,34 @@
             return model;
         }
 
+        private void RefreshUserRolesDropDownList(UserModel userModel, User currentUser, SpreadEntityContext context)
+        {
+            if (currentUser == null)
+            {
+                currentUser = GetCurrentUser(context);
+            }
+            List<SelectListItem> userRoles = new List<SelectListItem>();
+            Array roleValues = EnumHelper.GetEnumValues(typeof(UserRole));
+            for (int i = 0; i < roleValues.Length; i++)
+            {
+                string roleText = roleValues.GetValue(i).ToString();
+                UserRole role = (UserRole)Enum.Parse(typeof(UserRole), roleText);
+                int roleId = (int)role;
+                if ((roleId > currentUser.RoleId) || //Cannot assign a role to a user greater than the current user's role.
+                    (userModel != null && userModel.UserId == currentUser.UserId && roleId < currentUser.RoleId)) //Or if the user being edited is the same user that us currently logged in. Current user may not downgrade their own role.
+                {
+                    continue;
+                }
+                userRoles.Add(new SelectListItem()
+                {
+                    Text = roleText,
+                    Value = roleText,
+                    Selected = userModel != null ? (userModel.Role.ToString() == roleText) : false
+                });
+            }
+            ViewBag.UserRolesList = userRoles;
+        }
+
         #endregion //Methods
 
         #region Actions
@@ -81,7 +110,10 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
+                if (!Request.IsAuthenticated ||
+                    (!organizationId.HasValue && !IsCurrentUserAdministrator(context)) ||
+                    !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
+                    (organizationId.HasValue && !CurrentUserHasAccessToOrganization(organizationId.Value, context)))
                 {
                     return RedirectToHome();
                 }
@@ -102,12 +134,20 @@
         }
 
         [HttpPost]
-        public ActionResult Index(FilterModel<UserModel> model, Nullable<Guid> organizationId)
+        public ActionResult Index(FilterModel<UserModel> model)
         {
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
+                Nullable<Guid> organizationId = null;
+                if (model.ParentId != Guid.Empty)
+                {
+                    organizationId = model.ParentId;
+                }
+                if (!Request.IsAuthenticated ||
+                    (!organizationId.HasValue && !IsCurrentUserAdministrator(context)) ||
+                    !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
+                    (organizationId.HasValue && !CurrentUserHasAccessToOrganization(organizationId.Value, context)))
                 {
                     return RedirectToHome();
                 }
@@ -133,7 +173,9 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
+                if (!Request.IsAuthenticated ||
+                    !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
+                    !CurrentUserHasAccessToOrganization(GetOrganizationFromUser(context, userId, true).OrganizationId, context))
                 {
                     return RedirectToHome();
                 }
@@ -154,7 +196,9 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
+                if (!Request.IsAuthenticated ||
+                    !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
+                    (identifier != Guid.Empty && !CurrentUserHasAccessToOrganization(GetOrganizationFromUser(context, identifier, true).OrganizationId, context)))
                 {
                     return RedirectToHome();
                 }
@@ -185,7 +229,9 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
+                if (!Request.IsAuthenticated ||
+                    !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
+                    (model.Identifier != Guid.Empty && !CurrentUserHasAccessToOrganization(GetOrganizationFromUser(context, model.Identifier, true).OrganizationId, context)))
                 {
                     return RedirectToHome();
                 }
@@ -210,7 +256,25 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
+                string[] searchParameters;
+                string searchText;
+                GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
+                string organizationIdString = searchParameters.Length == 4 ? searchParameters[3] : null;
+                Nullable<Guid> organizationId = null;
+                if (!string.IsNullOrEmpty(organizationIdString))
+                {
+                    if (!Guid.TryParse(organizationIdString, out Guid parsedOrganizationId))
+                    {
+                        return GetJsonResult(false, string.Format("Could not read {0} from parmeters.", EntityReader<UserModel>.GetPropertyName(p => p.OrganizationId, false)));
+                    }
+                    if (parsedOrganizationId != Guid.Empty)
+                    {
+                        organizationId = parsedOrganizationId;
+                    }
+                }
+                if (!Request.IsAuthenticated ||
+                    !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
+                    (organizationId.HasValue && organizationId.Value != Guid.Empty && !CurrentUserHasAccessToOrganization(GetCurrentOrganization(context, true).OrganizationId, context)))
                 {
                     return RedirectToHome();
                 }
@@ -218,12 +282,19 @@
                 model.PostBackControllerAction = GetCurrentActionName();
                 model.PostBackControllerName = GetCurrentControllerName();
                 model.DialogDivId = CONFIRMATION_DIALOG_DIV_ID;
-
-                string[] searchParameters;
-                string searchText;
-                GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
+                if (organizationId.HasValue && organizationId.Value != Guid.Empty)
+                {
+                    Organization organization = context.GetOrganization(organizationId.Value, true);
+                    model.ConfirmationMessage = string.Format("Delete all Users currently loaded (except current user) for {0} '{1}'?",
+                        typeof(Organization).Name,
+                        organization.Name);
+                    model.ParentId = organization.OrganizationId;
+                }
+                else
+                {
+                    model.ConfirmationMessage = "Delete all Users currently loaded (except current user)?";
+                }
                 model.SearchText = searchText;
-                model.ConfirmationMessage = "Delete all Users currently loaded (except current user)?";
                 PartialViewResult result = PartialView(CONFIRMATION_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
             }
@@ -241,12 +312,19 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
+                User currentUser = GetCurrentUser(context);
+                if (!Request.IsAuthenticated ||
+                    !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
+                    (model.ParentId != Guid.Empty && !CurrentUserHasAccessToOrganization(context.GetOrganization(model.ParentId, true).OrganizationId, context)))
                 {
                     return RedirectToHome();
                 }
-                User currentUser = GetCurrentUser(context);
-                context.DeleteUsersByFilter(model.SearchText, currentUser);
+                Nullable<Guid> organizationId = null;
+                if (model.ParentId != Guid.Empty)
+                {
+                    organizationId = model.ParentId;
+                }
+                context.DeleteUsersByFilter(model.SearchText, currentUser, organizationId);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -257,18 +335,33 @@
             }
         }
 
-        public ActionResult DownloadCsvFile(string searchParametersString, Nullable<Guid> organizationId)
+        public ActionResult DownloadCsvFile(string searchParametersString)
         {
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
-                {
-                    return RedirectToHome();
-                }
                 string[] searchParameters;
                 string searchText;
                 GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
+                string organizationIdString = searchParameters.Length == 4 ? searchParameters[3] : null;
+                Nullable<Guid> organizationId = null;
+                if (!string.IsNullOrEmpty(organizationIdString))
+                {
+                    if (!Guid.TryParse(organizationIdString, out Guid parsedOrganizationId))
+                    {
+                        return GetJsonResult(false, string.Format("Could not read {0} from parmeters.", EntityReader<UserModel>.GetPropertyName(p => p.OrganizationId, false)));
+                    }
+                    if (parsedOrganizationId != Guid.Empty)
+                    {
+                        organizationId = parsedOrganizationId;
+                    }
+                }
+                if (!Request.IsAuthenticated ||
+                    !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
+                    (organizationId.HasValue && organizationId != Guid.Empty && !CurrentUserHasAccessToOrganization(context.GetOrganization(organizationId.Value, true).OrganizationId, context)))
+                {
+                    return RedirectToHome();
+                }
                 List<User> userList = context.GetUsersByFilter(searchText, organizationId);
                 EntityCache<Guid, UserCsv> cache = new EntityCache<Guid, UserCsv>();
                 foreach (User u in userList)
@@ -597,21 +690,88 @@
             }
         }
 
-        private void RefreshUserRolesDropDownList(UserModel userModel)
+        public ActionResult CreateDialog(Nullable<Guid> organizationId)
         {
-            List<SelectListItem> userRoles = new List<SelectListItem>();
-            Array roleValues = EnumHelper.GetEnumValues(typeof(UserRole));
-            for (int i = 0; i < roleValues.Length; i++)
+            try
             {
-                string text = roleValues.GetValue(i).ToString();
-                userRoles.Add(new SelectListItem()
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated ||
+                    !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
+                    (organizationId.HasValue && organizationId.Value != Guid.Empty && !CurrentUserHasAccessToOrganization(organizationId.Value, context)))
                 {
-                    Text = text,
-                    Value = text,
-                    Selected = userModel != null ? (userModel.Role.ToString() == text) : false
-                });
+                    return RedirectToHome();
+                }
+                RefreshUserRolesDropDownList(null, null, context);
+                UserModel model = new UserModel();
+                if (organizationId.HasValue)
+                {
+                    model.OrganizationId = organizationId.Value;
+                }
+                PartialViewResult result = PartialView(CREATE_USER_DIALOG_PARTIAL_VIEW_NAME, model);
+                return result;
             }
-            ViewBag.UserRolesList = userRoles;
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult CreateDialog(UserModel model)
+        {
+            try
+            {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated ||
+                    (!model.OrganizationId.HasValue && !IsCurrentUserAdministrator(context)) ||
+                    !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
+                    (model.OrganizationId.HasValue && model.OrganizationId.Value != Guid.Empty  && !CurrentUserHasAccessToOrganization(model.OrganizationId.Value, context)))
+                {
+                    return RedirectToHome();
+                }
+                User currentUser = GetCurrentUser(context);
+                RefreshUserRolesDropDownList(model, currentUser, context);
+                string errorMessage = null;
+                if (!model.IsValid(out errorMessage))
+                {
+                    return GetJsonResult(false, errorMessage);
+                }
+                if (!model.UserPassword.Equals(model.UserPasswordConfirm))
+                {
+                    return GetJsonResult(false, string.Format("Passwords entered do not match."));
+                }
+                User user = context.GetUserByUserName(model.UserName, false);
+                if (user != null)
+                {
+                    return GetJsonResult(false, string.Format("A {0} with the {1} of '{2}' already exists.",
+                        typeof(User).Name,
+                        EntityReader<User>.GetPropertyName(p => p.UserName, true),
+                        model.UserName));
+                }
+                user = context.GetUserByEmailAddress(model.UserEmailAddress, false);
+                if (user != null)
+                {
+                    return GetJsonResult(false, string.Format("A {0} with the {1} of '{2}' already exists.",
+                        typeof(User).Name,
+                        EntityReader<User>.GetPropertyName(p => p.EmailAddress, true),
+                        model.UserName));
+                }
+                model.UserId = Guid.NewGuid();
+                model.DateCreated = DateTime.Now;
+
+                user = new ORM.User();
+                model.CopyPropertiesToUser(user);
+                context.Save<User>(user, false);
+                return GetJsonResult(true);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
         }
 
         public ActionResult EditDialog(Nullable<Guid> userId)
@@ -619,7 +779,9 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
+                if (!Request.IsAuthenticated ||
+                    !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
+                    (userId.HasValue && userId.Value != Guid.Empty && !CurrentUserHasAccessToOrganization(GetOrganizationFromUser(context, userId.Value, true).OrganizationId, context)))
                 {
                     return RedirectToHome();
                 }
@@ -631,7 +793,7 @@
                 UserModel model = new UserModel();
                 model.CopyPropertiesFromUser(user, null);
 
-                RefreshUserRolesDropDownList(model);
+                RefreshUserRolesDropDownList(model, null, context);
                 //ViewBag.Role = model.Role;
                 PartialViewResult result = PartialView(EDIT_USER_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
@@ -650,16 +812,19 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
+                if (!Request.IsAuthenticated ||
+                    !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
+                    (model.UserId != Guid.Empty && !CurrentUserHasAccessToOrganization(GetOrganizationFromUser(context, model.UserId, true).OrganizationId, context)))
                 {
                     return RedirectToHome();
                 }
+                User currentUser = GetCurrentUser(context);
+                RefreshUserRolesDropDownList(model, currentUser, context);
                 string errorMessage = null;
                 if (!model.IsValid(out errorMessage))
                 {
                     return GetJsonResult(false, errorMessage);
                 }
-                User currentUser = GetCurrentUser(context);
                 User user = context.GetUser(model.UserId, true);
                 if (currentUser.UserId == user.UserId && ((int)model.Role) < user.RoleId) //Current user is editing their own user profile and assigning a lower role.
                 {
@@ -706,7 +871,9 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
+                if (!Request.IsAuthenticated ||
+                    !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
+                    (userId.HasValue && userId.Value != Guid.Empty && !CurrentUserHasAccessToOrganization(GetOrganizationFromUser(context, userId.Value, true).OrganizationId, context)))
                 {
                     return RedirectToHome();
                 }
@@ -733,7 +900,9 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
+                if (!Request.IsAuthenticated ||
+                    !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
+                    (model.UserId != Guid.Empty && !CurrentUserHasAccessToOrganization(GetOrganizationFromUser(context, model.UserId, true).OrganizationId, context)))
                 {
                     return RedirectToHome();
                 }

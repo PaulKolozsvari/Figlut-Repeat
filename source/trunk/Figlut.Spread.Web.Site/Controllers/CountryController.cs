@@ -1,5 +1,12 @@
 ﻿namespace Figlut.Spread.Web.Site.Controllers
 {
+    #region Using Directives
+
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Mvc;
     using Figlut.Server.Toolkit.Data;
     using Figlut.Server.Toolkit.Utilities;
     using Figlut.Spread.Data;
@@ -8,13 +15,6 @@
     using Figlut.Spread.ORM.Helpers;
     using Figlut.Spread.Web.Site.Configuration;
     using Figlut.Spread.Web.Site.Models;
-    #region Using Directives
-
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
-    using System.Web.Mvc;
 
     #endregion //Using Directives
 

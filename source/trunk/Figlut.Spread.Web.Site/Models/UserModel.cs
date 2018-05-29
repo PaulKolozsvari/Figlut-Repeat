@@ -26,6 +26,8 @@
 
         public string UserPassword { get; set; }
 
+        public string UserPasswordConfirm { get; set; }
+
         public Nullable<Guid> OrganizationId { get; set; }
 
         public UserRole Role { get; set; }
@@ -75,9 +77,9 @@
             {
                 errorMessage = string.Format("{0} not entered", EntityReader<UserModel>.GetPropertyName(p => p.UserPassword, true));
             }
-            if (this.Role == UserRole.None)
+            else if (this.Role == UserRole.None)
             {
-                errorMessage = string.Format("{0} not entered", EntityReader<UserModel>.GetPropertyName(p => p.Role, true));
+                errorMessage = string.Format("{0} not selected", EntityReader<UserModel>.GetPropertyName(p => p.Role, true));
             }
             return string.IsNullOrEmpty(errorMessage);
         }
