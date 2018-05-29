@@ -1,0 +1,170 @@
+﻿@model Figlut.Spread.Web.Site.Models.FilterModel<GlobalSettingModel>
+
+@using Figlut.Server.Toolkit.Data;
+@using Figlut.Spread.Web.Site.Configuration;
+@using Figlut.Spread.Web.Site;
+@using Figlut.Spread.Web.Site.Models;
+@using Figlut.Spread.Web.Site.Extensions;
+@using Figlut.Spread.ORM.Helpers;
+
+@{
+    Figlut.Spread.Web.Site.Models.GlobalSettingModel globalSetting = new GlobalSettingModel();
+}
+@{
+    int globalSettingsPerPageToDisplay = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.GlobalSettingsPerPageToDisplay].SettingValue);
+    var grid = new WebGrid(Model.DataModel, canPage: true, rowsPerPage: globalSettingsPerPageToDisplay, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+    grid.Pager(WebGridPagerModes.All);
+}
+
+<div id="gridContent" class="data-grid">
+    <div id="gridWrapper">
+        <div class="centerInformation" style="float:inherit; margin-top:1%; margin-bottom:1%;">
+            <div class="grid-search">
+                <table style="width:99%;">
+                    <tr>
+                        <td style="width:60%;">
+                            <div class="search-text">
+                                @Html.Raw("Search Text")
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.EditorFor(m => m.SearchText)
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="grid-buttons">
+                <div style="float: left; margin-left:2%; margin-right:2%">
+                    @Html.LinkButtonForSubmit("Search", "onSearchGlobalSettingsClick()", "btnSearch", "search.png")
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        @Html.LinkButtonForSubmit("Download", "onDownloadAllGlobalSettingsFileClick()", "btnDownload", "spreadsheet.png")
+                    }
+                </div>
+                <div style="float: right; margin-left:2%; margin-right:2%">
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        //@Html.LinkButtonForCancel("Delete All", "onDeleteAllGlobalSettingsClick()", "btnDeleteAllGlobalSettings")
+                        if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+                        {
+                            globalSetting = (GlobalSettingModel)grid.Rows[grid.SelectedIndex].Value;
+                            @Html.LinkButtonForCancel("Delete", "onDeleteGlobalSettingClick()", "btnDeleteGlobalSetting")
+                            @Html.LinkButtonForSubmit("Edit", "onEditGlobalSettingClick()", "btnEditGlobalSetting", "red-edit.png")
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="global-setting-preview">
+            @if (Model.IsAdministrator && grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+            {
+                globalSetting = (GlobalSettingModel)grid.Rows[grid.SelectedIndex].Value;
+                <div style="float:left; margin-left:2%; margin-right:2%;">
+                    <b>@Html.Raw(string.Format("ID: {0}", globalSetting.GlobalSettingId.ToString()))</b>
+                </div>
+            }
+            <div style="float: right; margin-left:2%; margin-right:2%">
+                <b>@Html.Raw(string.Format("Global Settings Loaded: {0} of {1}", Model.TotalCount.ToString(), Model.TotalTableCount.ToString()))</b>
+            </div>
+        </div>
+        <div id="gridTableContainer">
+            @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "header",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                columns: grid.Columns(
+                grid.Column("Settings", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
+                grid.Column(EntityReader<GlobalSettingModel>.GetPropertyName(p => p.Category, false), "Category"),
+                grid.Column(EntityReader<GlobalSettingModel>.GetPropertyName(p => p.SettingName, false), "Name"),
+                grid.Column(EntityReader<GlobalSettingModel>.GetPropertyName(p => p.SettingValue, false), "Value"),
+                grid.Column(EntityReader<GlobalSettingModel>.GetPropertyName(p => p.LastDateUpdated, false), "Date Updated")
+            ))
+        </div>
+        <div class="global-setting-preview">
+            @if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+            {
+                globalSetting = (GlobalSettingModel)grid.Rows[grid.SelectedIndex].Value;
+                <div style="float: left; margin-left:2%; margin-right:2%">
+                    <b>@Html.Raw(string.Format("{0}: {1}", globalSetting.SettingName, globalSetting.Description))</b>
+                </div>
+                <div style="float:right; margin-left:2%; margin-right:2%; color: #a30e0e;">
+                    @Html.Raw(string.Format("{0}", globalSetting.SettingValue.ToString()))
+                </div>
+            }
+        </div>
+    </div>
+    <div id="GlobalSettingsErrorField" style="color:#8A0808">
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <br />
+            @Html.Raw(ViewBag.ErrorMessage)
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#SearchText").focus();
+        makeGridRowsPostForm();
+        enableDatepickers();
+    });
+
+    function onSearchGlobalSettingsClick() {
+        postGlobalSettings();
+    }
+
+    function onDeleteGlobalSettingClick() {
+        showDialog(
+            '#divConfirmationDialog',
+            '#dlgConfirmation',
+            'ConfirmDeleteDialog',
+            'GlobalSetting',
+            'identifier',
+            '@globalSetting.GlobalSettingId.ToString()');
+    };
+
+    function onEditGlobalSettingClick() {
+        showDialog(
+            '#divEditGlobalSetting',
+            '#dlgEditGlobalSetting',
+            'EditDialog',
+            'GlobalSetting',
+            'globalSettingId',
+            '@globalSetting.GlobalSettingId.ToString()');
+    };
+
+
+    function getSearchParametersString() {
+        var searchParameters = '@string.Format("{0}|{1}|{2}",
+        Model.SearchText != null ? Model.SearchText : string.Empty,
+        Model.StartDate.HasValue ? Model.StartDate.Value.Date.ToString() : string.Empty,
+        Model.EndDate.HasValue ? Model.EndDate.Value.Date.ToString() : string.Empty)'
+        return searchParameters;
+    }
+
+    function onDeleteAllGlobalSettingsClick() {
+        var searchParameters = getSearchParametersString();
+        showDialog(
+            '#divConfirmationDialog',
+            '#dlgConfirmation',
+            'ConfirmDeleteAllDialog',
+            'GlobalSetting',
+            'searchParametersString',
+            searchParameters);
+    }
+
+    function onDownloadAllGlobalSettingsFileClick() {
+        var searchParameters = getSearchParametersString();
+        var downloadUrl = '@Url.Action("DownloadCsvFile", "GlobalSetting", new { searchParametersString = "_searchValue" })';
+        downloadUrl = downloadUrl.replace('_searchValue', searchParameters);
+        window.location = downloadUrl;
+    }
+
+    function postGlobalSettings() {
+        $('form#frmDetails').trigger('submit');
+    };
+
+</script>

@@ -1,0 +1,170 @@
+﻿.webGrid {
+    margin: 10px;
+    border-collapse: collapse;
+    width: 80%;
+    /*max-width: 300px;*/
+    /*background-color: transparent;*/
+    /*color: #3195c2;*/
+    color: #3195c2;
+    /*padding-top: 50px;*/
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
+    margin-top: auto;
+    /*width: auto;*/
+
+    background-image: -ms-linear-gradient(bottom, #dcebf1 0%, #fff 80%);
+    background-image: -o-linear-gradient(bottom, #dcebf1 0%, #fff 80%);
+    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #dcebf1), color-stop(1, #fff));
+    background-image: -webkit-linear-gradient(bottom, #dcebf1 0%, #fff 80%);
+    background-image: linear-gradient(bottom, #dcebf1 0%, #fff 80%);
+
+    /*color: #dcebf1;*/
+}
+
+.webGrid a{
+    background-color: transparent;
+    text-decoration: none;
+}
+
+.webGrid a:hover{
+    color: white;
+    background-color: transparent;
+    text-decoration: none;
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
+.header {
+    background-image: -ms-linear-gradient(bottom, #3195c2 0%, #fff 100%);
+    background-image: -o-linear-gradient(bottom, #3195c2 0%, #fff 100%);
+    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #3195c2), color-stop(1, #fff));
+    background-image: -webkit-linear-gradient(bottom, #3195c2 0%, #fff 100%);
+    background-image: linear-gradient(bottom, #3195c2 0%, #fff 100%);
+    font-weight: bold;
+    color: white;
+}
+
+.webGrid th, .webGrid td {
+    border: 1px solid #fff;
+    padding: 5px;
+}
+
+
+/*Header Hover*/
+.webGrid th:hover {
+    color: #fff;
+    background-image: -ms-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
+    background-image: -o-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
+    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #a30e0e), color-stop(1, #fff));
+    background-image: -webkit-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
+    background-image: linear-gradient(bottom, #a30e0e 0%, #fff 100%);
+
+    /*padding-left: 10%;
+    padding-right: 10%;*/
+
+    /*Uncomment these lines to expand the columns when hovering over them.*/
+    /*width: 40%;*/
+}
+
+
+/*Row Hover*/
+.webGrid tr:hover{
+    background-image: -ms-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
+    background-image: -o-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
+    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #a30e0e), color-stop(1, #fff));
+    background-image: -webkit-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
+    background-image: linear-gradient(bottom, #a30e0e 0%, #fff 100%);
+
+    background-color: transparent;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* Footer*/
+.webGrid tfoot td {
+    background-image: -ms-linear-gradient(bottom, #3195c2 0%, #fff 100%);
+    background-image: -o-linear-gradient(bottom, #3195c2 0%, #fff 100%);
+    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #3195c2), color-stop(1, #fff));
+    background-image: -webkit-linear-gradient(bottom, #3195c2 0%, #fff 100%);
+    background-image: linear-gradient(bottom, #3195c2 0%, #fff 100%);
+    padding: 5px;
+
+    font-size: 1.2em;
+}
+
+/* Footer Hover*/
+/*.webGrid tfoot td:hover {
+    background-image: -ms-linear-gradient(bottom, #3195c2 0%, #fff 100%);
+    background-image: -o-linear-gradient(bottom, #3195c2 0%, #fff 100%);
+    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #3195c2), color-stop(1, #fff));
+    background-image: -webkit-linear-gradient(bottom, #3195c2 0%, #fff 100%);
+    background-image: linear-gradient(bottom, #3195c2 0%, #fff 100%);
+    padding: 5px;
+}*/
+
+/*Linnks in footer*/
+.webGrid tfoot td a:hover{
+    color:red;
+}
+
+/*.alt {
+    background-color: transparent;
+    color: #fff;
+}*/
+
+.description {
+    width: auto;
+}
+
+.select {
+    color: #fff;
+    background-image: -ms-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
+    background-image: -o-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
+    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #a30e0e), color-stop(1, #fff));
+    background-image: -webkit-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
+    background-image: linear-gradient(bottom, #a30e0e 0%, #fff 100%);
+}
+
+/*Links on a selected row*/
+.select a{
+    color: #fff;
+}
+
+.clickable{
+    cursor: pointer;
+}
+
+/*Surrounging controls*/
+
+#SearchText {
+    width: 100%;
+    margin-left: 1%;
+}
+
+#StartDate {
+    width: 100%;
+    margin-left:4%;
+}
+
+#EndDate {
+    width: 100%;
+    margin-left:4%;
+}
+
+#SearchTextLabel {
+    float:left;
+}
+
+#StartDateLabel {
+    float:left;
+    margin-left:0px;
+}
+
+#EndDateLabel {
+    float:left;
+    margin-right:0px;
+}

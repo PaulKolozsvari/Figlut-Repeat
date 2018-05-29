@@ -1,0 +1,202 @@
+﻿@model Figlut.Spread.Web.Site.Models.FilterModel<SmsReceivedLogModel>
+
+@using Figlut.Server.Toolkit.Data;
+@using Figlut.Spread.Web.Site.Configuration;
+@using Figlut.Spread.Web.Site;
+@using Figlut.Spread.Web.Site.Models;
+@using Figlut.Spread.Web.Site.Extensions;
+@using Figlut.Spread.ORM.Helpers;
+
+@{
+    Figlut.Spread.Web.Site.Models.SmsReceivedLogModel smsReceived = new SmsReceivedLogModel();
+}
+@{
+    int smsPerPageToDisplay = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.SmsPerPagePageToDisplay].SettingValue);
+    var grid = new WebGrid(Model.DataModel, canPage: true, rowsPerPage: smsPerPageToDisplay, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+    grid.Pager(WebGridPagerModes.All);
+}
+
+<div id="gridContent" class="data-grid">
+    <div id="gridWrapper">
+        <div class="centerInformation" style="float:inherit; margin-top:1%; margin-bottom:1%;">
+            <div class="grid-search">
+                <table style="width:99%;">
+                    <tr>
+                        <td style="width:60%;">
+                            <div class="search-text">
+                                @Html.Raw("Search Text")
+                            </div>
+                        </td>
+                        <td>
+                            <div class="field-label">
+                                @Html.Raw("Start Date")
+                            </div>
+                        </td>
+                        <td>
+                            <div class="field-label">
+                                @Html.Raw("End Date")
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.EditorFor(m => m.SearchText)
+                        </td>
+                        <td>
+                            @Html.EditorFor(m => m.StartDate, new { disabled = "disabled", @readonly = "readonly" })
+                        </td>
+                        <td>
+                            @Html.EditorFor(m => m.EndDate, new { disabled = "disabled", @readonly = "readonly" })
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="grid-buttons">
+                <div style="float: left; margin-left:2%; margin-right:2%">
+                    @Html.LinkButtonForSubmit("Search", "onSearchSmsReceivedClick()", "btnSearch", "search.png")
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        @Html.LinkButtonForSubmit("Download", "onDownloadAllSmsReceivedCsvFileClick()", "btnDownload", "spreadsheet.png")
+                    }
+                </div>
+                <div style="float: right; margin-left:2%; margin-right:2%">
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        @Html.LinkButtonForCancel("Delete All", "onDeleteAllSmsReceivedClick()", "btnDeleteAllSmsReceived")
+                        if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+                        {
+                            smsReceived = (SmsReceivedLogModel)grid.Rows[grid.SelectedIndex].Value;
+                            @Html.LinkButtonForCancel("Delete", "onDeleteSmsReceivedClick()", "btnDeleteSmsReceived")
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="message-preview">
+            @if (Model.IsAdministrator && grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+            {
+                <div style="float:left; margin-left:2%; margin-right:2%;">
+                    <b>@Html.Raw(string.Format("ID: {0} ({1})", smsReceived.SmsReceivedLogId.ToString(), smsReceived.DateReceivedOriginalFormat))</b>
+                </div>
+            }
+            <div style="float: right; margin-left:2%; margin-right:2%">
+                <b>@Html.Raw(string.Format("Messages Loaded: {0} of {1}", Model.TotalCount.ToString(), Model.TotalTableCount.ToString()))</b>
+            </div>
+        </div>
+        <div id="gridTableContainer">
+            @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "header",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                columns: grid.Columns(
+                grid.Column("Received", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
+                grid.Column(EntityReader<SmsReceivedLogModel>.GetPropertyName(p => p.CellPhoneNumber, false), "Cell"),
+                grid.Column(EntityReader<SmsReceivedLogModel>.GetPropertyName(p => p.MessageId, false), EntityReader<SmsReceivedLogModel>.GetPropertyName(p => p.MessageId, true)),
+                grid.Column(EntityReader<SmsReceivedLogModel>.GetPropertyName(p => p.MessageContentsTrimmed, false), "Message"),
+                    //grid.Column(EntityReader<SmsReceivedLogModel>.GetPropertyName(p => p.DataField, false), EntityReader<SmsReceivedLogModel>.GetPropertyName(p => p.DataField, true)),
+                grid.Column(EntityReader<SmsReceivedLogModel>.GetPropertyName(p => p.DateCreated, false), "Date")
+            ))
+        </div>
+        <div class="message-preview">
+            @if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+            {
+                @*smsReceived = (SmsReceivedLogModel)grid.Rows[grid.SelectedIndex].Value;
+                <div style="float: left; margin-left:2%; margin-right:2%">
+                    <b>@Html.Raw(string.Format("Message: {0}", smsReceived.MessageId))</b>   
+                </div>*@
+                <div style="float:right; margin-left:2%; margin-right:2%; color: #a30e0e;">
+                    @Html.Raw(string.Format("{0}", smsReceived.MessageContents))
+                </div>
+            }
+        </div>
+    </div>
+    <div id="SmsReceivedErrorField" style="color:#8A0808">
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <br />
+            @Html.Raw(ViewBag.ErrorMessage)
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#SearchText").focus();
+        makeGridRowsPostForm();
+        enableDatepickers();
+    });
+
+    function onSearchSmsReceivedClick() {
+        postSmsReceived();
+    }
+
+    function onDeleteSmsReceivedClick() {
+        //if (!confirm('Are you sure you want to delete?')) {
+        //    return;
+        //}
+@*        $.ajax({
+            url: '@Url.Action("Delete", "SmsReceived", new { smsReceivedLogId = smsReceived.SmsReceivedLogId })',
+            type: 'POST',
+            data: $("#gridPartial").serialize(),
+            success: function (data) {
+                if (data.Success) {
+                    postSmsReceived();
+                    return;
+                } else {
+                    $("#SmsReceivedErrorField").html(data.ErrorMsg);
+                }
+            }
+        })*@
+        showDialog(
+            '#divConfirmationDialog',
+            '#dlgConfirmation',
+            'ConfirmDeleteDialog',
+            'SmsReceived',
+            'identifier',
+            '@smsReceived.SmsReceivedLogId.ToString()');
+    };
+
+    function getSearchParametersString() {
+        var searchParameters = '@string.Format("{0}|{1}|{2}",
+        Model.SearchText != null ? Model.SearchText : string.Empty,
+        Model.StartDate.HasValue ? Model.StartDate.Value.Date.ToString() : string.Empty,
+        Model.EndDate.HasValue ? Model.EndDate.Value.Date.ToString() : string.Empty)'
+        return searchParameters;
+    }
+
+    function onDeleteAllSmsReceivedClick() {
+        var searchParameters = getSearchParametersString();
+        showDialog(
+            '#divConfirmationDialog',
+            '#dlgConfirmation',
+            'ConfirmDeleteAllDialog',
+            'SmsReceived',
+            'searchParametersString',
+            searchParameters);
+    }
+
+    function onDownloadAllSmsReceivedCsvFileClick() {
+        var searchParameters = getSearchParametersString();
+        var downloadUrl = '@Url.Action("DownloadCsvFile", "SmsReceived", new { searchParametersString = "_searchValue" })';
+        downloadUrl = downloadUrl.replace('_searchValue', searchParameters);
+        window.location = downloadUrl;
+    }
+
+    function postSmsReceived() {
+        $('form#frmDetails').trigger('submit');
+
+@*        $.ajax({
+            url: '@Url.Action("Index", "SmsReceived", new { smsReceivedLogId = smsReceived.SmsReceivedLogId })',
+            type: 'POST',
+            data: $("#frmDetails").serialize(),
+            success: function (data) {
+                if (data.ErrorMsg != undefined) {
+                    alert(data.ErrorMsg);
+                    $("#SmsReceivedErrorField").html(data.ErrorMsg);
+                }
+            }
+        })*@
+    };
+
+</script>

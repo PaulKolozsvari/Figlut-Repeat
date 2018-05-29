@@ -1,0 +1,193 @@
+﻿@model Figlut.Spread.Web.Site.Models.FilterModel<WebRequestActivityModel>
+
+@using Figlut.Server.Toolkit.Data;
+@using Figlut.Spread.Web.Site.Configuration;
+@using Figlut.Spread.Web.Site;
+@using Figlut.Spread.Web.Site.Models;
+@using Figlut.Spread.Web.Site.Extensions;
+@using Figlut.Spread.ORM.Helpers;
+
+@{
+    Figlut.Spread.Web.Site.Models.WebRequestActivityModel webRequestActivity = new WebRequestActivityModel();
+}
+@{
+    int webRequestActivityPerPageToDisplay = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.WebRequestActivityPerPageToDisplay].SettingValue);
+    var grid = new WebGrid(Model.DataModel, canPage: true, rowsPerPage: webRequestActivityPerPageToDisplay, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+    grid.Pager(WebGridPagerModes.All);
+}
+
+<div id="gridContent" class="data-grid">
+    <div id="gridWrapper">
+        <div class="centerInformation" style="float:inherit; margin-top:1%; margin-bottom:1%;">
+            <div class="grid-search">
+                <table style="width:99%;">
+                    <tr>
+                        <td style="width:60%;">
+                            <div class="search-text">
+                                @Html.Raw("Search Text")
+                            </div>
+                        </td>
+                        <td>
+                            <div class="field-label">
+                                @Html.Raw("Start Date")
+                            </div>
+                        </td>
+                        <td>
+                            <div class="field-label">
+                                @Html.Raw("End Date")
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.EditorFor(m => m.SearchText)
+                        </td>
+                        <td>
+                            @Html.EditorFor(m => m.StartDate, new { disabled = "disabled", @readonly = "readonly" })
+                        </td>
+                        <td>
+                            @Html.EditorFor(m => m.EndDate, new { disabled = "disabled", @readonly = "readonly" })
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="grid-buttons">
+                <div style="float: left; margin-left:2%; margin-right:2%">
+                    @Html.LinkButtonForSubmit("Search", "onSearchWebRequestActivityClick()", "btnSearch", "search.png")
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        @Html.LinkButtonForSubmit("Download", "onDownloadAllWebRequestActivityCsvFileClick()", "btnDownload", "spreadsheet.png")
+                    }
+                </div>
+                <div style="float: right; margin-left:2%; margin-right:2%">
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        @Html.LinkButtonForCancel("Delete All", "onDeleteAllWebRequestActivityClick()", "btnDeleteAllWebRequestActivity")
+                        if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+                        {
+                            webRequestActivity = (WebRequestActivityModel)grid.Rows[grid.SelectedIndex].Value;
+                            @Html.LinkButtonForCancel("Delete", "onDeleteWebRequestActivityClick()", "btnDeleteWebRequestActivity")
+                            @Html.LinkButtonForSubmit("Edit", "onEditUserClick()", "btnEditWebRequestActivity", "red-edit.png")
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="message-preview">
+            @if (Model.IsAdministrator && grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+            {
+                <div style="float:left; margin-left:2%; margin-right:2%;">
+                    <b>@Html.Raw(string.Format("ID: {0}", webRequestActivity.WebRequestActivityId.ToString()))</b>
+                </div>
+            }
+            <div style="float: right; margin-left:2%; margin-right:2%">
+                <b>@Html.Raw(string.Format("Messages Loaded: {0} of {1}", Model.TotalCount.ToString(), Model.TotalTableCount.ToString()))</b>
+            </div>
+        </div>
+        <div id="gridTableContainer">
+            @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "header",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                columns: grid.Columns(
+                grid.Column("Request", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
+                grid.Column(EntityReader<WebRequestActivityModel>.GetPropertyName(p => p.RequestVerb, false), "Verb"),
+                grid.Column(EntityReader<WebRequestActivityModel>.GetPropertyName(p => p.Controller, false), "Controller"),
+                //grid.Column(EntityReader<WebRequestActivityModel>.GetPropertyName(p => p.Action, false), "Action"),
+                //grid.Column(EntityReader<WebRequestActivityModel>.GetPropertyName(p => p.RequestReferrerUrl, false), "Referrer URL"),
+                grid.Column(EntityReader<WebRequestActivityModel>.GetPropertyName(p => p.UserName, false), "User"),
+                //grid.Column(EntityReader<WebRequestActivityModel>.GetPropertyName(p => p.UserHostAddress, false), "IP Address"),
+                grid.Column(EntityReader<WebRequestActivityModel>.GetPropertyName(p => p.ClientType, false), "Client Type"),
+                grid.Column(EntityReader<WebRequestActivityModel>.GetPropertyName(p => p.Platform, false), "Platform"),
+                grid.Column(EntityReader<WebRequestActivityModel>.GetPropertyName(p => p.WhoIsCountryCode, false), "Country"),
+                //grid.Column(EntityReader<WebRequestActivityModel>.GetPropertyName(p => p.WhoIsOrg, false), "ISP"),
+				grid.Column(EntityReader<WebRequestActivityModel>.GetPropertyName(p => p.WhoIsLatitude, false), "Latitude"),
+				grid.Column(EntityReader<WebRequestActivityModel>.GetPropertyName(p => p.WhoIsLongitude, false), "Longitude"),
+                grid.Column(EntityReader<WebRequestActivityModel>.GetPropertyName(p => p.DateCreated, false), "Date")
+            ))
+        </div>
+        <div class="message-preview">
+            @if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+            {
+                webRequestActivity = (WebRequestActivityModel)grid.Rows[grid.SelectedIndex].Value;
+                <div style="float: left; margin-left:2%; margin-right:2%">
+                    <b>@Html.Raw(string.Format("ISP: {0}", webRequestActivity.WhoIsOrg))</b>   
+                </div>
+                <div style="float:right; margin-left:2%; margin-right:2%; color: #a30e0e;">
+                    @Html.Raw(string.Format("Referrer: {0}", webRequestActivity.RequestReferrerUrl))
+                </div>
+            }
+        </div>
+    </div>
+    <div id="WebRequestActivityErrorField" style="color:#8A0808">
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <br />
+            @Html.Raw(ViewBag.ErrorMessage)
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#SearchText").focus();
+        makeGridRowsPostForm();
+        enableDatepickers();
+    });
+
+    function onSearchWebRequestActivityClick() {
+        postWebRequestActivity();
+    }
+
+    function onDeleteWebRequestActivityClick() {
+        showDialog(
+            '#divConfirmationDialog',
+            '#dlgConfirmation',
+            'ConfirmDeleteDialog',
+            'WebRequestActivity',
+            'identifier',
+            '@webRequestActivity.WebRequestActivityId.ToString()');
+    };
+
+    function onEditUserClick() {
+        showDialog(
+            '#divEditWebRequestActivity',
+            '#dlgEditWebRequestActivity',
+            'EditDialog',
+            'WebRequestActivity',
+            'webRequestActivityId',
+            '@webRequestActivity.WebRequestActivityId.ToString()');
+    };
+
+    function getSearchParametersString() {
+        var searchParameters = '@string.Format("{0}|{1}|{2}",
+        Model.SearchText != null ? Model.SearchText : string.Empty,
+        Model.StartDate.HasValue ? Model.StartDate.Value.Date.ToString() : string.Empty,
+        Model.EndDate.HasValue ? Model.EndDate.Value.Date.ToString() : string.Empty)'
+        return searchParameters;
+    }
+
+    function onDeleteAllWebRequestActivityClick() {
+        var searchParameters = getSearchParametersString();
+        showDialog(
+            '#divConfirmationDialog',
+            '#dlgConfirmation',
+            'ConfirmDeleteAllDialog',
+            'WebRequestActivity',
+            'searchParametersString',
+            searchParameters);
+    }
+
+    function onDownloadAllWebRequestActivityCsvFileClick() {
+        var searchParameters = getSearchParametersString();
+        var downloadUrl = '@Url.Action("DownloadCsvFile", "WebRequestActivity", new { searchParametersString = "_searchValue" })';
+        downloadUrl = downloadUrl.replace('_searchValue', searchParameters);
+        window.location = downloadUrl;
+    }
+
+    function postWebRequestActivity() {
+        $('form#frmDetails').trigger('submit');
+    };
+
+</script>

@@ -1,0 +1,213 @@
+﻿@model Figlut.Spread.Web.Site.Models.FilterModel<RepeatScheduleModel>
+
+@using Figlut.Server.Toolkit.Data;
+@using Figlut.Spread.Web.Site.Configuration;
+@using Figlut.Spread.Web.Site;
+@using Figlut.Spread.Web.Site.Models;
+@using Figlut.Spread.Web.Site.Extensions;
+@using Figlut.Spread.ORM.Helpers;
+
+@{
+    Figlut.Spread.Web.Site.Models.RepeatScheduleModel repeatSchedule = new RepeatScheduleModel();
+}
+@{
+    int repeatSchedulesPerPageToDisplay = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.PublicHolidaysPerPagePageToDisplay].SettingValue);
+    var grid = new WebGrid(Model.DataModel, canPage: true, rowsPerPage: repeatSchedulesPerPageToDisplay, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+    grid.Pager(WebGridPagerModes.All);
+}
+
+<div id="gridContent" class="data-grid">
+    <div id="gridWrapper">
+        @Html.HiddenFor(p => p.ParentId)
+        @Html.HiddenFor(p => p.ParentCaption)
+        <div class="centerInformation" style="float:inherit; margin-top:1%; margin-bottom:1%;">
+            <div class="grid-search">
+                <table style="width:99%;">
+                    <tr>
+                        <td style="width:60%;">
+                            <div class="search-text">
+                                @Html.Raw("Search Text")
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.EditorFor(m => m.SearchText)
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="grid-buttons">
+                <div style="float: left; margin-left:2%; margin-right:2%">
+                    @Html.LinkButtonForSubmit("Search", "onSearchRepeatSchedulesClick()", "btnSearch", "search.png")
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage) && Model.IsAdministrator)
+                    {
+                        @Html.LinkButtonForSubmit("Download", "onDownloadAllRepeatSchedulesCsvFileClick()", "btnDownload", "spreadsheet.png")
+                        if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+                        {
+                            repeatSchedule = (RepeatScheduleModel)grid.Rows[grid.SelectedIndex].Value;
+                            @Html.LinkButtonForSubmit("Entries", "onViewRepeatScheduleEntriesClick()", "btnViewRepeatScheduleEntries", "red-calendar-icon32.png")
+                        }
+                    }
+                </div>
+                <div style="float: right; margin-left:2%; margin-right:2%">
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        @Html.LinkButtonForSubmit("Create", "onCreateRepeatScheduleClick()", "btnCreateRepeatSchedule", "red-document-plus-icon32.png")
+                        @Html.LinkButtonForCancel("Delete All", "onDeleteAllRepeatSchedulesClick()", "btnDeleteAllRepeatSchedules")
+                        if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+                        {
+                            repeatSchedule = (RepeatScheduleModel)grid.Rows[grid.SelectedIndex].Value;
+                            @Html.LinkButtonForCancel("Delete", "onDeleteRepeatScheduleClick()", "btnDeleteRepeatSchedule")
+                            @Html.LinkButtonForSubmit("Edit", "onEditRepeatScheduleClick()", "btnEditRepeatSchedule", "red-edit.png")
+                            if (repeatSchedule.EntryCount > 0)
+                            {
+                                @Html.LinkButtonForSubmit("Extend", "onExtendRepeatSchedule()", "btnExtendRepeatSchedule", "red-edit.png")
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="repeat-schedule-preview">
+            @if (Model.IsAdministrator && grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+            {
+                repeatSchedule = (RepeatScheduleModel)grid.Rows[grid.SelectedIndex].Value;
+                <div style="float:left; margin-left:2%; margin-right:2%;">
+                    <b>@Html.Raw(string.Format("ID: {0}", repeatSchedule.RepeatScheduleId.ToString()))</b>
+                </div>
+            }
+            <div style="float: right; margin-left:2%; margin-right:2%">
+                <b>@Html.Raw(string.Format("Repeat Schedules Loaded: {0} of {1}", Model.TotalCount.ToString(), Model.TotalTableCount.ToString()))</b>
+            </div>
+        </div>
+        <div id="gridTableContainer">
+            @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "header",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                columns: grid.Columns(
+                grid.Column("Schedules", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
+                grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.ScheduleName, false), "Name"),
+                grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.DaysRepeatInterval, false), "Days Interval"),
+                grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.StartDateFormatted, false), "Start Date"),
+                grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.EndDateFormatted, false), "End Date"),
+                grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.EntryCount, false), "Entries"),
+                grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.Quantity, false), "Quantity"),
+                grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.UnitOfMeasure, false), "UOM"),
+                grid.Column(EntityReader<RepeatScheduleModel>.GetPropertyName(p => p.DateCreated, false), "Date Created")
+            ))
+        </div>
+        <div class="repeat-schedule-preview">
+            @if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+            {
+                repeatSchedule = (RepeatScheduleModel)grid.Rows[grid.SelectedIndex].Value;
+                <div style="float: left; margin-left:2%; margin-right:2%">
+                    <b>@Html.Raw(string.Format("Name: {0}", repeatSchedule.ScheduleName))</b>
+                </div>
+                <div style="float:right; margin-left:2%; margin-right:2%; color: #a30e0e;">
+                    @Html.Raw(string.Format("Message: '{0}'", repeatSchedule.NotificationMessage))
+                </div>
+            }
+        </div>
+    </div>
+    <div id="RepeatSchedulesErrorField" style="color:#8A0808">
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <br />
+            @Html.Raw(ViewBag.ErrorMessage)
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#SearchText").focus();
+        makeGridRowsPostForm();
+        enableDatepickers();
+    });
+
+    function onSearchRepeatSchedulesClick() {
+        postRepeatSchedules();
+    }
+
+    function onDeleteRepeatScheduleClick() {
+        showDialog(
+            '#divConfirmationDialog',
+            '#dlgConfirmation',
+            'ConfirmDeleteDialog',
+            'RepeatSchedule',
+            'identifier',
+            '@repeatSchedule.RepeatScheduleId.ToString()');
+    };
+
+    function onEditRepeatScheduleClick() {
+        showDialog(
+            '#divEditRepeatSchedule',
+            '#dlgEditRepeatSchedule',
+            'EditDialog',
+            'RepeatSchedule',
+            'repeatScheduleId',
+            '@repeatSchedule.RepeatScheduleId.ToString()');
+    };
+
+    function onExtendRepeatSchedule() {
+        showDialog(
+            '#divExtendRepeatSchedule',
+            '#dlgExtendRepeatSchedule',
+            'ExtendDialog',
+            'RepeatSchedule',
+            'repeatScheduleId',
+            '@repeatSchedule.RepeatScheduleId.ToString()');
+    }
+
+    function onCreateRepeatScheduleClick() {
+        showDialog(
+            '#divCreateRepeatSchedule',
+            '#dlgCreateRepeatSchedule',
+            'CreateDialog',
+            'RepeatSchedule',
+            'subscriptionId',
+            '@Model.ParentId');
+    }
+
+    function getSearchParametersString() {
+        var searchParameters = '@string.Format("{0}|{1}|{2}|{3}",
+        Model.SearchText != null ? Model.SearchText : string.Empty,
+        Model.StartDate.HasValue ? Model.StartDate.Value.Date.ToString() : string.Empty,
+        Model.EndDate.HasValue ? Model.EndDate.Value.Date.ToString() : string.Empty,
+        Model.ParentId.ToString())'
+        return searchParameters;
+    }
+
+    function onDeleteAllRepeatSchedulesClick() {
+        var searchParameters = getSearchParametersString();
+        showDialog(
+            '#divConfirmationDialog',
+            '#dlgConfirmation',
+            'ConfirmDeleteAllDialog',
+            'RepeatSchedule',
+            'searchParametersString',
+            searchParameters);
+    }
+
+    function onDownloadAllRepeatSchedulesCsvFileClick() {
+        var searchParameters = getSearchParametersString();
+        var downloadUrl = '@Url.Action("DownloadCsvFile", "RepeatSchedule", new { searchParametersString = "_searchValue" })';
+        downloadUrl = downloadUrl.replace('_searchValue', searchParameters);
+        window.location = downloadUrl;
+    }
+
+    function onViewRepeatScheduleEntriesClick() {
+        var selectedRepeatScheduleId = '@repeatSchedule.RepeatScheduleId';
+        var downloadUrl = '@Url.Action("Index", "RepeatScheduleEntry", new { repeatScheduleId = "_repeatScheduleId" })';
+        downloadUrl = downloadUrl.replace('_repeatScheduleId', selectedRepeatScheduleId);
+        window.location = downloadUrl;
+    }
+
+    function postRepeatSchedules() {
+        $('form#frmDetails').trigger('submit');
+    };
+
+</script>

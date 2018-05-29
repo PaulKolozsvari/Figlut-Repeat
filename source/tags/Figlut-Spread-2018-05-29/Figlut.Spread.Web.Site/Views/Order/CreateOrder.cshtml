@@ -1,0 +1,158 @@
+﻿@model Figlut.Spread.Web.Site.Models.CreateOrderModel
+
+@using Figlut.Spread.Web.Site.Configuration;
+@using Figlut.Spread.Web.Site.Extensions;
+
+@{
+    ViewBag.Title = SpreadWebApp.Instance.Settings.ApplicationName;
+    ViewBag.PageTitle = "Create Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section featured{
+}
+
+<nav>
+    <ul id="menu">
+        <li>
+            <img src="~/Images/Icons/red-balloon-plus-icon32" style="float:right; margin-right:1%; margin-left:1%" />
+            <a href="" style="float:right">Create Order</a>
+        </li>
+    </ul>
+</nav>
+<hr />
+
+<div class="centerForm">
+    <form id="CreateOrderForm">
+        @Html.ValidationSummary("Create Order failed.")
+        <fieldset>
+            <legend>Create Order</legend>
+            @Html.HiddenFor(m => m.OrganizationId)
+            @Html.HiddenFor(m => m.OrganizationIdentifier)
+            @Html.HiddenFor(m => m.OrganizationEmailAddress)
+            @Html.HiddenFor(m => m.OrganizationAllowSmsCreditsDebt)
+            @Html.HiddenFor(m => m.OrganizationId)
+            @Html.HiddenFor(m => m.OrganizationSubscriptionTypeId)
+            @Html.HiddenFor(m => m.OrganizationDateCreated)
+            @Html.HiddenFor(m => m.OrganizationSubscriptionTypeDateCreated)
+            <div class="field-label">
+                @Html.Raw("Organization Name")
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(m => m.OrganizationName, new { disabled = "disabled", @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.OrganizationName)
+            </div>
+            <div class="field-label">
+                @Html.Raw("Allow SMS Credits Debt")
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(m => m.OrganizationAllowSmsCreditsDebt, new { disabled = "disabled", @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.OrganizationAllowSmsCreditsDebt)
+            </div>
+            <div class="field-label">
+                @Html.Raw("Subscription Enabled")
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(m => m.OrganizationSubscriptionEnabled, new { disabled = "disabled", @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.OrganizationSubscriptionEnabled)
+            </div>
+            <div class="field-label">
+                @Html.Raw("Billing Day Of The Month")
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(m => m.OrganizationBillingDayOfTheMonth, new { disabled = "disabled", @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.OrganizationBillingDayOfTheMonth)
+            </div>
+
+
+            <div class="field-label">
+                @Html.Raw("Subscription Type")
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(m => m.OrganizationSubscriptionTypeName, new { disabled = "disabled", @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.OrganizationSubscriptionTypeName)
+            </div>
+            <div class="field-label">
+                @Html.Raw("Monthly Subscription Price")
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(m => m.OrganizationSubscriptionTypeMonthlySubscriptionPrice, new { disabled = "disabled", @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.OrganizationSubscriptionTypeMonthlySubscriptionPrice)
+            </div>
+            <div class="field-label">
+                @Html.Raw("Product Name")
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(m => m.ProductName, new { disabled = "disabled", @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.ProductName)
+            </div>
+
+            <div class="field-label">
+                @Html.Raw("SMS Unit Price")
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(m => m.OrganizationSubscriptionTypeSmsUnitPrice, new { disabled = "disabled", @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.OrganizationSubscriptionTypeSmsUnitPrice)
+            </div>
+
+
+            <div class="field-label">
+                @Html.Raw("Quantity To Purhase")
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(m => m.Quantity)
+                @Html.ValidationMessageFor(m => m.Quantity)
+            </div>
+            <div class="buttons">
+                @Html.LinkButtonForSubmit("Save", "onCreateOrderSubmitClick()", "btnCreateOrderSubmit")
+                @Html.LinkButtonForCancel("Cancel", "onCreateOrderCancelClick()", "btnCreateOrderCancel")
+            </div>
+            <div id="CreateOrderErrorField" style="color:#8A0808"></div>
+        </fieldset>
+    </form>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#UserName").focus();
+        $(document).keypress(function (event) {
+            if (event.which == 13) {
+                $("#btnCreateOrderSubmit").click();
+                return false;
+            }
+        });
+    });
+
+    function searchKeyPress(e) {
+        // look for window.event in case event isn't passed in
+        e = e || window.event;
+        if (e.keyCode == 13) {
+            document.getElementById('btnCreateOrderSubmit').click();
+            return false;
+        }
+        return true;
+    }
+
+    function onCreateOrderSubmitClick() {
+        $.ajax({
+            url: '@Url.Action("CreateOrder", "Order")',
+            type: 'POST',
+            data: $("#CreateOrderForm").serialize(),
+            success: function (data) {
+                if (data.Success) {
+                    var url = '@Url.Content("~/Home")'
+                    window.location.href = url;
+                } else {
+                    $("#CreateOrderErrorField").html(data.ErrorMsg);
+                }
+            }
+        })
+    };
+
+    function onCreateOrderCancelClick() {
+        var url = '@Url.Content("~/Home")';
+        window.location.href = url;
+    };
+
+</script>

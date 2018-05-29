@@ -1,0 +1,71 @@
+﻿@model Figlut.Spread.ORM.User
+
+<div id="dlgLogin">
+    <img src="~/Images/Icons/red-user-icon32.png" style="float:right; margin-right:1%; margin-left:1%" />
+    <div class="centerForm">
+        <form id="LoginForm">
+            @Html.ValidationSummary(true, "Failed to login.")
+            <fieldset>
+                <legend>Confirmation Form</legend>
+                @Html.HiddenFor(m => m.UserId)
+                @Html.HiddenFor(m => m.EmailAddress)
+                @Html.HiddenFor(m => m.OrganizationId)
+                @Html.HiddenFor(m => m.RoleId)
+                @Html.HiddenFor(m => m.LastLoginDate)
+                @Html.HiddenFor(m => m.LastActivityDate)
+                @Html.HiddenFor(m => m.DateCreated)
+                <div class="field-label">
+                    @Html.Raw("User Name/Email Address")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.UserName, new { onkeypress = "return searchKeyPress(event)" })
+                    @Html.ValidationMessageFor(m => m.Password)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Password")
+                </div>
+                <div class="editor-field">
+                    @Html.PasswordFor(m => m.Password)
+                    @Html.ValidationMessageFor(m => m.Password)
+                </div>
+                <br />
+                <div id="LoginErrorField" style="color:#8A0808"></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var dialogName = '#dlgLogin';
+        createDialog(dialogName, 'Login', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
+    });
+
+    function onConfirmOK() {
+        var dialogName = '#dlgLogin';
+        var postBackUrl = '@Url.Action("LoginDialog", "User")';
+        $.ajax({
+            url: postBackUrl,
+            type: 'POST',
+            data: $("#LoginForm").serialize(),
+            success: function (data) {
+                if (data.Success) {
+                    $(dialogName).dialog("close");
+                    var url = '@Url.Content("~/Home")'
+                    window.location.href = url;
+                } else {
+                    $("#LoginErrorField").html(data.ErrorMsg);
+                }
+            }
+        })
+    };
+
+    function onConfirmOpen() {
+
+    }
+
+    function onConfirmCancel() {
+        //$('#confirmation-message').val('');
+        $("#LoginErrorField").html('');
+    }
+</script>

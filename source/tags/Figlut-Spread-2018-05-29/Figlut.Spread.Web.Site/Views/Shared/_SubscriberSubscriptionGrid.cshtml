@@ -1,0 +1,180 @@
+﻿@model Figlut.Spread.Web.Site.Models.FilterModel<SubscriberSubscriptionModel>
+
+@using Figlut.Server.Toolkit.Data;
+@using Figlut.Spread.Web.Site.Configuration;
+@using Figlut.Spread.Web.Site;
+@using Figlut.Spread.Web.Site.Models;
+@using Figlut.Spread.Web.Site.Extensions;
+@using Figlut.Spread.ORM.Helpers;
+
+@{
+    Figlut.Spread.Web.Site.Models.SubscriberSubscriptionModel subscriberSubscription = new SubscriberSubscriptionModel();
+}
+@{
+    int subscriptionsPerPageToDisplay = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.SubscriptionsPerPageToDisplay].SettingValue);
+    var grid = new WebGrid(Model.DataModel, canPage: true, rowsPerPage: subscriptionsPerPageToDisplay, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+    grid.Pager(WebGridPagerModes.All);
+}
+
+<div id="gridContent" class="data-grid">
+    <div id="gridWrapper">
+        @Html.HiddenFor(p => p.ParentId)
+        @Html.HiddenFor(p => p.ParentCaption)
+        <div class="centerInformation" style="float:inherit; margin-top:1%; margin-bottom:1%;">
+            <div class="grid-search">
+                <table style="width:99%;">
+                    <tr>
+                        <td style="width:60%;">
+                            <div class="search-text">
+                                @Html.Raw("Search Text")
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.EditorFor(m => m.SearchText)
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="grid-buttons">
+                <div style="float: left; margin-left:2%; margin-right:2%">
+                    @Html.LinkButtonForSubmit("Search", "onSearchSubscriberSubscriptionsClick()", "btnSearch", "search.png")
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage) && Model.IsAdministrator)
+                    {
+                        @Html.LinkButtonForSubmit("Download", "onDownloadAllSubscriberSubscriptionsCsvFileClick()", "btnDownload", "spreadsheet.png")
+                    }
+                </div>
+                <div style="float: right; margin-left:2%; margin-right:2%">
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        if (Model.IsAdministrator)
+                        {
+                            @Html.LinkButtonForCancel("Delete All", "onDeleteAllSubscriberSubscriptionsClick()", "btnDeleteAllSubscriberSubscriptions")
+                        }
+                        if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+                        {
+                            subscriberSubscription = (SubscriberSubscriptionModel)grid.Rows[grid.SelectedIndex].Value;
+                            if (Model.IsAdministrator)
+                            {
+                                @Html.LinkButtonForCancel("Delete", "onDeleteSubscriberSubscriptionClick()", "btnDeleteSubscriberSubscription")
+                            }
+                            @Html.LinkButtonForSubmit("Edit", "onEditSubscriberSubscriptionClick()", "btnEditSubscriberSubscription", "red-edit.png")
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="subscriber-subscription-preview">
+            @if (Model.IsAdministrator && grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+            {
+                subscriberSubscription = (SubscriberSubscriptionModel)grid.Rows[grid.SelectedIndex].Value;
+                <div style="float:left; margin-left:2%; margin-right:2%;">
+                    <b>@Html.Raw(string.Format("ID: {0}", subscriberSubscription.SubscriptionId.ToString()))</b>
+                </div>
+            }
+            <div style="float: right; margin-left:2%; margin-right:2%">
+                <b>@Html.Raw(string.Format("Subscriptions Loaded: {0} of {1}", Model.TotalCount.ToString(), Model.TotalTableCount.ToString()))</b>
+            </div>
+        </div>
+        <div id="gridTableContainer">
+            @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "header",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                columns: grid.Columns(
+                grid.Column("Subscriptions", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
+                grid.Column(EntityReader<SubscriberSubscriptionModel>.GetPropertyName(p => p.OrganizationName, false), "Organization Name"),
+                grid.Column(EntityReader<SubscriberSubscriptionModel>.GetPropertyName(p => p.OrganizationIdentifier, false), "Organization Identifier"),
+                grid.Column(EntityReader<SubscriberSubscriptionModel>.GetPropertyName(p => p.CustomerFullName, false), "Customer Name"),
+                grid.Column(EntityReader<SubscriberSubscriptionModel>.GetPropertyName(p => p.CustomerEmailAddress, false), "Email"),
+                grid.Column(EntityReader<SubscriberSubscriptionModel>.GetPropertyName(p => p.CustomerIdentifier, false), "Identifier"),
+                grid.Column(EntityReader<SubscriberSubscriptionModel>.GetPropertyName(p => p.Enabled, false), "Enabled")
+            ))
+        </div>
+        <div class="subscriber-subscription-preview">
+            @if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+            {
+                subscriberSubscription = (SubscriberSubscriptionModel)grid.Rows[grid.SelectedIndex].Value;
+                <div style="float: left; margin-left:2%; margin-right:2%">
+                    <b>@Html.Raw(string.Format("Name: {0}", subscriberSubscription.OrganizationName))</b>   
+                </div>
+                <div style="float:right; margin-left:2%; margin-right:2%; color: #a30e0e;">
+                    @Html.Raw(string.Format("{0}", subscriberSubscription.OrganizationEmailAddress))
+                </div>
+            }
+        </div>
+    </div>
+    <div id="SubscriberSubscriptionsErrorField" style="color:#8A0808">
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <br />
+            @Html.Raw(ViewBag.ErrorMessage)
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#SearchText").focus();
+        makeGridRowsPostForm();
+        enableDatepickers();
+    });
+
+    function onSearchSubscriberSubscriptionsClick() {
+        postSubscriberSubscriptions();
+    }
+
+    function onDeleteSubscriberSubscriptionClick() {
+        showDialog(
+            '#divConfirmationDialog',
+            '#dlgConfirmation',
+            'ConfirmDeleteDialog',
+            'SubscriberSubscription',
+            'identifier',
+            '@subscriberSubscription.SubscriptionId.ToString()');
+    };
+
+    function onEditSubscriberSubscriptionClick() {
+        showDialog(
+            '#divEditSubscriberSubscription',
+            '#dlgEditSubscriberSubscription',
+            'EditDialog',
+            'SubscriberSubscription',
+            'subscriptionId',
+            '@subscriberSubscription.SubscriptionId.ToString()');
+    };
+
+    function getSearchParametersString() {
+        var searchParameters = '@string.Format("{0}|{1}|{2}|{3}",
+        Model.SearchText != null ? Model.SearchText : string.Empty,
+        Model.StartDate.HasValue ? Model.StartDate.Value.Date.ToString() : string.Empty,
+        Model.EndDate.HasValue ? Model.EndDate.Value.Date.ToString() : string.Empty,
+        Model.ParentId.ToString())'
+        return searchParameters;
+    }
+
+    function onDeleteAllSubscriberSubscriptionsClick() {
+        var searchParameters = getSearchParametersString();
+        showDialog(
+            '#divConfirmationDialog', 
+            '#dlgConfirmation',
+            'ConfirmDeleteAllDialog',
+            'SubscriberSubscription',
+            'searchParametersString',
+            searchParameters);
+    }
+
+    function onDownloadAllSubscriberSubscriptionsCsvFileClick() {
+        var searchParameters = getSearchParametersString();
+        var downloadUrl = '@Url.Action("DownloadCsvFile", "SubscriberSubscription", new { searchParametersString = "_searchValue" })';
+        downloadUrl = downloadUrl.replace('_searchValue', searchParameters);
+        window.location = downloadUrl;
+    }
+
+    function postSubscriberSubscriptions() {
+        $('form#frmDetails').trigger('submit');
+    };
+
+</script>

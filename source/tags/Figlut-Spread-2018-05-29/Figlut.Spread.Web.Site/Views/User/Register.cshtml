@@ -1,0 +1,122 @@
+﻿@model Figlut.Spread.Web.Site.Models.RegisterModel
+
+@using Figlut.Spread.Web.Site.Configuration;
+@using Figlut.Spread.Web.Site.Extensions;
+
+@{
+    ViewBag.Title = SpreadWebApp.Instance.Settings.ApplicationName;
+    ViewBag.PageTitle = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section featured {
+}
+
+<nav>
+    <ul id="menu">
+        <li>
+            <img src="~/Images/Icons/red-archive-icon32.png" style="float:right; margin-right:1%; margin-left:1%"/>
+            <a href="" style="float:right">Register</a>
+        </li>
+    </ul>
+</nav>
+<hr />
+
+<div class="centerForm">
+    <form id="RegisterForm">
+        @Html.ValidationSummary("Registration failed.")
+        @Html.HiddenFor(m => m.OrganizationIdentifierMaxLength)
+        <fieldset>
+            <legend>Register</legend>
+            <div class="field-label">
+                @Html.Raw("Organization Name")
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(m => m.OrganizationName)
+                @Html.ValidationMessageFor(m => m.OrganizationName)
+            </div>
+            <div class="field-label">
+                @Html.Raw(string.Format("Organization Identifier ({0} characters)", Model.OrganizationIdentifierMaxLength))
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(m => m.OrganizationIdentifier)
+                @Html.ValidationMessageFor(m => m.OrganizationIdentifier)
+            </div>
+            <div class="field-label">
+                @Html.Raw("Organization Email Address")
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(m => m.OrganizationEmailAddress)
+                @Html.ValidationMessageFor(m => m.OrganizationEmailAddress)
+            </div>
+            <div class="field-label">
+                @Html.Raw("Organization Address")
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(m => m.OrganizationAddress)
+                @Html.ValidationMessageFor(m => m.OrganizationAddress)
+            </div>
+            @*<hr />*@
+
+            <div class="field-label">
+                @Html.Raw("User Name")
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(m => m.UserName)
+                @Html.ValidationMessageFor(m => m.UserName)
+            </div>
+            <div class="field-label">
+                @Html.Raw("User Email Address")
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(m => m.UserEmailAddress)
+                @Html.ValidationMessageFor(m => m.UserEmailAddress)
+            </div>
+            <div class="field-label">
+                @Html.Raw("Password")
+            </div>
+            <div class="editor-field">
+                @Html.PasswordFor(m => m.UserPassword)
+                @Html.ValidationMessageFor(m => m.UserPassword)
+            </div>
+            <div class="buttons">
+                @Html.LinkButtonForSubmit("Register", "onRegisterClick()", "btnRegister")
+                @Html.LinkButtonForCancel("Cancel", "onRegisterCancelClick()", "btnCancel")
+            </div>
+            <div id="RegisterErrorField" style="color:#8A0808"></div>
+        </fieldset>
+    </form>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#OrganizationName").focus();
+        $(document).keypress(function (event) {
+            if (event.which == 13) {
+                $("#btnRegister").click();
+                return false;
+            }
+        });
+    });
+
+    function onRegisterClick() {
+        $.ajax({
+            url: '@Url.Action("Register", "User")',
+            type: 'POST',
+            data: $("#RegisterForm").serialize(),
+            success: function (data) {
+                if (data.Success) {
+                    var url = '@Url.Content("~/Home")'
+                    window.location.href = url;
+                } else {
+                    $("#RegisterErrorField").html(data.ErrorMsg);
+                }
+            }
+        })
+    };
+    function onRegisterCancelClick() {
+        var url = '@Url.Content("~/Home")';
+        window.location.href = url;
+    };
+</script>

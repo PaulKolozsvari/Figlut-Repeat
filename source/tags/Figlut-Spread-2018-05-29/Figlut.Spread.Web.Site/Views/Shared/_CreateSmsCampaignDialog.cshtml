@@ -1,0 +1,117 @@
+﻿@model Figlut.Spread.Web.Site.Models.CreateSmsCampaignModel
+<div id="dlgCreateSmsCampaign">
+    <img src="~/Images/Icons/red-mail-open-icon32.png" style="float:right; margin-right:1%; margin-left:1%"/>
+    <div class="centerForm">
+        <form id="CreateSmsCampaignForm">
+            @Html.ValidationSummary(true, "Failed to edit.")
+            <fieldset>
+                <legend>Confirmation Form</legend>
+                @Html.HiddenFor(m => m.SmsCampaignId)
+                @Html.HiddenFor(m => m.OrganizationId)
+                @Html.HiddenFor(m => m.DateCreated)
+                @Html.HiddenFor(m => m.SearchText)
+                @Html.HiddenFor(m => m.StartDate)
+                @Html.HiddenFor(m => m.EndDate)
+                @Html.HiddenFor(m => m.CampaignSmsCount)
+                @Html.HiddenFor(m => m.MaxSmsSendMessageLength)
+
+                <div class="field-label">
+                    @Html.Raw("SMS Units (subscriptions selected)")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.TextBoxFor(m => m.CampaignSmsCount, new { disabled = "disabled", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.CampaignSmsCount)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Campaign Name")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.Name)
+                    @Html.ValidationMessageFor(m => m.Name)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Organization Selected Code (optional)")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.OrganizationSelectedCode)
+                    @Html.ValidationMessageFor(m => m.OrganizationSelectedCode)
+                </div>
+                <div class="field-label">
+                    @Html.Raw(string.Format("Message (max {0} characters)", Model.MaxSmsSendMessageLength))
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(m => m.MessageContents, new { style = "height: 100px;width:80%", onKeyPress = "return disableEnterKey(event)" })
+                    @Html.ValidationMessageFor(m => m.MessageContents)
+                </div>
+                <br />
+                <div id="CreateSmsCampaignErrorField" style="color:#8A0808"></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var dialogName = '#dlgCreateSmsCampaign';
+        createDialog(dialogName, 'Create SMS Campaign', onConfirmOK, onConfirmOpen, onConfirmCancel, 550, 450);
+        $("#Name").focus();
+    });
+
+    function onConfirmOK() {
+        sendEnabled = false;
+
+        var smsCount = '@Model.CampaignSmsCount';
+        var campaignName = $("#Name").val();
+        var waitMessage = 'Enqueuing ' + smsCount + ' messages to be sent for campaign "' + campaignName + '" ...';
+        var informationMessage = 'SMS Campaign "' + campaignName + '" created successfully. ' + smsCount + ' messages enqueued for sending. The SMS sent log will list the messages after they have been sent.';
+        $(".ui-dialog-buttonpane button:contains('OK')").hide();
+        showDialog(
+            '#divWaitDialog',
+            '#dlgWait',
+            'WaitDialog',
+            'SmsSent',
+            'message',
+            waitMessage);
+
+        var dialogName = '#dlgCreateSmsCampaign';
+        var postBackUrl = '@Url.Action("CreateSmsCampaignDialog", "OrganizationSubscription")';
+        $.ajax({
+            url: postBackUrl,
+            type: 'POST',
+            data: $("#CreateSmsCampaignForm").serialize(),
+            success: function (data) {
+                if (data.Success) {
+                    $(".ui-dialog-buttonpane button:contains('OK')").show();
+                    $('#dlgWait').dialog("close");
+                    $(dialogName).dialog("close");
+                    showDialog(
+                        '#divInformationDialog',
+                        '#dlgInformation',
+                        'InformationDialog',
+                        'SmsSent',
+                        'message',
+                        informationMessage);
+                    $("#Name,#OrganizationSelectedCode,#MessageContents").val('');
+                    //Submit the form which will refresh grid to show the change the enabled/disabled.
+                    var form = $('#frmDetails');
+                    form.submit()
+                    refreshSmsCreditsBalanceMenu();
+                } else {
+                    $('#dlgWait').dialog("close");
+                    //$("#btnComposeStandaloneSmsSend").show();
+                    $(".ui-dialog-buttonpane button:contains('OK')").show();
+                    $("#CreateSmsCampaignErrorField").html(data.ErrorMsg);
+                    sendEnabled = true;
+                }
+            }
+        })
+    };
+
+    function onConfirmOpen() {
+    }
+
+    function onConfirmCancel() {
+        //$('#confirmation-message').val('');
+        $("#CreateSmsCampaignErrorField").html('');
+    }
+</script>

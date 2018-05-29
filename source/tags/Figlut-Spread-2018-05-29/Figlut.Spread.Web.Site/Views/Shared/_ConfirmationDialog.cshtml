@@ -1,0 +1,62 @@
+﻿@model Figlut.Spread.Web.Site.Models.ConfirmationModel
+
+<div id="dlgConfirmation">
+    <div class="centerForm">
+        <form id="ConfirmationForm">
+            @Html.ValidationSummary(true, "Failed to confirm.")
+            <fieldset>
+                <legend>Confirmation Form</legend>
+                @Html.HiddenFor(m => m.Identifier)
+                @Html.HiddenFor(m => m.SearchText)
+                @Html.HiddenFor(m => m.StartDate)
+                @Html.HiddenFor(m => m.EndDate)
+                @Html.HiddenFor(m => m.ParentId)
+                @Html.HiddenFor(m => m.ParentCaption)
+                <br />
+                <div class="field-label" id="confirmation-message" style="font-size:.8em">
+                    @Html.Raw(Model.ConfirmationMessage)
+                    <br />
+                    <br />
+                </div>
+                <br />
+                <br />
+                <div id="ConfirmationErrorField" style="color:#8A0808"></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var dialogName = '#' + '@Model.DialogDivId';
+        createDialog(dialogName, 'Confirm', onConfirmOK, onConfirmOpen, onConfirmCancel, 400, 400);
+    });
+
+    function onConfirmOK() {
+        var dialogName = '#' + '@Model.DialogDivId';
+        var postBackUrl = '@Url.Action(Model.PostBackControllerAction, Model.PostBackControllerName)';
+        $.ajax({
+            url: postBackUrl,
+            type: 'POST',
+            data: $("#ConfirmationForm").serialize(),
+            success: function (data) {
+                if (data.Success) {
+                    $(dialogName).dialog("close");
+                    //Submit the form which will refresh grid to show the change the enabled/disabled.
+                    var form = $('#frmDetails');
+                    form.submit()
+                } else {
+                    $("#ConfirmationErrorField").html(data.ErrorMsg);
+                }
+            }
+        })
+    };
+
+    function onConfirmOpen() {
+    }
+
+    function onConfirmCancel() {
+        //$('#confirmation-message').val('');
+        $("#ConfirmationErrorField,#ConfirmationMessage").html('');
+    }
+</script>
