@@ -18,6 +18,8 @@
 
 <div id="gridContent" class="data-grid">
     <div id="gridWrapper">
+        @Html.HiddenFor(p => p.ParentId)
+        @Html.HiddenFor(p => p.ParentCaption)
         <div class="centerInformation" style="float:inherit; margin-top:1%; margin-bottom:1%;">
             <div class="grid-search">
                 <table style="width:99%;">
@@ -74,8 +76,6 @@
                 <b>@Html.Raw(string.Format("Users Loaded: {0} of {1}", Model.TotalCount.ToString(), Model.TotalTableCount.ToString()))</b>
             </div>
         </div>
-        @Html.HiddenFor(p => p.ParentId)
-        @Html.HiddenFor(p => p.ParentCaption)
         <div id="gridTableContainer">
             @grid.GetHtml(
                 tableStyle: "webGrid",
