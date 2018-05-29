@@ -1,0 +1,40 @@
+﻿.webGrid {
+    margin: 10px;
+    border-collapse: collapse;
+    width: 795px;
+    max-width: 795px;
+    background-color: #fff;
+}
+
+.header {
+    background-color: rgba(10, 88, 29, 0.48);
+    font-weight: bold;
+    color: #fff;
+}
+
+.webGrid th, .webGrid td {
+    border: 1px solid #C0C0C0;
+    padding: 5px;
+}
+
+.alt {
+    background-color: rgba(13, 121, 40, 0.11);
+    color: #000;
+}
+
+.gridHead a:hover {
+    text-decoration: underline;
+}
+
+.description {
+    width: auto;
+}
+
+.select {
+    background-color: rgba(13, 111, 37, 0.36);
+}
+
+.clickable{
+    cursor: pointer;
+    background: rgba(13, 111, 37, 0.36);
+}

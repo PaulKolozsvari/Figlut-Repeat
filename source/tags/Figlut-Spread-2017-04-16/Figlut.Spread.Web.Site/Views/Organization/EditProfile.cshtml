@@ -1,0 +1,111 @@
+﻿@model Figlut.Spread.Web.Site.Models.OrganizationProfileModel
+
+@using Figlut.Spread.Web.Site.Configuration;
+@using Figlut.Spread.Web.Site.Extensions;
+
+@{
+    ViewBag.Title = SpreadWebApp.Instance.Settings.ApplicationName;
+    ViewBag.PageTitle = "Edit Organization Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section featured {
+}
+
+<nav>
+    <ul id="menu">
+        <li>
+            <img src="~/Images/Icons/red-home-icon32.png" style="float:right; margin-right:1%; margin-left:1%"/>
+            <a href="" style="float:right">Organization Profile</a>
+        </li>
+    </ul>
+</nav>
+<hr />
+
+<div class="centerForm">
+    <form id="EditOrganizationProfileForm">
+        @Html.ValidationSummary("Edit Organization failed.")
+        <fieldset>
+            <legend>Edit Organization</legend>
+            @Html.HiddenFor(m => m.OrganizationId)
+            @Html.HiddenFor(m => m.DateCreated)
+            <div class="field-label">
+                @Html.Raw("Name")
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(m => m.OrganizationName)
+                @Html.ValidationMessageFor(m => m.OrganizationName)
+            </div>
+            <div class="field-label">
+                @Html.Raw("Identifier")
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(m => m.OrganizationIdentifier)
+                @Html.ValidationMessageFor(m => m.OrganizationIdentifier)
+            </div>
+            <div class="field-label">
+                @Html.Raw("Email Address")
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(m => m.OrganizationEmailAddress)
+                @Html.ValidationMessageFor(m => m.OrganizationEmailAddress)
+            </div>
+            <div class="field-label">
+                @Html.Raw("Address")
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(m => m.OrganizationAddress)
+                @Html.ValidationMessageFor(m => m.OrganizationAddress)
+            </div>
+            <div class="buttons">
+                @Html.LinkButtonForSubmit("Save", "onEditOrganizationProfileSaveClick()", "btnEditOrganizationProfileSave")
+                @Html.LinkButtonForCancel("Cancel", "onEditOrganizationProfileCancelClick()", "btnEditOrganizationProfileCancel")
+            </div>
+            <div id="EditOrganizationProfileErrorField" style="color:#8A0808"></div>
+        </fieldset>
+    </form>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#OrganizationName").focus();
+        $(document).keypress(function (event) {
+            if (event.which == 13) {
+                $("#btnEditOrganizationProfileSave").click();
+            }
+        });
+    });
+
+    function searchKeyPress(e) {
+        // look for window.event in case event isn't passed in
+        e = e || window.event;
+        if (e.keyCode == 13) {
+            document.getElementById('btnEditOrganizationProfileSave').click();
+            return false;
+        }
+        return true;
+    }
+
+    function onEditOrganizationProfileSaveClick() {
+        $.ajax({
+            url: '@Url.Action("EditProfile", "Organization")',
+            type: 'POST',
+            data: $("#EditOrganizationProfileForm").serialize(),
+            success: function (data) {
+                if (data.Success) {
+                    var url = '@Url.Content("~/Home")'
+                    window.location.href = url;
+                } else {
+                    $("#EditOrganizationProfileErrorField").html(data.ErrorMsg);
+                }
+            }
+        })
+    };
+
+    function onEditOrganizationProfileCancelClick() {
+        var url = '@Url.Content("~/Home")';
+        window.location.href = url;
+    };
+
+</script>

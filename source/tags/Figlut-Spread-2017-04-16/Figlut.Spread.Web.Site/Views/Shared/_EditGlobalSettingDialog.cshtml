@@ -1,0 +1,83 @@
+﻿@model Figlut.Spread.Web.Site.Models.GlobalSettingModel
+
+<div id="dlgEditGlobalSetting">
+    <img src="~/Images/Icons/red-edit32.png" style="float:right; margin-right:1%; margin-left:1%"/>
+    <div class="centerForm">
+        <form id="EditGlobalSettingForm">
+            @Html.ValidationSummary(true, "Failed to edit.")
+            <fieldset>
+                <legend>Confirmation Form</legend>
+                @Html.HiddenFor(m => m.GlobalSettingId)
+                @Html.HiddenFor(m => m.SettingName)
+                @Html.HiddenFor(m => m.LastDateUpdated)
+                @Html.HiddenFor(m => m.DateCreated)
+                <div class="field-label">
+                    @Html.Raw("Category")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.Category)
+                    @Html.ValidationMessageFor(m => m.Category)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Setting Name")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.TextBoxFor(m => m.SettingName, new { disabled = "disabled", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.SettingName)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Setting Value")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.SettingValue)
+                    @Html.ValidationMessageFor(m => m.SettingValue)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Description")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.Description)
+                    @Html.ValidationMessageFor(m => m.Description)
+                </div>
+                <br />
+                <div id="EditGlobalSettingErrorField" style="color:#8A0808"></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var dialogName = '#dlgEditGlobalSetting';
+        createDialog(dialogName, 'Edit Global Setting', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
+    });
+
+    function onConfirmOK() {
+        var dialogName = '#dlgEditGlobalSetting';
+        var postBackUrl = '@Url.Action("EditDialog", "GlobalSetting")';
+        $.ajax({
+            url: postBackUrl,
+            type: 'POST',
+            data: $("#EditGlobalSettingForm").serialize(),
+            success: function (data) {
+                if (data.Success) {
+                    $(dialogName).dialog("close");
+                    //Submit the form which will refresh grid to show the change the enabled/disabled.
+                    var form = $('#frmDetails');
+                    form.submit()
+                } else {
+                    $("#EditGlobalSettingErrorField").html(data.ErrorMsg);
+                }
+            }
+        })
+    };
+
+    function onConfirmOpen() {
+
+    }
+
+    function onConfirmCancel() {
+        //$('#confirmation-message').val('');
+        $("#EditGlobalSettingErrorField").html('');
+    }
+</script>

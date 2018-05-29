@@ -1,0 +1,57 @@
+﻿@model Figlut.Spread.Web.Site.Models.GlobalSettingsModel
+
+@{
+    ViewBag.Title = "Contact";
+}
+
+@*<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <h2>@ViewBag.Message</h2>
+</hgroup>*@
+
+<nav>
+    <ul id="menu">
+        <li>
+            <img src="~/Images/Icons/red-address-book-icon32.png" style="float:right; margin-right:1%; margin-left:1%"/>
+            <a href="" style="float:right">Contact</a>
+        </li>
+    </ul>
+</nav>
+<hr />
+
+<section class="contact">
+    <header>
+        <h3>Phone</h3>
+    </header>
+    <p>
+        <span class="label">Main</span>
+        <span>@Html.DisplayFor(m => m.FiglutPhoneNumber)</span>
+    </p>
+</section>
+
+<section class="contact">
+    <header>
+        <h3>Email</h3>
+    </header>
+@*    <p>
+        <span class="label">Support:</span>
+        <span><a href="mailto:@Html.Raw(Model.FiglutSupportEmailAddress)">@Html.Raw(Model.FiglutSupportEmailAddress)</a></span>
+    </p>
+    <p>
+        <span class="label">Marketing:</span>
+        <span><a href="mailto:@Html.Raw(Model.FiglutMarketingEmailAddress)">@Html.Raw(Model.FiglutMarketingEmailAddress)</a></span>
+    </p>*@
+    <p>
+        <span class="label">General:</span>
+        <span><a href="mailto:@Html.Raw(Model.FiglutGeneralEmailAddress)">@Html.Raw(Model.FiglutGeneralEmailAddress)</a></span>
+    </p>
+</section>
+
+<section class="contact">
+    <header>
+        <h3>Address</h3>
+    </header>
+    <p>
+        @Html.DisplayFor(m => m.FiglutAddress)
+    </p>
+</section>

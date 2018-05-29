@@ -1,0 +1,36 @@
+﻿namespace Figlut.Spread.ORM.Helpers
+{
+    public enum GlobalSettingName
+    {
+        DisableScreenScalingForMobileDevices,
+        CreatePersistentAuthenticationCookie,
+        LogAllHttpHeaders,
+        DefaultCurrencySymbol,
+        OrganizationIdentifierIndicator,
+        SubscriberNameIndicator,
+        SmsPerPagePageToDisplay,
+        OrganizationsPerPageToDisplay,
+        SubscribersPerPageToDisplay,
+        UsersPerPageToDisplay,
+        SubscriptionsPerPageToDisplay,
+        SmsProcessorsPerPageToDisplay,
+        SmsProcessorLogsPerPageToDisplay,
+        SmsCampaignsPerPageToDisplay,
+        GlobalSettingsPerPageToDisplay,
+        SmsContentsTrimOnGrid,
+        SmsContentsTrimLengthOnGrid,
+        SmsErrorTrimLengthOnGrid,
+        CellPhoneNumberTrimOnGrid,
+        CellPhoneNumberTrimLengthOnGrid,
+        SmsDaysToDisplay,
+        SmsProcessorLogDaysToDisplay,
+        MaximumSmsDateRangeDaysToDisplay,
+        SmsProcessorMessageTrimOnGrid,
+        SmsProcessorMessageTrimLengthOnGrid,
+        FiglutPhoneNumber,
+        FiglutSupportEmailAddress,
+        FiglutMarketingEmailAddress,
+        FiglutGeneralEmailAddress,
+        FiglutAddress,
+    }
+}

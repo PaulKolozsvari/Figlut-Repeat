@@ -1,0 +1,189 @@
+﻿@model Figlut.Spread.Web.Site.Models.FilterModel<UserModel>
+
+@using Figlut.Server.Toolkit.Data;
+@using Figlut.Spread.Web.Site.Configuration;
+@using Figlut.Spread.Web.Site;
+@using Figlut.Spread.Web.Site.Models;
+@using Figlut.Spread.Web.Site.Extensions;
+@using Figlut.Spread.ORM.Helpers;
+
+@{
+    Figlut.Spread.Web.Site.Models.UserModel user = new UserModel();
+}
+@{
+    int usersPerPageToDisplay = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.UsersPerPageToDisplay].SettingValue);
+    var grid = new WebGrid(Model.DataModel, canPage: true, rowsPerPage: usersPerPageToDisplay, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+    grid.Pager(WebGridPagerModes.All);
+}
+
+<div id="gridContent" class="data-grid">
+    <div id="gridWrapper">
+        <div class="centerInformation" style="float:inherit; margin-top:1%; margin-bottom:1%;">
+            <div class="grid-search">
+                <table style="width:100%;">
+                    <tr>
+                        <td style="width:60%;">
+                            <div class="search-text">
+                                @Html.Raw("Search Text")
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.EditorFor(m => m.SearchText)
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="grid-buttons">
+                <div style="float: left; margin-left:2%; margin-right:2%">
+                    @Html.LinkButtonForSubmit("Search", "onSearchUsersClick()", "btnSearch", "search.png")
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        @Html.LinkButtonForSubmit("Download", "onDownloadAllUsersCsvFileClick()", "btnDownload", "spreadsheet.png")
+                    }
+                </div>
+                <div style="float: right; margin-left:2%; margin-right:2%">
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        @Html.LinkButtonForCancel("Delete All", "onDeleteAllUsersClick()", "btnDeleteAllUsers")
+                        if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+                        {
+                            user = (UserModel)grid.Rows[grid.SelectedIndex].Value;
+                            @Html.LinkButtonForCancel("Delete", "onDeleteUserClick()", "btnDeleteUser")
+                            @Html.LinkButtonForSubmit("Edit", "onEditUserClick()", "btnEditUser", "red-edit.png")
+                            @Html.LinkButtonForSubmit("Edit Password", "onEditUserPasswordClick()", "btnEditUserPassword", "red-unlock-icon32.png")
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="user-preview">
+            @if (Model.IsAdministrator && grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+            {
+                user = (UserModel)grid.Rows[grid.SelectedIndex].Value;
+                <div style="float:left; margin-left:2%; margin-right:2%;">
+                    <b>@Html.Raw(string.Format("ID: {0}", user.UserId.ToString()))</b>
+                </div>
+            }
+            <div style="float: right; margin-left:2%; margin-right:2%">
+                <b>@Html.Raw(string.Format("Users Loaded: {0} of {1}", Model.TotalCount.ToString(), Model.TotalTableCount.ToString()))</b>
+            </div>
+        </div>
+        <div id="gridTableContainer">
+            @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "header",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                columns: grid.Columns(
+                grid.Column("Users", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
+                grid.Column(EntityReader<UserModel>.GetPropertyName(p => p.UserName, false), "User Name"),
+                grid.Column(EntityReader<UserModel>.GetPropertyName(p => p.UserEmailAddress, false), "Email"),
+                grid.Column(EntityReader<UserModel>.GetPropertyName(p => p.OrganizationName, false), "Organization"),
+                grid.Column(EntityReader<UserModel>.GetPropertyName(p => p.Role, false), "Role"),
+                grid.Column(EntityReader<UserModel>.GetPropertyName(p => p.LastLoginDate, false), "Last Login Date"),
+                grid.Column(EntityReader<UserModel>.GetPropertyName(p => p.DateCreated, false), "Date Created")
+            ))
+        </div>
+        <div class="user-preview">
+            @if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+            {
+                user = (UserModel)grid.Rows[grid.SelectedIndex].Value;
+                <div style="float: left; margin-left:2%; margin-right:2%">
+                    <b>@Html.Raw(string.Format("Name: {0}", user.UserName))</b>   
+                </div>
+                <div style="float:right; margin-left:2%; margin-right:2%; color: #a30e0e;">
+                    @Html.Raw(string.Format("{0}", user.OrganizationIdentifier))
+                </div>
+            }
+        </div>
+    </div>
+    <div id="UsersErrorField" style="color:#8A0808">
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <br />
+            @Html.Raw(ViewBag.ErrorMessage)
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#SearchText").focus();
+        makeGridRowsPostForm();
+        enableDatepickers();
+    });
+
+    function onSearchUsersClick() {
+        postUsers();
+    }
+
+    function onDeleteUserClick() {
+        var currentUserName = '@User.Identity.Name';
+        var selectedUserName = '@user.UserName';
+        if (currentUserName == selectedUserName) {
+            var errorMessage = "Cannot delete the currently logged in user '" + currentUserName + "'.";
+            $("#UsersErrorField").html(errorMessage);
+            return;
+        }
+        showDialog(
+            '#divConfirmationDialog',
+            '#dlgConfirmation',
+            'ConfirmDeleteDialog',
+            'User',
+            'identifier',
+            '@user.UserId.ToString()');
+    };
+
+    function onEditUserClick() {
+        showDialog(
+            '#divEditUser',
+            '#dlgEditUser',
+            'EditDialog',
+            'User',
+            'userId',
+            '@user.UserId.ToString()');
+    };
+
+    function onEditUserPasswordClick() {
+        showDialog(
+            '#divEditUserPassword',
+            '#dlgEditUserPassword',
+            'EditUserPasswordDialog',
+            'User',
+            'userId',
+            '@user.UserId.ToString()');
+        };
+
+    function getSearchParametersString() {
+        var searchParameters = '@string.Format("{0}|{1}|{2}",
+        Model.SearchText != null ? Model.SearchText : string.Empty,
+        Model.StartDate.HasValue ? Model.StartDate.Value.Date.ToString() : string.Empty,
+        Model.EndDate.HasValue ? Model.EndDate.Value.Date.ToString() : string.Empty)'
+        return searchParameters;
+    }
+
+    function onDeleteAllUsersClick() {
+        var searchParameters = getSearchParametersString();
+        showDialog(
+            '#divConfirmationDialog',
+            '#dlgConfirmation',
+            'ConfirmDeleteAllDialog',
+            'User',
+            'searchParametersString',
+            searchParameters);
+    }
+
+    function onDownloadAllUsersCsvFileClick() {
+        var searchParameters = getSearchParametersString();
+        var downloadUrl = '@Url.Action("DownloadCsvFile", "User", new { searchParametersString = "_searchValue" })';
+        downloadUrl = downloadUrl.replace('_searchValue', searchParameters);
+        window.location = downloadUrl;
+    }
+
+    function postUsers() {
+        $('form#frmDetails').trigger('submit');
+    };
+
+</script>

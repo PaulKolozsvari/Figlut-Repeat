@@ -1,0 +1,278 @@
+﻿@using Figlut.Spread.Web.Site.Configuration;
+@using Figlut.Spread.Data;
+@using Figlut.Spread.ORM;
+@using Figlut.Spread.ORM.Helpers;
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title</title>
+        <link href="~/FiglutIcon.ico" rel="shortcut icon" type="image/x-icon" />
+
+        @*Comment out the line below to enable scaling for mobile devices.*@
+        @if (Convert.ToBoolean(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.DisableScreenScalingForMobileDevices].SettingValue))
+        {
+            <meta name="viewport" content="width=device-width" />
+        }
+
+        @Styles.Render("~/Content/slickbuttons/css")
+        @Styles.Render("~/Content/themes/base/css")
+        @Scripts.Render("~/bundles/modernizr")
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/jqueryui")
+        @Styles.Render("~/Content/css")
+    </head>
+    <body>
+        <script type="text/javascript">
+            function loadDialog(dialogWrapperName, dialogName, action, controller, fieldName, fieldValue) {
+                if ($(dialogName).length == 0) {
+                    var url;
+                    if (fieldName == undefined || fieldValue == undefined) {
+                        url = "@Url.Action("_Action", "_Controller")".replace("_Action", action).replace("_Controller", controller);
+                    }
+                    else {
+                        url = "@Url.Action("_Action", "_Controller", new { _FieldName = "_FieldValue" })".replace("_Action", action).replace("_Controller", controller).replace("_FieldName", fieldName).replace("_FieldValue", fieldValue);
+                    }
+                    $(dialogWrapperName).load(url);
+                }
+            }
+
+            function showDialog(dialogWrapperName, dialogName, action, controller, fieldName, fieldValue) {
+                var url;
+                if (fieldName == undefined || fieldValue == undefined) {
+                    url = "@Url.Action("_Action", "_Controller")".replace("_Action", action).replace("_Controller", controller);
+                }
+                else {
+                    url = "@Url.Action("_Action", "_Controller", new { _FieldName = "_FieldValue" })".replace("_Action", action).replace("_Controller", controller).replace("_FieldName", fieldName).replace("_FieldValue", fieldValue);
+                }
+                if ($(dialogName).length == 0) {
+                    $(dialogWrapperName).load(url);
+                } else {
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        cache: false,
+                        success: function (data) {
+                            $(dialogName).html(data);
+                        }
+                    });
+                }
+                $(dialogName).dialog("open");
+            }
+
+            $(document).ready(function () {
+                //loadDialog("#divLogin", "#dlgLogin", "LoginDialog", "User");
+                @if (Request.IsAuthenticated)
+                {
+                    <text>
+    @*                    loadDialog("#divViewCustomer", "#dlgViewCustomer", "ViewDialog", "Customer", "userName", "@User.Identity.Name");
+                        loadDialog("#divChangePIN", "#dlgChangePIN", "ChangePINDialog", "Customer");*@
+                    </text>
+                    //if (SpreadEntityContext.Create().IsUserOfRole(User.Identity.Name, UserRole.Administrator))
+                    {
+                        <text>
+                            //loadDialog("#divGlobalSettings", "#dlgGlobalSettings", "GlobalSettingsDialog", "GlobalSetting");
+                            //loadDialog("#divEditCustomer", "#dlgEditCustomer", "EditDialog", "Customer");
+                            //loadDialog("#divEditVendor", "#dlgEditVendor", "EditDialog", "Vendor");
+                            //loadDialog("#divCreateVendor", "#dlgCreateVendor", "CreateDialog", "Vendor");
+                            //loadDialog("#divEditOperator", "#dlgEditOperator", "EditDialog", "Operator");
+                            //loadDialog("#divCreateOperator", "#dlgCreateOperator", "CreateDialog", "Operator");
+                            //loadDialog("#divCreateCustomer", "#dlgCreateCustomer", "CreateDialog", "Customer");
+                            //loadDialog("#divEditUser", "#dlgEditUser", "EditDialog", "User");
+                            //loadDialog("#divCreateUser", "#dlgCreateUser", "CreateDialog", "User");
+                        </text>   
+                    }
+                }
+            });
+        </script>
+
+        @*Dialogs*@
+        <div id='divConfirmationDialog'></div>
+        <div id="divWaitDialog"></div>
+        <div id="divInformationDialog"></div>
+        <div id="divEditGlobalSetting"></div>
+        <div id="divEditOrganization"></div>
+        <div id="divEditUser"></div>
+        <div id="divEditUserPassword"></div>
+        <div id="divEditSubscriber"></div>
+        <div id="divEditSubscriberSubscription"></div>
+        <div id="divEditOrganizationSubscription"></div>
+        <div id="divEditSmsCampaign"></div>
+        <div id="divCreateSmsCampaign"></div>
+
+        <a id="back-to-top"></a>
+        <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <nav>
+                        <ul id="menu">
+                            @{
+                                User currentUser = null;
+                                Organization currentOrganization = null;
+                            }
+                            @if (Request.IsAuthenticated)
+                            {
+                                SpreadEntityContext context = SpreadEntityContext.Create();
+                                currentUser = context.GetUserByIdentifier(User.Identity.Name, false);
+                                if (currentUser.OrganizationId.HasValue)
+                                {
+                                    currentOrganization = context.GetOrganization(currentUser.OrganizationId.Value, false);
+                                }
+                                if (currentUser == null)
+                                {
+                                    //If the request is authenticated, but the user does not exist in the database, sign out the user.
+                                    FormsAuthentication.SignOut();
+                                }
+                            }
+                            @if (currentUser == null)
+                            {
+                                <li>@Html.ActionLink("Login", "Login", "User")</li>
+                                @*<li>@Html.ActionLink("Register", "Register", "User")</li>*@
+                            }
+                            else
+                            {
+                                UserRole role = (UserRole)currentUser.RoleId;
+                                <li>
+                                    @*@Html.Raw(User.Identity.Name)*@
+                                    @Html.Raw("ME")
+                                    <ul style="left:0%">
+                                        <li>@Html.ActionLink("User Profile", "EditProfile", "User")</li>
+                                        <br />
+                                        <li>@Html.ActionLink("Organization Profile", "EditProfile", "Organization")</li>
+                                        <br />
+                                        <hr />
+                                        <li style="color:white">@Html.ActionLink("Log Off", "LogOff", "User")</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    @Html.Raw("SMS")
+                                    <ul style="left:2%">
+                                        <li>@Html.ActionLink("Sent", "Index", "SmsSent")</li>
+                                        <br />
+                                        <li>@Html.ActionLink("Received", "Index", "SmsReceived")</li>
+                                        <br />
+                                        <hr />
+                                        <li>@Html.ActionLink("Compose", "ComposeStandalone", "SmsSent")</li>
+                                    </ul>
+                                </li>
+                                if (role == UserRole.Administrator)
+                                {
+                                    <li>
+                                        @Html.Raw("Manage")
+                                        <ul style="left:5%">
+                                            @if(currentOrganization != null)
+                                            {
+                                                <li>@Html.ActionLink("Subscriptions", "Index", "OrganizationSubscription", new { organizationId = currentOrganization.OrganizationId }, null)</li>
+                                                <br />
+                                                <li>@Html.ActionLink("SMS Campaigns", "Index", "SmsCampaign", new { organizationId = currentOrganization.OrganizationId }, null)</li>
+                                                <br />
+                                                <hr />
+                                            }
+                                            <li>@Html.ActionLink("Organizations", "Index", "Organization")</li>
+                                            <br />
+                                            <li>@Html.ActionLink("Users", "Index", "User")</li>
+                                            <br />
+                                            <li>@Html.ActionLink("Subscribers", "Index", "Subscriber")</li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        @Html.Raw("Tools")
+                                        <ul style="left:9.5%">
+                                            <li>@Html.ActionLink("SMS Processors", "Index", "SmsProcessor")</li>
+                                            <br />
+                                            <hr />
+                                            <li>@Html.ActionLink("Global Settings", "Index", "GlobalSetting")</li>
+                                        </ul>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        @Html.Raw("Manage")
+                                        <ul style="left:5%">
+                                            @if (currentOrganization != null)
+                                            {
+                                                <li>@Html.ActionLink("Subscriptions", "Index", "OrganizationSubscription", new { organizationId = currentOrganization.OrganizationId }, null)</li>
+                                                <br />
+                                                <li>@Html.ActionLink("SMS Campaigns", "Index", "SmsCampaign", new { organizationId = currentOrganization.OrganizationId }, null)</li>
+                                            }
+                                        </ul>
+                                    </li>   
+                                }
+                            }
+                        </ul>
+                    </nav>
+                </div>
+                <div class="float-right">
+                    <nav>
+                        <ul id="menu">
+                            <li>
+                                @Html.ActionLink("Home", "Index", "Home")
+                            </li>
+                            <li>
+                            </li>
+                            <li>
+                                @Html.ActionLink("My Subscriptions", "ViewSubscriberSubscriptions", "SubscriberSubscription")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Contact", "Contact", "Home")
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+        </header>
+        <div id="body">
+            @RenderSection("featured", required: false)
+            <section class="featured">
+                <div class="content-wrapper">
+                    <div class="logoimagebanner">
+                        <a href="@Url.Action("Index", "Home")" style="background-color:transparent">
+                            <img src="~/Images/FiglutLogo/logo_small.png" style="width:110%; margin-top:10px; border:none" />
+                        </a>
+                    </div>
+                </div>
+            </section>
+            <section class="content-wrapper main-content clear-fix">
+                @RenderBody()
+            </section>
+        </div>
+        <footer>
+            <div class="content-wrapper">
+                <div class="centerInformation" style="color:#3195c2; text-align:center">
+                    <p>&copy; @(string.Format("{0} - {1}", DateTime.Now.Year.ToString(), SpreadWebApp.Instance.Settings.ApplicationName))</p>
+                </div>
+            </div>
+        </footer>
+
+        @*Used for Ajax calls to do partial form updates.*@
+        @Scripts.Render("~/bundles/jqueryval")
+
+        @RenderSection("scripts", required: false)
+        <script type="text/javascript">
+            $(function () {
+                $("ul#menu li").each(function () {
+                    if ($(this).find("ul").length > 0) {
+
+                        //show subnav on hover  
+                        $(this).mouseenter(function () {
+                            $(this).find("ul").stop(true, true).slideDown();
+                        });
+
+                        //hide submenus on exit  
+                        $(this).mouseleave(function () {
+                            $(this).find("ul").stop(true, true).slideUp();
+                        });
+
+                        $(this).find("ul").mousemove(function () {
+                            $(this).stop(true, true).show();
+                        });
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

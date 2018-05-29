@@ -1,0 +1,115 @@
+﻿/*--------------------------*/
+/* Buttons
+/*--------------------------*/
+div.buttons
+{
+    display: inline-block;
+    margin: 10px 0;
+}
+.button
+{
+    display: block;
+    float: inherit;
+    width: 120px;
+    display:inline-block;
+    max-width: 120px;
+    text-align: center;
+    border-top: 1px solid #CCC;
+    border-left: 1px solid #CCC;
+    border-bottom: 1px solid #AAA;
+    border-right: 1px solid #AAA;
+    /*background-color: #f1f6f1;*/
+    background-color : transparent;
+    font-family: Verdana, Helvetica, sans-serif;
+    font-size: 85%;
+    line-height: 110%;
+    text-decoration: none !important;
+    color: #fff !important;
+    /*margin: 0 5px 0 0;*/
+    margin-right: 5px;
+    margin-bottom: 5px;
+    padding: 5px 10px 5px 7px;
+    cursor: pointer;
+    box-shadow: 1px 1px 2px #969696;
+    -moz-box-shadow: 1px 1px 2px #969696; /* Firefox */
+    -webkit-box-shadow: 1px 1px 2px #969696; /* Safari and Chrome */
+
+    background: -ms-linear-gradient(top, #fff 0%, #3195c2 100%);
+    background: -o-linear-gradient(top, #fff 0%, #3195c2 100%);
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #fff), color-stop(1, #3195c2));
+    background: -webkit-linear-gradient(top, #fff 0%, #3195c2 100%);
+    background: linear-gradient(top, #fff 0%, #3195c2 100%);
+}
+
+.button:active, .button.focus {
+    color: #fff;
+    background: -ms-linear-gradient(top, #f3f3f3 0%, #fff 100%);
+    background: -o-linear-gradient(top, #f3f3f3 0%, #fff 100%);
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #f3f3f3), color-stop(1, #fff));
+    background: -webkit-linear-gradient(top, #f3f3f3 0%, #fff 100%);
+    background: linear-gradient(top, #f3f3f3 0%, #fff 100%);
+}
+
+.button {
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    -ms-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+/*.button img:hover {
+    -webkit-transform: scale(2.0);
+    -moz-transform: scale(2.0);
+    -o-transform: scale(2.0);
+    -ms-transform: scale(2.0);
+    transform: scale(2.0);
+    cursor: pointer;
+}*/
+
+.button img
+{
+    margin: 0 3px -3px 0 !important;
+    padding: 0;
+    border: none;
+    width: 16px;
+    height: 16px;
+    float: none;
+}
+ 
+/*--------------------------*/
+/* Button colors - Standard
+/*--------------------------*/
+.button:hover
+{
+    border: 1px solid #999;
+    background-color: #D6D6D6;
+    color: #fff !important;
+
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    transform: scale(1.1);
+    cursor: pointer;
+}
+ 
+/*--------------------------*/
+/* Button colors - Positive
+/*--------------------------*/
+.positive:hover
+{
+    background-color: #E6EFC2;
+    border: 1px solid #C6D880;
+    color: #fff !important;
+}
+ 
+/*--------------------------*/
+/* Button colors - Negative
+/*--------------------------*/
+.negative:hover
+{
+    background-color: #FBE3E4;
+    border: 1px solid #FBC2C4;
+    color: #fff !important;
+}

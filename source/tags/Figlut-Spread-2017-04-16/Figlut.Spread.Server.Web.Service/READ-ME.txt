@@ -1,0 +1,150 @@
+﻿Competitors:
+	
+	https://www.eztexting.com
+
+	Facebook SMS: https://www.facebook.com/help/170960386370271/
+
+Example Send SMS Arguments:
+
+	/send_sms 0833958283 "Hello world."
+
+Sample URl to receive messages and receive replies:
+
+	To use # (hash) character in a URL, it neeeds to be replaced with %23
+	To use space character in a URL, it needs to be replaced with %20
+
+	http://127.0.0.1:2983/FiglutSpread/receive-sms-zoomconnect?from=+27725551234&messageId=124567&message=%23BinaryChef%20@John&date\=201404282055&campaign=shoe%20campaign&dataField=custom&nonce=89430dc5-cac1-4795-9dd0-46c9b8233e52&nonce-date=20140428210027&checksum=180f27d80dd05886e81da0c2ccebf830bc85c7ae
+	http://127.0.0.1:2983/FiglutSpread/receive-sms-zoomconnect?from=+27725551234&messageId=124567&message=%23BinaryChef%20@Marry&date\=201404282055&campaign=shoe%20campaign&dataField=custom&nonce=89430dc5-cac1-4795-9dd0-46c9b8233e52&nonce-date=20140428210027&checksum=180f27d80dd05886e81da0c2ccebf830bc85c7ae
+	http://127.0.0.1:2983/FiglutSpread/receive-sms-zoomconnect?from=+27725551234&messageId=124567&message=%23BinaryChef%20&date\=201404282055&campaign=shoe%20campaign&dataField=custom&nonce=89430dc5-cac1-4795-9dd0-46c9b8233e52&nonce-date=20140428210027&checksum=180f27d80dd05886e81da0c2ccebf830bc85c7ae
+
+	http://127.0.0.1:2983/FiglutSpread/receive-sms-zoomconnect?from=+27725551234&messageId=124567&message=%23BinaryChef%20@John%20Hello%20there&date\=201404282055&campaign=shoe%20campaign&dataField=custom&nonce=89430dc5-cac1-4795-9dd0-46c9b8233e52&nonce-date=20140428210027&checksum=180f27d80dd05886e81da0c2ccebf830bc85c7ae
+	http://127.0.0.1:2983/FiglutSpread/receive-sms-zoomconnect?from=+27725551234&messageId=124567&message=%23Figlut%20@John%20Hello%20again&date\=201404282055&campaign=shoe%20campaign&dataField=custom&nonce=89430dc5-cac1-4795-9dd0-46c9b8233e52&nonce-date=20140428210027&checksum=180f27d80dd05886e81da0c2ccebf830bc85c7ae
+
+	http://www.figlut.com:2983/FiglutSpread
+	http://www.figlut.com:2983/FiglutSpread/receive-sms-zoomconnect?from=+27725551234&messageId=124567&message=REPLY&date=201404282055&campaign=shoe%20campaign&dataField=custom&nonce=89430dc5-cac1-4795-9dd0-46c9b8233e52&nonce-date=20140428210027&checksum=180f27d80dd05886e81da0c2ccebf830bc85c7ae
+		
+
+Make a slideshow in MVC 4: 
+
+	http://stackoverflow.com/questions/19769319/display-images-as-slideshow-in-mvc4
+	http://www.codeproject.com/Articles/452313/ASP-NET-MVC-Slideshow-Control-using-jQuery-and-XM
+	https://www.youtube.com/watch?v=pSSCskN4e9A
+
+Accordion in MVC 4:
+
+	http://aspdotnet-kishore.blogspot.co.za/2014/11/mvc-jquery-ui-accordion-expandcollaspe.html
+	http://www.webcodeexpert.com/2013/07/ajax-accordion-to-create-vertical.html
+
+Handling CSS hover events on mobile devices (when hovering over an image):
+	http://www.prowebdesign.ro/how-to-deal-with-hover-on-touch-screen-devices/
+
+Make a slide show with video with music: SmileBox
+
+Example messages:
+
+	User:			BLUECOFFEE John
+	Organization:	Hi John. You have been subscribed to 'BLUECOFFEE'. Visit Figlut.com to unsubscribe.
+	Organization:	BLUECOFFEE: get a free cup of coffee with every cup purchased by presenting this code: 256465. Offer valid until March 18.
+
+	User:			5342 John
+	Organization:	Hi John. You have been subscribed to 'JHB High School'. Visit Figlut.com to unsubscribe.
+	Organization:	JHB Primary School: school concert will be held at 7pm, on January 15.
+
+Icons website:
+	http://findicons.com/
+
+Website Image URLs: 
+	https://placeit.net/stages/illustrated-iphone
+	https://placeit.net/stages/iphone-5s-portrait-basic-screen-mockup
+	http://www.istockphoto.com/photo/join-us-concept-gm181798234-26233359?st=92bd9ae
+	https://placeit.net/stages/white-iphone-6-portrait?background=914
+	http://www.istockphoto.com/photo/white-crumpled-paper-texture-gm487521882-72969317?st=62f0f2e
+
+Images for slideshow:
+	http://www.istockphoto.com/photo/torso-sending-emails-by-touching-a-computer-key-gm486563494-73354139?st=36aabfd
+	http://www.istockphoto.com/photo/cloud-computing-concept-gm497941466-79390693?st=36aabfd
+	http://www.istockphoto.com/photo/cloud-computing-gm467242934-60962080?st=51d8080
+	http://www.istockphoto.com/photo/cloud-computing-gm483314002-70859665?st=45f4e12
+	http://www.istockphoto.com/photo/cloud-computing-gm467179978-60932344?st=43bc5a3
+	http://www.istockphoto.com/photo/group-of-friends-using-wireless-technology-in-barcelona-gm500427514-80758687?st=c555f26
+***	http://www.istockphoto.com/photo/two-female-friends-after-sunset-on-bench-watching-the-phone-gm499884966-80484343?st=c555f26
+	http://www.istockphoto.com/photo/texting-gm516603718-89055977?st=c555f26
+	http://www.istockphoto.com/photo/young-african-woman-messaging-during-drive-gm472240442-64000067?st=157c4f9
+	http://www.istockphoto.com/photo/beautiful-african-woman-with-shopping-bags-using-smartphone-in-city-gm509176658-85627961
+
+
+Playing .mov files in MVC with Quicktime Player: http://forums.asp.net/t/1467440.aspx?Playing+mov+files
+Playing .mp4 files in MVC: http://stackoverflow.com/questions/25478690/embed-local-mp4-video-into-mvc-page
+
+Creating Logos for your company: https://smashinglogo.com/
+
+Slogans: 
+
+	*	Efforless and convenient SMS marketting that isn't spam. People voluntarily subscribe to your notifications.
+	*	Giving it a try requires no commitments, costs or risks i.e. only SMS credits needs to be purchased once you have subscribers. No long term commitments required either.
+	*	Great ROI (Return on Investment): retain existing customers/members, and spread your message to get new customers via word of mouth.
+	*	Promote your organization/company by sending notifications about your promotions, product update, vouchers, events etc.
+	*	Easy and hassle free for people to subscribe i.e. they SMS to subscribe; no need for filling out forms, keeping track of cell phone numbers, typing texts on your cell phone etc. No internet connection required by subscribers.
+	*	No paper & minimal admin work: all subscribers managed on the system, manageable from the website or Figlut mobile app.
+	*	Easily broadcast an SMS to all subscribers: Broadcast an SMS to all subscribers to the press of a single button on the website or Figlut mobile app i.e. no copying and pasting for each subscriber etc.
+	*	Subscribers manage their own subscriptions: Subscribers can manage all their subscriptions on the website by entering their cell phone number.
+	*	No maintenance: 
+
+Singletons in web applications:
+
+	Working with multiple threads and preventing a singleton from being initialized more than once:
+		http://www.alexzaitzev.pro/2013/02/singleton-pattern.html
+
+	Using the volatile keyword for the singleton instance object:
+		https://msdn.microsoft.com/en-us/library/x13ttww7.aspx
+		http://www.c-sharpcorner.com/UploadFile/1d42da/volatile-keyword-in-C-Sharp-threading/
+
+	Singletons are per App Domain, can also store variables per user session:
+		http://stackoverflow.com/questions/2134511/asp-net-singleton
+
+MVC Field Validations:
+
+	http://www.c-sharpcorner.com/UploadFile/13048b/model-validation-in-Asp-Net-mvc909/
+
+Jquery show dialog and cursor while Ajax call:
+	http://stackoverflow.com/questions/29511873/show-spinner-and-disable-page-while-waiting-for-ajax-request
+	http://stackoverflow.com/questions/4622499/disable-button-while-ajax-request
+
+Problems with regular SMS marketing:
+
+	1.	It's SPAM: people didn't ask for the notifications e.g. new cell phone contracts, insurance etc.
+	2.	Expensive to implement: large investment to develop SMS platform. Small businesses cannot lay out that kind of money.
+	3.	Difficult to setup subscribers of the SMS i.e. have to fill out paper work, get an account (e.g. with Spar or Woolworths).
+
+Benefits or solutions offered by Figlut:
+
+	1.	It's not spam: people subscribe by themselves for the notifications they want and can also unsubsribe any time they want.
+	2.	No investment: not necessary for small business to invest in the development of their own SMS platform.
+	3.	Easy to setup: people SMS a code to a phone number and they automatically get subscribed to notifications for a specific organization.
+
+Vodacom Pricing:
+
+	https://www.vodacommessaging.co.za/tariffs.asp
+		
+	BulkSMS: http://www.bulksmsportal.co.za/#!shortcodes/pricing
+		Setuo Fee Long Code: R3500
+		Long Code Line Pricing: R1800 per month
+
+		Setup Fee Short Code: R3500
+		Short Code Line Pricing: R999 per month
+
+	ZoomConnect: https://www.zoomconnect.com/
+		Setup Fee Long Code: R1000
+		Long Code Line Pricing: R300 per month
+
+		Setup Fee Short Code: R1000
+		Short Code Line Pricing: R400 per month
+
+SMS Marketing articles:
+
+	http://www.financialmail.co.za/redzone/2015/10/07/sms-marketing-does-work-if-you-do-it-right
+	http://www.itweb.co.za/index.php?option=com_content&view=article&id=143422
+
+	Tool to get demographics data in SA:
+		http://www.hudlr.co.za/
+		Database for the above website is provided by http://3waymarketing.co.za/

@@ -1,0 +1,251 @@
+﻿@model Figlut.Spread.Web.Site.Models.HomePageImageGalleryModel
+
+@using Figlut.Spread.Web.Site.Extensions;
+
+@{
+    ViewBag.Title = "Figlut";
+}
+
+@section featured {
+}
+<nav>
+    <ul id="menu">
+        <li>
+            <img src="~/Images/Icons/red-home-icon32.png" style="float:right; margin-right:1%; margin-left:1%"/>
+            <a href="" style="float:right">Home</a>
+            <a href="#how-it-works" style="float:left">How it works</a>
+        </li>
+    </ul>
+</nav>
+<hr />
+@*<i></i>*@
+@*<h4 class="centerInformation">SMS Solution Provider</h4>*@
+<div class="mainimagebanner">
+    <img src="~/Images/Figlut/BlueCoffee/MainImageWithText.jpg" style="width:60%; text-align:center; border-radius:1%;"/>
+</div>
+<div class="phonebanner">
+    <img src="~/Images/Figlut/BlueCoffee/iPhoneTransparentTextCut.png" style="width:12%; position:absolute; bottom:140%; left:76%;" />
+    <img src="~/Images/WhyItWorksGallery/01-WhyItWorks.jpg" style="width:14%; position:absolute; bottom:260%; left:11%;" />
+    <img src="~/Images/WhyItWorksGallery/02-WhyItWorks.jpg" style="width:14%; position:absolute; top:-140%; left:3%;" />
+    <img src="~/Images/WhyItWorksGallery/03-WhyItWorks.jpg" style="width:14%; position:absolute; bottom:260%; left:30%;" />
+    <img src="~/Images/WhyItWorksGallery/04-WhyItWorks.jpg" style="width:14%; position:absolute; top:-140%; left:21%;" />
+    <img src="~/Images/WhyItWorksGallery/05-WhyItWorks.jpg" style="width:14%; position:absolute; top:-140%; left:57%;" />
+    <img src="~/Images/WhyItWorksGallery/06-WhyItWorks.jpg" style="width:14%; position:absolute; bottom:260%; left:49%;" />
+    <img src="~/Images/WhyItWorksGallery/07-WhyItWorks.jpg" style="width:14%; position:absolute; top:-140%; left:39%;" />
+</div>
+
+@*
+    http://forums.asp.net/t/1983642.aspx?Customized+horizontal+scrolling+content+slider
+    https://www.google.co.za/?gws_rd=ssl#q=Horizontal+scroll+gallery+in+mVC+4
+
+    http://www.istockphoto.com/vector/abstract-background-gm480416462-68972627
+*@
+<a id="how-it-works"></a>
+<nav>
+    <ul id="menu">
+        <li>
+            <img src="~/Images/Icons/red-laptop-icon32.png" style="float:right; margin-right:1%; margin-left:1%"/>
+            <a href="#back-to-top" style="float:left">Back to top</a>
+            <a href="#how-it-works" style="float:right">How it works</a>
+        </li>
+    </ul>
+</nav>
+<hr />
+@*<h3 class="description-title">How it works in 3 steps ...</h3>*@
+
+@*<a href="@Url.Action("Register", "User")" style="background-color:transparent">
+    <img src="~/Images/Figlut/BlueCoffee/JoinUsFinal.jpg" style="width:69%";/>
+</a>
+<div class="photobanner">
+    @for (int i = 0; i < Model.HowItWorksImages.Count; i++)
+    {
+        string absolutePath = Model.HowItWorksImages[i];
+        string relativePath = ExtensionMethods.RelativeFromAbsolutePath(absolutePath);
+        if (i == 0)
+        {   
+            //First image is placed above with different zoom ratio.
+        }
+        else
+        {
+            <img src = "@relativePath" alt="No Image" style="width:23%;"/> 
+        }
+    }
+ </div>*@
+<br />
+<div class="description">
+    <a href="@Url.Action("Register", "User")" style="background-color:transparent">
+        Register
+    </a> 
+    <i>for <b>FREE</b> to get your own unique organization keyword e.g. #BLUECOFFEE. No setup fees, no commitment, no risk. You have nothing to lose by giving it a try.</i>
+</div>
+<br />
+<h3 class="description-title">How it works</h3>
+<table>
+    <tr>
+        <td style="width:33%">
+            <div class="description">
+                <b class="description-step">Step 1</b>
+            </div>
+        </td>
+        <td style="width:33%">
+            <b class="description-step">Step 2</b>
+        </td>
+        <td style="width:33%">
+            <b class="description-step">Step 3</b>
+        </td>
+    </tr>
+    <tr>
+        <td style="width:33%">
+            <div class="photobanner-how-it-works">
+                <img src="~/Images/HowItWorksGallery/WithoutText/BlueCoffeeInFrameFinal.jpg" style="width:100%; height:250px"/>
+            </div>
+        </td>
+        <td style="width:33%">
+            <div class="photobanner-how-it-works">
+                <img src="~/Images/HowItWorksGallery/WithoutText/MonitorSubscribers.png" style="width:100%; height:250px"/>
+            </div>
+        </td>
+        <td style="width:33%">
+            <div class="photobanner-how-it-works">
+                <img src="~/Images/HowItWorksGallery/WithoutText/TextWrappedFinal.jpg" style="width:100%; height:250px"/>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>            
+            <div class="description">
+                <b>Promote your notifications</b>
+                <br />
+                <p style="font-size:12px">
+                    <i>
+                        Customize, download and print your promotional poster.
+                        <br />
+                        <br />
+                        People subscribe by sending an SMS using your unique keyword 
+                        <br />
+                        e.g. <b>"SMS #BLUECOFFEE to 087 240 5099 to subscribe"</b>.
+                        <br />
+                        <br />
+                        Ask your staff to inform people of your notifications and how to subscribe.
+                    </i>
+                </p>
+            </div>
+        </td>
+        <td>
+            <div class="description">
+                <b>Monitor your subscribers</b>
+                <br />
+                <p style="font-size:12px">
+                    <i>
+                        Using this website, keep an eye out on how many subscribers you currenty have.
+                        Receive an <b>Email notification</b> for each new subscriber you have.
+                        View their cell phone numbers and names.
+                        <br />
+                        <br />
+                        N.B. Your <b>subscribers can manage their own subscriptions</b>.
+                    </i>
+                </p>
+            </div>
+        </td>
+        <td>
+            <div class="description">
+                <b>Send / Receive messages</b>
+                <br />
+                <p style="font-size:12px">
+                    <i>
+                        Once you have sufficient subscribers, purchase some SMS credits and <b>notify them of your promotions, product updates, voucher codes, events etc.</b>
+                        <br />
+                        <br />
+                        <b>Receive feedback from your subscribers</b>, by them sending you an SMS using your organization keyword e.g. "#BLUECOFFEE You guys make really great coffee and offer the best service."
+                    </i>
+                </p>
+            </div>
+        </td>
+    </tr>
+</table>
+
+
+@section scripts {
+    <script type="text/javascript">
+        var $root = $('html, body');
+        $('a').click(function () {
+            $root.animate({
+                scrollTop: $($.attr(this, 'href')).offset().top
+            }, 500);
+            return false;
+        });
+    </script>
+}
+
+@*<h3 class="centerInformation">wHY It wOrKs ...</h3>*@
+
+@* Images created with MS Paint. Font "Consolas", heading text size of 40 and subtext of 20. *@
+@*<div class="photobanner">
+    @for (int i = 0; i < Model.WhyItWorksImages.Count; i++)
+    {
+        string absolutePath = Model.WhyItWorksImages[i];
+        string relativePath = ExtensionMethods.RelativeFromAbsolutePath(absolutePath);
+        if (i % 4 == 0)
+        {
+            <br />
+        }
+        <img src = "@relativePath" alt="No Image" style="width:19%; border-radius:10px; text-align:center; display:inline"/>
+    }
+ </div>*@
+
+@*<ol class="round">
+    <li class="one">
+        <h5>Sms marketting that isn't spam</h5>
+        <div class="darkGrayText">
+            Efforless and convenient SMS marketting that isn't spam. People voluntarily subscribe to your notifications.
+        </div>
+    </li>
+    <li class="two">
+        <h5>Free to try</h5>
+        <div class="darkGrayText">
+            Giving it a try requires NO COMMITMENTS, COSTS or RISKS i.e. only purchase SMS credits once you have a substantial list of subscribers. No long term commitments required either i.e. cancel at any time.
+        </div>
+    </li>
+    <li class="three">
+        <h5>Great ROI (Return on Investment)</h5>
+        <div class="darkGrayText">
+            Retain existing customers/members, and spread your message to get new customers via word of mouth.
+        </div>
+    </li>
+    <li class="four">
+        <h5>Promote your organization/company</h5>
+        <div class="darkGrayText">
+            Send notifications about your promotions, product updates, vouchers, events etc.
+        </div>
+    </li>
+    <li class="five">
+        <h5>People subscribe by sending an SMS</h5>
+        <div class="darkGrayText">
+            Easy and hassle free for people to subscribe i.e. they SMS to subscribe; no need for filling out forms, keeping track of cell phone numbers, typing texts on your cell phone etc. No internet connection required by subscribers.
+        </div>
+    </li>
+    <li class="six">
+        <h5>No paper work, minimal admin work</h5>
+        <div class="darkGrayText">
+            All subscribers managed on the system, manageable from the website or Figlut mobile app.
+        </div>
+    </li>
+    <li class="seven">
+        <h5>Easily broadcast an SMS to all subscribers</h5>
+        <div class="darkGrayText">
+            Broadcast an SMS to all your subscribers with the press of a single button on the website or Figlut mobile app i.e. no copying and pasting for each subscriber etc.
+        </div>
+    </li>
+    <li class="eight">
+        <h5>Subscribers manage their own subscriptions</h5>
+        <div class="darkGrayText">
+            Subscribers can manage all their subscriptions on the website by entering their cell phone number.
+        </div>
+    </li>
+    <li class="nine">
+        <h5>No maintenance</h5>
+        <div class="darkGrayText">
+            All technical maintenance is taken care of by the Figlut team, requiring no work from your side.
+        </div>
+    </li>
+</ol>*@

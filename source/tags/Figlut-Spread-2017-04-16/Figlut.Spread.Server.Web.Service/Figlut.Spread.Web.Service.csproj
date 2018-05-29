@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{695575AD-35F6-499A-B2A5-B372C5B08209}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Figlut.Spread.Web.Service</RootNamespace>
+    <AssemblyName>Figlut.Spread.Web.Service</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration\SpreadApp.cs" />
+    <Compile Include="Configuration\SpreadSettings.cs" />
+    <Compile Include="ProjectInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ProjectInstaller.Designer.cs">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </Compile>
+    <Compile Include="REST\ISpreadRestService.cs" />
+    <Compile Include="REST\SpreadRestService.cs" />
+    <Compile Include="REST\UserValidator.cs" />
+    <Compile Include="SpreadService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SpreadService.Designer.cs">
+      <DependentUpon>SpreadService.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ProjectInstaller.resx">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SpreadService.resx">
+      <DependentUpon>SpreadService.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\FiglutSuiteRepo\source\trunk\Windows\Figlut.Server.Toolkit.45\Figlut.Server.Toolkit.45.csproj">
+      <Project>{a7c9a24d-e19b-42f5-a298-805a489334ef}</Project>
+      <Name>Figlut.Server.Toolkit.45</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Figlut.Spread.Data\Figlut.Spread.Data.csproj">
+      <Project>{88c47948-f4b3-4912-ac0b-e98a2b6be147}</Project>
+      <Name>Figlut.Spread.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Figlut.Spread.ORM\Figlut.Spread.ORM.csproj">
+      <Project>{1e8c9fdb-fc2b-4d4b-80b4-86cb1bf75214}</Project>
+      <Name>Figlut.Spread.ORM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Figlut.Spread.Server.Email\Figlut.Spread.Email.csproj">
+      <Project>{ff111d9a-952f-4821-8963-d06ee452f629}</Project>
+      <Name>Figlut.Spread.Email</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Figlut.Spread.Server.SMS\Figlut.Spread.SMS.csproj">
+      <Project>{46c82dc4-2e0f-4abd-9ff3-888e6976de20}</Project>
+      <Name>Figlut.Spread.SMS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Figlut.Spread.SMS.Processor\Figlut.Spread.SMS.Processor.csproj">
+      <Project>{c04f3302-e4a7-4e1e-98ea-7623845231af}</Project>
+      <Name>Figlut.Spread.SMS.Processor</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="READ-ME.txt" />
+    <Content Include="SpreadSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
