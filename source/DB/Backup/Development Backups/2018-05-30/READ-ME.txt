@@ -1,0 +1,1 @@
+*	Renamed the RepeatSchedule and RepeatScheduleEntry tables to Schedule and ScheduleEntry.

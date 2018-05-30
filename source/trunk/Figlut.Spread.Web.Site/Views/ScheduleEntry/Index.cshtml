@@ -1,0 +1,56 @@
+﻿@model Figlut.Spread.Web.Site.Models.FilterModel<ScheduleEntryModel>
+
+@using Figlut.Server.Toolkit.Data;
+@using Figlut.Spread.Web.Site.Configuration;
+@using Figlut.Spread.Web.Site;
+@using Figlut.Spread.Web.Site.Models;
+
+@{
+    ViewBag.Title = "Schedule Entries";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<nav>
+    <ul id="menu">
+        <li>
+            <img src="~/Images/Icons/red-balloon-plus-icon32.png" style="float:right; margin-right:1%; margin-left:1%" />
+            <a href="" style="float:right">@Html.Raw(string.Format("Schedule Entries: {0}", Model.ParentCaption))</a>
+        </li>
+    </ul>
+</nav>
+<hr />
+@using (Ajax.BeginForm("Index", "ScheduleEntry", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    UpdateTargetId = "gridPartial",
+    HttpMethod = "POST"
+},
+new { @id = "frmDetails" }))
+{
+    <div id="gridPartial">
+        @{
+            Html.RenderPartial("_ScheduleEntryGrid", Model);
+        }
+    </div>
+}
+
+<script type="text/javascript">
+    var sendEnabled = false;
+
+    $(document).ready(function () {
+        $(document).keypress(function (event) {
+            if (event.which == 13) {
+                //$("#btnSearch").click();
+                postScheduleEntries();
+                return false; //Cancel the default form's post behaviour when enter key is pressed i.e. if this is not set (or set to true) then the form will be posted twice when pressing the enter key.
+            }
+        });
+        loadDialog("#divConfirmationDialog", "#dlgConfirmation", "ConfirmDeleteDialog", "ScheduleEntry", 'identifier', '@Guid.Empty');
+        loadDialog("#divCreateScheduleEntry", "#dlgCreateScheduleEntry", "CreateDialog", "ScheduleEntry", 'scheduleId', '@Model.ParentId');
+        loadDialog("#divShiftScheduleEntry", "#dlgShiftScheduleEntry", "ShiftDialog", "ScheduleEntry", 'scheduleEntryId', '@null');
+        loadDialog("#divEditScheduleEntry", "#dlgEditScheduleEntry", "EditDialog", "ScheduleEntry", 'scheduleEntryId', '@null');
+
+        loadDialog("#divWaitDialog", "#dlgWait", "WaitDialog", "SmsSent", 'message', '@string.Empty');
+        loadDialog("#divInformationDialog", "#dlgInformation", "InformationDialog", "SmsSent", 'message', '@string.Empty');
+        sendEnabled = true;
+    });
+</script>

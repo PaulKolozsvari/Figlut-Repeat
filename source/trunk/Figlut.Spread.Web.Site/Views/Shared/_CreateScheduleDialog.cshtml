@@ -1,0 +1,149 @@
+﻿@model Figlut.Spread.Web.Site.Models.CreateScheduleModel
+
+<div id="dlgCreateSchedule">
+    <img src="~/Images/Icons/red-document-plus-icon32.png" style="float:right; margin-right:1%; margin-left:1%" />
+    <div class="centerForm">
+        <form id="CreateScheduleForm">
+            @Html.ValidationSummary(true, "Failed to create.")
+            <fieldset>
+                <legend>Confirmation Form</legend>
+                @Html.HiddenFor(m => m.SubscriptionId)
+                @Html.HiddenFor(m => m.OrganizationId)
+                @Html.HiddenFor(m => m.SubscriberId)
+                @Html.HiddenFor(m => m.SubscriptionEnabled)
+                @Html.HiddenFor(m => m.CustomerFullName)
+                @Html.HiddenFor(m => m.CustomerIdentifier)
+                @Html.HiddenFor(m => m.CustomerPhysicalAddress)
+                @Html.HiddenFor(m => m.SubscriptionDateCreated)
+                @Html.HiddenFor(m => m.CellPhoneNumber)
+                @Html.HiddenFor(m => m.SubscriberEnabled)
+                @Html.HiddenFor(m => m.SubscriberDateCreated)
+                @Html.HiddenFor(m => m.OrganizationName)
+                @Html.HiddenFor(m => m.OrganizationIdentifier)
+                @Html.HiddenFor(m => m.OrganizationEmailAddress)
+                @Html.HiddenFor(m => m.OrganizationAddress)
+                @Html.HiddenFor(m => m.OrganizationSmsCreditsBalance)
+                @Html.HiddenFor(m => m.OrganizationAllowSmsCreditsDebt)
+                @Html.HiddenFor(m => m.OrganizationSubscriptionTypeId)
+                @Html.HiddenFor(m => m.OrganizationSubscriptionEnabled)
+                @Html.HiddenFor(m => m.OrganizationBillingDayOfTheMonth)
+                @Html.HiddenFor(m => m.OrganizationDateCreated)
+                @Html.HiddenFor(m => m.CountryId)
+                @Html.HiddenFor(m => m.MaxSmsSendMessageLength)
+
+                @if (ViewBag.SmsMessageTemplateList != null)
+                {
+                    <div class="field-label">
+                        @Html.Raw("SMS Message Templates")
+                    </div>
+                    <div class="editor-field">
+                        @Html.DropDownList("SmsMessageTemplateIdCreate", ViewBag.SmsMessageTemplateList as List<SelectListItem>, new { @class = "drop-down-field", @onchange = "onSmsMessageTemplateCreateChanged()" })
+                    </div>
+                }
+                else
+                {
+                    @Html.HiddenFor(m => m.SmsMessageTemplateIdCreate)
+                }
+                <div class="field-label">
+                    @Html.Raw(string.Format("Notification Message (max {0} characters) *", Model.MaxSmsSendMessageLength))
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.NotificationMessageCreate)
+                    @Html.ValidationMessageFor(m => m.NotificationMessageCreate)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Schedule Name *")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.ScheduleName)
+                    @Html.ValidationMessageFor(m => m.ScheduleName)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Days Repeat Interval *")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.DaysRepeatInterval, new { @type = "number" })
+                    @Html.ValidationMessageFor(m => m.DaysRepeatInterval)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Quantity")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.Quantity, new { @type = "number" })
+                    @Html.ValidationMessageFor(m => m.Quantity)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Unit of measure")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.UnitOfMeasure)
+                    @Html.ValidationMessageFor(m => m.UnitOfMeasure)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Notes")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.Notes)
+                    @Html.ValidationMessageFor(m => m.Notes)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Start Date")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.StartDateCreate, new { disabled = "disabled", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.StartDateCreate)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("End Date")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.EndDateCreate, new { disabled = "disabled", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.EndDateCreate)
+                </div>
+                <br />
+                <div id="CreateScheduleErrorField" style="color:#8A0808"></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var dialogName = '#dlgCreateSchedule';
+        createDialog(dialogName, 'Create Schedule', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 600);
+        enableDatepickers();
+    });
+
+    function onSmsMessageTemplateCreateChanged() {
+        var smsMessageTemplate = $('#SmsMessageTemplateIdCreate').val();
+        $("#NotificationMessageCreate").val(smsMessageTemplate)
+    }
+
+    function onConfirmOK() {
+        var dialogName = '#dlgCreateSchedule';
+        var postBackUrl = '@Url.Action("CreateDialog", "Schedule")';
+        $.ajax({
+            url: postBackUrl,
+            type: 'POST',
+            data: $("#CreateScheduleForm").serialize(),
+            success: function (data) {
+                if (data.Success) {
+                    $(dialogName).dialog("close");
+                    //Submit the form which will refresh grid to show the change the enabled/disabled.
+                    var form = $('#frmDetails');
+                    form.submit()
+                } else {
+                    $("#CreateScheduleErrorField").html(data.ErrorMsg);
+                }
+            }
+        })
+    };
+
+    function onConfirmOpen() {
+    }
+
+    function onConfirmCancel() {
+        //$('#confirmation-message').val('');
+        $("#CreateScheduleErrorField").html('');
+    }
+</script>

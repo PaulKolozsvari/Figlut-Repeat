@@ -52,8 +52,8 @@
     <Compile Include="OrderItemContext.cs" />
     <Compile Include="OrganizationSubscriptionTypeContext.cs" />
     <Compile Include="PublicHolidayContext.cs" />
-    <Compile Include="RepeatScheduleContext.cs" />
-    <Compile Include="RepeatScheduleEntryContext.cs" />
+    <Compile Include="ScheduleContext.cs" />
+    <Compile Include="ScheduleEntryContext.cs" />
     <Compile Include="SmsCampaignContext.cs" />
     <Compile Include="GlobalSettingContext.cs" />
     <Compile Include="OrganizationContext.cs" />

@@ -1199,7 +1199,7 @@ hr {
     background-image: linear-gradient(bottom, #dcebf1 0%, #fff 80%);
 }
 
-.repeat-schedule-preview {
+.schedule-preview {
     padding-top: 0.2%;
     padding-bottom: 1.5%;
     margin-left: auto;
@@ -1217,7 +1217,7 @@ hr {
     background-image: linear-gradient(bottom, #dcebf1 0%, #fff 80%);
 }
 
-.repeat-schedule-entry-preview {
+.schedule-entry-preview {
     padding-top: 0.2%;
     padding-bottom: 1.5%;
     margin-left: auto;
@@ -1316,42 +1316,6 @@ hr {
 }
 
 .public-holiday-preview {
-    padding-top: 0.2%;
-    padding-bottom: 1.5%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: auto;
-    margin-top: auto;
-    text-align: center;
-    color: #3195c2;
-    width: 80%;
-    font-size: 0.9em;
-    background-image: -ms-linear-gradient(bottom, #dcebf1 0%, #fff 80%);
-    background-image: -o-linear-gradient(bottom, #dcebf1 0%, #fff 80%);
-    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #dcebf1), color-stop(1, #fff));
-    background-image: -webkit-linear-gradient(bottom, #dcebf1 0%, #fff 80%);
-    background-image: linear-gradient(bottom, #dcebf1 0%, #fff 80%);
-}
-
-.repeat-schedule-preview {
-    padding-top: 0.2%;
-    padding-bottom: 1.5%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: auto;
-    margin-top: auto;
-    text-align: center;
-    color: #3195c2;
-    width: 80%;
-    font-size: 0.9em;
-    background-image: -ms-linear-gradient(bottom, #dcebf1 0%, #fff 80%);
-    background-image: -o-linear-gradient(bottom, #dcebf1 0%, #fff 80%);
-    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #dcebf1), color-stop(1, #fff));
-    background-image: -webkit-linear-gradient(bottom, #dcebf1 0%, #fff 80%);
-    background-image: linear-gradient(bottom, #dcebf1 0%, #fff 80%);
-}
-
-.repeat-schedule-entry-preview {
     padding-top: 0.2%;
     padding-bottom: 1.5%;
     margin-left: auto;

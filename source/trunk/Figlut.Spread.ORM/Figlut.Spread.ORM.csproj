@@ -45,8 +45,8 @@
     <Compile Include="Csv\OrganizationCsv.cs" />
     <Compile Include="Csv\OrganizationSubscriptionCsv.cs" />
     <Compile Include="Csv\PublicHolidayCsv.cs" />
-    <Compile Include="Csv\RepeatScheduleCsv.cs" />
-    <Compile Include="Csv\RepeatScheduleEntryCsv.cs" />
+    <Compile Include="Csv\ScheduleCsv.cs" />
+    <Compile Include="Csv\ScheduleEntryCsv.cs" />
     <Compile Include="Csv\SmsCampaignCsv.cs" />
     <Compile Include="Csv\SmsMessageTemplateCsv.cs" />
     <Compile Include="Csv\SmsProcessorCsv.cs" />
@@ -66,7 +66,7 @@
       <DependentUpon>FiglutSpread.dbml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\GlobalSettingName.cs" />
-    <Compile Include="Helpers\RepeatDateSet.cs" />
+    <Compile Include="Helpers\EntryDateSet.cs" />
     <Compile Include="Helpers\UserRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -74,11 +74,11 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Views\CreateRepeatScheduleView.cs" />
+    <Compile Include="Views\CreateScheduleView.cs" />
     <Compile Include="Views\OrganizationSubscriptionView.cs" />
     <Compile Include="Views\PublicHolidayView.cs" />
-    <Compile Include="Views\RepeatScheduleEntryView.cs" />
-    <Compile Include="Views\RepeatScheduleView.cs" />
+    <Compile Include="Views\ScheduleEntryView.cs" />
+    <Compile Include="Views\ScheduleView.cs" />
     <Compile Include="Views\SmsCampaignView.cs" />
     <Compile Include="Views\SmsMessageTemplateView.cs" />
     <Compile Include="Views\SmsProcessorLogView.cs" />

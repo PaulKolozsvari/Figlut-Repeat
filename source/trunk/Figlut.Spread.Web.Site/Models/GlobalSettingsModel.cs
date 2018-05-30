@@ -76,9 +76,9 @@
 
         public int SmsMessageTemplatesPerPagePageToDisplay { get; set; }
 
-        public int RepeatSchedulesPerPageToDisplay { get; set; }
+        public int SchedulesPerPageToDisplay { get; set; }
 
-        public int RepeatScheduleEntriesPerPageToDisplay { get; set; }
+        public int ScheduleEntriesPerPageToDisplay { get; set; }
 
         public int GlobalSettingsPerPageToDisplay { get; set; }
 

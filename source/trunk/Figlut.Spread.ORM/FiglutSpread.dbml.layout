@@ -149,7 +149,7 @@
         <classShapeMoniker Id="b3a32ff2-d11c-404c-9928-a7e5aaad0f45" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(4.05469125 : 21.6747054036458); (4.05469125 : 22.5849519856771); (6.29166666666667 : 22.5849519856771 : JumpStart); (6.45833333333333 : 22.5849519856771 : JumpEnd); (9 : 22.5849519856771)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(4.05469125 : 21.6747054036458); (4.05469125 : 22.5849519856771); (9 : 22.5849519856771)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/FiglutSpreadDataContext/Organization/Organization_Order" />
       <nodes>
         <classShapeMoniker Id="10a4324f-652e-4f3a-b369-488e9b20e89d" />
@@ -177,7 +177,7 @@
         <classShapeMoniker Id="85f93ba8-9ec4-45cd-a2cb-40a3c0e69e7d" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(4.75 : 18.96875); (6.29166666666667 : 18.96875 : JumpStart); (6.45833333333333 : 18.96875 : JumpEnd); (9.25 : 18.96875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(4.75 : 18.96875); (6.29166666666667 : 18.96875 : JumpStart); (6.45833333333333 : 18.96875 : JumpEnd); (7.47916666666667 : 18.96875 : JumpStart); (7.64583333333333 : 18.96875 : JumpEnd); (8.51041666666667 : 18.96875 : JumpStart); (8.67708333333333 : 18.96875 : JumpEnd); (9.25 : 18.96875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/FiglutSpreadDataContext/Organization/Organization_SmsReceivedLog" />
       <nodes>
         <classShapeMoniker Id="10a4324f-652e-4f3a-b369-488e9b20e89d" />
@@ -191,7 +191,7 @@
         <classShapeMoniker Id="0379cc89-c892-487c-a2ad-78bcb3a16623" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(3.09375 : 21.6747054036458); (3.09375 : 23.59375); (3.21354416666667 : 23.59375 : JumpStart); (3.38021083333333 : 23.59375 : JumpEnd); (6.25 : 23.59375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(3.09375 : 21.6747054036458); (3.09375 : 23.59375); (6.25 : 23.59375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/FiglutSpreadDataContext/Organization/Organization_SmsSentLog" />
       <nodes>
         <classShapeMoniker Id="10a4324f-652e-4f3a-b369-488e9b20e89d" />
@@ -212,28 +212,28 @@
         <classShapeMoniker Id="4fbb00b7-ef56-4b2d-9637-c6f8ba8fc97b" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(8.25 : 31.4575512695313); (8.54166666666667 : 31.4575512695313 : JumpStart); (8.70833333333333 : 31.4575512695313 : JumpEnd); (9 : 31.4575512695313)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(8.25 : 31.4575512695313); (9 : 31.4575512695313)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/FiglutSpreadDataContext/User/User_WebRequestActivity" />
       <nodes>
         <classShapeMoniker Id="7ee192c1-331e-4b16-b1e1-307dc0aa85f3" />
         <classShapeMoniker Id="0a156624-95d2-4e53-badc-296d7627ff3a" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(8.25 : 30.5725236347656); (8.54166666666667 : 30.5725236347656 : JumpStart); (8.70833333333333 : 30.5725236347656 : JumpEnd); (8.75 : 30.5725236347656); (8.75 : 30.375); (11.5 : 30.375); (11.5 : 28.125); (11.7604166666667 : 28.125 : JumpStart); (11.9270833333333 : 28.125 : JumpEnd); (13 : 28.125); (13 : 26.5304996744792)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(8.25 : 30.5725236347656); (8.75 : 30.5725236347656); (8.75 : 30.375); (11.5 : 30.375); (11.5 : 28.125); (11.7604166666667 : 28.125 : JumpStart); (11.9270833333333 : 28.125 : JumpEnd); (13 : 28.125); (13 : 26.5304996744792)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/FiglutSpreadDataContext/User/User_Invoice" />
       <nodes>
         <classShapeMoniker Id="7ee192c1-331e-4b16-b1e1-307dc0aa85f3" />
         <classShapeMoniker Id="b3a32ff2-d11c-404c-9928-a7e5aaad0f45" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(8.25 : 29.8115374615385); (8.56607443490112 : 29.4954630266374 : JumpStart); (8.68392556509888 : 29.3776118964396 : JumpEnd); (8.6875 : 29.3740374615385); (8.6875 : 23.7772073946815); (8.81607443490112 : 23.6486329597804 : JumpStart); (8.93392556509888 : 23.5307818295826 : JumpEnd); (9.00150915249399 : 23.4631982421875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(8.25 : 29.8115374615385); (8.6875 : 29.3740374615385); (8.6875 : 23.7772073946815); (9.00150915249399 : 23.4631982421875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/FiglutSpreadDataContext/User/User_Order" />
       <nodes>
         <classShapeMoniker Id="7ee192c1-331e-4b16-b1e1-307dc0aa85f3" />
         <classShapeMoniker Id="a6edeee0-f6e4-42f7-8f5a-1a5b1c49e7cf" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(8.25 : 29.7992297692308); (8.40625 : 29.6429797692308); (8.40625 : 30.4511539713542); (8.56607443490112 : 30.2913295364531 : JumpStart); (8.68392556509888 : 30.1734784062553 : JumpEnd); (9 : 29.8574039713542)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(8.25 : 29.7992297692308); (8.40625 : 29.6429797692308); (8.40625 : 30.4511539713542); (9 : 29.8574039713542)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/FiglutSpreadDataContext/User/User_ServerAction" />
       <nodes>
         <classShapeMoniker Id="7ee192c1-331e-4b16-b1e1-307dc0aa85f3" />
@@ -254,12 +254,6 @@
         <classShapeMoniker Id="7ee192c1-331e-4b16-b1e1-307dc0aa85f3" />
       </nodes>
     </associationConnector>
-    <classShape Id="a4588704-dad6-49c7-9092-74aa2c1797a8" absoluteBounds="9, 12.125, 2, 2.5401025390625">
-      <DataClassMoniker Name="/FiglutSpreadDataContext/RepeatSchedule" />
-      <nestedChildShapes>
-        <elementListCompartment Id="479557b7-849a-4508-8c49-3ea3272a6f62" absoluteBounds="9.015, 12.585, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
     <classShape Id="91ce7baf-70e7-4de3-a8ef-f8ca0caf90cd" absoluteBounds="6.25, 16.125, 2, 1.7708968098958331">
       <DataClassMoniker Name="/FiglutSpreadDataContext/Subscriber" />
       <nestedChildShapes>
@@ -305,14 +299,7 @@
         <elementListCompartment Id="3f64e40a-ce58-4991-9ead-9d54f9590adc" absoluteBounds="6.89, 19.71, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(8.59375 : 19.25); (8.59375 : 14.4030989583333); (9 : 14.4030989583333)]" fixedFrom="NotFixed" fixedTo="NotFixed">
-      <AssociationMoniker Name="/FiglutSpreadDataContext/Subscription/Subscription_RepeatSchedule" />
-      <nodes>
-        <classShapeMoniker Id="6c7bded8-4b8c-43e8-8903-abd08dcefefc" />
-        <classShapeMoniker Id="a4588704-dad6-49c7-9092-74aa2c1797a8" />
-      </nodes>
-    </associationConnector>
-    <associationConnector edgePoints="[(4.75 : 21.0060290527344); (6.875 : 21.0060290527344)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(4.75 : 21.0060290527344); (6.29166666666667 : 21.0060290527344 : JumpStart); (6.45833333333333 : 21.0060290527344 : JumpEnd); (6.54166666666667 : 21.0060290527344 : JumpStart); (6.70833333333333 : 21.0060290527344 : JumpEnd); (6.875 : 21.0060290527344)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/FiglutSpreadDataContext/Organization/Organization_Subscription" />
       <nodes>
         <classShapeMoniker Id="10a4324f-652e-4f3a-b369-488e9b20e89d" />
@@ -326,17 +313,30 @@
         <classShapeMoniker Id="6c7bded8-4b8c-43e8-8903-abd08dcefefc" />
       </nodes>
     </associationConnector>
-    <classShape Id="7b1f233b-7033-4825-b0df-50b5644615dc" absoluteBounds="12.375, 11.125, 2, 3.3093082682291666">
-      <DataClassMoniker Name="/FiglutSpreadDataContext/RepeatScheduleEntry" />
+    <classShape Id="deb2f7b4-eecc-4179-998f-1718f500c213" absoluteBounds="9.625, 12.375, 2, 2.5401025390624987">
+      <DataClassMoniker Name="/FiglutSpreadDataContext/Schedule" />
       <nestedChildShapes>
-        <elementListCompartment Id="44c7ba3b-2b55-4d55-ac6b-3d831a8f3734" absoluteBounds="12.39, 11.585, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="6faa44a4-8c60-4ed2-bde2-57b751576d75" absoluteBounds="9.64, 12.835, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(11 : 13.2796541341146); (12.375 : 13.2796541341146)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/FiglutSpreadDataContext/RepeatSchedule/RepeatSchedule_RepeatScheduleEntry" />
+    <classShape Id="7ac43673-b866-4ecf-b423-bccc22d0d26d" absoluteBounds="12.375, 12, 2, 3.3093082682291666">
+      <DataClassMoniker Name="/FiglutSpreadDataContext/ScheduleEntry" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4db2efa0-d695-4662-a3b2-0b2433d81012" absoluteBounds="12.39, 12.46, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(8.59375 : 19.25); (8.59375 : 14.5280989583333); (9.625 : 14.5280989583333)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/FiglutSpreadDataContext/Subscription/Subscription_Schedule" />
       <nodes>
-        <classShapeMoniker Id="a4588704-dad6-49c7-9092-74aa2c1797a8" />
-        <classShapeMoniker Id="7b1f233b-7033-4825-b0df-50b5644615dc" />
+        <classShapeMoniker Id="6c7bded8-4b8c-43e8-8903-abd08dcefefc" />
+        <classShapeMoniker Id="deb2f7b4-eecc-4179-998f-1718f500c213" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(11.625 : 13.6450512695312); (12.375 : 13.6450512695312)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/FiglutSpreadDataContext/Schedule/Schedule_ScheduleEntry" />
+      <nodes>
+        <classShapeMoniker Id="deb2f7b4-eecc-4179-998f-1718f500c213" />
+        <classShapeMoniker Id="7ac43673-b866-4ecf-b423-bccc22d0d26d" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>

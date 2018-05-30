@@ -376,27 +376,27 @@ GlobalSetting smsMessageTemplatesPerPageToDisplay = new GlobalSetting()
 };
 GlobalSettings.InsertOnSubmit(smsMessageTemplatesPerPageToDisplay);
 
-GlobalSetting repeatSchedulesPerPageToDisplay = new GlobalSetting()
+GlobalSetting schedulesPerPageToDisplay = new GlobalSetting()
 {
 	GlobalSettingId = Guid.NewGuid(),
 	Category = "Grid",
-	SettingName = "RepeatSchedulesPerPageToDisplay",
+	SettingName = "SchedulesPerPageToDisplay",
 	SettingValue = "8",
 	DateCreated = DateTime.Now,
-	Description = "Number of Repeat Schedules to display per grid page."
+	Description = "Number of Schedules to display per grid page."
 };
-GlobalSettings.InsertOnSubmit(repeatSchedulesPerPageToDisplay);
+GlobalSettings.InsertOnSubmit(schedulesPerPageToDisplay);
 
-GlobalSetting repeatScheduleEntriesPerPageToDisplay = new GlobalSetting()
+GlobalSetting scheduleEntriesPerPageToDisplay = new GlobalSetting()
 {
 	GlobalSettingId = Guid.NewGuid(),
 	Category = "Grid",
-	SettingName = "RepeatScheduleEntriesPerPageToDisplay",
+	SettingName = "ScheduleEntriesPerPageToDisplay",
 	SettingValue = "8",
 	DateCreated = DateTime.Now,
-	Description = "Number of Repeat Schedule Entries to display per grid page."
+	Description = "Number of Schedule Entries to display per grid page."
 };
-GlobalSettings.InsertOnSubmit(repeatScheduleEntriesPerPageToDisplay);
+GlobalSettings.InsertOnSubmit(scheduleEntriesPerPageToDisplay);
 
 GlobalSetting globalSettingsPerPageToDisplay = new GlobalSetting()
 {
@@ -552,11 +552,11 @@ GlobalSettings.InsertOnSubmit(organizationIdentifierMaxLength);
 GlobalSetting defaultDaysRepeatInterval = new GlobalSetting()
 {
 	GlobalSettingId = Guid.NewGuid(),
-	Category = "Repeat Schedule",
+	Category = "Schedule",
 	SettingName = "DefaultRepeatDaysInterval",
 	SettingValue = "30",
 	DateCreated = DateTime.Now,
-	Description = "The default number of days displayed when creating a Repeat Schedule."
+	Description = "The default number of days displayed when creating a repeat Schedule."
 };
 GlobalSettings.InsertOnSubmit(defaultDaysRepeatInterval);
 
