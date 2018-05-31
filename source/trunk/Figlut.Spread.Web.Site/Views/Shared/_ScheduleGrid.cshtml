@@ -40,7 +40,7 @@
             <div class="grid-buttons">
                 <div style="float: left; margin-left:2%; margin-right:2%">
                     @Html.LinkButtonForSubmit("Search", "onSearchSchedulesClick()", "btnSearch", "search.png")
-                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage) && Model.IsAdministrator)
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
                     {
                         @Html.LinkButtonForSubmit("Download", "onDownloadAllSchedulesCsvFileClick()", "btnDownload", "spreadsheet.png")
                         if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))

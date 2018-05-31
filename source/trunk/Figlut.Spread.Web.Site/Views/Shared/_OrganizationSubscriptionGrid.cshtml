@@ -46,7 +46,7 @@
                         if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
                         {
                             organizationSubscription = (OrganizationSubscriptionModel)grid.Rows[grid.SelectedIndex].Value;
-                            @Html.LinkButtonForSubmit("Repeats", "onViewRepeatSchedulesClick()", "btnViewRepeatSchedules", "red-calendar-icon32.png")
+                            @Html.LinkButtonForSubmit("Schedules", "onViewSchedulesClick()", "btnViewRepeatSchedules", "red-calendar-icon32.png")
                         }
                     }
                 </div>
@@ -206,9 +206,9 @@
         window.location = downloadUrl;
     }
 
-    function onViewRepeatSchedulesClick() {
+    function onViewSchedulesClick() {
         var selectedSubscriptionId = '@organizationSubscription.SubscriptionId';
-        var downloadUrl = '@Url.Action("Index", "RepeatSchedule", new { subscriptionId = "_subscriptionId" })';
+        var downloadUrl = '@Url.Action("Index", "Schedule", new { subscriptionId = "_subscriptionId" })';
         downloadUrl = downloadUrl.replace('_subscriptionId', selectedSubscriptionId);
         window.location = downloadUrl;
     }
