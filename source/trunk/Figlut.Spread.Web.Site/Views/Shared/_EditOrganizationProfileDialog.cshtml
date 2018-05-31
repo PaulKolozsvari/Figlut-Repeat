@@ -1,0 +1,85 @@
+﻿@model Figlut.Spread.Web.Site.Models.OrganizationProfileModel
+
+<div id="dlgEditOrganizationProfile">
+    <img src="~/Images/Icons/red-edit32.png" style="float:right; margin-right:1%; margin-left:1%" />
+    <div class="centerForm">
+        <form id="EditOrganizationProfileForm">
+            @Html.ValidationSummary(true, "Failed to edit profile.")
+            <fieldset>
+                <legend>Confirmation Form</legend>
+                @Html.HiddenFor(m => m.OrganizationId)
+                @Html.HiddenFor(m => m.SmsCreditsBalance)
+                @Html.HiddenFor(m => m.AllowSmsCreditsDebt)
+                @Html.HiddenFor(m => m.OrganizationSubscriptionEnabled)
+                @Html.HiddenFor(m => m.OrganizationSubscriptionTypeId)
+                @Html.HiddenFor(m => m.OrganizationSubscriptionEnabled)
+                @Html.HiddenFor(m => m.DateCreated)
+                <div class="field-label">
+                    @Html.Raw("Name")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.OrganizationName)
+                    @Html.ValidationMessageFor(m => m.OrganizationName)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Identifier")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.OrganizationIdentifier)
+                    @Html.ValidationMessageFor(m => m.OrganizationIdentifier)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Organization Email Address")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.OrganizationEmailAddress)
+                    @Html.ValidationMessageFor(m => m.OrganizationEmailAddress)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Address")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.OrganizationAddress)
+                    @Html.ValidationMessageFor(m => m.OrganizationAddress)
+                </div>
+                <br />
+                <div id="EditOrganizationProfileErrorField" style="color:#8A0808"></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var dialogName = '#dlgEditOrganizationProfile';
+        createDialog(dialogName, 'Edit Organization Profile', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
+    });
+
+    function onConfirmOK() {
+        var dialogName = '#dlgEditOrganizationProfile';
+        var postBackUrl = '@Url.Action("EditProfileDialog", "Organization")';
+        $.ajax({
+            url: postBackUrl,
+            type: 'POST',
+            data: $("#EditOrganizationProfileForm").serialize(),
+            success: function (data) {
+                if (data.Success) {
+                    $(dialogName).dialog("close");
+                    var url = '@Url.Content("~/Home")'
+                    window.location.href = url;
+                } else {
+                    $("#EditOrganizationProfileErrorField").html(data.ErrorMsg);
+                }
+            }
+        })
+    };
+
+    function onConfirmOpen() {
+
+    }
+
+    function onConfirmCancel() {
+        //$('#confirmation-message').val('');
+        $("#EditOrganizationProfileErrorField").html('');
+    }
+</script>

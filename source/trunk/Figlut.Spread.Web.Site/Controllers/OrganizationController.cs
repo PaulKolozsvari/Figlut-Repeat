@@ -25,6 +25,7 @@
         private const string ORGANIZATION_GRID_PARTIAL_VIEW_NAME = "_OrganizationGrid";
         private const string CREATE_ORGANIZATION_DIALOG_PARTIAL_VIEW_NAME = "_CreateOrganizationDialog";
         private const string EDIT_ORGANIZATION_DIALOG_PARTIAL_VIEW_NAME = "_EditOrganizationDialog";
+        private const string EDIT_ORGANIZATION_PROFILE_DIALOG_PARTIAL_VIEW_NAME = "_EditOrganizationProfileDialog";
 
         #endregion //Constants
 
@@ -289,6 +290,66 @@
 
         [HttpPost]
         public ActionResult EditProfile(OrganizationProfileModel model)
+        {
+            try
+            {
+                string errorMessage = null;
+                if (!model.IsValid(out errorMessage))
+                {
+                    return GetJsonResult(false, errorMessage);
+                }
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                Organization organization = context.GetOrganization(model.OrganizationId, true);
+                bool organizationIdentifierHasChanged = organization.Identifier != model.OrganizationIdentifier;
+                if (organizationIdentifierHasChanged)
+                {
+                    Organization original = context.GetOrganizationByIdentifier(model.OrganizationIdentifier, false);
+                    if (original != null)
+                    {
+                        return GetJsonResult(false, string.Format("An {0} with the {1} of '{2}' already exists.",
+                            typeof(Organization).Name,
+                            EntityReader<Organization>.GetPropertyName(p => p.Identifier, false),
+                            model.OrganizationIdentifier));
+                    }
+                }
+                model.CopyPropertiesToOrganization(organization);
+                context.Save<Organization>(organization, false);
+                return GetJsonResult(true);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
+
+        public ActionResult EditProfileDialog()
+        {
+            try
+            {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                User currentUser = GetCurrentUser(context);
+                if (!currentUser.OrganizationId.HasValue)
+                {
+                    return RedirectToError(string.Format("You are not assigned to an Organization."));
+                }
+                Organization organization = context.GetOrganization(currentUser.OrganizationId.Value, true);
+                OrganizationProfileModel model = new OrganizationProfileModel();
+                model.CopyPropertiesFromOrganization(organization);
+                PartialViewResult result = PartialView(EDIT_ORGANIZATION_PROFILE_DIALOG_PARTIAL_VIEW_NAME, model);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return RedirectToError(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult EditProfileDialog(OrganizationProfileModel model)
         {
             try
             {

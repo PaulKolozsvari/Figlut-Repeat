@@ -1,0 +1,69 @@
+﻿@model Figlut.Spread.Web.Site.Models.UserProfileModel
+
+<div id="dlgEditUserProfile">
+    <img src="~/Images/Icons/red-edit32.png" style="float:right; margin-right:1%; margin-left:1%" />
+    <div class="centerForm">
+        <form id="EditUserProfileForm">
+            @Html.ValidationSummary(true, "Failed to edit profile.")
+            <fieldset>
+                <legend>Confirmation Form</legend>
+                @Html.HiddenFor(m => m.UserId)
+                @Html.HiddenFor(m => m.UserPassword)
+                @Html.HiddenFor(m => m.OrganizationId)
+                @Html.HiddenFor(m => m.RoleId)
+                @Html.HiddenFor(m => m.DateCreated)
+                <div class="field-label">
+                    @Html.Raw("User Name *")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.UserName)
+                    @Html.ValidationMessageFor(m => m.UserName)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Email Address *")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.UserEmailAddress)
+                    @Html.ValidationMessageFor(m => m.UserEmailAddress)
+                </div>
+                <br />
+                <div id="EditUserProfileErrorField" style="color:#8A0808"></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var dialogName = '#dlgEditUserProfile';
+        createDialog(dialogName, 'Edit User Profile', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
+    });
+
+    function onConfirmOK() {
+        var dialogName = '#dlgEditUserProfile';
+        var postBackUrl = '@Url.Action("EditProfileDialog", "User")';
+        $.ajax({
+            url: postBackUrl,
+            type: 'POST',
+            data: $("#EditUserProfileForm").serialize(),
+            success: function (data) {
+                if (data.Success) {
+                    $(dialogName).dialog("close");
+                    var url = '@Url.Content("~/Home")'
+                    window.location.href = url;
+                } else {
+                    $("#EditUserProfileErrorField").html(data.ErrorMsg);
+                }
+            }
+        })
+    };
+
+    function onConfirmOpen() {
+
+    }
+
+    function onConfirmCancel() {
+        //$('#confirmation-message').val('');
+        $("#EditUserProfileErrorField").html('');
+    }
+</script>

@@ -398,30 +398,30 @@
         {
             try
             {
-                if (!Request.IsAuthenticated)
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                if (!Request.IsAuthenticated || !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context))
                 {
                     return RedirectToHome();
                 }
-                SpreadEntityContext context = SpreadEntityContext.Create();
                 SmsMessageTemplateModel model = new SmsMessageTemplateModel();
                 if (IsCurrentUserAdministrator(context))
                 {
                     Organization organization = GetCurrentOrganization(context, true);
                     RefreshOrganizationsList(context, organization);
-                    model = new SmsMessageTemplateModel()
-                    {
-                        SmsMessageTemplateId = Guid.NewGuid(),
-                        OrganizationId = organization.OrganizationId,
-                        OrganizationName = organization.Name,
-                        DateCreated = DateTime.Now
-                    };
-                    model.MaxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
+                    //model = new SmsMessageTemplateModel()
+                    //{
+                    //    SmsMessageTemplateId = Guid.NewGuid(),
+                    //    OrganizationId = organization.OrganizationId,
+                    //    OrganizationName = organization.Name,
+                    //    DateCreated = DateTime.Now
+                    //};
                 }
                 else if (!organizationId.HasValue || organizationId.Value == Guid.Empty)
                 {
                     return RedirectToError(string.Format("{0} not specified.",
                         EntityReader<SmsMessageTemplate>.GetPropertyName(p => p.OrganizationId, false)));
                 }
+                model.MaxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
                 PartialViewResult result = PartialView(CREATE_SMS_MESSAGE_TEMPLATE_PARTIAL_VIEW_NAME, model);
                 return result;
             }

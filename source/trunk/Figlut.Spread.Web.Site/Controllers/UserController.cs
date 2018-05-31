@@ -29,6 +29,7 @@
         private const string LOGIN_DIALOG_PARTIAL_VIEW_NAME = "_LogingDialog";
         private const string EDIT_USER_DIALOG_PARTIAL_VIEW_NAME = "_EditUserDialog";
         private const string CREATE_USER_DIALOG_PARTIAL_VIEW_NAME = "_CreateUserDialog";
+        private const string EDIT_USER_PROFILE_DIALOG_PARTIAL_VIEW_NAME = "_EditUserProfileDialog";
         private const string EDIT_USER_PASSWORD_DIALOG_PARTIAL_VIEW_NAME = "_EditUserPasswordDialog";
 
         #endregion //Constants
@@ -554,6 +555,59 @@
             SpreadWebApp.Instance.EmailSender.SendEmail(subject, body.ToString(), null, false, recipients, null);
         }
 
+        public ActionResult ChangePassword()
+        {
+            try
+            {
+                return View(new ChangeUserPasswordModel());
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return RedirectToError(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(ChangeUserPasswordModel model)
+        {
+            try
+            {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                User currentUser = GetCurrentUser(context);
+                string errorMessage = null;
+                if (!model.IsValid(currentUser, out errorMessage))
+                {
+                    return GetJsonResult(false, errorMessage);
+                }
+                currentUser.Password = model.NewPassword;
+                context.Save<User>(currentUser, false);
+                return GetJsonResult(true);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
+
+        public ActionResult LogOff()
+        {
+            try
+            {
+                FormsAuthentication.SignOut();
+                return RedirectToHome();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return RedirectToError(ex.Message);
+            }
+        }
+
         public ActionResult EditProfile()
         {
             try
@@ -637,11 +691,25 @@
             }
         }
 
-        public ActionResult ChangePassword()
+        public ActionResult EditProfileDialog()
         {
             try
             {
-                return View(new ChangeUserPasswordModel());
+                if (!Request.IsAuthenticated)
+                {
+                    return RedirectToHome();
+                }
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                User currentUser = GetCurrentUser(context);
+                Organization organization = null;
+                if (currentUser.OrganizationId.HasValue)
+                {
+                    organization = context.GetOrganization(currentUser.OrganizationId.Value, true);
+                }
+                UserProfileModel model = new UserProfileModel();
+                model.CopyPropertiesFromUser(currentUser, organization);
+                PartialViewResult result = PartialView(EDIT_USER_PROFILE_DIALOG_PARTIAL_VIEW_NAME, model);
+                return result;
             }
             catch (Exception ex)
             {
@@ -652,19 +720,51 @@
         }
 
         [HttpPost]
-        public ActionResult ChangePassword(ChangeUserPasswordModel model)
+        public ActionResult EditProfileDialog(UserProfileModel model)
         {
             try
             {
-                SpreadEntityContext context = SpreadEntityContext.Create();
-                User currentUser = GetCurrentUser(context);
+                if (!Request.IsAuthenticated)
+                {
+                    return RedirectToHome();
+                }
                 string errorMessage = null;
-                if (!model.IsValid(currentUser, out errorMessage))
+                if (!model.IsValid(out errorMessage))
                 {
                     return GetJsonResult(false, errorMessage);
                 }
-                currentUser.Password = model.NewPassword;
-                context.Save<User>(currentUser, false);
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                User user = context.GetUser(model.UserId, true);
+                bool userNameHasChanged = user.UserName.ToLower() != model.UserName.ToLower();
+                bool emailAddresHasChanged = user.EmailAddress.ToLower() != model.UserEmailAddress.ToLower();
+                if (userNameHasChanged)
+                {
+                    User originalUser = context.GetUserByUserName(model.UserName, false);
+                    if (originalUser != null)
+                    {
+                        return GetJsonResult(false, string.Format("A {0} with the {1} of '{2}' already exists.",
+                            typeof(User).Name,
+                            EntityReader<User>.GetPropertyName(p => p.UserName, true),
+                            model.UserName));
+                    }
+                }
+                if (emailAddresHasChanged)
+                {
+                    User originalUser = context.GetUserByEmailAddress(model.UserEmailAddress, false);
+                    if (originalUser != null)
+                    {
+                        return GetJsonResult(false, string.Format("A {0} with the {1} of '{2}' already exists.",
+                            typeof(User).Name,
+                            EntityReader<User>.GetPropertyName(p => p.EmailAddress, true),
+                            model.UserName));
+                    }
+                }
+                model.CopyPropertiesToUser(user);
+                context.Save<User>(user, false);
+                FormsAuthentication.SignOut();
+                FormsAuthentication.SetAuthCookie(
+                    user.UserName,
+                    Convert.ToBoolean(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.CreatePersistentAuthenticationCookie].SettingValue));
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -672,21 +772,6 @@
                 ExceptionHandler.HandleException(ex);
                 SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
                 return GetJsonResult(false, ex.Message);
-            }
-        }
-
-        public ActionResult LogOff()
-        {
-            try
-            {
-                FormsAuthentication.SignOut();
-                return RedirectToHome();
-            }
-            catch (Exception ex)
-            {
-                ExceptionHandler.HandleException(ex);
-                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
-                return RedirectToError(ex.Message);
             }
         }
 

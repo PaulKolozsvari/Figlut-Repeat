@@ -565,6 +565,8 @@
     <Content Include="Views\Shared\_LogingDialog.cshtml" />
     <Content Include="Views\Shared\_CreateOrganizationDialog.cshtml" />
     <Content Include="Views\Shared\_CreateUserDialog.cshtml" />
+    <Content Include="Views\Shared\_EditUserProfileDialog.cshtml" />
+    <Content Include="Views\Shared\_EditOrganizationProfileDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

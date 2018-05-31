@@ -25,6 +25,29 @@
         @Styles.Render("~/Content/css")
     </head>
     <body>
+        @{
+            User currentUser = null;
+            Organization currentOrganization = null;
+            string currentAction = ViewContext.RouteData.GetRequiredString("action");
+            string currentController = ViewContext.RouteData.GetRequiredString("controller");
+        }
+        @if (Request.IsAuthenticated)
+        {
+            SpreadEntityContext context = SpreadEntityContext.Create();
+            currentUser = context.GetUserByIdentifier(User.Identity.Name, false);
+            if (currentUser == null)
+            {
+                //If the request is authenticated, but the user does not exist in the database, sign out the user. This will happen when the user's name or email address has been changed by an administrator or an organization administrator and this user is still currently logged.
+                FormsAuthentication.SignOut();
+                Response.Redirect("~/Home");
+                return;
+            }
+            else if (currentUser.OrganizationId.HasValue)
+            {
+                currentOrganization = context.GetOrganization(currentUser.OrganizationId.Value, false);
+            }
+        }
+
         <script type="text/javascript">
             function loadDialog(dialogWrapperName, dialogName, action, controller, fieldName, fieldValue) {
                 if ($(dialogName).length == 0) {
@@ -67,6 +90,17 @@
                 @if (Request.IsAuthenticated)
                 {
                     <text>
+                        var currentUserId = '@(currentUser != null ? currentUser.UserId.ToString() : string.Empty)';
+                        if (currentUserId == '') {
+                            return;
+                        }
+                        var currentOrganizationId = '@(currentOrganization != null ? currentOrganization.OrganizationId.ToString() : string.Empty)';
+                        if (currentOrganizationId == '') {
+                            return;
+                        }
+                        loadDialog("#divEditUserProfile", "#dlgEditUserProfile", "EditProfileDialog", "User", '', '@null');
+                        loadDialog("#divEditUserPassword", "#dlgEditUserPassword", "EditUserPasswordDialog", "User", 'userId', '@null');
+                        loadDialog("#divEditOrganizationProfile", "#dlgEditOrganizationProfile", "EditProfileDialog", "Organization", '', '@null');
                         loadDialog("#divSendSmsDialog", "#dlgSendSmsDialog", "SendSms", "SmsSent", '', '@null');
                         loadDialog("#divWaitDialog", "#dlgWait", "WaitDialog", "SmsSent", 'message', '@string.Empty');
                         loadDialog("#divInformationDialog", "#dlgInformation", "InformationDialog", "SmsSent", 'message', '@string.Empty');
@@ -84,9 +118,11 @@
         <div id="divEditGlobalSetting"></div>
         <div id="divCreateOrganization"></div>
         <div id="divEditOrganization"></div>
+        <div id="divEditOrganizationProfile"></div>
         <div id="divCreateUser"></div>
         <div id="divEditUser"></div>
         <div id="divEditUserPassword"></div>
+        <div id="divEditUserProfile"></div>
         <div id="divCreateSubscriber"></div>
         <div id="divEditSubscriber"></div>
         <div id="divEditSubscriberSubscription"></div>
@@ -116,28 +152,6 @@
                 <div class="float-left">
                     <nav>
                         <ul id="menu">
-                            @{
-                                User currentUser = null;
-                                Organization currentOrganization = null;
-                                string currentAction = ViewContext.RouteData.GetRequiredString("action");
-                                string currentController = ViewContext.RouteData.GetRequiredString("controller");
-                            }
-                            @if (Request.IsAuthenticated)
-                            {
-                                SpreadEntityContext context = SpreadEntityContext.Create();
-                                currentUser = context.GetUserByIdentifier(User.Identity.Name, false);
-                                if (currentUser == null)
-                                {
-                                    //If the request is authenticated, but the user does not exist in the database, sign out the user. This will happen when the user's name or email address has been changed by an administrator or an organization administrator and this user is still currently logged.
-                                    FormsAuthentication.SignOut();
-                                    Response.Redirect("~/Home");
-                                    return;
-                                }
-                                else if (currentUser.OrganizationId.HasValue)
-                                {
-                                    currentOrganization = context.GetOrganization(currentUser.OrganizationId.Value, false);
-                                }
-                            }
                             @if (currentUser == null)
                             {
                                 <li><a id="lnkLogin" onclick="onLoginClick()">Login</a></li>
@@ -149,9 +163,12 @@
                                 <li>
                                     @Html.Raw("Account")
                                     <ul style="left:0%">
-                                        <li>@Html.ActionLink(string.Format("User: {0}", currentUser.UserName), "EditProfile", "User")</li>
+                                        <li><a id="lnkEditCurrentUserProfile" onclick="onEditCurrentUserProfileClick()">@string.Format("User: {0}", currentUser.UserName)</a></li>
                                         <br />
-                                        <li>@Html.ActionLink(string.Format("Organization: {0}", currentOrganization.Name), "EditProfile", "Organization")</li>
+                                        <li><a id="lnkEditCurrentUserPassword" onclick="onEditCurrentUserPasswordClick()">@string.Format("Change Password")</a></li>
+                                        <br />
+                                        <hr />
+                                        <li><a id="lnkEditCurrentOrganizationProfile" onclick="onEditCurrentOrganizationProfileClick()">@string.Format("Organization: {0}", currentOrganization.Name)</a></li>
                                         <br />
                                         <hr />
                                         <li style="color:white">@Html.ActionLink("Log Off", "LogOff", "User")</li>
@@ -365,6 +382,40 @@
                     '#dlgSendSmsDialog',
                     'SendSms',
                     'SmsSent',
+                    '',
+                    '@null');
+            }
+
+            function onEditCurrentUserProfileClick() {
+                showDialog(
+                    '#divEditUserProfile',
+                    '#dlgEditUserProfile',
+                    'EditProfileDialog',
+                    'User',
+                    '',
+                    '@null');
+            }
+
+            function onEditCurrentUserPasswordClick() {
+                var currentUserId = '@(currentUser != null ? currentUser.UserId.ToString() : string.Empty)';
+                if (currentUserId == '') {
+                    return;
+                }
+                showDialog(
+                    '#divEditUserPassword',
+                    '#dlgEditUserPassword',
+                    'EditUserPasswordDialog',
+                    'User',
+                    'userId',
+                    currentUserId);
+            }
+
+            function onEditCurrentOrganizationProfileClick() {
+                showDialog(
+                    '#divEditOrganizationProfile',
+                    '#dlgEditOrganizationProfile',
+                    'EditProfileDialog',
+                    'Organization',
                     '',
                     '@null');
             }
