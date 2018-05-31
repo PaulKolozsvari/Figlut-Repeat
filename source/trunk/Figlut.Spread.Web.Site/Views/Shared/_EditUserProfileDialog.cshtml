@@ -26,6 +26,13 @@
                     @Html.EditorFor(m => m.UserEmailAddress)
                     @Html.ValidationMessageFor(m => m.UserEmailAddress)
                 </div>
+                <div class="field-label">
+                    @Html.Raw("Cell Phone Number *")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.UserCellPhoneNumber)
+                    @Html.ValidationMessageFor(m => m.UserCellPhoneNumber)
+                </div>
                 <br />
                 <div id="EditUserProfileErrorField" style="color:#8A0808"></div>
             </fieldset>
@@ -49,8 +56,6 @@
             success: function (data) {
                 if (data.Success) {
                     $(dialogName).dialog("close");
-                    var url = '@Url.Content("~/Home")'
-                    window.location.href = url;
                 } else {
                     $("#EditUserProfileErrorField").html(data.ErrorMsg);
                 }

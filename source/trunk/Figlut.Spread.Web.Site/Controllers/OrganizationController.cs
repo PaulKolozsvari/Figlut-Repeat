@@ -45,12 +45,51 @@
             {
                 OrganizationModel m = new OrganizationModel();
                 m.CopyPropertiesFromOrganization(o, currencySymbol);
+                if (o.AccountManagerUserId.HasValue)
+                {
+                    User accountManager = context.GetUser(o.AccountManagerUserId.Value, false);
+                    if (accountManager != null)
+                    {
+                        m.AccountManagerUserName = accountManager.UserName;
+                        m.AccountManagerEmailAddress = accountManager.EmailAddress;
+                    }
+                }
                 modelList.Add(m);
             }
             model.DataModel.Clear();
             model.DataModel = modelList;
             model.TotalTableCount = context.GetAllOrganizationCount();
             return model;
+        }
+
+        private void RefreshAccountManagersList(SpreadEntityContext context, User defaultUser)
+        {
+            if (context == null)
+            {
+                context = SpreadEntityContext.Create();
+            }
+            List<SelectListItem> usersList = new List<SelectListItem>();
+            List<User> users = context.GetUsersOfRole(UserRole.AccountManager);
+            usersList.Add(new SelectListItem() //Add an empty entry i.e. Account Manager user not selected.
+            {
+                Text = string.Empty,
+                Value = string.Empty,
+                Selected = true
+            });
+            foreach (User u in users)
+            {
+                usersList.Add(new SelectListItem()
+                {
+                    Text = u.UserName,
+                    Value = u.UserId.ToString(),
+                    Selected = false,
+                });
+            }
+            ViewBag.AccountManagersList = usersList;
+            if (defaultUser != null)
+            {
+                ViewBag.AccountManagerUserId = defaultUser.UserId;
+            }
         }
 
         #endregion //Methods
@@ -265,65 +304,6 @@
             }
         }
 
-        public ActionResult EditProfile()
-        {
-            try
-            {
-                SpreadEntityContext context = SpreadEntityContext.Create();
-                User currentUser = GetCurrentUser(context);
-                if (!currentUser.OrganizationId.HasValue)
-                {
-                    return RedirectToError(string.Format("You are not assigned to an Organization."));
-                }
-                Organization organization = context.GetOrganization(currentUser.OrganizationId.Value, true);
-                OrganizationProfileModel model = new OrganizationProfileModel();
-                model.CopyPropertiesFromOrganization(organization);
-                return View(model);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHandler.HandleException(ex);
-                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
-                return RedirectToError(ex.Message);
-            }
-        }
-
-        [HttpPost]
-        public ActionResult EditProfile(OrganizationProfileModel model)
-        {
-            try
-            {
-                string errorMessage = null;
-                if (!model.IsValid(out errorMessage))
-                {
-                    return GetJsonResult(false, errorMessage);
-                }
-                SpreadEntityContext context = SpreadEntityContext.Create();
-                Organization organization = context.GetOrganization(model.OrganizationId, true);
-                bool organizationIdentifierHasChanged = organization.Identifier != model.OrganizationIdentifier;
-                if (organizationIdentifierHasChanged)
-                {
-                    Organization original = context.GetOrganizationByIdentifier(model.OrganizationIdentifier, false);
-                    if (original != null)
-                    {
-                        return GetJsonResult(false, string.Format("An {0} with the {1} of '{2}' already exists.",
-                            typeof(Organization).Name,
-                            EntityReader<Organization>.GetPropertyName(p => p.Identifier, false),
-                            model.OrganizationIdentifier));
-                    }
-                }
-                model.CopyPropertiesToOrganization(organization);
-                context.Save<Organization>(organization, false);
-                return GetJsonResult(true);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHandler.HandleException(ex);
-                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
-                return GetJsonResult(false, ex.Message);
-            }
-        }
-
         public ActionResult EditProfileDialog()
         {
             try
@@ -337,6 +317,13 @@
                 Organization organization = context.GetOrganization(currentUser.OrganizationId.Value, true);
                 OrganizationProfileModel model = new OrganizationProfileModel();
                 model.CopyPropertiesFromOrganization(organization);
+                if (organization.AccountManagerUserId.HasValue)
+                {
+                    User accountManager = context.GetUser(organization.AccountManagerUserId.Value, true);
+                    model.AccountManagerUserName = accountManager.UserName;
+                    model.AccountManagerEmailAddress = accountManager.EmailAddress;
+                    model.AccountManagerCellPhoneNumber = accountManager.CellPhoneNumber;
+                }
                 PartialViewResult result = PartialView(EDIT_ORGANIZATION_PROFILE_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
             }
@@ -388,12 +375,21 @@
         {
             try
             {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                RefreshAccountManagersList(context, null);
                 int organizationIdentifierMaxLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.OrganizationIdentifierMaxLength].SettingValue);
                 return PartialView(CREATE_ORGANIZATION_DIALOG_PARTIAL_VIEW_NAME, new OrganizationModel()
                 {
                     OrganizationSubscriptionEnabled = true,
                     BillingDayOfTheMonth = 1,
                     OrganizationIdentifierMaxLength = organizationIdentifierMaxLength,
+                    IsMondayWorkDay = true,
+                    IsTuesdayWorkDay = true,
+                    IsWednesdayWorkDay = true,
+                    IsThursdayWorkDay = true,
+                    IsFridayWorkDay = true,
+                    IsSaturdayWorkDay = false,
+                    IsSundayWorkDay = false
                 });
             }
             catch (Exception ex)
@@ -414,6 +410,7 @@
                 {
                     return RedirectToHome();
                 }
+                RefreshAccountManagersList(context, null);
                 int organizationIdentifierMaxLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.OrganizationIdentifierMaxLength].SettingValue);
                 model.OrganizationId = Guid.NewGuid();
                 model.DateCreated = DateTime.Now;
@@ -444,6 +441,8 @@
                 {
                     return RedirectToHome();
                 }
+                User accountManager = null;
+                RefreshAccountManagersList(context, accountManager);
                 if (!organizationId.HasValue)
                 {
                     return PartialView(EDIT_ORGANIZATION_DIALOG_PARTIAL_VIEW_NAME, new OrganizationModel());
@@ -453,6 +452,14 @@
                 int organizationIdentifierMaxLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.OrganizationIdentifierMaxLength].SettingValue);
                 OrganizationModel model = new OrganizationModel();
                 model.CopyPropertiesFromOrganization(organization, currencySymbol);
+                if (organization.AccountManagerUserId.HasValue)
+                {
+                    accountManager = context.GetUser(organization.AccountManagerUserId.Value, true);
+                    model.AccountManagerUserName = accountManager.UserName;
+                    model.AccountManagerEmailAddress = accountManager.EmailAddress;
+                    model.AccountManagerCellPhoneNumber = accountManager.CellPhoneNumber;
+                    RefreshAccountManagersList(context, accountManager);
+                }
                 model.OrganizationIdentifierMaxLength = organizationIdentifierMaxLength;
                 PartialViewResult result = PartialView(EDIT_ORGANIZATION_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
@@ -470,13 +477,22 @@
         {
             try
             {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                User accountManager = null;
+                RefreshAccountManagersList(context, accountManager);
+                if (model.AccountManagerUserId.HasValue)
+                {
+                    accountManager = context.GetUser(model.AccountManagerUserId.Value, true);
+                    model.AccountManagerUserName = accountManager.UserName;
+                    model.AccountManagerEmailAddress = accountManager.EmailAddress;
+                    RefreshAccountManagersList(context, accountManager);
+                }
                 int organizationIdentifierMaxLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.OrganizationIdentifierMaxLength].SettingValue);
                 string errorMessage = null;
                 if (!model.IsValid(out errorMessage, organizationIdentifierMaxLength))
                 {
                     return GetJsonResult(false, errorMessage);
                 }
-                SpreadEntityContext context = SpreadEntityContext.Create();
                 Organization organization = context.GetOrganization(model.OrganizationId, true);
                 bool organizationIdentifierHasChanged = organization.Identifier != model.Identifier;
                 if (organizationIdentifierHasChanged)

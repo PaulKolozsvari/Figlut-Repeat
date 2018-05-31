@@ -1,0 +1,2 @@
+*	Added working days settings on the Organization table.
+*	Added Cell Phone Number on the User table.

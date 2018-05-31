@@ -115,29 +115,6 @@
       <Association Name="Order_OrderItem" Member="Order" AccessModifier="Internal" ThisKey="OrderId" OtherKey="OrderId" Type="Order" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Organization" Member="Organizations">
-    <Type Name="Organization">
-      <Column Name="OrganizationId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
-      <Column Name="Identifier" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="EmailAddress" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
-      <Column Name="Address" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="SmsCreditsBalance" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
-      <Column Name="AllowSmsCreditsDebt" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="OrganizationSubscriptionTypeId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
-      <Column Name="OrganizationSubscriptionEnabled" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="BillingDayOfTheMonth" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="Organization_Invoice" Member="Invoices" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Invoice" />
-      <Association Name="Organization_Order" Member="Orders" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Order" />
-      <Association Name="Organization_SmsMessageTemplate" Member="SmsMessageTemplates" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="SmsMessageTemplate" />
-      <Association Name="Organization_SmsReceivedLog" Member="SmsReceivedLogs" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="SmsReceivedLog" />
-      <Association Name="Organization_SmsSentLog" Member="SmsSentLogs" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="SmsSentLog" />
-      <Association Name="Organization_User" Member="Users" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="User" />
-      <Association Name="Organization_Subscription" Member="Subscriptions" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Subscription" />
-      <Association Name="OrganizationSubscriptionType_Organization" Member="OrganizationSubscriptionType" AccessModifier="Internal" ThisKey="OrganizationSubscriptionTypeId" OtherKey="OrganizationSubscriptionTypeId" Type="OrganizationSubscriptionType" IsForeignKey="true" DeleteRule="SET NULL" />
-    </Type>
-  </Table>
   <Table Name="dbo.OrganizationSubscriptionType" Member="OrganizationSubscriptionTypes">
     <Type Name="OrganizationSubscriptionType">
       <Column Name="OrganizationSubscriptionTypeId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -171,7 +148,7 @@
       <Column Name="UserName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="Comments" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
       <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="User_ServerError" Member="User" ThisKey="UserId" OtherKey="UserId" Type="User" IsForeignKey="true" DeleteRule="SET NULL" />
+      <Association Name="User_ServerError" Member="User" AccessModifier="Internal" ThisKey="UserId" OtherKey="UserId" Type="User" IsForeignKey="true" DeleteRule="SET NULL" />
     </Type>
   </Table>
   <Table Name="dbo.SmsCampaign" Member="SmsCampaigns">
@@ -252,8 +229,8 @@
       <Column Name="MessageToOrganization" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
       <Column Name="DateReceived" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="Organization_SmsReceivedLog" Member="Organization" AccessModifier="Internal" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Organization" IsForeignKey="true" DeleteRule="SET NULL" />
       <Association Name="Subscriber_SmsReceivedLog" Member="Subscriber" AccessModifier="Internal" ThisKey="SubscriberId" OtherKey="SubscriberId" Type="Subscriber" IsForeignKey="true" DeleteRule="SET NULL" />
+      <Association Name="Organization_SmsReceivedLog" Member="Organization" AccessModifier="Internal" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Organization" IsForeignKey="true" DeleteRule="SET NULL" />
     </Type>
   </Table>
   <Table Name="dbo.SmsReceivedQueueItem" Member="SmsReceivedQueueItems">
@@ -294,9 +271,9 @@
       <Column Name="SmsCampaignId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
       <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="SmsSentLog_SmsDeliveryReportLog" Member="SmsDeliveryReportLogs" ThisKey="SmsSentLogId" OtherKey="SmsSentLogId" Type="SmsDeliveryReportLog" />
-      <Association Name="Organization_SmsSentLog" Member="Organization" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Organization" IsForeignKey="true" DeleteRule="SET NULL" />
       <Association Name="SmsCampaign_SmsSentLog" Member="SmsCampaign" AccessModifier="Internal" ThisKey="SmsCampaignId" OtherKey="SmsCampaignId" Type="SmsCampaign" IsForeignKey="true" DeleteRule="SET NULL" />
       <Association Name="Subscriber_SmsSentLog" Member="Subscriber" AccessModifier="Internal" ThisKey="SubscriberId" OtherKey="SubscriberId" Type="Subscriber" IsForeignKey="true" DeleteRule="SET NULL" />
+      <Association Name="Organization_SmsSentLog" Member="Organization" AccessModifier="Internal" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Organization" IsForeignKey="true" DeleteRule="SET NULL" />
     </Type>
   </Table>
   <Table Name="dbo.SmsSentQueueItem" Member="SmsSentQueueItems">
@@ -318,25 +295,6 @@
       <Column Name="FailedToSendErrorMessage" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
       <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="SmsCampaign_SmsSentQueueItem" Member="SmsCampaign" AccessModifier="Internal" ThisKey="SmsCampaignId" OtherKey="SmsCampaignId" Type="SmsCampaign" IsForeignKey="true" DeleteRule="CASCADE" />
-    </Type>
-  </Table>
-  <Table Name="dbo.[User]" Member="Users">
-    <Type Name="User">
-      <Column Name="UserId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="UserName" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
-      <Column Name="EmailAddress" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
-      <Column Name="Password" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="OrganizationId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
-      <Column Name="RoleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="LastLoginDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="LastActivityDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="User_WebRequestActivity" Member="WebRequestActivities" ThisKey="UserId" OtherKey="UserId" Type="WebRequestActivity" />
-      <Association Name="User_Invoice" Member="Invoices" ThisKey="UserId" OtherKey="CreatedByUserId" Type="Invoice" />
-      <Association Name="User_Order" Member="Orders" ThisKey="UserId" OtherKey="CreatedByUserId" Type="Order" />
-      <Association Name="User_ServerAction" Member="ServerActions" ThisKey="UserId" OtherKey="UserId" Type="ServerAction" />
-      <Association Name="User_ServerError" Member="ServerErrors" ThisKey="UserId" OtherKey="UserId" Type="ServerError" />
-      <Association Name="Organization_User" Member="Organization" AccessModifier="Internal" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Organization" IsForeignKey="true" DeleteRule="SET NULL" />
     </Type>
   </Table>
   <Table Name="dbo.Subscriber" Member="Subscribers">
@@ -387,8 +345,8 @@
       <Column Name="CustomerNotes" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
       <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="Subscription_Schedule" Member="Schedules" ThisKey="SubscriptionId" OtherKey="SubscriptionId" Type="Schedule" />
-      <Association Name="Organization_Subscription" Member="Organization" AccessModifier="Internal" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Organization" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="Subscriber_Subscription" Member="Subscriber" AccessModifier="Internal" ThisKey="SubscriberId" OtherKey="SubscriberId" Type="Subscriber" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Organization_Subscription" Member="Organization" AccessModifier="Internal" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Organization" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.Schedule" Member="Schedules">
@@ -422,6 +380,57 @@
       <Column Name="SmsSentLogId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
       <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="Schedule_ScheduleEntry" Member="Schedule" AccessModifier="Internal" ThisKey="ScheduleId" OtherKey="ScheduleId" Type="Schedule" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Organization" Member="Organizations">
+    <Type Name="Organization">
+      <Column Name="OrganizationId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Identifier" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="EmailAddress" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="SmsCreditsBalance" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="AllowSmsCreditsDebt" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="OrganizationSubscriptionTypeId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="OrganizationSubscriptionEnabled" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="BillingDayOfTheMonth" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsMondayWorkDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsTuesdayWorkDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsWednesdayWorkDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsThursdayWorkDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsFridayWorkDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsSaturdayWorkDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsSundayWorkDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="AccountManagerUserId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Organization_Invoice" Member="Invoices" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Invoice" />
+      <Association Name="Organization_Order" Member="Orders" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Order" />
+      <Association Name="Organization_SmsMessageTemplate" Member="SmsMessageTemplates" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="SmsMessageTemplate" />
+      <Association Name="Organization_SmsReceivedLog" Member="SmsReceivedLogs" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="SmsReceivedLog" />
+      <Association Name="Organization_SmsSentLog" Member="SmsSentLogs" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="SmsSentLog" />
+      <Association Name="Organization_Subscription" Member="Subscriptions" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Subscription" />
+      <Association Name="Organization_User" Member="Users" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="User" />
+      <Association Name="OrganizationSubscriptionType_Organization" Member="OrganizationSubscriptionType" AccessModifier="Internal" ThisKey="OrganizationSubscriptionTypeId" OtherKey="OrganizationSubscriptionTypeId" Type="OrganizationSubscriptionType" IsForeignKey="true" DeleteRule="SET NULL" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[User]" Member="Users">
+    <Type Name="User">
+      <Column Name="UserId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="EmailAddress" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="CellPhoneNumber" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="OrganizationId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="RoleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LastLoginDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LastActivityDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="User_WebRequestActivity" Member="WebRequestActivities" ThisKey="UserId" OtherKey="UserId" Type="WebRequestActivity" />
+      <Association Name="User_Invoice" Member="Invoices" ThisKey="UserId" OtherKey="CreatedByUserId" Type="Invoice" />
+      <Association Name="User_Order" Member="Orders" ThisKey="UserId" OtherKey="CreatedByUserId" Type="Order" />
+      <Association Name="User_ServerAction" Member="ServerActions" ThisKey="UserId" OtherKey="UserId" Type="ServerAction" />
+      <Association Name="User_ServerError" Member="ServerErrors" ThisKey="UserId" OtherKey="UserId" Type="ServerError" />
+      <Association Name="Organization_User" Member="Organization" AccessModifier="Internal" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Organization" IsForeignKey="true" DeleteRule="SET NULL" />
     </Type>
   </Table>
 </Database>

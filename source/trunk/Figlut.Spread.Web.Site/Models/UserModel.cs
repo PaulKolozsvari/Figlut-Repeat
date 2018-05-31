@@ -24,6 +24,8 @@
 
         public string UserEmailAddress { get; set; }
 
+        public string UserCellPhoneNumber { get; set; }
+
         public string UserPassword { get; set; }
 
         public string UserPasswordConfirm { get; set; }
@@ -61,6 +63,7 @@
         public bool IsValid(out string errorMessage)
         {
             errorMessage = null;
+            string formattedPhoneNumber = null;
             if (string.IsNullOrEmpty(this.UserName))
             {
                 errorMessage = string.Format("{0} not entered", EntityReader<UserModel>.GetPropertyName(p => p.UserName, true));
@@ -72,6 +75,14 @@
             else if (!DataShaper.IsValidEmail(this.UserEmailAddress))
             {
                 errorMessage = string.Format("{0} is not a  valid email address.", EntityReader<UserModel>.GetPropertyName(p => p.UserEmailAddress, true));
+            }
+            else if (string.IsNullOrEmpty(this.UserCellPhoneNumber))
+            {
+                errorMessage = string.Format("{0} is not a  valid email address.", EntityReader<UserProfileModel>.GetPropertyName(p => p.UserCellPhoneNumber, true));
+            }
+            else if (!DataShaper.IsValidPhoneNumber(this.UserCellPhoneNumber, out formattedPhoneNumber))
+            {
+                errorMessage = string.Format("{0} is not a valid cell phone number.", this.UserCellPhoneNumber);
             }
             else if (string.IsNullOrEmpty(this.UserPassword))
             {
@@ -89,6 +100,7 @@
             this.UserId = user.UserId;
             this.UserName = user.UserName;
             this.UserEmailAddress = user.EmailAddress;
+            this.UserCellPhoneNumber = user.CellPhoneNumber;
             this.UserPassword = user.Password;
             this.OrganizationId = user.OrganizationId;
             this.Role = ((UserRole)user.RoleId);
@@ -116,6 +128,7 @@
             user.UserId = this.UserId;
             user.UserName = this.UserName;
             user.EmailAddress = this.UserEmailAddress;
+            user.CellPhoneNumber = this.UserCellPhoneNumber;
             user.Password = this.UserPassword;
             user.OrganizationId = this.OrganizationId;
             //UserRole userRole;

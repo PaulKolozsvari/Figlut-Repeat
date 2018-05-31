@@ -148,6 +148,14 @@
             return DB.GetTable<User>().LongCount();
         }
 
+        public List<User> GetUsersOfRole(UserRole role)
+        {
+            int roleId = (int)role;
+            return (from u in DB.GetTable<User>()
+                    where (u.RoleId & roleId) == roleId
+                    select u).ToList();
+        }
+
         public List<User> GetUsersByFilter(string searchFilter, Nullable<Guid> organizationId)
         {
             string searchFilterLower = searchFilter == null ? string.Empty : searchFilter.ToLower();

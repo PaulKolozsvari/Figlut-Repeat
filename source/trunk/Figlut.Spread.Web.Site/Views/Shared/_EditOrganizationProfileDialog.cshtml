@@ -13,6 +13,9 @@
                 @Html.HiddenFor(m => m.OrganizationSubscriptionEnabled)
                 @Html.HiddenFor(m => m.OrganizationSubscriptionTypeId)
                 @Html.HiddenFor(m => m.OrganizationSubscriptionEnabled)
+                @Html.HiddenFor(m => m.BillingDayOfTheMonth)
+                @Html.HiddenFor(m => m.AccountManagerUserId)
+                @Html.HiddenFor(m => m.AccountManagerUserName)
                 @Html.HiddenFor(m => m.DateCreated)
                 <div class="field-label">
                     @Html.Raw("Name")
@@ -42,6 +45,153 @@
                     @Html.EditorFor(m => m.OrganizationAddress)
                     @Html.ValidationMessageFor(m => m.OrganizationAddress)
                 </div>
+                <div class="field-label">
+                    @Html.Raw("Monday (working Day)?")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsMondayWorkDay, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsMondayWorkDay, "Is Monday Working Day is required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Tuesday (working Day)?")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsTuesdayWorkDay, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsTuesdayWorkDay, "Is Tuesday Working Day is required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Wednesday (working Day)?")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsWednesdayWorkDay, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsWednesdayWorkDay, "Is Wednesday Working Day is required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Thursday (working Day)?")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsThursdayWorkDay, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsThursdayWorkDay, "Is Thursday Working Dayis required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Friday (working Day)?")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsFridayWorkDay, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsFridayWorkDay, "Is Friday Working Dayis required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Saturday (working Day)?")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsSaturdayWorkDay, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsSaturdayWorkDay, "Is Saturday Working Day is required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Sunday (working Day)?")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsSundayWorkDay, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsSundayWorkDay, "Is Sunday Working Day is required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Billing day of the month")
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.BillingDayOfTheMonth, new { disabled = "disabled", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.BillingDayOfTheMonth)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Account Manager User")
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.AccountManagerUserName, new { disabled = "disabled", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.AccountManagerUserName)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Account Manager Email Address")
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.AccountManagerEmailAddress, new { disabled = "disabled", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.AccountManagerEmailAddress)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Account Manager Cell Phone Number")
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.AccountManagerCellPhoneNumber, new { disabled = "disabled", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.AccountManagerCellPhoneNumber)
+                </div>
                 <br />
                 <div id="EditOrganizationProfileErrorField" style="color:#8A0808"></div>
             </fieldset>
@@ -65,8 +215,6 @@
             success: function (data) {
                 if (data.Success) {
                     $(dialogName).dialog("close");
-                    var url = '@Url.Content("~/Home")'
-                    window.location.href = url;
                 } else {
                     $("#EditOrganizationProfileErrorField").html(data.ErrorMsg);
                 }

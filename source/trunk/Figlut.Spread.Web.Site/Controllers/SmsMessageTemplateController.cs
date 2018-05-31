@@ -64,6 +64,31 @@
             return model;
         }
 
+        private void RefreshOrganizationsList(SpreadEntityContext context, Organization defaultOrganization)
+        {
+            if (context == null)
+            {
+                context = SpreadEntityContext.Create();
+            }
+            if (defaultOrganization == null)
+            {
+                defaultOrganization = base.GetCurrentOrganization(context, true);
+            }
+            List<SelectListItem> organizationsList = new List<SelectListItem>();
+            List<Organization> organizations = context.GetOrganizationsByFilter(string.Empty);
+            foreach (Organization o in organizations)
+            {
+                organizationsList.Add(new SelectListItem()
+                {
+                    Text = o.Name,
+                    Value = o.OrganizationId.ToString(),
+                    Selected = false
+                });
+            }
+            ViewBag.OrganizationsList = organizationsList;
+            ViewBag.OrganizationId = defaultOrganization.OrganizationId.ToString();
+        }
+
         #endregion //Methods
 
         #region Actions
@@ -470,34 +495,5 @@
         }
 
         #endregion //Actions
-
-        #region Methods
-
-        public void RefreshOrganizationsList(SpreadEntityContext context, Organization defaultOrganization)
-        {
-            if (context == null)
-            {
-                context = SpreadEntityContext.Create();
-            }
-            if (defaultOrganization == null)
-            {
-                defaultOrganization = base.GetCurrentOrganization(context, true);
-            }
-            List<SelectListItem> organizationsList = new List<SelectListItem>();
-            List<Organization> organizations = context.GetOrganizationsByFilter(string.Empty);
-            foreach (Organization o in organizations)
-            {
-                organizationsList.Add(new SelectListItem()
-                {
-                    Text = o.Name,
-                    Value = o.OrganizationId.ToString(),
-                    Selected = false
-                });
-            }
-            ViewBag.OrganizationsList = organizationsList;
-            ViewBag.OrganizationId = defaultOrganization.OrganizationId.ToString();
-        }
-
-        #endregion //Methods
     }
 }

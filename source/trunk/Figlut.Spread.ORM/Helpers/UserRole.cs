@@ -6,6 +6,7 @@
         Subscriber = 1,
         OrganizationUser = 2,
         OrganizationAdmin = 4,
-        Administrator = 7
+        AccountManager = 8,
+        Administrator = 15
     }
 }

@@ -48,9 +48,6 @@ namespace Figlut.Spread.ORM
     partial void InsertOrder(Order instance);
     partial void UpdateOrder(Order instance);
     partial void DeleteOrder(Order instance);
-    partial void InsertOrganization(Organization instance);
-    partial void UpdateOrganization(Organization instance);
-    partial void DeleteOrganization(Organization instance);
     partial void InsertOrganizationSubscriptionType(OrganizationSubscriptionType instance);
     partial void UpdateOrganizationSubscriptionType(OrganizationSubscriptionType instance);
     partial void DeleteOrganizationSubscriptionType(OrganizationSubscriptionType instance);
@@ -87,9 +84,6 @@ namespace Figlut.Spread.ORM
     partial void InsertSmsSentQueueItem(SmsSentQueueItem instance);
     partial void UpdateSmsSentQueueItem(SmsSentQueueItem instance);
     partial void DeleteSmsSentQueueItem(SmsSentQueueItem instance);
-    partial void InsertUser(User instance);
-    partial void UpdateUser(User instance);
-    partial void DeleteUser(User instance);
     partial void InsertSubscriber(Subscriber instance);
     partial void UpdateSubscriber(Subscriber instance);
     partial void DeleteSubscriber(Subscriber instance);
@@ -108,6 +102,12 @@ namespace Figlut.Spread.ORM
     partial void InsertScheduleEntry(ScheduleEntry instance);
     partial void UpdateScheduleEntry(ScheduleEntry instance);
     partial void DeleteScheduleEntry(ScheduleEntry instance);
+    partial void InsertOrganization(Organization instance);
+    partial void UpdateOrganization(Organization instance);
+    partial void DeleteOrganization(Organization instance);
+    partial void InsertUser(User instance);
+    partial void UpdateUser(User instance);
+    partial void DeleteUser(User instance);
     #endregion
 		
 		public FiglutSpreadDataContext() : 
@@ -193,14 +193,6 @@ namespace Figlut.Spread.ORM
 			get
 			{
 				return this.GetTable<OrderItem>();
-			}
-		}
-		
-		public System.Data.Linq.Table<Organization> Organizations
-		{
-			get
-			{
-				return this.GetTable<Organization>();
 			}
 		}
 		
@@ -300,14 +292,6 @@ namespace Figlut.Spread.ORM
 			}
 		}
 		
-		public System.Data.Linq.Table<User> Users
-		{
-			get
-			{
-				return this.GetTable<User>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Subscriber> Subscribers
 		{
 			get
@@ -353,6 +337,22 @@ namespace Figlut.Spread.ORM
 			get
 			{
 				return this.GetTable<ScheduleEntry>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Organization> Organizations
+		{
+			get
+			{
+				return this.GetTable<Organization>();
+			}
+		}
+		
+		public System.Data.Linq.Table<User> Users
+		{
+			get
+			{
+				return this.GetTable<User>();
 			}
 		}
 	}
@@ -2692,545 +2692,6 @@ namespace Figlut.Spread.ORM
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Organization")]
-	public partial class Organization : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private System.Guid _OrganizationId;
-		
-		private string _Name;
-		
-		private string _Identifier;
-		
-		private string _EmailAddress;
-		
-		private string _Address;
-		
-		private long _SmsCreditsBalance;
-		
-		private bool _AllowSmsCreditsDebt;
-		
-		private System.Nullable<System.Guid> _OrganizationSubscriptionTypeId;
-		
-		private bool _OrganizationSubscriptionEnabled;
-		
-		private int _BillingDayOfTheMonth;
-		
-		private System.DateTime _DateCreated;
-		
-		private EntitySet<Invoice> _Invoices;
-		
-		private EntitySet<Order> _Orders;
-		
-		private EntitySet<SmsMessageTemplate> _SmsMessageTemplates;
-		
-		private EntitySet<SmsReceivedLog> _SmsReceivedLogs;
-		
-		private EntitySet<SmsSentLog> _SmsSentLogs;
-		
-		private EntitySet<User> _Users;
-		
-		private EntitySet<Subscription> _Subscriptions;
-		
-		private EntityRef<OrganizationSubscriptionType> _OrganizationSubscriptionType;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnOrganizationIdChanging(System.Guid value);
-    partial void OnOrganizationIdChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnIdentifierChanging(string value);
-    partial void OnIdentifierChanged();
-    partial void OnEmailAddressChanging(string value);
-    partial void OnEmailAddressChanged();
-    partial void OnAddressChanging(string value);
-    partial void OnAddressChanged();
-    partial void OnSmsCreditsBalanceChanging(long value);
-    partial void OnSmsCreditsBalanceChanged();
-    partial void OnAllowSmsCreditsDebtChanging(bool value);
-    partial void OnAllowSmsCreditsDebtChanged();
-    partial void OnOrganizationSubscriptionTypeIdChanging(System.Nullable<System.Guid> value);
-    partial void OnOrganizationSubscriptionTypeIdChanged();
-    partial void OnOrganizationSubscriptionEnabledChanging(bool value);
-    partial void OnOrganizationSubscriptionEnabledChanged();
-    partial void OnBillingDayOfTheMonthChanging(int value);
-    partial void OnBillingDayOfTheMonthChanged();
-    partial void OnDateCreatedChanging(System.DateTime value);
-    partial void OnDateCreatedChanged();
-    #endregion
-		
-		public Organization()
-		{
-			this._Invoices = new EntitySet<Invoice>(new Action<Invoice>(this.attach_Invoices), new Action<Invoice>(this.detach_Invoices));
-			this._Orders = new EntitySet<Order>(new Action<Order>(this.attach_Orders), new Action<Order>(this.detach_Orders));
-			this._SmsMessageTemplates = new EntitySet<SmsMessageTemplate>(new Action<SmsMessageTemplate>(this.attach_SmsMessageTemplates), new Action<SmsMessageTemplate>(this.detach_SmsMessageTemplates));
-			this._SmsReceivedLogs = new EntitySet<SmsReceivedLog>(new Action<SmsReceivedLog>(this.attach_SmsReceivedLogs), new Action<SmsReceivedLog>(this.detach_SmsReceivedLogs));
-			this._SmsSentLogs = new EntitySet<SmsSentLog>(new Action<SmsSentLog>(this.attach_SmsSentLogs), new Action<SmsSentLog>(this.detach_SmsSentLogs));
-			this._Users = new EntitySet<User>(new Action<User>(this.attach_Users), new Action<User>(this.detach_Users));
-			this._Subscriptions = new EntitySet<Subscription>(new Action<Subscription>(this.attach_Subscriptions), new Action<Subscription>(this.detach_Subscriptions));
-			this._OrganizationSubscriptionType = default(EntityRef<OrganizationSubscriptionType>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrganizationId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
-		public System.Guid OrganizationId
-		{
-			get
-			{
-				return this._OrganizationId;
-			}
-			set
-			{
-				if ((this._OrganizationId != value))
-				{
-					this.OnOrganizationIdChanging(value);
-					this.SendPropertyChanging();
-					this._OrganizationId = value;
-					this.SendPropertyChanged("OrganizationId");
-					this.OnOrganizationIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(250) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Identifier", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
-		public string Identifier
-		{
-			get
-			{
-				return this._Identifier;
-			}
-			set
-			{
-				if ((this._Identifier != value))
-				{
-					this.OnIdentifierChanging(value);
-					this.SendPropertyChanging();
-					this._Identifier = value;
-					this.SendPropertyChanged("Identifier");
-					this.OnIdentifierChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmailAddress", DbType="VarChar(250) NOT NULL", CanBeNull=false)]
-		public string EmailAddress
-		{
-			get
-			{
-				return this._EmailAddress;
-			}
-			set
-			{
-				if ((this._EmailAddress != value))
-				{
-					this.OnEmailAddressChanging(value);
-					this.SendPropertyChanging();
-					this._EmailAddress = value;
-					this.SendPropertyChanged("EmailAddress");
-					this.OnEmailAddressChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Address", DbType="VarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Address
-		{
-			get
-			{
-				return this._Address;
-			}
-			set
-			{
-				if ((this._Address != value))
-				{
-					this.OnAddressChanging(value);
-					this.SendPropertyChanging();
-					this._Address = value;
-					this.SendPropertyChanged("Address");
-					this.OnAddressChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SmsCreditsBalance", DbType="BigInt NOT NULL")]
-		public long SmsCreditsBalance
-		{
-			get
-			{
-				return this._SmsCreditsBalance;
-			}
-			set
-			{
-				if ((this._SmsCreditsBalance != value))
-				{
-					this.OnSmsCreditsBalanceChanging(value);
-					this.SendPropertyChanging();
-					this._SmsCreditsBalance = value;
-					this.SendPropertyChanged("SmsCreditsBalance");
-					this.OnSmsCreditsBalanceChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AllowSmsCreditsDebt", DbType="Bit NOT NULL")]
-		public bool AllowSmsCreditsDebt
-		{
-			get
-			{
-				return this._AllowSmsCreditsDebt;
-			}
-			set
-			{
-				if ((this._AllowSmsCreditsDebt != value))
-				{
-					this.OnAllowSmsCreditsDebtChanging(value);
-					this.SendPropertyChanging();
-					this._AllowSmsCreditsDebt = value;
-					this.SendPropertyChanged("AllowSmsCreditsDebt");
-					this.OnAllowSmsCreditsDebtChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrganizationSubscriptionTypeId", DbType="UniqueIdentifier")]
-		public System.Nullable<System.Guid> OrganizationSubscriptionTypeId
-		{
-			get
-			{
-				return this._OrganizationSubscriptionTypeId;
-			}
-			set
-			{
-				if ((this._OrganizationSubscriptionTypeId != value))
-				{
-					if (this._OrganizationSubscriptionType.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnOrganizationSubscriptionTypeIdChanging(value);
-					this.SendPropertyChanging();
-					this._OrganizationSubscriptionTypeId = value;
-					this.SendPropertyChanged("OrganizationSubscriptionTypeId");
-					this.OnOrganizationSubscriptionTypeIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrganizationSubscriptionEnabled", DbType="Bit NOT NULL")]
-		public bool OrganizationSubscriptionEnabled
-		{
-			get
-			{
-				return this._OrganizationSubscriptionEnabled;
-			}
-			set
-			{
-				if ((this._OrganizationSubscriptionEnabled != value))
-				{
-					this.OnOrganizationSubscriptionEnabledChanging(value);
-					this.SendPropertyChanging();
-					this._OrganizationSubscriptionEnabled = value;
-					this.SendPropertyChanged("OrganizationSubscriptionEnabled");
-					this.OnOrganizationSubscriptionEnabledChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BillingDayOfTheMonth", DbType="Int NOT NULL")]
-		public int BillingDayOfTheMonth
-		{
-			get
-			{
-				return this._BillingDayOfTheMonth;
-			}
-			set
-			{
-				if ((this._BillingDayOfTheMonth != value))
-				{
-					this.OnBillingDayOfTheMonthChanging(value);
-					this.SendPropertyChanging();
-					this._BillingDayOfTheMonth = value;
-					this.SendPropertyChanged("BillingDayOfTheMonth");
-					this.OnBillingDayOfTheMonthChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
-		public System.DateTime DateCreated
-		{
-			get
-			{
-				return this._DateCreated;
-			}
-			set
-			{
-				if ((this._DateCreated != value))
-				{
-					this.OnDateCreatedChanging(value);
-					this.SendPropertyChanging();
-					this._DateCreated = value;
-					this.SendPropertyChanged("DateCreated");
-					this.OnDateCreatedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_Invoice", Storage="_Invoices", ThisKey="OrganizationId", OtherKey="OrganizationId")]
-		public EntitySet<Invoice> Invoices
-		{
-			get
-			{
-				return this._Invoices;
-			}
-			set
-			{
-				this._Invoices.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_Order", Storage="_Orders", ThisKey="OrganizationId", OtherKey="OrganizationId")]
-		public EntitySet<Order> Orders
-		{
-			get
-			{
-				return this._Orders;
-			}
-			set
-			{
-				this._Orders.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_SmsMessageTemplate", Storage="_SmsMessageTemplates", ThisKey="OrganizationId", OtherKey="OrganizationId")]
-		public EntitySet<SmsMessageTemplate> SmsMessageTemplates
-		{
-			get
-			{
-				return this._SmsMessageTemplates;
-			}
-			set
-			{
-				this._SmsMessageTemplates.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_SmsReceivedLog", Storage="_SmsReceivedLogs", ThisKey="OrganizationId", OtherKey="OrganizationId")]
-		public EntitySet<SmsReceivedLog> SmsReceivedLogs
-		{
-			get
-			{
-				return this._SmsReceivedLogs;
-			}
-			set
-			{
-				this._SmsReceivedLogs.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_SmsSentLog", Storage="_SmsSentLogs", ThisKey="OrganizationId", OtherKey="OrganizationId")]
-		public EntitySet<SmsSentLog> SmsSentLogs
-		{
-			get
-			{
-				return this._SmsSentLogs;
-			}
-			set
-			{
-				this._SmsSentLogs.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_User", Storage="_Users", ThisKey="OrganizationId", OtherKey="OrganizationId")]
-		public EntitySet<User> Users
-		{
-			get
-			{
-				return this._Users;
-			}
-			set
-			{
-				this._Users.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_Subscription", Storage="_Subscriptions", ThisKey="OrganizationId", OtherKey="OrganizationId")]
-		public EntitySet<Subscription> Subscriptions
-		{
-			get
-			{
-				return this._Subscriptions;
-			}
-			set
-			{
-				this._Subscriptions.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="OrganizationSubscriptionType_Organization", Storage="_OrganizationSubscriptionType", ThisKey="OrganizationSubscriptionTypeId", OtherKey="OrganizationSubscriptionTypeId", IsForeignKey=true, DeleteRule="SET NULL")]
-		internal OrganizationSubscriptionType OrganizationSubscriptionType
-		{
-			get
-			{
-				return this._OrganizationSubscriptionType.Entity;
-			}
-			set
-			{
-				OrganizationSubscriptionType previousValue = this._OrganizationSubscriptionType.Entity;
-				if (((previousValue != value) 
-							|| (this._OrganizationSubscriptionType.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._OrganizationSubscriptionType.Entity = null;
-						previousValue.Organizations.Remove(this);
-					}
-					this._OrganizationSubscriptionType.Entity = value;
-					if ((value != null))
-					{
-						value.Organizations.Add(this);
-						this._OrganizationSubscriptionTypeId = value.OrganizationSubscriptionTypeId;
-					}
-					else
-					{
-						this._OrganizationSubscriptionTypeId = default(Nullable<System.Guid>);
-					}
-					this.SendPropertyChanged("OrganizationSubscriptionType");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Invoices(Invoice entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = this;
-		}
-		
-		private void detach_Invoices(Invoice entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = null;
-		}
-		
-		private void attach_Orders(Order entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = this;
-		}
-		
-		private void detach_Orders(Order entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = null;
-		}
-		
-		private void attach_SmsMessageTemplates(SmsMessageTemplate entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = this;
-		}
-		
-		private void detach_SmsMessageTemplates(SmsMessageTemplate entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = null;
-		}
-		
-		private void attach_SmsReceivedLogs(SmsReceivedLog entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = this;
-		}
-		
-		private void detach_SmsReceivedLogs(SmsReceivedLog entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = null;
-		}
-		
-		private void attach_SmsSentLogs(SmsSentLog entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = this;
-		}
-		
-		private void detach_SmsSentLogs(SmsSentLog entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = null;
-		}
-		
-		private void attach_Users(User entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = this;
-		}
-		
-		private void detach_Users(User entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = null;
-		}
-		
-		private void attach_Subscriptions(Subscription entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = this;
-		}
-		
-		private void detach_Subscriptions(Subscription entity)
-		{
-			this.SendPropertyChanging();
-			entity.Organization = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.OrganizationSubscriptionType")]
 	public partial class OrganizationSubscriptionType : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -3905,7 +3366,7 @@ namespace Figlut.Spread.ORM
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_ServerError", Storage="_User", ThisKey="UserId", OtherKey="UserId", IsForeignKey=true, DeleteRule="SET NULL")]
-		public User User
+		internal User User
 		{
 			get
 			{
@@ -5188,9 +4649,9 @@ namespace Figlut.Spread.ORM
 		
 		private System.DateTime _DateCreated;
 		
-		private EntityRef<Organization> _Organization;
-		
 		private EntityRef<Subscriber> _Subscriber;
+		
+		private EntityRef<Organization> _Organization;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -5234,8 +4695,8 @@ namespace Figlut.Spread.ORM
 		
 		public SmsReceivedLog()
 		{
-			this._Organization = default(EntityRef<Organization>);
 			this._Subscriber = default(EntityRef<Subscriber>);
+			this._Organization = default(EntityRef<Organization>);
 			OnCreated();
 		}
 		
@@ -5587,40 +5048,6 @@ namespace Figlut.Spread.ORM
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_SmsReceivedLog", Storage="_Organization", ThisKey="OrganizationId", OtherKey="OrganizationId", IsForeignKey=true, DeleteRule="SET NULL")]
-		internal Organization Organization
-		{
-			get
-			{
-				return this._Organization.Entity;
-			}
-			set
-			{
-				Organization previousValue = this._Organization.Entity;
-				if (((previousValue != value) 
-							|| (this._Organization.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Organization.Entity = null;
-						previousValue.SmsReceivedLogs.Remove(this);
-					}
-					this._Organization.Entity = value;
-					if ((value != null))
-					{
-						value.SmsReceivedLogs.Add(this);
-						this._OrganizationId = value.OrganizationId;
-					}
-					else
-					{
-						this._OrganizationId = default(Nullable<System.Guid>);
-					}
-					this.SendPropertyChanged("Organization");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Subscriber_SmsReceivedLog", Storage="_Subscriber", ThisKey="SubscriberId", OtherKey="SubscriberId", IsForeignKey=true, DeleteRule="SET NULL")]
 		internal Subscriber Subscriber
 		{
@@ -5651,6 +5078,40 @@ namespace Figlut.Spread.ORM
 						this._SubscriberId = default(Nullable<System.Guid>);
 					}
 					this.SendPropertyChanged("Subscriber");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_SmsReceivedLog", Storage="_Organization", ThisKey="OrganizationId", OtherKey="OrganizationId", IsForeignKey=true, DeleteRule="SET NULL")]
+		internal Organization Organization
+		{
+			get
+			{
+				return this._Organization.Entity;
+			}
+			set
+			{
+				Organization previousValue = this._Organization.Entity;
+				if (((previousValue != value) 
+							|| (this._Organization.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Organization.Entity = null;
+						previousValue.SmsReceivedLogs.Remove(this);
+					}
+					this._Organization.Entity = value;
+					if ((value != null))
+					{
+						value.SmsReceivedLogs.Add(this);
+						this._OrganizationId = value.OrganizationId;
+					}
+					else
+					{
+						this._OrganizationId = default(Nullable<System.Guid>);
+					}
+					this.SendPropertyChanged("Organization");
 				}
 			}
 		}
@@ -6048,11 +5509,11 @@ namespace Figlut.Spread.ORM
 		
 		private EntitySet<SmsDeliveryReportLog> _SmsDeliveryReportLogs;
 		
-		private EntityRef<Organization> _Organization;
-		
 		private EntityRef<SmsCampaign> _SmsCampaign;
 		
 		private EntityRef<Subscriber> _Subscriber;
+		
+		private EntityRef<Organization> _Organization;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -6101,9 +5562,9 @@ namespace Figlut.Spread.ORM
 		public SmsSentLog()
 		{
 			this._SmsDeliveryReportLogs = new EntitySet<SmsDeliveryReportLog>(new Action<SmsDeliveryReportLog>(this.attach_SmsDeliveryReportLogs), new Action<SmsDeliveryReportLog>(this.detach_SmsDeliveryReportLogs));
-			this._Organization = default(EntityRef<Organization>);
 			this._SmsCampaign = default(EntityRef<SmsCampaign>);
 			this._Subscriber = default(EntityRef<Subscriber>);
+			this._Organization = default(EntityRef<Organization>);
 			OnCreated();
 		}
 		
@@ -6512,40 +5973,6 @@ namespace Figlut.Spread.ORM
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_SmsSentLog", Storage="_Organization", ThisKey="OrganizationId", OtherKey="OrganizationId", IsForeignKey=true, DeleteRule="SET NULL")]
-		public Organization Organization
-		{
-			get
-			{
-				return this._Organization.Entity;
-			}
-			set
-			{
-				Organization previousValue = this._Organization.Entity;
-				if (((previousValue != value) 
-							|| (this._Organization.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Organization.Entity = null;
-						previousValue.SmsSentLogs.Remove(this);
-					}
-					this._Organization.Entity = value;
-					if ((value != null))
-					{
-						value.SmsSentLogs.Add(this);
-						this._OrganizationId = value.OrganizationId;
-					}
-					else
-					{
-						this._OrganizationId = default(Nullable<System.Guid>);
-					}
-					this.SendPropertyChanged("Organization");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SmsCampaign_SmsSentLog", Storage="_SmsCampaign", ThisKey="SmsCampaignId", OtherKey="SmsCampaignId", IsForeignKey=true, DeleteRule="SET NULL")]
 		internal SmsCampaign SmsCampaign
 		{
@@ -6610,6 +6037,40 @@ namespace Figlut.Spread.ORM
 						this._SubscriberId = default(Nullable<System.Guid>);
 					}
 					this.SendPropertyChanged("Subscriber");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_SmsSentLog", Storage="_Organization", ThisKey="OrganizationId", OtherKey="OrganizationId", IsForeignKey=true, DeleteRule="SET NULL")]
+		internal Organization Organization
+		{
+			get
+			{
+				return this._Organization.Entity;
+			}
+			set
+			{
+				Organization previousValue = this._Organization.Entity;
+				if (((previousValue != value) 
+							|| (this._Organization.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Organization.Entity = null;
+						previousValue.SmsSentLogs.Remove(this);
+					}
+					this._Organization.Entity = value;
+					if ((value != null))
+					{
+						value.SmsSentLogs.Add(this);
+						this._OrganizationId = value.OrganizationId;
+					}
+					else
+					{
+						this._OrganizationId = default(Nullable<System.Guid>);
+					}
+					this.SendPropertyChanged("Organization");
 				}
 			}
 		}
@@ -7107,441 +6568,6 @@ namespace Figlut.Spread.ORM
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.[User]")]
-	public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private System.Guid _UserId;
-		
-		private string _UserName;
-		
-		private string _EmailAddress;
-		
-		private string _Password;
-		
-		private System.Nullable<System.Guid> _OrganizationId;
-		
-		private int _RoleId;
-		
-		private System.Nullable<System.DateTime> _LastLoginDate;
-		
-		private System.Nullable<System.DateTime> _LastActivityDate;
-		
-		private System.DateTime _DateCreated;
-		
-		private EntitySet<WebRequestActivity> _WebRequestActivities;
-		
-		private EntitySet<Invoice> _Invoices;
-		
-		private EntitySet<Order> _Orders;
-		
-		private EntitySet<ServerAction> _ServerActions;
-		
-		private EntitySet<ServerError> _ServerErrors;
-		
-		private EntityRef<Organization> _Organization;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnUserIdChanging(System.Guid value);
-    partial void OnUserIdChanged();
-    partial void OnUserNameChanging(string value);
-    partial void OnUserNameChanged();
-    partial void OnEmailAddressChanging(string value);
-    partial void OnEmailAddressChanged();
-    partial void OnPasswordChanging(string value);
-    partial void OnPasswordChanged();
-    partial void OnOrganizationIdChanging(System.Nullable<System.Guid> value);
-    partial void OnOrganizationIdChanged();
-    partial void OnRoleIdChanging(int value);
-    partial void OnRoleIdChanged();
-    partial void OnLastLoginDateChanging(System.Nullable<System.DateTime> value);
-    partial void OnLastLoginDateChanged();
-    partial void OnLastActivityDateChanging(System.Nullable<System.DateTime> value);
-    partial void OnLastActivityDateChanged();
-    partial void OnDateCreatedChanging(System.DateTime value);
-    partial void OnDateCreatedChanged();
-    #endregion
-		
-		public User()
-		{
-			this._WebRequestActivities = new EntitySet<WebRequestActivity>(new Action<WebRequestActivity>(this.attach_WebRequestActivities), new Action<WebRequestActivity>(this.detach_WebRequestActivities));
-			this._Invoices = new EntitySet<Invoice>(new Action<Invoice>(this.attach_Invoices), new Action<Invoice>(this.detach_Invoices));
-			this._Orders = new EntitySet<Order>(new Action<Order>(this.attach_Orders), new Action<Order>(this.detach_Orders));
-			this._ServerActions = new EntitySet<ServerAction>(new Action<ServerAction>(this.attach_ServerActions), new Action<ServerAction>(this.detach_ServerActions));
-			this._ServerErrors = new EntitySet<ServerError>(new Action<ServerError>(this.attach_ServerErrors), new Action<ServerError>(this.detach_ServerErrors));
-			this._Organization = default(EntityRef<Organization>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
-		public System.Guid UserId
-		{
-			get
-			{
-				return this._UserId;
-			}
-			set
-			{
-				if ((this._UserId != value))
-				{
-					this.OnUserIdChanging(value);
-					this.SendPropertyChanging();
-					this._UserId = value;
-					this.SendPropertyChanged("UserId");
-					this.OnUserIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="VarChar(250) NOT NULL", CanBeNull=false)]
-		public string UserName
-		{
-			get
-			{
-				return this._UserName;
-			}
-			set
-			{
-				if ((this._UserName != value))
-				{
-					this.OnUserNameChanging(value);
-					this.SendPropertyChanging();
-					this._UserName = value;
-					this.SendPropertyChanged("UserName");
-					this.OnUserNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmailAddress", DbType="VarChar(250) NOT NULL", CanBeNull=false)]
-		public string EmailAddress
-		{
-			get
-			{
-				return this._EmailAddress;
-			}
-			set
-			{
-				if ((this._EmailAddress != value))
-				{
-					this.OnEmailAddressChanging(value);
-					this.SendPropertyChanging();
-					this._EmailAddress = value;
-					this.SendPropertyChanged("EmailAddress");
-					this.OnEmailAddressChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string Password
-		{
-			get
-			{
-				return this._Password;
-			}
-			set
-			{
-				if ((this._Password != value))
-				{
-					this.OnPasswordChanging(value);
-					this.SendPropertyChanging();
-					this._Password = value;
-					this.SendPropertyChanged("Password");
-					this.OnPasswordChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrganizationId", DbType="UniqueIdentifier")]
-		public System.Nullable<System.Guid> OrganizationId
-		{
-			get
-			{
-				return this._OrganizationId;
-			}
-			set
-			{
-				if ((this._OrganizationId != value))
-				{
-					if (this._Organization.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnOrganizationIdChanging(value);
-					this.SendPropertyChanging();
-					this._OrganizationId = value;
-					this.SendPropertyChanged("OrganizationId");
-					this.OnOrganizationIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RoleId", DbType="Int NOT NULL")]
-		public int RoleId
-		{
-			get
-			{
-				return this._RoleId;
-			}
-			set
-			{
-				if ((this._RoleId != value))
-				{
-					this.OnRoleIdChanging(value);
-					this.SendPropertyChanging();
-					this._RoleId = value;
-					this.SendPropertyChanged("RoleId");
-					this.OnRoleIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastLoginDate", DbType="DateTime")]
-		public System.Nullable<System.DateTime> LastLoginDate
-		{
-			get
-			{
-				return this._LastLoginDate;
-			}
-			set
-			{
-				if ((this._LastLoginDate != value))
-				{
-					this.OnLastLoginDateChanging(value);
-					this.SendPropertyChanging();
-					this._LastLoginDate = value;
-					this.SendPropertyChanged("LastLoginDate");
-					this.OnLastLoginDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastActivityDate", DbType="DateTime")]
-		public System.Nullable<System.DateTime> LastActivityDate
-		{
-			get
-			{
-				return this._LastActivityDate;
-			}
-			set
-			{
-				if ((this._LastActivityDate != value))
-				{
-					this.OnLastActivityDateChanging(value);
-					this.SendPropertyChanging();
-					this._LastActivityDate = value;
-					this.SendPropertyChanged("LastActivityDate");
-					this.OnLastActivityDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
-		public System.DateTime DateCreated
-		{
-			get
-			{
-				return this._DateCreated;
-			}
-			set
-			{
-				if ((this._DateCreated != value))
-				{
-					this.OnDateCreatedChanging(value);
-					this.SendPropertyChanging();
-					this._DateCreated = value;
-					this.SendPropertyChanged("DateCreated");
-					this.OnDateCreatedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_WebRequestActivity", Storage="_WebRequestActivities", ThisKey="UserId", OtherKey="UserId")]
-		public EntitySet<WebRequestActivity> WebRequestActivities
-		{
-			get
-			{
-				return this._WebRequestActivities;
-			}
-			set
-			{
-				this._WebRequestActivities.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Invoice", Storage="_Invoices", ThisKey="UserId", OtherKey="CreatedByUserId")]
-		public EntitySet<Invoice> Invoices
-		{
-			get
-			{
-				return this._Invoices;
-			}
-			set
-			{
-				this._Invoices.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Order", Storage="_Orders", ThisKey="UserId", OtherKey="CreatedByUserId")]
-		public EntitySet<Order> Orders
-		{
-			get
-			{
-				return this._Orders;
-			}
-			set
-			{
-				this._Orders.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_ServerAction", Storage="_ServerActions", ThisKey="UserId", OtherKey="UserId")]
-		public EntitySet<ServerAction> ServerActions
-		{
-			get
-			{
-				return this._ServerActions;
-			}
-			set
-			{
-				this._ServerActions.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_ServerError", Storage="_ServerErrors", ThisKey="UserId", OtherKey="UserId")]
-		public EntitySet<ServerError> ServerErrors
-		{
-			get
-			{
-				return this._ServerErrors;
-			}
-			set
-			{
-				this._ServerErrors.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_User", Storage="_Organization", ThisKey="OrganizationId", OtherKey="OrganizationId", IsForeignKey=true, DeleteRule="SET NULL")]
-		internal Organization Organization
-		{
-			get
-			{
-				return this._Organization.Entity;
-			}
-			set
-			{
-				Organization previousValue = this._Organization.Entity;
-				if (((previousValue != value) 
-							|| (this._Organization.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Organization.Entity = null;
-						previousValue.Users.Remove(this);
-					}
-					this._Organization.Entity = value;
-					if ((value != null))
-					{
-						value.Users.Add(this);
-						this._OrganizationId = value.OrganizationId;
-					}
-					else
-					{
-						this._OrganizationId = default(Nullable<System.Guid>);
-					}
-					this.SendPropertyChanged("Organization");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_WebRequestActivities(WebRequestActivity entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-		
-		private void detach_WebRequestActivities(WebRequestActivity entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
-		}
-		
-		private void attach_Invoices(Invoice entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-		
-		private void detach_Invoices(Invoice entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
-		}
-		
-		private void attach_Orders(Order entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-		
-		private void detach_Orders(Order entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
-		}
-		
-		private void attach_ServerActions(ServerAction entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-		
-		private void detach_ServerActions(ServerAction entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
-		}
-		
-		private void attach_ServerErrors(ServerError entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-		
-		private void detach_ServerErrors(ServerError entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
 		}
 	}
 	
@@ -8272,9 +7298,9 @@ namespace Figlut.Spread.ORM
 		
 		private EntitySet<Schedule> _Schedules;
 		
-		private EntityRef<Organization> _Organization;
-		
 		private EntityRef<Subscriber> _Subscriber;
+		
+		private EntityRef<Organization> _Organization;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -8305,8 +7331,8 @@ namespace Figlut.Spread.ORM
 		public Subscription()
 		{
 			this._Schedules = new EntitySet<Schedule>(new Action<Schedule>(this.attach_Schedules), new Action<Schedule>(this.detach_Schedules));
-			this._Organization = default(EntityRef<Organization>);
 			this._Subscriber = default(EntityRef<Subscriber>);
+			this._Organization = default(EntityRef<Organization>);
 			OnCreated();
 		}
 		
@@ -8531,40 +7557,6 @@ namespace Figlut.Spread.ORM
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_Subscription", Storage="_Organization", ThisKey="OrganizationId", OtherKey="OrganizationId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		internal Organization Organization
-		{
-			get
-			{
-				return this._Organization.Entity;
-			}
-			set
-			{
-				Organization previousValue = this._Organization.Entity;
-				if (((previousValue != value) 
-							|| (this._Organization.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Organization.Entity = null;
-						previousValue.Subscriptions.Remove(this);
-					}
-					this._Organization.Entity = value;
-					if ((value != null))
-					{
-						value.Subscriptions.Add(this);
-						this._OrganizationId = value.OrganizationId;
-					}
-					else
-					{
-						this._OrganizationId = default(System.Guid);
-					}
-					this.SendPropertyChanged("Organization");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Subscriber_Subscription", Storage="_Subscriber", ThisKey="SubscriberId", OtherKey="SubscriberId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		internal Subscriber Subscriber
 		{
@@ -8595,6 +7587,40 @@ namespace Figlut.Spread.ORM
 						this._SubscriberId = default(System.Guid);
 					}
 					this.SendPropertyChanged("Subscriber");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_Subscription", Storage="_Organization", ThisKey="OrganizationId", OtherKey="OrganizationId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		internal Organization Organization
+		{
+			get
+			{
+				return this._Organization.Entity;
+			}
+			set
+			{
+				Organization previousValue = this._Organization.Entity;
+				if (((previousValue != value) 
+							|| (this._Organization.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Organization.Entity = null;
+						previousValue.Subscriptions.Remove(this);
+					}
+					this._Organization.Entity = value;
+					if ((value != null))
+					{
+						value.Subscriptions.Add(this);
+						this._OrganizationId = value.OrganizationId;
+					}
+					else
+					{
+						this._OrganizationId = default(System.Guid);
+					}
+					this.SendPropertyChanged("Organization");
 				}
 			}
 		}
@@ -9343,6 +8369,1196 @@ namespace Figlut.Spread.ORM
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Organization")]
+	public partial class Organization : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _OrganizationId;
+		
+		private string _Name;
+		
+		private string _Identifier;
+		
+		private string _EmailAddress;
+		
+		private string _Address;
+		
+		private long _SmsCreditsBalance;
+		
+		private bool _AllowSmsCreditsDebt;
+		
+		private System.Nullable<System.Guid> _OrganizationSubscriptionTypeId;
+		
+		private bool _OrganizationSubscriptionEnabled;
+		
+		private int _BillingDayOfTheMonth;
+		
+		private bool _IsMondayWorkDay;
+		
+		private bool _IsTuesdayWorkDay;
+		
+		private bool _IsWednesdayWorkDay;
+		
+		private bool _IsThursdayWorkDay;
+		
+		private bool _IsFridayWorkDay;
+		
+		private bool _IsSaturdayWorkDay;
+		
+		private bool _IsSundayWorkDay;
+		
+		private System.Nullable<System.Guid> _AccountManagerUserId;
+		
+		private System.DateTime _DateCreated;
+		
+		private EntitySet<Invoice> _Invoices;
+		
+		private EntitySet<Order> _Orders;
+		
+		private EntitySet<SmsMessageTemplate> _SmsMessageTemplates;
+		
+		private EntitySet<SmsReceivedLog> _SmsReceivedLogs;
+		
+		private EntitySet<SmsSentLog> _SmsSentLogs;
+		
+		private EntitySet<Subscription> _Subscriptions;
+		
+		private EntitySet<User> _Users;
+		
+		private EntityRef<OrganizationSubscriptionType> _OrganizationSubscriptionType;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnOrganizationIdChanging(System.Guid value);
+    partial void OnOrganizationIdChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnIdentifierChanging(string value);
+    partial void OnIdentifierChanged();
+    partial void OnEmailAddressChanging(string value);
+    partial void OnEmailAddressChanged();
+    partial void OnAddressChanging(string value);
+    partial void OnAddressChanged();
+    partial void OnSmsCreditsBalanceChanging(long value);
+    partial void OnSmsCreditsBalanceChanged();
+    partial void OnAllowSmsCreditsDebtChanging(bool value);
+    partial void OnAllowSmsCreditsDebtChanged();
+    partial void OnOrganizationSubscriptionTypeIdChanging(System.Nullable<System.Guid> value);
+    partial void OnOrganizationSubscriptionTypeIdChanged();
+    partial void OnOrganizationSubscriptionEnabledChanging(bool value);
+    partial void OnOrganizationSubscriptionEnabledChanged();
+    partial void OnBillingDayOfTheMonthChanging(int value);
+    partial void OnBillingDayOfTheMonthChanged();
+    partial void OnIsMondayWorkDayChanging(bool value);
+    partial void OnIsMondayWorkDayChanged();
+    partial void OnIsTuesdayWorkDayChanging(bool value);
+    partial void OnIsTuesdayWorkDayChanged();
+    partial void OnIsWednesdayWorkDayChanging(bool value);
+    partial void OnIsWednesdayWorkDayChanged();
+    partial void OnIsThursdayWorkDayChanging(bool value);
+    partial void OnIsThursdayWorkDayChanged();
+    partial void OnIsFridayWorkDayChanging(bool value);
+    partial void OnIsFridayWorkDayChanged();
+    partial void OnIsSaturdayWorkDayChanging(bool value);
+    partial void OnIsSaturdayWorkDayChanged();
+    partial void OnIsSundayWorkDayChanging(bool value);
+    partial void OnIsSundayWorkDayChanged();
+    partial void OnAccountManagerUserIdChanging(System.Nullable<System.Guid> value);
+    partial void OnAccountManagerUserIdChanged();
+    partial void OnDateCreatedChanging(System.DateTime value);
+    partial void OnDateCreatedChanged();
+    #endregion
+		
+		public Organization()
+		{
+			this._Invoices = new EntitySet<Invoice>(new Action<Invoice>(this.attach_Invoices), new Action<Invoice>(this.detach_Invoices));
+			this._Orders = new EntitySet<Order>(new Action<Order>(this.attach_Orders), new Action<Order>(this.detach_Orders));
+			this._SmsMessageTemplates = new EntitySet<SmsMessageTemplate>(new Action<SmsMessageTemplate>(this.attach_SmsMessageTemplates), new Action<SmsMessageTemplate>(this.detach_SmsMessageTemplates));
+			this._SmsReceivedLogs = new EntitySet<SmsReceivedLog>(new Action<SmsReceivedLog>(this.attach_SmsReceivedLogs), new Action<SmsReceivedLog>(this.detach_SmsReceivedLogs));
+			this._SmsSentLogs = new EntitySet<SmsSentLog>(new Action<SmsSentLog>(this.attach_SmsSentLogs), new Action<SmsSentLog>(this.detach_SmsSentLogs));
+			this._Subscriptions = new EntitySet<Subscription>(new Action<Subscription>(this.attach_Subscriptions), new Action<Subscription>(this.detach_Subscriptions));
+			this._Users = new EntitySet<User>(new Action<User>(this.attach_Users), new Action<User>(this.detach_Users));
+			this._OrganizationSubscriptionType = default(EntityRef<OrganizationSubscriptionType>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrganizationId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid OrganizationId
+		{
+			get
+			{
+				return this._OrganizationId;
+			}
+			set
+			{
+				if ((this._OrganizationId != value))
+				{
+					this.OnOrganizationIdChanging(value);
+					this.SendPropertyChanging();
+					this._OrganizationId = value;
+					this.SendPropertyChanged("OrganizationId");
+					this.OnOrganizationIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(250) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Identifier", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string Identifier
+		{
+			get
+			{
+				return this._Identifier;
+			}
+			set
+			{
+				if ((this._Identifier != value))
+				{
+					this.OnIdentifierChanging(value);
+					this.SendPropertyChanging();
+					this._Identifier = value;
+					this.SendPropertyChanged("Identifier");
+					this.OnIdentifierChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmailAddress", DbType="VarChar(250) NOT NULL", CanBeNull=false)]
+		public string EmailAddress
+		{
+			get
+			{
+				return this._EmailAddress;
+			}
+			set
+			{
+				if ((this._EmailAddress != value))
+				{
+					this.OnEmailAddressChanging(value);
+					this.SendPropertyChanging();
+					this._EmailAddress = value;
+					this.SendPropertyChanged("EmailAddress");
+					this.OnEmailAddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Address", DbType="VarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Address
+		{
+			get
+			{
+				return this._Address;
+			}
+			set
+			{
+				if ((this._Address != value))
+				{
+					this.OnAddressChanging(value);
+					this.SendPropertyChanging();
+					this._Address = value;
+					this.SendPropertyChanged("Address");
+					this.OnAddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SmsCreditsBalance", DbType="BigInt NOT NULL")]
+		public long SmsCreditsBalance
+		{
+			get
+			{
+				return this._SmsCreditsBalance;
+			}
+			set
+			{
+				if ((this._SmsCreditsBalance != value))
+				{
+					this.OnSmsCreditsBalanceChanging(value);
+					this.SendPropertyChanging();
+					this._SmsCreditsBalance = value;
+					this.SendPropertyChanged("SmsCreditsBalance");
+					this.OnSmsCreditsBalanceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AllowSmsCreditsDebt", DbType="Bit NOT NULL")]
+		public bool AllowSmsCreditsDebt
+		{
+			get
+			{
+				return this._AllowSmsCreditsDebt;
+			}
+			set
+			{
+				if ((this._AllowSmsCreditsDebt != value))
+				{
+					this.OnAllowSmsCreditsDebtChanging(value);
+					this.SendPropertyChanging();
+					this._AllowSmsCreditsDebt = value;
+					this.SendPropertyChanged("AllowSmsCreditsDebt");
+					this.OnAllowSmsCreditsDebtChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrganizationSubscriptionTypeId", DbType="UniqueIdentifier")]
+		public System.Nullable<System.Guid> OrganizationSubscriptionTypeId
+		{
+			get
+			{
+				return this._OrganizationSubscriptionTypeId;
+			}
+			set
+			{
+				if ((this._OrganizationSubscriptionTypeId != value))
+				{
+					if (this._OrganizationSubscriptionType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnOrganizationSubscriptionTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._OrganizationSubscriptionTypeId = value;
+					this.SendPropertyChanged("OrganizationSubscriptionTypeId");
+					this.OnOrganizationSubscriptionTypeIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrganizationSubscriptionEnabled", DbType="Bit NOT NULL")]
+		public bool OrganizationSubscriptionEnabled
+		{
+			get
+			{
+				return this._OrganizationSubscriptionEnabled;
+			}
+			set
+			{
+				if ((this._OrganizationSubscriptionEnabled != value))
+				{
+					this.OnOrganizationSubscriptionEnabledChanging(value);
+					this.SendPropertyChanging();
+					this._OrganizationSubscriptionEnabled = value;
+					this.SendPropertyChanged("OrganizationSubscriptionEnabled");
+					this.OnOrganizationSubscriptionEnabledChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BillingDayOfTheMonth", DbType="Int NOT NULL")]
+		public int BillingDayOfTheMonth
+		{
+			get
+			{
+				return this._BillingDayOfTheMonth;
+			}
+			set
+			{
+				if ((this._BillingDayOfTheMonth != value))
+				{
+					this.OnBillingDayOfTheMonthChanging(value);
+					this.SendPropertyChanging();
+					this._BillingDayOfTheMonth = value;
+					this.SendPropertyChanged("BillingDayOfTheMonth");
+					this.OnBillingDayOfTheMonthChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsMondayWorkDay", DbType="Bit NOT NULL")]
+		public bool IsMondayWorkDay
+		{
+			get
+			{
+				return this._IsMondayWorkDay;
+			}
+			set
+			{
+				if ((this._IsMondayWorkDay != value))
+				{
+					this.OnIsMondayWorkDayChanging(value);
+					this.SendPropertyChanging();
+					this._IsMondayWorkDay = value;
+					this.SendPropertyChanged("IsMondayWorkDay");
+					this.OnIsMondayWorkDayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsTuesdayWorkDay", DbType="Bit NOT NULL")]
+		public bool IsTuesdayWorkDay
+		{
+			get
+			{
+				return this._IsTuesdayWorkDay;
+			}
+			set
+			{
+				if ((this._IsTuesdayWorkDay != value))
+				{
+					this.OnIsTuesdayWorkDayChanging(value);
+					this.SendPropertyChanging();
+					this._IsTuesdayWorkDay = value;
+					this.SendPropertyChanged("IsTuesdayWorkDay");
+					this.OnIsTuesdayWorkDayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsWednesdayWorkDay", DbType="Bit NOT NULL")]
+		public bool IsWednesdayWorkDay
+		{
+			get
+			{
+				return this._IsWednesdayWorkDay;
+			}
+			set
+			{
+				if ((this._IsWednesdayWorkDay != value))
+				{
+					this.OnIsWednesdayWorkDayChanging(value);
+					this.SendPropertyChanging();
+					this._IsWednesdayWorkDay = value;
+					this.SendPropertyChanged("IsWednesdayWorkDay");
+					this.OnIsWednesdayWorkDayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsThursdayWorkDay", DbType="Bit NOT NULL")]
+		public bool IsThursdayWorkDay
+		{
+			get
+			{
+				return this._IsThursdayWorkDay;
+			}
+			set
+			{
+				if ((this._IsThursdayWorkDay != value))
+				{
+					this.OnIsThursdayWorkDayChanging(value);
+					this.SendPropertyChanging();
+					this._IsThursdayWorkDay = value;
+					this.SendPropertyChanged("IsThursdayWorkDay");
+					this.OnIsThursdayWorkDayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsFridayWorkDay", DbType="Bit NOT NULL")]
+		public bool IsFridayWorkDay
+		{
+			get
+			{
+				return this._IsFridayWorkDay;
+			}
+			set
+			{
+				if ((this._IsFridayWorkDay != value))
+				{
+					this.OnIsFridayWorkDayChanging(value);
+					this.SendPropertyChanging();
+					this._IsFridayWorkDay = value;
+					this.SendPropertyChanged("IsFridayWorkDay");
+					this.OnIsFridayWorkDayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsSaturdayWorkDay", DbType="Bit NOT NULL")]
+		public bool IsSaturdayWorkDay
+		{
+			get
+			{
+				return this._IsSaturdayWorkDay;
+			}
+			set
+			{
+				if ((this._IsSaturdayWorkDay != value))
+				{
+					this.OnIsSaturdayWorkDayChanging(value);
+					this.SendPropertyChanging();
+					this._IsSaturdayWorkDay = value;
+					this.SendPropertyChanged("IsSaturdayWorkDay");
+					this.OnIsSaturdayWorkDayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsSundayWorkDay", DbType="Bit NOT NULL")]
+		public bool IsSundayWorkDay
+		{
+			get
+			{
+				return this._IsSundayWorkDay;
+			}
+			set
+			{
+				if ((this._IsSundayWorkDay != value))
+				{
+					this.OnIsSundayWorkDayChanging(value);
+					this.SendPropertyChanging();
+					this._IsSundayWorkDay = value;
+					this.SendPropertyChanged("IsSundayWorkDay");
+					this.OnIsSundayWorkDayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountManagerUserId", DbType="UniqueIdentifier")]
+		public System.Nullable<System.Guid> AccountManagerUserId
+		{
+			get
+			{
+				return this._AccountManagerUserId;
+			}
+			set
+			{
+				if ((this._AccountManagerUserId != value))
+				{
+					this.OnAccountManagerUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._AccountManagerUserId = value;
+					this.SendPropertyChanged("AccountManagerUserId");
+					this.OnAccountManagerUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
+		public System.DateTime DateCreated
+		{
+			get
+			{
+				return this._DateCreated;
+			}
+			set
+			{
+				if ((this._DateCreated != value))
+				{
+					this.OnDateCreatedChanging(value);
+					this.SendPropertyChanging();
+					this._DateCreated = value;
+					this.SendPropertyChanged("DateCreated");
+					this.OnDateCreatedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_Invoice", Storage="_Invoices", ThisKey="OrganizationId", OtherKey="OrganizationId")]
+		public EntitySet<Invoice> Invoices
+		{
+			get
+			{
+				return this._Invoices;
+			}
+			set
+			{
+				this._Invoices.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_Order", Storage="_Orders", ThisKey="OrganizationId", OtherKey="OrganizationId")]
+		public EntitySet<Order> Orders
+		{
+			get
+			{
+				return this._Orders;
+			}
+			set
+			{
+				this._Orders.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_SmsMessageTemplate", Storage="_SmsMessageTemplates", ThisKey="OrganizationId", OtherKey="OrganizationId")]
+		public EntitySet<SmsMessageTemplate> SmsMessageTemplates
+		{
+			get
+			{
+				return this._SmsMessageTemplates;
+			}
+			set
+			{
+				this._SmsMessageTemplates.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_SmsReceivedLog", Storage="_SmsReceivedLogs", ThisKey="OrganizationId", OtherKey="OrganizationId")]
+		public EntitySet<SmsReceivedLog> SmsReceivedLogs
+		{
+			get
+			{
+				return this._SmsReceivedLogs;
+			}
+			set
+			{
+				this._SmsReceivedLogs.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_SmsSentLog", Storage="_SmsSentLogs", ThisKey="OrganizationId", OtherKey="OrganizationId")]
+		public EntitySet<SmsSentLog> SmsSentLogs
+		{
+			get
+			{
+				return this._SmsSentLogs;
+			}
+			set
+			{
+				this._SmsSentLogs.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_Subscription", Storage="_Subscriptions", ThisKey="OrganizationId", OtherKey="OrganizationId")]
+		public EntitySet<Subscription> Subscriptions
+		{
+			get
+			{
+				return this._Subscriptions;
+			}
+			set
+			{
+				this._Subscriptions.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_User", Storage="_Users", ThisKey="OrganizationId", OtherKey="OrganizationId")]
+		public EntitySet<User> Users
+		{
+			get
+			{
+				return this._Users;
+			}
+			set
+			{
+				this._Users.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="OrganizationSubscriptionType_Organization", Storage="_OrganizationSubscriptionType", ThisKey="OrganizationSubscriptionTypeId", OtherKey="OrganizationSubscriptionTypeId", IsForeignKey=true, DeleteRule="SET NULL")]
+		internal OrganizationSubscriptionType OrganizationSubscriptionType
+		{
+			get
+			{
+				return this._OrganizationSubscriptionType.Entity;
+			}
+			set
+			{
+				OrganizationSubscriptionType previousValue = this._OrganizationSubscriptionType.Entity;
+				if (((previousValue != value) 
+							|| (this._OrganizationSubscriptionType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._OrganizationSubscriptionType.Entity = null;
+						previousValue.Organizations.Remove(this);
+					}
+					this._OrganizationSubscriptionType.Entity = value;
+					if ((value != null))
+					{
+						value.Organizations.Add(this);
+						this._OrganizationSubscriptionTypeId = value.OrganizationSubscriptionTypeId;
+					}
+					else
+					{
+						this._OrganizationSubscriptionTypeId = default(Nullable<System.Guid>);
+					}
+					this.SendPropertyChanged("OrganizationSubscriptionType");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Invoices(Invoice entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = this;
+		}
+		
+		private void detach_Invoices(Invoice entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = null;
+		}
+		
+		private void attach_Orders(Order entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = this;
+		}
+		
+		private void detach_Orders(Order entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = null;
+		}
+		
+		private void attach_SmsMessageTemplates(SmsMessageTemplate entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = this;
+		}
+		
+		private void detach_SmsMessageTemplates(SmsMessageTemplate entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = null;
+		}
+		
+		private void attach_SmsReceivedLogs(SmsReceivedLog entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = this;
+		}
+		
+		private void detach_SmsReceivedLogs(SmsReceivedLog entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = null;
+		}
+		
+		private void attach_SmsSentLogs(SmsSentLog entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = this;
+		}
+		
+		private void detach_SmsSentLogs(SmsSentLog entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = null;
+		}
+		
+		private void attach_Subscriptions(Subscription entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = this;
+		}
+		
+		private void detach_Subscriptions(Subscription entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = null;
+		}
+		
+		private void attach_Users(User entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = this;
+		}
+		
+		private void detach_Users(User entity)
+		{
+			this.SendPropertyChanging();
+			entity.Organization = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.[User]")]
+	public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _UserId;
+		
+		private string _UserName;
+		
+		private string _EmailAddress;
+		
+		private string _CellPhoneNumber;
+		
+		private string _Password;
+		
+		private System.Nullable<System.Guid> _OrganizationId;
+		
+		private int _RoleId;
+		
+		private System.Nullable<System.DateTime> _LastLoginDate;
+		
+		private System.Nullable<System.DateTime> _LastActivityDate;
+		
+		private System.DateTime _DateCreated;
+		
+		private EntitySet<WebRequestActivity> _WebRequestActivities;
+		
+		private EntitySet<Invoice> _Invoices;
+		
+		private EntitySet<Order> _Orders;
+		
+		private EntitySet<ServerAction> _ServerActions;
+		
+		private EntitySet<ServerError> _ServerErrors;
+		
+		private EntityRef<Organization> _Organization;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUserIdChanging(System.Guid value);
+    partial void OnUserIdChanged();
+    partial void OnUserNameChanging(string value);
+    partial void OnUserNameChanged();
+    partial void OnEmailAddressChanging(string value);
+    partial void OnEmailAddressChanged();
+    partial void OnCellPhoneNumberChanging(string value);
+    partial void OnCellPhoneNumberChanged();
+    partial void OnPasswordChanging(string value);
+    partial void OnPasswordChanged();
+    partial void OnOrganizationIdChanging(System.Nullable<System.Guid> value);
+    partial void OnOrganizationIdChanged();
+    partial void OnRoleIdChanging(int value);
+    partial void OnRoleIdChanged();
+    partial void OnLastLoginDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnLastLoginDateChanged();
+    partial void OnLastActivityDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnLastActivityDateChanged();
+    partial void OnDateCreatedChanging(System.DateTime value);
+    partial void OnDateCreatedChanged();
+    #endregion
+		
+		public User()
+		{
+			this._WebRequestActivities = new EntitySet<WebRequestActivity>(new Action<WebRequestActivity>(this.attach_WebRequestActivities), new Action<WebRequestActivity>(this.detach_WebRequestActivities));
+			this._Invoices = new EntitySet<Invoice>(new Action<Invoice>(this.attach_Invoices), new Action<Invoice>(this.detach_Invoices));
+			this._Orders = new EntitySet<Order>(new Action<Order>(this.attach_Orders), new Action<Order>(this.detach_Orders));
+			this._ServerActions = new EntitySet<ServerAction>(new Action<ServerAction>(this.attach_ServerActions), new Action<ServerAction>(this.detach_ServerActions));
+			this._ServerErrors = new EntitySet<ServerError>(new Action<ServerError>(this.attach_ServerErrors), new Action<ServerError>(this.detach_ServerErrors));
+			this._Organization = default(EntityRef<Organization>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid UserId
+		{
+			get
+			{
+				return this._UserId;
+			}
+			set
+			{
+				if ((this._UserId != value))
+				{
+					this.OnUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._UserId = value;
+					this.SendPropertyChanged("UserId");
+					this.OnUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="VarChar(250) NOT NULL", CanBeNull=false)]
+		public string UserName
+		{
+			get
+			{
+				return this._UserName;
+			}
+			set
+			{
+				if ((this._UserName != value))
+				{
+					this.OnUserNameChanging(value);
+					this.SendPropertyChanging();
+					this._UserName = value;
+					this.SendPropertyChanged("UserName");
+					this.OnUserNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmailAddress", DbType="VarChar(250) NOT NULL", CanBeNull=false)]
+		public string EmailAddress
+		{
+			get
+			{
+				return this._EmailAddress;
+			}
+			set
+			{
+				if ((this._EmailAddress != value))
+				{
+					this.OnEmailAddressChanging(value);
+					this.SendPropertyChanging();
+					this._EmailAddress = value;
+					this.SendPropertyChanged("EmailAddress");
+					this.OnEmailAddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CellPhoneNumber", DbType="VarChar(15) NOT NULL", CanBeNull=false)]
+		public string CellPhoneNumber
+		{
+			get
+			{
+				return this._CellPhoneNumber;
+			}
+			set
+			{
+				if ((this._CellPhoneNumber != value))
+				{
+					this.OnCellPhoneNumberChanging(value);
+					this.SendPropertyChanging();
+					this._CellPhoneNumber = value;
+					this.SendPropertyChanged("CellPhoneNumber");
+					this.OnCellPhoneNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Password
+		{
+			get
+			{
+				return this._Password;
+			}
+			set
+			{
+				if ((this._Password != value))
+				{
+					this.OnPasswordChanging(value);
+					this.SendPropertyChanging();
+					this._Password = value;
+					this.SendPropertyChanged("Password");
+					this.OnPasswordChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrganizationId", DbType="UniqueIdentifier")]
+		public System.Nullable<System.Guid> OrganizationId
+		{
+			get
+			{
+				return this._OrganizationId;
+			}
+			set
+			{
+				if ((this._OrganizationId != value))
+				{
+					if (this._Organization.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnOrganizationIdChanging(value);
+					this.SendPropertyChanging();
+					this._OrganizationId = value;
+					this.SendPropertyChanged("OrganizationId");
+					this.OnOrganizationIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RoleId", DbType="Int NOT NULL")]
+		public int RoleId
+		{
+			get
+			{
+				return this._RoleId;
+			}
+			set
+			{
+				if ((this._RoleId != value))
+				{
+					this.OnRoleIdChanging(value);
+					this.SendPropertyChanging();
+					this._RoleId = value;
+					this.SendPropertyChanged("RoleId");
+					this.OnRoleIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastLoginDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> LastLoginDate
+		{
+			get
+			{
+				return this._LastLoginDate;
+			}
+			set
+			{
+				if ((this._LastLoginDate != value))
+				{
+					this.OnLastLoginDateChanging(value);
+					this.SendPropertyChanging();
+					this._LastLoginDate = value;
+					this.SendPropertyChanged("LastLoginDate");
+					this.OnLastLoginDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastActivityDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> LastActivityDate
+		{
+			get
+			{
+				return this._LastActivityDate;
+			}
+			set
+			{
+				if ((this._LastActivityDate != value))
+				{
+					this.OnLastActivityDateChanging(value);
+					this.SendPropertyChanging();
+					this._LastActivityDate = value;
+					this.SendPropertyChanged("LastActivityDate");
+					this.OnLastActivityDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
+		public System.DateTime DateCreated
+		{
+			get
+			{
+				return this._DateCreated;
+			}
+			set
+			{
+				if ((this._DateCreated != value))
+				{
+					this.OnDateCreatedChanging(value);
+					this.SendPropertyChanging();
+					this._DateCreated = value;
+					this.SendPropertyChanged("DateCreated");
+					this.OnDateCreatedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_WebRequestActivity", Storage="_WebRequestActivities", ThisKey="UserId", OtherKey="UserId")]
+		public EntitySet<WebRequestActivity> WebRequestActivities
+		{
+			get
+			{
+				return this._WebRequestActivities;
+			}
+			set
+			{
+				this._WebRequestActivities.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Invoice", Storage="_Invoices", ThisKey="UserId", OtherKey="CreatedByUserId")]
+		public EntitySet<Invoice> Invoices
+		{
+			get
+			{
+				return this._Invoices;
+			}
+			set
+			{
+				this._Invoices.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Order", Storage="_Orders", ThisKey="UserId", OtherKey="CreatedByUserId")]
+		public EntitySet<Order> Orders
+		{
+			get
+			{
+				return this._Orders;
+			}
+			set
+			{
+				this._Orders.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_ServerAction", Storage="_ServerActions", ThisKey="UserId", OtherKey="UserId")]
+		public EntitySet<ServerAction> ServerActions
+		{
+			get
+			{
+				return this._ServerActions;
+			}
+			set
+			{
+				this._ServerActions.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_ServerError", Storage="_ServerErrors", ThisKey="UserId", OtherKey="UserId")]
+		public EntitySet<ServerError> ServerErrors
+		{
+			get
+			{
+				return this._ServerErrors;
+			}
+			set
+			{
+				this._ServerErrors.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Organization_User", Storage="_Organization", ThisKey="OrganizationId", OtherKey="OrganizationId", IsForeignKey=true, DeleteRule="SET NULL")]
+		internal Organization Organization
+		{
+			get
+			{
+				return this._Organization.Entity;
+			}
+			set
+			{
+				Organization previousValue = this._Organization.Entity;
+				if (((previousValue != value) 
+							|| (this._Organization.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Organization.Entity = null;
+						previousValue.Users.Remove(this);
+					}
+					this._Organization.Entity = value;
+					if ((value != null))
+					{
+						value.Users.Add(this);
+						this._OrganizationId = value.OrganizationId;
+					}
+					else
+					{
+						this._OrganizationId = default(Nullable<System.Guid>);
+					}
+					this.SendPropertyChanged("Organization");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_WebRequestActivities(WebRequestActivity entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_WebRequestActivities(WebRequestActivity entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+		
+		private void attach_Invoices(Invoice entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_Invoices(Invoice entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+		
+		private void attach_Orders(Order entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_Orders(Order entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+		
+		private void attach_ServerActions(ServerAction entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_ServerActions(ServerAction entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+		
+		private void attach_ServerErrors(ServerError entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_ServerErrors(ServerError entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
 		}
 	}
 }

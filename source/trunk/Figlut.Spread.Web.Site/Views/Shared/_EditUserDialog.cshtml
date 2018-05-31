@@ -27,6 +27,13 @@
                     @Html.EditorFor(m => m.UserEmailAddress)
                     @Html.ValidationMessageFor(m => m.UserEmailAddress)
                 </div>
+                <div class="field-label">
+                    @Html.Raw("Cell Phone Number *")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.UserCellPhoneNumber)
+                    @Html.ValidationMessageFor(m => m.UserCellPhoneNumber)
+                </div>
                 @if (ViewBag.UserRolesList != null)
                 {
                     <div class="field-label">

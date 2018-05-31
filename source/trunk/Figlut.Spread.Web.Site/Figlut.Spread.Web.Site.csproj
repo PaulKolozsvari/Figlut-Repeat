@@ -489,10 +489,8 @@
     <Content Include="Views\Information\Information.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\User\Register.cshtml" />
-    <Content Include="Views\User\EditProfile.cshtml" />
     <Content Include="Views\User\ChangePassword.cshtml" />
     <Content Include="Views\GlobalSetting\Edit.cshtml" />
-    <Content Include="Views\Organization\EditProfile.cshtml" />
     <Content Include="Views\SmsReceived\Index.cshtml" />
     <Content Include="Views\Shared\_SmsReceivedGrid.cshtml" />
     <Content Include="Views\Shared\_SmsSentGrid.cshtml" />

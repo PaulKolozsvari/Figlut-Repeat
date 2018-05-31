@@ -35,6 +35,28 @@
 
         public int BillingDayOfTheMonth { get; set; }
 
+        public bool IsMondayWorkDay { get; set; }
+
+        public bool IsTuesdayWorkDay { get; set; }
+
+        public bool IsWednesdayWorkDay { get; set; }
+
+        public bool IsThursdayWorkDay { get; set; }
+
+        public bool IsFridayWorkDay { get; set; }
+
+        public bool IsSaturdayWorkDay { get; set; }
+
+        public bool IsSundayWorkDay { get; set; }
+
+        public Nullable<Guid> AccountManagerUserId { get; set; }
+
+        public string AccountManagerUserName { get; set; }
+
+        public string AccountManagerEmailAddress { get; set; }
+
+        public string AccountManagerCellPhoneNumber { get; set; }
+
         public DateTime DateCreated { get; set; }
 
         #region Settings
@@ -102,6 +124,14 @@
             this.OrganizationSubscriptionTypeId = organization.OrganizationSubscriptionTypeId;
             this.OrganizationSubscriptionEnabled = organization.OrganizationSubscriptionEnabled;
             this.BillingDayOfTheMonth = organization.BillingDayOfTheMonth;
+            this.IsMondayWorkDay = organization.IsMondayWorkDay;
+            this.IsTuesdayWorkDay = organization.IsTuesdayWorkDay;
+            this.IsWednesdayWorkDay = organization.IsWednesdayWorkDay;
+            this.IsThursdayWorkDay = organization.IsThursdayWorkDay;
+            this.IsFridayWorkDay = organization.IsFridayWorkDay;
+            this.IsSaturdayWorkDay = organization.IsSaturdayWorkDay;
+            this.IsSundayWorkDay = organization.IsSundayWorkDay;
+            this.AccountManagerUserId = organization.AccountManagerUserId;
             this.DateCreated = organization.DateCreated;
         }
 
@@ -117,6 +147,14 @@
             organization.OrganizationSubscriptionTypeId = this.OrganizationSubscriptionTypeId;
             organization.OrganizationSubscriptionEnabled = this.OrganizationSubscriptionEnabled;
             organization.BillingDayOfTheMonth = this.BillingDayOfTheMonth;
+            organization.IsMondayWorkDay = this.IsMondayWorkDay;
+            organization.IsTuesdayWorkDay = this.IsTuesdayWorkDay;
+            organization.IsWednesdayWorkDay = this.IsWednesdayWorkDay;
+            organization.IsThursdayWorkDay = this.IsThursdayWorkDay;
+            organization.IsFridayWorkDay = this.IsFridayWorkDay;
+            organization.IsSaturdayWorkDay = this.IsSaturdayWorkDay;
+            organization.IsSundayWorkDay = this.IsSundayWorkDay;
+            organization.AccountManagerUserId = this.AccountManagerUserId;
             organization.DateCreated = this.DateCreated;
         }
 
