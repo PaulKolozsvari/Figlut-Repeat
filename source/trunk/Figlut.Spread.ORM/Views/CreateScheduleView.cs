@@ -68,6 +68,22 @@
 
         public int OrganizationBillingDayOfTheMonth { get; set; }
 
+        public bool IsMondayWorkDay { get; set; }
+
+        public bool IsTuesdayWorkDay { get; set; }
+
+        public bool IsWednesdayWorkDay { get; set; }
+
+        public bool IsThursdayWorkDay { get; set; }
+
+        public bool IsFridayWorkDay { get; set; }
+
+        public bool IsSaturdayWorkDay { get; set; }
+
+        public bool IsSundayWorkDay { get; set; }
+
+        public Nullable<Guid> AccountManagerUserId { get; set; }
+
         public DateTime OrganizationDateCreated { get; set; }
 
         #endregion //Organization Properties
@@ -85,6 +101,12 @@
         public int DaysRepeatInterval { get; set; }
 
         public string Notes { get; set; }
+
+        public bool CreateScheduleEntries { get; set; }
+
+        public bool ExcludeNonWorkingDays { get; set; }
+
+        public bool ExcludePublicHolidays { get; set; }
 
         public DateTime StartDate { get; set; }
 
@@ -110,6 +132,16 @@
                 UnitOfMeasure = this.UnitOfMeasure,
                 DaysRepeatInterval = this.DaysRepeatInterval,
                 Notes = this.Notes,
+                CreateScheduleEntries = this.CreateScheduleEntries,
+                ExcludeNonWorkingDays = this.ExcludeNonWorkingDays,
+                ExcludePublicHolidays = this.ExcludePublicHolidays,
+                IsMondayWorkDay = this.IsMondayWorkDay,
+                IsTuesdayWorkDay = this.IsTuesdayWorkDay,
+                IsWednesdayWorkDay = this.IsWednesdayWorkDay,
+                IsThursdayWorkDay = this.IsThursdayWorkDay,
+                IsFridayWorkDay = this.IsFridayWorkDay,
+                IsSaturdayWorkDay = this.IsSaturdayWorkDay,
+                IsSundayWorkDay = this.IsSundayWorkDay,
                 DateCreated = DateTime.Now
             };
         }

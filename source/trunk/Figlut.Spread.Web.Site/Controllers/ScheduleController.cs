@@ -437,6 +437,9 @@
                 model.CountryId = country.CountryId;
                 model.StartDateCreate = DateTime.Now;
                 model.EndDateCreate = DateTime.Now.AddDays(365);
+                model.CreateScheduleEntries = true;
+                model.ExcludeNonWorkingDays = true;
+                model.ExcludePublicHolidays = true;
                 model.MaxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
                 PartialViewResult result = PartialView(CREATE_SCHEDULE_PARTIAL_VIEW_NAME, model);
                 return result;

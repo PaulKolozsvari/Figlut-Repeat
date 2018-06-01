@@ -75,6 +75,14 @@
                                                    OrganizationSubscriptionTypeId = organizationView.OrganizationSubscriptionTypeId,
                                                    OrganizationSubscriptionEnabled = organizationView.OrganizationSubscriptionEnabled,
                                                    OrganizationBillingDayOfTheMonth = organizationView.BillingDayOfTheMonth,
+                                                   IsMondayWorkDay = organizationView.IsMondayWorkDay,
+                                                   IsTuesdayWorkDay = organizationView.IsTuesdayWorkDay,
+                                                   IsWednesdayWorkDay = organizationView.IsWednesdayWorkDay,
+                                                   IsThursdayWorkDay = organizationView.IsThursdayWorkDay,
+                                                   IsFridayWorkDay = organizationView.IsFridayWorkDay,
+                                                   IsSaturdayWorkDay = organizationView.IsSaturdayWorkDay,
+                                                   IsSundayWorkDay = organizationView.IsSundayWorkDay,
+                                                   AccountManagerUserId = organizationView.AccountManagerUserId,
                                                    OrganizationDateCreated = organizationView.DateCreated
                                                }).FirstOrDefault();
             if (result == null && throwExceptionOnNotFound)

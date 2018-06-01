@@ -70,6 +70,22 @@
 
         public int OrganizationBillingDayOfTheMonth { get; set; }
 
+        public bool IsMondayWorkDay { get; set; }
+
+        public bool IsTuesdayWorkDay { get; set; }
+
+        public bool IsWednesdayWorkDay { get; set; }
+
+        public bool IsThursdayWorkDay { get; set; }
+
+        public bool IsFridayWorkDay { get; set; }
+
+        public bool IsSaturdayWorkDay { get; set; }
+
+        public bool IsSundayWorkDay { get; set; }
+
+        public Nullable<Guid> AccountManagerUserId { get; set; }
+
         public DateTime OrganizationDateCreated { get; set; }
 
         #endregion //Organization Properties
@@ -89,6 +105,12 @@
         public int DaysRepeatInterval { get; set; }
 
         public string Notes { get; set; }
+
+        public bool CreateScheduleEntries { get; set; }
+
+        public bool ExcludeNonWorkingDays { get; set; }
+
+        public bool ExcludePublicHolidays { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -223,6 +245,14 @@
             this.OrganizationSubscriptionTypeId = view.OrganizationSubscriptionTypeId;
             this.OrganizationSubscriptionEnabled = view.OrganizationSubscriptionEnabled;
             this.OrganizationBillingDayOfTheMonth = view.OrganizationBillingDayOfTheMonth;
+            this.IsMondayWorkDay = view.IsMondayWorkDay;
+            this.IsTuesdayWorkDay = view.IsTuesdayWorkDay;
+            this.IsWednesdayWorkDay = view.IsWednesdayWorkDay;
+            this.IsThursdayWorkDay = view.IsThursdayWorkDay;
+            this.IsFridayWorkDay = view.IsFridayWorkDay;
+            this.IsSaturdayWorkDay = view.IsSaturdayWorkDay;
+            this.IsSundayWorkDay = view.IsSundayWorkDay;
+            this.AccountManagerUserId = view.AccountManagerUserId;
             this.OrganizationDateCreated = view.OrganizationDateCreated;
 
             //Schedule
@@ -232,6 +262,9 @@
             this.UnitOfMeasure = view.UnitOfMeasure;
             this.DaysRepeatInterval = view.DaysRepeatInterval;
             this.Notes = view.Notes;
+            this.CreateScheduleEntries = view.CreateScheduleEntries;
+            this.ExcludeNonWorkingDays = view.ExcludeNonWorkingDays;
+            this.ExcludePublicHolidays = view.ExcludePublicHolidays;
             this.StartDateCreate = view.StartDate;
             this.EndDateCreate = view.EndDate;
             this.CountryId = view.CountryId;
@@ -266,6 +299,14 @@
             view.OrganizationSubscriptionTypeId = this.OrganizationSubscriptionTypeId;
             view.OrganizationSubscriptionEnabled = this.OrganizationSubscriptionEnabled;
             view.OrganizationBillingDayOfTheMonth = this.OrganizationBillingDayOfTheMonth;
+            view.IsMondayWorkDay = this.IsMondayWorkDay;
+            view.IsTuesdayWorkDay = this.IsTuesdayWorkDay;
+            view.IsWednesdayWorkDay = this.IsWednesdayWorkDay;
+            view.IsThursdayWorkDay = this.IsThursdayWorkDay;
+            view.IsFridayWorkDay = this.IsFridayWorkDay;
+            view.IsSaturdayWorkDay = this.IsSaturdayWorkDay;
+            view.IsSundayWorkDay = this.IsSundayWorkDay;
+            view.AccountManagerUserId = this.AccountManagerUserId;
             view.OrganizationDateCreated = this.OrganizationDateCreated;
 
             //Schedule
@@ -275,6 +316,9 @@
             view.UnitOfMeasure = this.UnitOfMeasure;
             view.DaysRepeatInterval = this.DaysRepeatInterval;
             view.Notes = this.Notes;
+            view.CreateScheduleEntries = this.CreateScheduleEntries;
+            view.ExcludeNonWorkingDays = this.ExcludeNonWorkingDays;
+            view.ExcludePublicHolidays = this.ExcludePublicHolidays;
             view.StartDate = this.StartDateCreate;
             view.EndDate = this.EndDateCreate;
             view.CountryId = this.CountryId;

@@ -1,4 +1,10 @@
-﻿iCalendar .ics file definition: https://en.wikipedia.org/wiki/ICalendar
+﻿*	Use Cases:
+
+	-	Pharmacies for repeat medications.
+	-	Hair salons and barber shops.
+	-	Plant Nurseries
+
+iCalendar .ics file definition: https://en.wikipedia.org/wiki/ICalendar
 
 Public Holiday Websites: 
 	http://holidays.kayaposoft.com/public_holidays.php?country=zaf

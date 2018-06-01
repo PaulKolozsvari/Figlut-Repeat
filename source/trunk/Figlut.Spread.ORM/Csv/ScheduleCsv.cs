@@ -33,6 +33,26 @@
 
         public string Notes { get; set; }
 
+        public bool CreateScheduleEntries { get; set; }
+
+        public bool ExcludeNonWorkingDays { get; set; }
+
+        public bool ExcludePublicHolidays { get; set; }
+
+        public bool IsMondayWorkDay { get; set; }
+
+        public bool IsTuesdayWorkDay { get; set; }
+
+        public bool IsWednesdayWorkDay { get; set; }
+
+        public bool IsThursdayWorkDay { get; set; }
+
+        public bool IsFridayWorkDay { get; set; }
+
+        public bool IsSaturdayWorkDay { get; set; }
+
+        public bool IsSundayWorkDay { get; set; }
+
         public DateTime DateCreated { get; set; }
 
         public Nullable<DateTime> StartDate { get; set; }
@@ -91,6 +111,16 @@
             this.UnitOfMeasure = view.UnitOfMeasure;
             this.DaysRepeatInterval = view.DaysRepeatInterval;
             this.Notes = view.Notes;
+            this.CreateScheduleEntries = view.CreateScheduleEntries;
+            this.ExcludeNonWorkingDays = view.ExcludeNonWorkingDays;
+            this.ExcludePublicHolidays = view.ExcludePublicHolidays;
+            this.IsMondayWorkDay = view.IsMondayWorkDay;
+            this.IsTuesdayWorkDay = view.IsTuesdayWorkDay;
+            this.IsWednesdayWorkDay = view.IsWednesdayWorkDay;
+            this.IsThursdayWorkDay = view.IsThursdayWorkDay;
+            this.IsFridayWorkDay = view.IsFridayWorkDay;
+            this.IsSaturdayWorkDay = view.IsSaturdayWorkDay;
+            this.IsSundayWorkDay = view.IsSundayWorkDay;
             this.DateCreated = view.DateCreated;
             this.StartDate = view.StartDate;
             this.EndDate = view.EndDate;

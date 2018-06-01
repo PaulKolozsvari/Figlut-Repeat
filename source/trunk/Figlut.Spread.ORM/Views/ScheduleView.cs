@@ -32,6 +32,26 @@
 
         public string Notes { get; set; }
 
+        public bool CreateScheduleEntries { get; set; }
+
+        public bool ExcludeNonWorkingDays { get; set; }
+
+        public bool ExcludePublicHolidays { get; set; }
+
+        public bool IsMondayWorkDay { get; set; }
+
+        public bool IsTuesdayWorkDay { get; set; }
+
+        public bool IsWednesdayWorkDay { get; set; }
+
+        public bool IsThursdayWorkDay { get; set; }
+
+        public bool IsFridayWorkDay { get; set; }
+
+        public bool IsSaturdayWorkDay { get; set; }
+
+        public bool IsSundayWorkDay { get; set; }
+
         public DateTime DateCreated { get; set; }
 
         public Nullable<DateTime> StartDate { get; set; }

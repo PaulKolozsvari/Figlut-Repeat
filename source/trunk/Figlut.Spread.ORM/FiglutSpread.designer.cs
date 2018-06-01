@@ -96,9 +96,6 @@ namespace Figlut.Spread.ORM
     partial void InsertSubscription(Subscription instance);
     partial void UpdateSubscription(Subscription instance);
     partial void DeleteSubscription(Subscription instance);
-    partial void InsertSchedule(Schedule instance);
-    partial void UpdateSchedule(Schedule instance);
-    partial void DeleteSchedule(Schedule instance);
     partial void InsertScheduleEntry(ScheduleEntry instance);
     partial void UpdateScheduleEntry(ScheduleEntry instance);
     partial void DeleteScheduleEntry(ScheduleEntry instance);
@@ -108,6 +105,9 @@ namespace Figlut.Spread.ORM
     partial void InsertUser(User instance);
     partial void UpdateUser(User instance);
     partial void DeleteUser(User instance);
+    partial void InsertSchedule(Schedule instance);
+    partial void UpdateSchedule(Schedule instance);
+    partial void DeleteSchedule(Schedule instance);
     #endregion
 		
 		public FiglutSpreadDataContext() : 
@@ -324,14 +324,6 @@ namespace Figlut.Spread.ORM
 			}
 		}
 		
-		public System.Data.Linq.Table<Schedule> Schedules
-		{
-			get
-			{
-				return this.GetTable<Schedule>();
-			}
-		}
-		
 		public System.Data.Linq.Table<ScheduleEntry> ScheduleEntries
 		{
 			get
@@ -353,6 +345,14 @@ namespace Figlut.Spread.ORM
 			get
 			{
 				return this.GetTable<User>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Schedule> Schedules
+		{
+			get
+			{
+				return this.GetTable<Schedule>();
 			}
 		}
 	}
@@ -7658,329 +7658,6 @@ namespace Figlut.Spread.ORM
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Schedule")]
-	public partial class Schedule : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private System.Guid _ScheduleId;
-		
-		private System.Guid _SubscriptionId;
-		
-		private string _NotificationMessage;
-		
-		private string _ScheduleName;
-		
-		private System.Nullable<double> _Quantity;
-		
-		private string _UnitOfMeasure;
-		
-		private int _DaysRepeatInterval;
-		
-		private string _Notes;
-		
-		private System.DateTime _DateCreated;
-		
-		private EntitySet<ScheduleEntry> _ScheduleEntries;
-		
-		private EntityRef<Subscription> _Subscription;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnScheduleIdChanging(System.Guid value);
-    partial void OnScheduleIdChanged();
-    partial void OnSubscriptionIdChanging(System.Guid value);
-    partial void OnSubscriptionIdChanged();
-    partial void OnNotificationMessageChanging(string value);
-    partial void OnNotificationMessageChanged();
-    partial void OnScheduleNameChanging(string value);
-    partial void OnScheduleNameChanged();
-    partial void OnQuantityChanging(System.Nullable<double> value);
-    partial void OnQuantityChanged();
-    partial void OnUnitOfMeasureChanging(string value);
-    partial void OnUnitOfMeasureChanged();
-    partial void OnDaysRepeatIntervalChanging(int value);
-    partial void OnDaysRepeatIntervalChanged();
-    partial void OnNotesChanging(string value);
-    partial void OnNotesChanged();
-    partial void OnDateCreatedChanging(System.DateTime value);
-    partial void OnDateCreatedChanged();
-    #endregion
-		
-		public Schedule()
-		{
-			this._ScheduleEntries = new EntitySet<ScheduleEntry>(new Action<ScheduleEntry>(this.attach_ScheduleEntries), new Action<ScheduleEntry>(this.detach_ScheduleEntries));
-			this._Subscription = default(EntityRef<Subscription>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ScheduleId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
-		public System.Guid ScheduleId
-		{
-			get
-			{
-				return this._ScheduleId;
-			}
-			set
-			{
-				if ((this._ScheduleId != value))
-				{
-					this.OnScheduleIdChanging(value);
-					this.SendPropertyChanging();
-					this._ScheduleId = value;
-					this.SendPropertyChanged("ScheduleId");
-					this.OnScheduleIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SubscriptionId", DbType="UniqueIdentifier NOT NULL")]
-		public System.Guid SubscriptionId
-		{
-			get
-			{
-				return this._SubscriptionId;
-			}
-			set
-			{
-				if ((this._SubscriptionId != value))
-				{
-					if (this._Subscription.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnSubscriptionIdChanging(value);
-					this.SendPropertyChanging();
-					this._SubscriptionId = value;
-					this.SendPropertyChanged("SubscriptionId");
-					this.OnSubscriptionIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NotificationMessage", DbType="VarChar(140) NOT NULL", CanBeNull=false)]
-		public string NotificationMessage
-		{
-			get
-			{
-				return this._NotificationMessage;
-			}
-			set
-			{
-				if ((this._NotificationMessage != value))
-				{
-					this.OnNotificationMessageChanging(value);
-					this.SendPropertyChanging();
-					this._NotificationMessage = value;
-					this.SendPropertyChanged("NotificationMessage");
-					this.OnNotificationMessageChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ScheduleName", DbType="VarChar(250) NOT NULL", CanBeNull=false)]
-		public string ScheduleName
-		{
-			get
-			{
-				return this._ScheduleName;
-			}
-			set
-			{
-				if ((this._ScheduleName != value))
-				{
-					this.OnScheduleNameChanging(value);
-					this.SendPropertyChanging();
-					this._ScheduleName = value;
-					this.SendPropertyChanged("ScheduleName");
-					this.OnScheduleNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Quantity", DbType="Float")]
-		public System.Nullable<double> Quantity
-		{
-			get
-			{
-				return this._Quantity;
-			}
-			set
-			{
-				if ((this._Quantity != value))
-				{
-					this.OnQuantityChanging(value);
-					this.SendPropertyChanging();
-					this._Quantity = value;
-					this.SendPropertyChanged("Quantity");
-					this.OnQuantityChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UnitOfMeasure", DbType="VarChar(50)")]
-		public string UnitOfMeasure
-		{
-			get
-			{
-				return this._UnitOfMeasure;
-			}
-			set
-			{
-				if ((this._UnitOfMeasure != value))
-				{
-					this.OnUnitOfMeasureChanging(value);
-					this.SendPropertyChanging();
-					this._UnitOfMeasure = value;
-					this.SendPropertyChanged("UnitOfMeasure");
-					this.OnUnitOfMeasureChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DaysRepeatInterval", DbType="Int NOT NULL")]
-		public int DaysRepeatInterval
-		{
-			get
-			{
-				return this._DaysRepeatInterval;
-			}
-			set
-			{
-				if ((this._DaysRepeatInterval != value))
-				{
-					this.OnDaysRepeatIntervalChanging(value);
-					this.SendPropertyChanging();
-					this._DaysRepeatInterval = value;
-					this.SendPropertyChanged("DaysRepeatInterval");
-					this.OnDaysRepeatIntervalChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Notes", DbType="VarChar(MAX)")]
-		public string Notes
-		{
-			get
-			{
-				return this._Notes;
-			}
-			set
-			{
-				if ((this._Notes != value))
-				{
-					this.OnNotesChanging(value);
-					this.SendPropertyChanging();
-					this._Notes = value;
-					this.SendPropertyChanged("Notes");
-					this.OnNotesChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
-		public System.DateTime DateCreated
-		{
-			get
-			{
-				return this._DateCreated;
-			}
-			set
-			{
-				if ((this._DateCreated != value))
-				{
-					this.OnDateCreatedChanging(value);
-					this.SendPropertyChanging();
-					this._DateCreated = value;
-					this.SendPropertyChanged("DateCreated");
-					this.OnDateCreatedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Schedule_ScheduleEntry", Storage="_ScheduleEntries", ThisKey="ScheduleId", OtherKey="ScheduleId")]
-		public EntitySet<ScheduleEntry> ScheduleEntries
-		{
-			get
-			{
-				return this._ScheduleEntries;
-			}
-			set
-			{
-				this._ScheduleEntries.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Subscription_Schedule", Storage="_Subscription", ThisKey="SubscriptionId", OtherKey="SubscriptionId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		internal Subscription Subscription
-		{
-			get
-			{
-				return this._Subscription.Entity;
-			}
-			set
-			{
-				Subscription previousValue = this._Subscription.Entity;
-				if (((previousValue != value) 
-							|| (this._Subscription.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Subscription.Entity = null;
-						previousValue.Schedules.Remove(this);
-					}
-					this._Subscription.Entity = value;
-					if ((value != null))
-					{
-						value.Schedules.Add(this);
-						this._SubscriptionId = value.SubscriptionId;
-					}
-					else
-					{
-						this._SubscriptionId = default(System.Guid);
-					}
-					this.SendPropertyChanged("Subscription");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_ScheduleEntries(ScheduleEntry entity)
-		{
-			this.SendPropertyChanging();
-			entity.Schedule = this;
-		}
-		
-		private void detach_ScheduleEntries(ScheduleEntry entity)
-		{
-			this.SendPropertyChanging();
-			entity.Schedule = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ScheduleEntry")]
 	public partial class ScheduleEntry : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -9559,6 +9236,569 @@ namespace Figlut.Spread.ORM
 		{
 			this.SendPropertyChanging();
 			entity.User = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Schedule")]
+	public partial class Schedule : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _ScheduleId;
+		
+		private System.Guid _SubscriptionId;
+		
+		private string _NotificationMessage;
+		
+		private string _ScheduleName;
+		
+		private System.Nullable<double> _Quantity;
+		
+		private string _UnitOfMeasure;
+		
+		private int _DaysRepeatInterval;
+		
+		private string _Notes;
+		
+		private bool _CreateScheduleEntries;
+		
+		private bool _ExcludeNonWorkingDays;
+		
+		private bool _ExcludePublicHolidays;
+		
+		private bool _IsMondayWorkDay;
+		
+		private bool _IsTuesdayWorkDay;
+		
+		private bool _IsWednesdayWorkDay;
+		
+		private bool _IsThursdayWorkDay;
+		
+		private bool _IsFridayWorkDay;
+		
+		private bool _IsSaturdayWorkDay;
+		
+		private bool _IsSundayWorkDay;
+		
+		private System.DateTime _DateCreated;
+		
+		private EntitySet<ScheduleEntry> _ScheduleEntries;
+		
+		private EntityRef<Subscription> _Subscription;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnScheduleIdChanging(System.Guid value);
+    partial void OnScheduleIdChanged();
+    partial void OnSubscriptionIdChanging(System.Guid value);
+    partial void OnSubscriptionIdChanged();
+    partial void OnNotificationMessageChanging(string value);
+    partial void OnNotificationMessageChanged();
+    partial void OnScheduleNameChanging(string value);
+    partial void OnScheduleNameChanged();
+    partial void OnQuantityChanging(System.Nullable<double> value);
+    partial void OnQuantityChanged();
+    partial void OnUnitOfMeasureChanging(string value);
+    partial void OnUnitOfMeasureChanged();
+    partial void OnDaysRepeatIntervalChanging(int value);
+    partial void OnDaysRepeatIntervalChanged();
+    partial void OnNotesChanging(string value);
+    partial void OnNotesChanged();
+    partial void OnCreateScheduleEntriesChanging(bool value);
+    partial void OnCreateScheduleEntriesChanged();
+    partial void OnExcludeNonWorkingDaysChanging(bool value);
+    partial void OnExcludeNonWorkingDaysChanged();
+    partial void OnExcludePublicHolidaysChanging(bool value);
+    partial void OnExcludePublicHolidaysChanged();
+    partial void OnIsMondayWorkDayChanging(bool value);
+    partial void OnIsMondayWorkDayChanged();
+    partial void OnIsTuesdayWorkDayChanging(bool value);
+    partial void OnIsTuesdayWorkDayChanged();
+    partial void OnIsWednesdayWorkDayChanging(bool value);
+    partial void OnIsWednesdayWorkDayChanged();
+    partial void OnIsThursdayWorkDayChanging(bool value);
+    partial void OnIsThursdayWorkDayChanged();
+    partial void OnIsFridayWorkDayChanging(bool value);
+    partial void OnIsFridayWorkDayChanged();
+    partial void OnIsSaturdayWorkDayChanging(bool value);
+    partial void OnIsSaturdayWorkDayChanged();
+    partial void OnIsSundayWorkDayChanging(bool value);
+    partial void OnIsSundayWorkDayChanged();
+    partial void OnDateCreatedChanging(System.DateTime value);
+    partial void OnDateCreatedChanged();
+    #endregion
+		
+		public Schedule()
+		{
+			this._ScheduleEntries = new EntitySet<ScheduleEntry>(new Action<ScheduleEntry>(this.attach_ScheduleEntries), new Action<ScheduleEntry>(this.detach_ScheduleEntries));
+			this._Subscription = default(EntityRef<Subscription>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ScheduleId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid ScheduleId
+		{
+			get
+			{
+				return this._ScheduleId;
+			}
+			set
+			{
+				if ((this._ScheduleId != value))
+				{
+					this.OnScheduleIdChanging(value);
+					this.SendPropertyChanging();
+					this._ScheduleId = value;
+					this.SendPropertyChanged("ScheduleId");
+					this.OnScheduleIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SubscriptionId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid SubscriptionId
+		{
+			get
+			{
+				return this._SubscriptionId;
+			}
+			set
+			{
+				if ((this._SubscriptionId != value))
+				{
+					if (this._Subscription.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSubscriptionIdChanging(value);
+					this.SendPropertyChanging();
+					this._SubscriptionId = value;
+					this.SendPropertyChanged("SubscriptionId");
+					this.OnSubscriptionIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NotificationMessage", DbType="VarChar(140) NOT NULL", CanBeNull=false)]
+		public string NotificationMessage
+		{
+			get
+			{
+				return this._NotificationMessage;
+			}
+			set
+			{
+				if ((this._NotificationMessage != value))
+				{
+					this.OnNotificationMessageChanging(value);
+					this.SendPropertyChanging();
+					this._NotificationMessage = value;
+					this.SendPropertyChanged("NotificationMessage");
+					this.OnNotificationMessageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ScheduleName", DbType="VarChar(250) NOT NULL", CanBeNull=false)]
+		public string ScheduleName
+		{
+			get
+			{
+				return this._ScheduleName;
+			}
+			set
+			{
+				if ((this._ScheduleName != value))
+				{
+					this.OnScheduleNameChanging(value);
+					this.SendPropertyChanging();
+					this._ScheduleName = value;
+					this.SendPropertyChanged("ScheduleName");
+					this.OnScheduleNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Quantity", DbType="Float")]
+		public System.Nullable<double> Quantity
+		{
+			get
+			{
+				return this._Quantity;
+			}
+			set
+			{
+				if ((this._Quantity != value))
+				{
+					this.OnQuantityChanging(value);
+					this.SendPropertyChanging();
+					this._Quantity = value;
+					this.SendPropertyChanged("Quantity");
+					this.OnQuantityChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UnitOfMeasure", DbType="VarChar(50)")]
+		public string UnitOfMeasure
+		{
+			get
+			{
+				return this._UnitOfMeasure;
+			}
+			set
+			{
+				if ((this._UnitOfMeasure != value))
+				{
+					this.OnUnitOfMeasureChanging(value);
+					this.SendPropertyChanging();
+					this._UnitOfMeasure = value;
+					this.SendPropertyChanged("UnitOfMeasure");
+					this.OnUnitOfMeasureChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DaysRepeatInterval", DbType="Int NOT NULL")]
+		public int DaysRepeatInterval
+		{
+			get
+			{
+				return this._DaysRepeatInterval;
+			}
+			set
+			{
+				if ((this._DaysRepeatInterval != value))
+				{
+					this.OnDaysRepeatIntervalChanging(value);
+					this.SendPropertyChanging();
+					this._DaysRepeatInterval = value;
+					this.SendPropertyChanged("DaysRepeatInterval");
+					this.OnDaysRepeatIntervalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Notes", DbType="VarChar(MAX)")]
+		public string Notes
+		{
+			get
+			{
+				return this._Notes;
+			}
+			set
+			{
+				if ((this._Notes != value))
+				{
+					this.OnNotesChanging(value);
+					this.SendPropertyChanging();
+					this._Notes = value;
+					this.SendPropertyChanged("Notes");
+					this.OnNotesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreateScheduleEntries", DbType="Bit NOT NULL")]
+		public bool CreateScheduleEntries
+		{
+			get
+			{
+				return this._CreateScheduleEntries;
+			}
+			set
+			{
+				if ((this._CreateScheduleEntries != value))
+				{
+					this.OnCreateScheduleEntriesChanging(value);
+					this.SendPropertyChanging();
+					this._CreateScheduleEntries = value;
+					this.SendPropertyChanged("CreateScheduleEntries");
+					this.OnCreateScheduleEntriesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExcludeNonWorkingDays", DbType="Bit NOT NULL")]
+		public bool ExcludeNonWorkingDays
+		{
+			get
+			{
+				return this._ExcludeNonWorkingDays;
+			}
+			set
+			{
+				if ((this._ExcludeNonWorkingDays != value))
+				{
+					this.OnExcludeNonWorkingDaysChanging(value);
+					this.SendPropertyChanging();
+					this._ExcludeNonWorkingDays = value;
+					this.SendPropertyChanged("ExcludeNonWorkingDays");
+					this.OnExcludeNonWorkingDaysChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExcludePublicHolidays", DbType="Bit NOT NULL")]
+		public bool ExcludePublicHolidays
+		{
+			get
+			{
+				return this._ExcludePublicHolidays;
+			}
+			set
+			{
+				if ((this._ExcludePublicHolidays != value))
+				{
+					this.OnExcludePublicHolidaysChanging(value);
+					this.SendPropertyChanging();
+					this._ExcludePublicHolidays = value;
+					this.SendPropertyChanged("ExcludePublicHolidays");
+					this.OnExcludePublicHolidaysChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsMondayWorkDay", DbType="Bit NOT NULL")]
+		public bool IsMondayWorkDay
+		{
+			get
+			{
+				return this._IsMondayWorkDay;
+			}
+			set
+			{
+				if ((this._IsMondayWorkDay != value))
+				{
+					this.OnIsMondayWorkDayChanging(value);
+					this.SendPropertyChanging();
+					this._IsMondayWorkDay = value;
+					this.SendPropertyChanged("IsMondayWorkDay");
+					this.OnIsMondayWorkDayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsTuesdayWorkDay", DbType="Bit NOT NULL")]
+		public bool IsTuesdayWorkDay
+		{
+			get
+			{
+				return this._IsTuesdayWorkDay;
+			}
+			set
+			{
+				if ((this._IsTuesdayWorkDay != value))
+				{
+					this.OnIsTuesdayWorkDayChanging(value);
+					this.SendPropertyChanging();
+					this._IsTuesdayWorkDay = value;
+					this.SendPropertyChanged("IsTuesdayWorkDay");
+					this.OnIsTuesdayWorkDayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsWednesdayWorkDay", DbType="Bit NOT NULL")]
+		public bool IsWednesdayWorkDay
+		{
+			get
+			{
+				return this._IsWednesdayWorkDay;
+			}
+			set
+			{
+				if ((this._IsWednesdayWorkDay != value))
+				{
+					this.OnIsWednesdayWorkDayChanging(value);
+					this.SendPropertyChanging();
+					this._IsWednesdayWorkDay = value;
+					this.SendPropertyChanged("IsWednesdayWorkDay");
+					this.OnIsWednesdayWorkDayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsThursdayWorkDay", DbType="Bit NOT NULL")]
+		public bool IsThursdayWorkDay
+		{
+			get
+			{
+				return this._IsThursdayWorkDay;
+			}
+			set
+			{
+				if ((this._IsThursdayWorkDay != value))
+				{
+					this.OnIsThursdayWorkDayChanging(value);
+					this.SendPropertyChanging();
+					this._IsThursdayWorkDay = value;
+					this.SendPropertyChanged("IsThursdayWorkDay");
+					this.OnIsThursdayWorkDayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsFridayWorkDay", DbType="Bit NOT NULL")]
+		public bool IsFridayWorkDay
+		{
+			get
+			{
+				return this._IsFridayWorkDay;
+			}
+			set
+			{
+				if ((this._IsFridayWorkDay != value))
+				{
+					this.OnIsFridayWorkDayChanging(value);
+					this.SendPropertyChanging();
+					this._IsFridayWorkDay = value;
+					this.SendPropertyChanged("IsFridayWorkDay");
+					this.OnIsFridayWorkDayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsSaturdayWorkDay", DbType="Bit NOT NULL")]
+		public bool IsSaturdayWorkDay
+		{
+			get
+			{
+				return this._IsSaturdayWorkDay;
+			}
+			set
+			{
+				if ((this._IsSaturdayWorkDay != value))
+				{
+					this.OnIsSaturdayWorkDayChanging(value);
+					this.SendPropertyChanging();
+					this._IsSaturdayWorkDay = value;
+					this.SendPropertyChanged("IsSaturdayWorkDay");
+					this.OnIsSaturdayWorkDayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsSundayWorkDay", DbType="Bit NOT NULL")]
+		public bool IsSundayWorkDay
+		{
+			get
+			{
+				return this._IsSundayWorkDay;
+			}
+			set
+			{
+				if ((this._IsSundayWorkDay != value))
+				{
+					this.OnIsSundayWorkDayChanging(value);
+					this.SendPropertyChanging();
+					this._IsSundayWorkDay = value;
+					this.SendPropertyChanged("IsSundayWorkDay");
+					this.OnIsSundayWorkDayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
+		public System.DateTime DateCreated
+		{
+			get
+			{
+				return this._DateCreated;
+			}
+			set
+			{
+				if ((this._DateCreated != value))
+				{
+					this.OnDateCreatedChanging(value);
+					this.SendPropertyChanging();
+					this._DateCreated = value;
+					this.SendPropertyChanged("DateCreated");
+					this.OnDateCreatedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Schedule_ScheduleEntry", Storage="_ScheduleEntries", ThisKey="ScheduleId", OtherKey="ScheduleId")]
+		public EntitySet<ScheduleEntry> ScheduleEntries
+		{
+			get
+			{
+				return this._ScheduleEntries;
+			}
+			set
+			{
+				this._ScheduleEntries.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Subscription_Schedule", Storage="_Subscription", ThisKey="SubscriptionId", OtherKey="SubscriptionId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		internal Subscription Subscription
+		{
+			get
+			{
+				return this._Subscription.Entity;
+			}
+			set
+			{
+				Subscription previousValue = this._Subscription.Entity;
+				if (((previousValue != value) 
+							|| (this._Subscription.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Subscription.Entity = null;
+						previousValue.Schedules.Remove(this);
+					}
+					this._Subscription.Entity = value;
+					if ((value != null))
+					{
+						value.Schedules.Add(this);
+						this._SubscriptionId = value.SubscriptionId;
+					}
+					else
+					{
+						this._SubscriptionId = default(System.Guid);
+					}
+					this.SendPropertyChanged("Subscription");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_ScheduleEntries(ScheduleEntry entity)
+		{
+			this.SendPropertyChanging();
+			entity.Schedule = this;
+		}
+		
+		private void detach_ScheduleEntries(ScheduleEntry entity)
+		{
+			this.SendPropertyChanging();
+			entity.Schedule = null;
 		}
 	}
 }
