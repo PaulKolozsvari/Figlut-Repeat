@@ -9,6 +9,7 @@
                 <legend>Confirmation Form</legend>
                 @Html.HiddenFor(m => m.ScheduleId)
                 @Html.HiddenFor(m => m.SubscriptionId)
+                @Html.HiddenFor(m => m.CreateScheduleEntries)
                 @Html.HiddenFor(m => m.DateCreated)
                 @Html.HiddenFor(m => m.OrganizationId)
                 @Html.HiddenFor(m => m.SubscriberId)
@@ -78,6 +79,161 @@
                     @Html.EditorFor(m => m.Notes)
                     @Html.ValidationMessageFor(m => m.Notes)
                 </div>
+                <hr />
+                <div class="field-label">
+                    @Html.Raw("Exclude Non-working Days (will not affect existing entries)")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.ExcludeNonWorkingDays, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.ExcludeNonWorkingDays, "Is Monday Working Day is required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Exclude Public Holidays Days (will not affect existing entries)")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.ExcludePublicHolidays, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.ExcludePublicHolidays, "Is Monday Working Day is required.")
+                </div>
+                <hr />
+                <div class="field-label">
+                    @Html.Raw("Monday (working Day)?")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsMondayWorkDay, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsMondayWorkDay, "Is Monday Working Day is required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Tuesday (working Day)?")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsTuesdayWorkDay, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsTuesdayWorkDay, "Is Tuesday Working Day is required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Wednesday (working Day)?")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsWednesdayWorkDay, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsWednesdayWorkDay, "Is Wednesday Working Day is required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Thursday (working Day)?")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsThursdayWorkDay, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsThursdayWorkDay, "Is Thursday Working Dayis required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Friday (working Day)?")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsFridayWorkDay, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsFridayWorkDay, "Is Friday Working Dayis required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Saturday (working Day)?")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsSaturdayWorkDay, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsSaturdayWorkDay, "Is Saturday Working Day is required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Sunday (working Day)?")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsSundayWorkDay, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsSundayWorkDay, "Is Sunday Working Day is required.")
+                </div>
                 <br />
                 <div id="EditScheduleErrorField" style="color:#8A0808"></div>
             </fieldset>
@@ -88,7 +244,7 @@
 <script type="text/javascript">
     $(function () {
         var dialogName = '#dlgEditSchedule';
-        createDialog(dialogName, 'Edit Schedule', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 600);
+        createDialog(dialogName, 'Edit Schedule', onConfirmOK, onConfirmOpen, onConfirmCancel, 500, 700);
         enableDatepickers();
     });
 

@@ -150,6 +150,16 @@
             view.UnitOfMeasure = this.UnitOfMeasure;
             view.DaysRepeatInterval = this.DaysRepeatInterval;
             view.Notes = this.Notes;
+            view.CreateScheduleEntries = this.CreateScheduleEntries;
+            view.ExcludeNonWorkingDays = this.ExcludeNonWorkingDays;
+            view.ExcludePublicHolidays = this.ExcludePublicHolidays;
+            view.IsMondayWorkDay = this.IsMondayWorkDay;
+            view.IsTuesdayWorkDay = this.IsTuesdayWorkDay;
+            view.IsWednesdayWorkDay = this.IsWednesdayWorkDay;
+            view.IsThursdayWorkDay = this.IsThursdayWorkDay;
+            view.IsFridayWorkDay = this.IsFridayWorkDay;
+            view.IsSaturdayWorkDay = this.IsSaturdayWorkDay;
+            view.IsSundayWorkDay = this.IsSundayWorkDay;
             view.DateCreated = this.DateCreated;
             view.StartDate = this.StartDate;
             view.EndDate = this.EndDate;

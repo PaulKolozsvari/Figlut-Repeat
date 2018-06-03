@@ -20,6 +20,8 @@
 
         public Guid ScheduleId { get; set; }
 
+        public string NotificationMessage { get; set; }
+
         public DateTime EntryDate { get; set; }
 
         public string EntryDateFormatted { get; set; }
@@ -48,7 +50,7 @@
 
         public Guid SubscriptionId { get; set; }
 
-        public string NotificationMessage { get; set; }
+        public string ScheduleNotificationMessage { get; set; }
 
         public string ScheduleName { get; set; }
 

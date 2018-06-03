@@ -1,6 +1,8 @@
 ﻿*	Use Cases:
 
 	-	Pharmacies for repeat medications.
+	-	Vets for cronic medication, dog food and flea pills.
+	-	Dentists for cleaning teeth regularly every X months.
 	-	Hair salons and barber shops.
 	-	Plant Nurseries
 
@@ -213,6 +215,7 @@ Competitors:
 			https://www.timetap.com/create-repeating-appointments.html
 	
 	https://www.eztexting.com
+	https://happyplantapp.com (for plant watering reminders)
 
 	Facebook SMS: https://www.facebook.com/help/170960386370271/
 

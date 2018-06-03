@@ -114,6 +114,16 @@
                                        UnitOfMeasure = schedule.UnitOfMeasure,
                                        DaysRepeatInterval = schedule.DaysRepeatInterval,
                                        Notes = schedule.Notes,
+                                       CreateScheduleEntries = schedule.CreateScheduleEntries,
+                                       ExcludeNonWorkingDays = schedule.ExcludeNonWorkingDays,
+                                       ExcludePublicHolidays = schedule.ExcludePublicHolidays,
+                                       IsMondayWorkDay = schedule.IsMondayWorkDay,
+                                       IsTuesdayWorkDay = schedule.IsTuesdayWorkDay,
+                                       IsWednesdayWorkDay = schedule.IsWednesdayWorkDay,
+                                       IsThursdayWorkDay = schedule.IsThursdayWorkDay,
+                                       IsFridayWorkDay = schedule.IsFridayWorkDay,
+                                       IsSaturdayWorkDay = schedule.IsSaturdayWorkDay,
+                                       IsSundayWorkDay = schedule.IsSundayWorkDay,
                                        DateCreated = schedule.DateCreated,
                                        StartDate = GetFirstScheduleEntryDate(schedule.ScheduleId, false),
                                        EndDate = GetLastScheduleEntryDate(schedule.ScheduleId, false),
@@ -323,28 +333,45 @@
             Schedule result = null;
             using (TransactionScope t = new TransactionScope())
             {
-                Country country = GetCountry(view.CountryId, true);
-                Dictionary<string, EntryDateSet> dates = GenerateScheduleDates(view.StartDate, view.EndDate, country.CountryCode, view.DaysRepeatInterval);
                 result = view.ToSchedule();
                 DB.GetTable<Schedule>().InsertOnSubmit(result);
-                List<ScheduleEntry> entries = new List<ScheduleEntry>();
-                dates.Values.ToList().ForEach(p => entries.Add(new ScheduleEntry()
+                if (view.CreateScheduleEntries)
                 {
-                    ScheduleEntryId = Guid.NewGuid(),
-                    ScheduleId = result.ScheduleId,
-                    EntryDate = p.EntryDate,
-                    EntryDateFormatted = DataShaper.GetDefaultDateString(p.EntryDate),
-                    EntryDateDayOfWeek = p.EntryDate.DayOfWeek.ToString(),
-                    NotificationDate = p.NotificationDate,
-                    NotificationDateFormatted = DataShaper.GetDefaultDateString(p.NotificationDate),
-                    NotificationDateDayOfWeek = p.NotificationDate.DayOfWeek.ToString(),
-                    SMSNotificationSent = false,
-                    SMSMessageId = null,
-                    SMSDateSent = null,
-                    SmsSentLogId = null,
-                    DateCreated = DateTime.Now
-                }));
-                DB.GetTable<ScheduleEntry>().InsertAllOnSubmit(entries);
+                    List<ScheduleEntry> entries = new List<ScheduleEntry>();
+                    Country country = GetCountry(view.CountryId, true);
+                    Dictionary<string, EntryDateSet> dates = GenerateScheduleDates(
+                        view.StartDate,
+                        view.EndDate,
+                        country.CountryCode,
+                        view.DaysRepeatInterval,
+                        view.ExcludeNonWorkingDays,
+                        view.ExcludePublicHolidays,
+                        view.IsMondayWorkDay,
+                        view.IsTuesdayWorkDay,
+                        view.IsWednesdayWorkDay,
+                        view.IsThursdayWorkDay,
+                        view.IsFridayWorkDay,
+                        view.IsSaturdayWorkDay,
+                        view.IsSundayWorkDay);
+                    dates.Values.ToList().ForEach(p => entries.Add(new ScheduleEntry()
+                    {
+                        ScheduleEntryId = Guid.NewGuid(),
+                        ScheduleId = result.ScheduleId,
+                        NotificationMessage = result.NotificationMessage,
+                        EntryDate = p.EntryDate,
+                        EntryDateFormatted = DataShaper.GetDefaultDateString(p.EntryDate),
+                        EntryDateDayOfWeek = p.EntryDate.DayOfWeek.ToString(),
+                        NotificationDate = p.NotificationDate,
+                        NotificationDateFormatted = DataShaper.GetDefaultDateString(p.NotificationDate),
+                        NotificationDateDayOfWeek = p.NotificationDate.DayOfWeek.ToString(),
+                        SMSNotificationSent = false,
+                        SMSMessageId = null,
+                        SMSDateSent = null,
+                        SmsSentLogId = null,
+                        DateCreated = DateTime.Now
+                    }));
+                    DB.GetTable<ScheduleEntry>().InsertAllOnSubmit(entries);
+                }
                 DB.SubmitChanges();
                 t.Complete();
             }
@@ -355,7 +382,16 @@
             DateTime startDate,
             DateTime endDate,
             string countryCode,
-            int daysRepeatInterval)
+            int daysRepeatInterval,
+            bool excludeNonWorkingDays,
+            bool excludePublicHolidays,
+            bool isMondayWorkDay,
+            bool isTuesdayWorkDay,
+            bool isWednesdayWorkDay,
+            bool isThursdayWorkDay,
+            bool isFridayWorkDay,
+            bool isSaturdayWorkDay,
+            bool isSundayWorkDay)
         {
             if (startDate > endDate)
             {
@@ -367,7 +403,18 @@
                 EntryDateSet dateSet = new EntryDateSet();
                 dateSet.EntryDate = startDate;
                 dateSet.NotificationDate = dateSet.EntryDate;
-                while (!IsDateWorkingDate(dateSet.NotificationDate, countryCode))
+                while (!IsWorkDate(
+                    dateSet.NotificationDate, 
+                    countryCode, 
+                    excludeNonWorkingDays, 
+                    excludePublicHolidays,
+                    isMondayWorkDay,
+                    isTuesdayWorkDay,
+                    isWednesdayWorkDay,
+                    isThursdayWorkDay,
+                    isFridayWorkDay,
+                    isSaturdayWorkDay,
+                    isSundayWorkDay))
                 {
                     dateSet.NotificationDate = dateSet.NotificationDate.Subtract(new TimeSpan(1, 0, 0, 0));
                 }
@@ -381,15 +428,62 @@
             return result;
         }
 
-        public bool IsDateWorkingDate(DateTime date, string countryCode)
+        public bool IsWorkDate(
+            DateTime date, 
+            string countryCode,
+            bool excludeNonWorkingDays,
+            bool excludePublicHolidays,
+            bool isMondayWorkDay,
+            bool isTuesdayWorkDay,
+            bool isWednesdayWorkDay,
+            bool isThursdayWorkDay,
+            bool isFridayWorkDay,
+            bool isSaturdayWorkDay,
+            bool isSundayWorkDay)
         {
             if (string.IsNullOrEmpty(countryCode))
             {
                 throw new ArgumentNullException("Country Code may not be null or empty.");
             }
-            bool isWeekend = IsDateWeekendDay(date);
-            bool isPublicHoliday = IsDatePublicHoliday(date, countryCode);
-            return !(isWeekend || isPublicHoliday);
+            bool isWorkDay = true;
+            if (excludeNonWorkingDays)
+            {
+                switch (date.DayOfWeek)
+                {
+                    case DayOfWeek.Monday:
+                        isWorkDay = isMondayWorkDay;
+                        break;
+                    case DayOfWeek.Tuesday:
+                        isWorkDay = isTuesdayWorkDay;
+                        break;
+                    case DayOfWeek.Wednesday:
+                        isWorkDay = isWednesdayWorkDay;
+                        break;
+                    case DayOfWeek.Thursday:
+                        isWorkDay = isThursdayWorkDay;
+                        break;
+                    case DayOfWeek.Friday:
+                        isWorkDay = isFridayWorkDay;
+                        break;
+                    case DayOfWeek.Saturday:
+                        isWorkDay = isSaturdayWorkDay;
+                        break;
+                    case DayOfWeek.Sunday:
+                        isWorkDay = isSundayWorkDay;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (!isWorkDay)
+            {
+                return isWorkDay;
+            }
+            if (excludePublicHolidays)
+            {
+                isWorkDay = !IsDatePublicHoliday(date, countryCode);
+            }
+            return isWorkDay;
         }
 
         public bool IsDateWeekendDay(DateTime date)
@@ -411,13 +505,39 @@
             }
             string dateIdentifier = DataShaper.GetDefaultDateString(date);
             PublicHoliday result = GetPublicHolidayByCountry(countryCode, dateIdentifier, false);
+            if (result != null)
+            {
+                int stop = 0;
+            }
             return result != null;
         }
 
-        public DateTime ComputeNotificationDate(DateTime entryDate, string countryCode)
+        public DateTime ComputeNotificationDate(
+            DateTime entryDate, 
+            string countryCode,
+            bool excludeNonWorkingDays,
+            bool excludePublicHolidays,
+            bool isMondayWorkDay,
+            bool isTuesdayWorkDay,
+            bool isWednesdayWorkDay,
+            bool isThursdayWorkDay,
+            bool isFridayWorkDay,
+            bool isSaturdayWorkDay,
+            bool isSundayWorkDay)
         {
             DateTime result = entryDate;
-            while (!IsDateWorkingDate(result, countryCode))
+            while (!IsWorkDate(
+                result, 
+                countryCode, 
+                excludeNonWorkingDays, 
+                excludePublicHolidays,
+                isMondayWorkDay,
+                isTuesdayWorkDay,
+                isWednesdayWorkDay,
+                isThursdayWorkDay,
+                isFridayWorkDay,
+                isSaturdayWorkDay,
+                isSundayWorkDay))
             {
                 result = result.Subtract(new TimeSpan(1, 0, 0, 0));
             }
@@ -553,7 +673,6 @@
                 }
                 DB.GetTable<ScheduleEntry>().DeleteAllOnSubmit(entriesToDelete);
                 DB.SubmitChanges();
-
                 DateTime startDate = newEntryDate;
                 DateTime endDate = lastEntryDate.Value.Date.AddDays(numberOfDaysToMove + extraDays);
                 ///Creating the new schedule entries.
@@ -561,12 +680,22 @@
                     startDate,
                     endDate,
                     countryCode,
-                    schedule.DaysRepeatInterval);
+                    schedule.DaysRepeatInterval,
+                    schedule.ExcludeNonWorkingDays,
+                    schedule.ExcludePublicHolidays,
+                    schedule.IsMondayWorkDay,
+                    schedule.IsTuesdayWorkDay,
+                    schedule.IsWednesdayWorkDay,
+                    schedule.IsThursdayWorkDay,
+                    schedule.IsFridayWorkDay,
+                    schedule.IsSaturdayWorkDay,
+                    schedule.IsSundayWorkDay);
                 List<ScheduleEntry> entries = new List<ScheduleEntry>();
                 dates.Values.ToList().ForEach(p => entries.Add(new ScheduleEntry()
                 {
                     ScheduleEntryId = Guid.NewGuid(),
                     ScheduleId = schedule.ScheduleId,
+                    NotificationMessage = schedule.NotificationMessage,
                     EntryDate = p.EntryDate,
                     EntryDateFormatted = DataShaper.GetDefaultDateString(p.EntryDate),
                     EntryDateDayOfWeek = p.EntryDate.DayOfWeek.ToString(),

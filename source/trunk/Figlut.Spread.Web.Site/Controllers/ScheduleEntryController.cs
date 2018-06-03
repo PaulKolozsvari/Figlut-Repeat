@@ -522,13 +522,20 @@
         {
             try
             {
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                Schedule schedule = null;
                 if (!scheduleId.HasValue)
                 {
                     return PartialView(CREATE_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME, new ScheduleEntryModel());
                 }
+                else
+                {
+                    schedule = context.GetSchedule(scheduleId.Value, true);
+                }
                 return PartialView(CREATE_SCHEDULE_ENTRY_PARTIAL_VIEW_NAME, new ScheduleEntryModel()
                 {
                     ScheduleId = scheduleId.Value,
+                    NotificationMessage = schedule != null ? schedule.NotificationMessage: null,
                     EntryDateCreate = DateTime.Now,
                     NotificationDateCreate = DateTime.Now
                 });

@@ -54,6 +54,7 @@
                                                   //Schedule Entry
                                                   ScheduleEntryId = scheduleEntry.ScheduleEntryId,
                                                   ScheduleId = scheduleEntry.ScheduleId,
+                                                  NotificationMessage = scheduleEntry.NotificationMessage,
                                                   EntryDate = scheduleEntry.EntryDate,
                                                   EntryDateFormatted = scheduleEntry.EntryDateFormatted,
                                                   EntryDateDayOfWeek = scheduleEntry.EntryDateDayOfWeek,
@@ -68,7 +69,7 @@
 
                                                   //Schedule
                                                   SubscriptionId = scheduleView.SubscriptionId,
-                                                  NotificationMessage = scheduleView.NotificationMessage,
+                                                  ScheduleNotificationMessage = scheduleView.NotificationMessage,
                                                   ScheduleName = scheduleView.ScheduleName,
                                                   Quantity = scheduleView.Quantity,
                                                   UnitOfMeasure = scheduleView.UnitOfMeasure,
@@ -125,6 +126,7 @@
                               //Schedule Entry
                               ScheduleEntryId = scheduleEntry.ScheduleEntryId,
                               ScheduleId = scheduleEntry.ScheduleId,
+                              NotificationMessage = scheduleEntry.NotificationMessage,
                               EntryDate = scheduleEntry.EntryDate,
                               EntryDateFormatted = scheduleEntry.EntryDateFormatted,
                               EntryDateDayOfWeek = scheduleEntry.EntryDateDayOfWeek,
@@ -139,7 +141,7 @@
 
                               //Schedule
                               SubscriptionId = scheduleView.SubscriptionId,
-                              NotificationMessage = scheduleView.NotificationMessage,
+                              ScheduleNotificationMessage = scheduleView.NotificationMessage,
                               ScheduleName = scheduleView.ScheduleName,
                               Quantity = scheduleView.Quantity,
                               UnitOfMeasure = scheduleView.UnitOfMeasure,
@@ -179,6 +181,7 @@
                               //Schedule Entry
                               ScheduleEntryId = scheduleEntry.ScheduleEntryId,
                               ScheduleId = scheduleEntry.ScheduleId,
+                              NotificationMessage = scheduleEntry.NotificationMessage,
                               EntryDate = scheduleEntry.EntryDate,
                               EntryDateFormatted = scheduleEntry.EntryDateFormatted,
                               EntryDateDayOfWeek = scheduleEntry.EntryDateDayOfWeek,
@@ -193,7 +196,7 @@
 
                               //Schedule
                               SubscriptionId = scheduleView.SubscriptionId,
-                              NotificationMessage = scheduleView.NotificationMessage,
+                              ScheduleNotificationMessage = scheduleView.NotificationMessage,
                               ScheduleName = scheduleView.ScheduleName,
                               Quantity = scheduleView.Quantity,
                               UnitOfMeasure = scheduleView.UnitOfMeasure,
@@ -287,6 +290,7 @@
                               //Schedule Entry
                               ScheduleEntryId = scheduleEntry.ScheduleEntryId,
                               ScheduleId = scheduleEntry.ScheduleId,
+                              NotificationMessage = scheduleEntry.NotificationMessage,
                               EntryDate = scheduleEntry.EntryDate,
                               EntryDateFormatted = scheduleEntry.EntryDateFormatted,
                               EntryDateDayOfWeek = scheduleEntry.EntryDateDayOfWeek,
@@ -301,7 +305,7 @@
 
                               //Schedule
                               SubscriptionId = scheduleView.SubscriptionId,
-                              NotificationMessage = scheduleView.NotificationMessage,
+                              ScheduleNotificationMessage = scheduleView.NotificationMessage,
                               ScheduleName = scheduleView.ScheduleName,
                               Quantity = scheduleView.Quantity,
                               UnitOfMeasure = scheduleView.UnitOfMeasure,
@@ -341,6 +345,7 @@
                               //Schedule Entry
                               ScheduleEntryId = scheduleEntry.ScheduleEntryId,
                               ScheduleId = scheduleEntry.ScheduleId,
+                              NotificationMessage = scheduleEntry.NotificationMessage,
                               EntryDate = scheduleEntry.EntryDate,
                               EntryDateFormatted = scheduleEntry.EntryDateFormatted,
                               EntryDateDayOfWeek = scheduleEntry.EntryDateDayOfWeek,
@@ -355,7 +360,7 @@
 
                               //Schedule
                               SubscriptionId = scheduleView.SubscriptionId,
-                              NotificationMessage = scheduleView.NotificationMessage,
+                              ScheduleNotificationMessage = scheduleView.NotificationMessage,
                               ScheduleName = scheduleView.ScheduleName,
                               Quantity = scheduleView.Quantity,
                               UnitOfMeasure = scheduleView.UnitOfMeasure,

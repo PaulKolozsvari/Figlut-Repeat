@@ -349,24 +349,6 @@
       <Association Name="Organization_Subscription" Member="Organization" AccessModifier="Internal" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Organization" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.ScheduleEntry" Member="ScheduleEntries">
-    <Type Name="ScheduleEntry">
-      <Column Name="ScheduleEntryId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="ScheduleId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
-      <Column Name="EntryDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="EntryDateFormatted" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="EntryDateDayOfWeek" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="NotificationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="NotificationDateFormatted" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="NotificationDateDayOfWeek" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="SMSNotificationSent" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="SMSMessageId" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
-      <Column Name="SMSDateSent" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="SmsSentLogId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
-      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="Schedule_ScheduleEntry" Member="Schedule" AccessModifier="Internal" ThisKey="ScheduleId" OtherKey="ScheduleId" Type="Schedule" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Organization" Member="Organizations">
     <Type Name="Organization">
       <Column Name="OrganizationId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -441,6 +423,25 @@
       <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="Schedule_ScheduleEntry" Member="ScheduleEntries" ThisKey="ScheduleId" OtherKey="ScheduleId" Type="ScheduleEntry" />
       <Association Name="Subscription_Schedule" Member="Subscription" AccessModifier="Internal" ThisKey="SubscriptionId" OtherKey="SubscriptionId" Type="Subscription" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ScheduleEntry" Member="ScheduleEntries">
+    <Type Name="ScheduleEntry">
+      <Column Name="ScheduleEntryId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ScheduleId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="NotificationMessage" Type="System.String" DbType="VarChar(140) NOT NULL" CanBeNull="false" />
+      <Column Name="EntryDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="EntryDateFormatted" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="EntryDateDayOfWeek" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="NotificationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="NotificationDateFormatted" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="NotificationDateDayOfWeek" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="SMSNotificationSent" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="SMSMessageId" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="SMSDateSent" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="SmsSentLogId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Schedule_ScheduleEntry" Member="Schedule" AccessModifier="Internal" ThisKey="ScheduleId" OtherKey="ScheduleId" Type="Schedule" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
 </Database>

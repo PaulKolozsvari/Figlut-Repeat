@@ -21,6 +21,8 @@
 
         public Guid ScheduleId { get; set; }
 
+        public string NotificationMessage { get; set; }
+
         public DateTime EntryDate { get; set; }
 
         public string EntryDateFormatted { get; set; }
@@ -49,7 +51,7 @@
 
         public Guid SubscriptionId { get; set; }
 
-        public string NotificationMessage { get; set; }
+        public string ScheduleNotificationMessage { get; set; }
 
         public string ScheduleName { get; set; }
 
@@ -93,6 +95,7 @@
         {
             this.ScheduleEntryId = view.ScheduleEntryId;
             this.ScheduleId = view.ScheduleId;
+            this.NotificationMessage = view.NotificationMessage;
             this.EntryDate = view.EntryDate;
             this.EntryDateFormatted = view.EntryDateFormatted;
             this.EntryDateDayOfWeek = view.EntryDateDayOfWeek;
@@ -107,7 +110,7 @@
 
             this.ScheduleId = view.ScheduleId;
             this.SubscriptionId = view.SubscriptionId;
-            this.NotificationMessage = view.NotificationMessage;
+            this.ScheduleNotificationMessage = view.ScheduleNotificationMessage;
             this.ScheduleName = view.ScheduleName;
             this.Quantity = view.Quantity;
             this.UnitOfMeasure = view.UnitOfMeasure;
@@ -128,6 +131,7 @@
         {
             view.ScheduleEntryId = this.ScheduleId;
             view.ScheduleId = this.ScheduleId;
+            view.NotificationMessage = this.NotificationMessage;
             view.EntryDate = this.EntryDate;
             view.EntryDateFormatted = this.EntryDateFormatted;
             view.NotificationDate = this.NotificationDate;
@@ -140,7 +144,7 @@
 
             view.ScheduleId = this.ScheduleId;
             view.SubscriptionId = this.SubscriptionId;
-            view.NotificationMessage = this.NotificationMessage;
+            view.ScheduleNotificationMessage = view.ScheduleNotificationMessage;
             view.ScheduleName = this.ScheduleName;
             view.Quantity = this.Quantity;
             view.UnitOfMeasure = this.UnitOfMeasure;
