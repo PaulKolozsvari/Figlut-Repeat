@@ -45,6 +45,7 @@
                     @Html.EditorFor(m => m.OrganizationAddress)
                     @Html.ValidationMessageFor(m => m.OrganizationAddress)
                 </div>
+                <hr />
                 <div class="field-label">
                     @Html.Raw("Monday (working Day)?")
                 </div>
@@ -164,6 +165,7 @@
                     new { @class = "drop-down-field" })
                     @Html.ValidationMessageFor(m => m.IsSundayWorkDay, "Is Sunday Working Day is required.")
                 </div>
+                <hr />
                 <div class="field-label">
                     @Html.Raw("Billing day of the month")
                 </div>

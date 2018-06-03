@@ -61,6 +61,7 @@
                         {
                             scheduleEntry = (ScheduleEntryModel)grid.Rows[grid.SelectedIndex].Value;
                             @Html.LinkButtonForCancel("Delete", "onDeleteScheduleEntryClick()", "btnDeleteScheduleEntry")
+                            @Html.LinkButtonForSubmit("Edit", "onEditScheduleEntryClick()", "btnEditScheduleEntry", "red-edit.png")
                             @Html.LinkButtonForSubmit("SMS", "onSendSmsScheduleEntryClick()", "btnSendSmsScheduleEntry", "red-mail-send-icon32.png")
                         }
                     }
@@ -95,7 +96,6 @@
                 grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.NotificationDateDayOfWeek, false), "Notification Day"),
                 grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.EntryTime, false), "Time"),
                 grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.SMSNotificationSent, false), "SMS Sent"),
-                grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.SMSMessageId, false), "SMS Message ID"),
                 grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.SMSDateSent, false), "SMS Sent Date")
             ))
         </div>
@@ -103,9 +103,12 @@
             @if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
             {
                 scheduleEntry = (ScheduleEntryModel)grid.Rows[grid.SelectedIndex].Value;
-                <div style="float: left; margin-left:2%; margin-right:2%">
-                    <b>@Html.Raw(string.Format("Cell Phone: {0}", scheduleEntry.CellPhoneNumber))</b>
-                </div>
+                if (!string.IsNullOrEmpty(scheduleEntry.SMSMessageId))
+                {
+                    <div style="float: left; margin-left:2%; margin-right:2%">
+                        <b>@Html.Raw(string.Format("SMS Message ID: {0}", scheduleEntry.SMSMessageId))</b>
+                    </div>
+                }
                 <div style="float:right; margin-left:2%; margin-right:2%; color: #a30e0e;">
                     @Html.Raw(string.Format("Message: {0}", scheduleEntry.NotificationMessage))
                 </div>
@@ -131,6 +134,16 @@
     function onSearchScheduleEntriesClick() {
         postOrganizationScheduleEntries();
     }
+
+    function onEditScheduleEntryClick() {
+        showDialog(
+            '#divEditScheduleEntry',
+            '#dlgEditScheduleEntry',
+            'EditDialog',
+            'ScheduleEntry',
+            'scheduleEntryId',
+            '@scheduleEntry.ScheduleEntryId.ToString()');
+    };
 
     function onDeleteScheduleEntryClick() {
         showDialog(

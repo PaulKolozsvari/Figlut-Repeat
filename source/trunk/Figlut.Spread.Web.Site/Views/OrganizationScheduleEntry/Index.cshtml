@@ -45,6 +45,7 @@ new { @id = "frmDetails" }))
             }
         });
         loadDialog("#divConfirmationDialog", "#dlgConfirmation", "ConfirmDeleteDialog", "ScheduleEntry", 'identifier', '@Guid.Empty');
+        loadDialog("#divEditScheduleEntry", "#dlgEditScheduleEntry", "EditDialog", "ScheduleEntry", 'scheduleEntryId', '@null');
         loadDialog("#divWaitDialog", "#dlgWait", "WaitDialog", "SmsSent", 'message', '@string.Empty');
         loadDialog("#divInformationDialog", "#dlgInformation", "InformationDialog", "SmsSent", 'message', '@string.Empty');
         sendEnabled = true;

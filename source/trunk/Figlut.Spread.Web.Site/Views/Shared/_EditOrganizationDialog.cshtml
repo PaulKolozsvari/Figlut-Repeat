@@ -39,6 +39,7 @@
                     @Html.EditorFor(m => m.Address)
                     @Html.ValidationMessageFor(m => m.Address)
                 </div>
+                <hr />
                 <div class="field-label">
                     @Html.Raw("SMS Credits Balance")
                 </div>
@@ -80,6 +81,7 @@
                     new { @class = "drop-down-field" })
                     @Html.ValidationMessageFor(m => m.OrganizationSubscriptionEnabled, "Organization Subscription Enabled is required.")
                 </div>
+                <hr />
                 <div class="field-label">
                     @Html.Raw("Monday (working Day)?")
                 </div>
@@ -199,6 +201,7 @@
                     new { @class = "drop-down-field" })
                     @Html.ValidationMessageFor(m => m.IsSundayWorkDay, "Is Sunday Working Day is required.")
                 </div>
+                <hr />
                 <div class="field-label">
                     @Html.Raw("Billing day of the month")
                 </div>

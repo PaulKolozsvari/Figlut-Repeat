@@ -12,7 +12,6 @@
                 @Html.HiddenFor(m => m.SMSMessageId)
                 @Html.HiddenFor(m => m.DateCreated)
                 @Html.HiddenFor(m => m.SubscriptionId)
-                @Html.HiddenFor(m => m.NotificationMessage)
                 @Html.HiddenFor(m => m.ScheduleName)
                 @Html.HiddenFor(m => m.Quantity)
                 @Html.HiddenFor(m => m.UnitOfMeasure)
@@ -25,7 +24,7 @@
                     @Html.Raw("Notification Message")
                 </div>
                 <div class="editor-field">
-                    @Html.EditorFor(m => m.NotificationMessage, new { disabled = "disabled", @readonly = "readonly" })
+                    @Html.EditorFor(m => m.NotificationMessage)
                     @Html.ValidationMessageFor(m => m.NotificationMessage)
                 </div>
                 <div class="field-label">
