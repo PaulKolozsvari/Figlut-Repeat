@@ -433,6 +433,7 @@
                 Country country = context.GetCountryByCountryCode("zaf", true); //TODO Use IP address lookup to determine the country that the user is in, but for now we're only working with South Africa.
                 CreateScheduleModel model = new CreateScheduleModel();
                 model.CopyPropertiesFromCreateScheduleView(view);
+                model.EntriesTime = new TimeSpan(9, 0, 0);
                 model.DaysRepeatInterval = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[ORM.Helpers.GlobalSettingName.DefaultRepeatDaysInterval].SettingValue);
                 model.CountryId = country.CountryId;
                 model.StartDateCreate = DateTime.Now;

@@ -25,6 +25,9 @@
 
         public string NotificationMessage { get; set; }
 
+        [DataType(DataType.Time)]
+        public TimeSpan EntryTime { get; set; }
+
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime EntryDate { get; set; }
@@ -132,6 +135,7 @@
             this.ScheduleEntryId = view.ScheduleEntryId;
             this.ScheduleId = view.ScheduleId;
             this.NotificationMessage = view.NotificationMessage;
+            this.EntryTime = view.EntryTime;
             this.EntryDate = view.EntryDate;
             this.EntryDateFormatted = view.EntryDateFormatted;
             this.EntryDateDayOfWeek = view.EntryDateDayOfWeek;
@@ -168,6 +172,7 @@
             view.ScheduleEntryId = this.ScheduleEntryId;
             view.ScheduleId = this.ScheduleId;
             view.NotificationMessage = this.NotificationMessage;
+            view.EntryTime = this.EntryTime;
             view.EntryDate = this.EntryDate;
             view.EntryDateFormatted = this.EntryDateFormatted;
             view.EntryDateDayOfWeek = this.EntryDateDayOfWeek;
@@ -204,6 +209,7 @@
             scheduleEntry.ScheduleEntryId = this.ScheduleEntryId;
             scheduleEntry.ScheduleId = this.ScheduleId;
             scheduleEntry.NotificationMessage = this.NotificationMessage;
+            scheduleEntry.EntryTime = this.EntryTime;
             scheduleEntry.EntryDate = this.EntryDate;
             scheduleEntry.EntryDateFormatted = DataShaper.GetDefaultDateString(this.EntryDate);
             scheduleEntry.EntryDateDayOfWeek = this.EntryDate.DayOfWeek.ToString();

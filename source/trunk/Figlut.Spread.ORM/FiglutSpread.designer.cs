@@ -8860,6 +8860,8 @@ namespace Figlut.Spread.ORM
 		
 		private string _NotificationMessage;
 		
+		private System.TimeSpan _EntriesTime;
+		
 		private string _ScheduleName;
 		
 		private System.Nullable<double> _Quantity;
@@ -8906,6 +8908,8 @@ namespace Figlut.Spread.ORM
     partial void OnSubscriptionIdChanged();
     partial void OnNotificationMessageChanging(string value);
     partial void OnNotificationMessageChanged();
+    partial void OnEntriesTimeChanging(System.TimeSpan value);
+    partial void OnEntriesTimeChanged();
     partial void OnScheduleNameChanging(string value);
     partial void OnScheduleNameChanged();
     partial void OnQuantityChanging(System.Nullable<double> value);
@@ -9007,6 +9011,26 @@ namespace Figlut.Spread.ORM
 					this._NotificationMessage = value;
 					this.SendPropertyChanged("NotificationMessage");
 					this.OnNotificationMessageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EntriesTime", DbType="Time NOT NULL")]
+		public System.TimeSpan EntriesTime
+		{
+			get
+			{
+				return this._EntriesTime;
+			}
+			set
+			{
+				if ((this._EntriesTime != value))
+				{
+					this.OnEntriesTimeChanging(value);
+					this.SendPropertyChanging();
+					this._EntriesTime = value;
+					this.SendPropertyChanged("EntriesTime");
+					this.OnEntriesTimeChanged();
 				}
 			}
 		}
@@ -9423,6 +9447,8 @@ namespace Figlut.Spread.ORM
 		
 		private string _NotificationMessage;
 		
+		private System.TimeSpan _EntryTime;
+		
 		private System.DateTime _EntryDate;
 		
 		private string _EntryDateFormatted;
@@ -9457,6 +9483,8 @@ namespace Figlut.Spread.ORM
     partial void OnScheduleIdChanged();
     partial void OnNotificationMessageChanging(string value);
     partial void OnNotificationMessageChanged();
+    partial void OnEntryTimeChanging(System.TimeSpan value);
+    partial void OnEntryTimeChanged();
     partial void OnEntryDateChanging(System.DateTime value);
     partial void OnEntryDateChanged();
     partial void OnEntryDateFormattedChanging(string value);
@@ -9547,6 +9575,26 @@ namespace Figlut.Spread.ORM
 					this._NotificationMessage = value;
 					this.SendPropertyChanged("NotificationMessage");
 					this.OnNotificationMessageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EntryTime", DbType="Time NOT NULL")]
+		public System.TimeSpan EntryTime
+		{
+			get
+			{
+				return this._EntryTime;
+			}
+			set
+			{
+				if ((this._EntryTime != value))
+				{
+					this.OnEntryTimeChanging(value);
+					this.SendPropertyChanging();
+					this._EntryTime = value;
+					this.SendPropertyChanged("EntryTime");
+					this.OnEntryTimeChanged();
 				}
 			}
 		}

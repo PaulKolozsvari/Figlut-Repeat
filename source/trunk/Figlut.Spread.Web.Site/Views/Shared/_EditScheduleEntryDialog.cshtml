@@ -47,6 +47,13 @@
                     @Html.ValidationMessageFor(m => m.NotificationDate)
                 </div>
                 <div class="field-label">
+                    @Html.Raw("Entry Time")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.EntryTime, new { disabled = "disabled", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.EntryTime)
+                </div>
+                <div class="field-label">
                     @Html.Raw("SMS Notification Sent")
                 </div>
                 <div class="editor-field">

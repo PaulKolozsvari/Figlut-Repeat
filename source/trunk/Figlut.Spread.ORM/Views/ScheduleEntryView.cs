@@ -22,6 +22,8 @@
 
         public string NotificationMessage { get; set; }
 
+        public TimeSpan EntryTime { get; set; }
+
         public DateTime EntryDate { get; set; }
 
         public string EntryDateFormatted { get; set; }

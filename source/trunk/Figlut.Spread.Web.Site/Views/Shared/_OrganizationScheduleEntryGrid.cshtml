@@ -93,6 +93,7 @@
                 grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.EntryDateDayOfWeek, false), "Entry Day"),
                 grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.NotificationDateFormatted, false), "Notification Date"),
                 grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.NotificationDateDayOfWeek, false), "Notification Day"),
+                grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.EntryTime, false), "Time"),
                 grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.SMSNotificationSent, false), "SMS Sent"),
                 grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.SMSMessageId, false), "SMS Message ID"),
                 grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.SMSDateSent, false), "SMS Sent Date")
@@ -103,10 +104,10 @@
             {
                 scheduleEntry = (ScheduleEntryModel)grid.Rows[grid.SelectedIndex].Value;
                 <div style="float: left; margin-left:2%; margin-right:2%">
-                    <b>@Html.Raw(string.Format("Date: {0}", scheduleEntry.EntryDateFormatted))</b>
+                    <b>@Html.Raw(string.Format("Cell Phone: {0}", scheduleEntry.CellPhoneNumber))</b>
                 </div>
                 <div style="float:right; margin-left:2%; margin-right:2%; color: #a30e0e;">
-                    @Html.Raw(string.Format("Cell Phone: {0}", scheduleEntry.CellPhoneNumber))
+                    @Html.Raw(string.Format("Message: {0}", scheduleEntry.NotificationMessage))
                 </div>
             }
         </div>

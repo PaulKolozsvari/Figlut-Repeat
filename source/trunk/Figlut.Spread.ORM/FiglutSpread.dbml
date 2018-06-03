@@ -405,6 +405,7 @@
       <Column Name="ScheduleId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="SubscriptionId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
       <Column Name="NotificationMessage" Type="System.String" DbType="VarChar(140) NOT NULL" CanBeNull="false" />
+      <Column Name="EntriesTime" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
       <Column Name="ScheduleName" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
       <Column Name="Quantity" Type="System.Double" DbType="Float" CanBeNull="true" />
       <Column Name="UnitOfMeasure" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
@@ -430,6 +431,7 @@
       <Column Name="ScheduleEntryId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="ScheduleId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
       <Column Name="NotificationMessage" Type="System.String" DbType="VarChar(140) NOT NULL" CanBeNull="false" />
+      <Column Name="EntryTime" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
       <Column Name="EntryDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="EntryDateFormatted" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="EntryDateDayOfWeek" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />

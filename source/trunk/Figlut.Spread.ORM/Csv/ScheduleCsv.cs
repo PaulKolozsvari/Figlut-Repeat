@@ -23,6 +23,8 @@
 
         public string NotificationMessage { get; set; }
 
+        public TimeSpan EntriesTime { get; set; }
+
         public string ScheduleName { get; set; }
 
         public Nullable<double> Quantity { get; set; }
@@ -106,6 +108,7 @@
             this.ScheduleId = view.ScheduleId;
             this.SubscriptionId = view.SubscriptionId;
             this.NotificationMessage = view.NotificationMessage;
+            this.EntriesTime = view.EntriesTime;
             this.ScheduleName = view.ScheduleName;
             this.Quantity = view.Quantity;
             this.UnitOfMeasure = view.UnitOfMeasure;
@@ -145,6 +148,7 @@
             view.ScheduleId = this.ScheduleId;
             view.SubscriptionId = this.SubscriptionId;
             view.NotificationMessage = this.NotificationMessage;
+            view.EntriesTime = this.EntriesTime;
             view.ScheduleName = this.ScheduleName;
             view.Quantity = this.Quantity;
             view.UnitOfMeasure = this.UnitOfMeasure;

@@ -92,6 +92,8 @@
 
         public string NotificationMessage { get; set; }
 
+        public TimeSpan EntriesTime { get; set; }
+
         public string ScheduleName { get; set; }
 
         public Nullable<double> Quantity { get; set; }
@@ -127,6 +129,7 @@
                 ScheduleId = Guid.NewGuid(),
                 SubscriptionId = this.SubscriptionId,
                 NotificationMessage = this.NotificationMessage,
+                EntriesTime = this.EntriesTime,
                 ScheduleName = this.ScheduleName,
                 Quantity = this.Quantity,
                 UnitOfMeasure = this.UnitOfMeasure,

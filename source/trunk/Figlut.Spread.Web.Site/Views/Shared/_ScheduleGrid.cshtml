@@ -90,6 +90,7 @@
                 columns: grid.Columns(
                 grid.Column("Schedules", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
                 grid.Column(EntityReader<ScheduleModel>.GetPropertyName(p => p.ScheduleName, false), "Name"),
+                grid.Column(EntityReader<ScheduleModel>.GetPropertyName(p => p.EntriesTime, false), "Entries' Time"),
                 grid.Column(EntityReader<ScheduleModel>.GetPropertyName(p => p.DaysRepeatInterval, false), "Days Interval"),
                 grid.Column(EntityReader<ScheduleModel>.GetPropertyName(p => p.StartDateFormatted, false), "Start Date"),
                 grid.Column(EntityReader<ScheduleModel>.GetPropertyName(p => p.EndDateFormatted, false), "End Date"),

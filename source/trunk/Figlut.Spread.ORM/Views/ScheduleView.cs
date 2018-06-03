@@ -22,6 +22,8 @@
 
         public string NotificationMessage { get; set; }
 
+        public TimeSpan EntriesTime { get; set; }
+
         public string ScheduleName { get; set; }
 
         public Nullable<double> Quantity { get; set; }

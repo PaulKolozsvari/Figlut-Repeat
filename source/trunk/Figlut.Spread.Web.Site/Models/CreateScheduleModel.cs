@@ -96,6 +96,9 @@
 
         public string NotificationMessageCreate { get; set; }
 
+        [DataType(DataType.Time)]
+        public TimeSpan EntriesTime { get; set; }
+
         public string ScheduleName { get; set; }
 
         public Nullable<double> Quantity { get; set; }
@@ -257,6 +260,7 @@
 
             //Schedule
             this.NotificationMessage = view.NotificationMessage;
+            this.EntriesTime = view.EntriesTime;
             this.ScheduleName = view.ScheduleName;
             this.Quantity = view.Quantity;
             this.UnitOfMeasure = view.UnitOfMeasure;
@@ -311,6 +315,7 @@
 
             //Schedule
             view.NotificationMessage = this.NotificationMessage;
+            view.EntriesTime = this.EntriesTime;
             view.ScheduleName = this.ScheduleName;
             view.Quantity = this.Quantity;
             view.UnitOfMeasure = this.UnitOfMeasure;

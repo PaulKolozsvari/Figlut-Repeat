@@ -157,7 +157,7 @@
                 try
                 {
                     response = SpreadWebApp.Instance.SmsSender.SendSms(new SmsRequest(
-                        scheduleView.CellPhoneNumber, scheduleView.NotificationMessage, maxSmsSendMessageLength, smsSendMessageSuffix, currentOrganization.Identifier, organizationIdentifierIndicator));
+                        scheduleView.CellPhoneNumber, scheduleEntry.NotificationMessage, maxSmsSendMessageLength, smsSendMessageSuffix, currentOrganization.Identifier, organizationIdentifierIndicator));
                 }
                 catch (Exception exFailed) //Failed to send the SMS Web Request to the provider.
                 {

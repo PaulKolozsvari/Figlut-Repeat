@@ -23,6 +23,8 @@
 
         public string NotificationMessage { get; set; }
 
+        public TimeSpan EntryTime { get; set; }
+
         public DateTime EntryDate { get; set; }
 
         public string EntryDateFormatted { get; set; }
@@ -96,6 +98,7 @@
             this.ScheduleEntryId = view.ScheduleEntryId;
             this.ScheduleId = view.ScheduleId;
             this.NotificationMessage = view.NotificationMessage;
+            this.EntryTime = view.EntryTime;
             this.EntryDate = view.EntryDate;
             this.EntryDateFormatted = view.EntryDateFormatted;
             this.EntryDateDayOfWeek = view.EntryDateDayOfWeek;
@@ -131,6 +134,7 @@
         {
             view.ScheduleEntryId = this.ScheduleId;
             view.ScheduleId = this.ScheduleId;
+            view.EntryTime = this.EntryTime;
             view.NotificationMessage = this.NotificationMessage;
             view.EntryDate = this.EntryDate;
             view.EntryDateFormatted = this.EntryDateFormatted;

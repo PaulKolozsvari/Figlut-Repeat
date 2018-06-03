@@ -1,0 +1,4 @@
+*	Added columns on schedule and schedule entry table to keep the settings of how th entries should be created
+	and which days are working days.
+*	Added notification message field on the schedule entry table to allow user to edit messages for individual entries.
+*	Added time column on the schedule and schedule entry table to allow setting the time when the entry should be sent.

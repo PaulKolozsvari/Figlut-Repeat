@@ -59,6 +59,13 @@
                     @Html.ValidationMessageFor(m => m.DaysRepeatInterval)
                 </div>
                 <div class="field-label">
+                    @Html.Raw(string.Format("Entries' Time:"))
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.EntriesTime)
+                    @Html.ValidationMessageFor(m => m.EntriesTime)
+                </div>
+                <div class="field-label">
                     @Html.Raw("Quantity")
                 </div>
                 <div class="editor-field">
