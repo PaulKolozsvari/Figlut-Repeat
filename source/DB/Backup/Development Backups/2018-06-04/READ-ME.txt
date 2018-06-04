@@ -1,0 +1,1 @@
+*	Added AutomaticallySendDailyScheduleEntriesSms and DailyScheduleEntriesEmailNotificationTime fields on the Organization table.
