@@ -72,8 +72,8 @@
       <Column Name="OrganizationId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
       <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="Invoice_InvoiceItem" Member="InvoiceItems" ThisKey="InvoiceId" OtherKey="InvoiceId" Type="InvoiceItem" />
-      <Association Name="Organization_Invoice" Member="Organization" AccessModifier="Internal" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Organization" IsForeignKey="true" DeleteRule="SET NULL" />
       <Association Name="User_Invoice" Member="User" AccessModifier="Internal" ThisKey="CreatedByUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
+      <Association Name="Organization_Invoice" Member="Organization" AccessModifier="Internal" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Organization" IsForeignKey="true" DeleteRule="SET NULL" />
     </Type>
   </Table>
   <Table Name="dbo.InvoiceItem" Member="InvoiceItems">
@@ -98,8 +98,8 @@
       <Column Name="OrganizationId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
       <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="Order_OrderItem" Member="OrderItems" ThisKey="OrderId" OtherKey="OrderId" Type="OrderItem" />
-      <Association Name="Organization_Order" Member="Organization" AccessModifier="Internal" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Organization" IsForeignKey="true" DeleteRule="SET NULL" />
       <Association Name="User_Order" Member="User" AccessModifier="Internal" ThisKey="CreatedByUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
+      <Association Name="Organization_Order" Member="Organization" AccessModifier="Internal" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Organization" IsForeignKey="true" DeleteRule="SET NULL" />
     </Type>
   </Table>
   <Table Name="dbo.OrderItem" Member="OrderItems">
@@ -349,37 +349,6 @@
       <Association Name="Organization_Subscription" Member="Organization" AccessModifier="Internal" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Organization" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Organization" Member="Organizations">
-    <Type Name="Organization">
-      <Column Name="OrganizationId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
-      <Column Name="Identifier" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="EmailAddress" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
-      <Column Name="Address" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="SmsCreditsBalance" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
-      <Column Name="AllowSmsCreditsDebt" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="OrganizationSubscriptionTypeId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
-      <Column Name="OrganizationSubscriptionEnabled" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="BillingDayOfTheMonth" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="IsMondayWorkDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsTuesdayWorkDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsWednesdayWorkDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsThursdayWorkDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsFridayWorkDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsSaturdayWorkDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsSundayWorkDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="AccountManagerUserId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
-      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="Organization_Invoice" Member="Invoices" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Invoice" />
-      <Association Name="Organization_Order" Member="Orders" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Order" />
-      <Association Name="Organization_SmsMessageTemplate" Member="SmsMessageTemplates" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="SmsMessageTemplate" />
-      <Association Name="Organization_SmsReceivedLog" Member="SmsReceivedLogs" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="SmsReceivedLog" />
-      <Association Name="Organization_SmsSentLog" Member="SmsSentLogs" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="SmsSentLog" />
-      <Association Name="Organization_Subscription" Member="Subscriptions" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Subscription" />
-      <Association Name="Organization_User" Member="Users" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="User" />
-      <Association Name="OrganizationSubscriptionType_Organization" Member="OrganizationSubscriptionType" AccessModifier="Internal" ThisKey="OrganizationSubscriptionTypeId" OtherKey="OrganizationSubscriptionTypeId" Type="OrganizationSubscriptionType" IsForeignKey="true" DeleteRule="SET NULL" />
-    </Type>
-  </Table>
   <Table Name="dbo.[User]" Member="Users">
     <Type Name="User">
       <Column Name="UserId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -444,6 +413,39 @@
       <Column Name="SmsSentLogId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
       <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="Schedule_ScheduleEntry" Member="Schedule" AccessModifier="Internal" ThisKey="ScheduleId" OtherKey="ScheduleId" Type="Schedule" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Organization" Member="Organizations">
+    <Type Name="Organization">
+      <Column Name="OrganizationId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Identifier" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="EmailAddress" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="SmsCreditsBalance" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="AllowSmsCreditsDebt" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="OrganizationSubscriptionTypeId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="OrganizationSubscriptionEnabled" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="BillingDayOfTheMonth" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AutomaticallySendDailyScheduleEntriesSms" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DailyScheduleEntriesEmailNotificationTime" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Column Name="IsMondayWorkDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsTuesdayWorkDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsWednesdayWorkDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsThursdayWorkDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsFridayWorkDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsSaturdayWorkDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsSundayWorkDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="AccountManagerUserId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Organization_Invoice" Member="Invoices" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Invoice" />
+      <Association Name="Organization_Order" Member="Orders" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Order" />
+      <Association Name="Organization_SmsMessageTemplate" Member="SmsMessageTemplates" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="SmsMessageTemplate" />
+      <Association Name="Organization_SmsReceivedLog" Member="SmsReceivedLogs" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="SmsReceivedLog" />
+      <Association Name="Organization_SmsSentLog" Member="SmsSentLogs" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="SmsSentLog" />
+      <Association Name="Organization_Subscription" Member="Subscriptions" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Subscription" />
+      <Association Name="Organization_User" Member="Users" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="User" />
+      <Association Name="OrganizationSubscriptionType_Organization" Member="OrganizationSubscriptionType" AccessModifier="Internal" ThisKey="OrganizationSubscriptionTypeId" OtherKey="OrganizationSubscriptionTypeId" Type="OrganizationSubscriptionType" IsForeignKey="true" DeleteRule="SET NULL" />
     </Type>
   </Table>
 </Database>

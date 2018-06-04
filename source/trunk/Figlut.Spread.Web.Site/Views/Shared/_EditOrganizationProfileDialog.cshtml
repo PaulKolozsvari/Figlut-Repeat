@@ -47,6 +47,31 @@
                 </div>
                 <hr />
                 <div class="field-label">
+                    @Html.Raw("Automatically Send Schedule Entries SMS")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.AutomaticallySendDailyScheduleEntriesSms, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsMondayWorkDay, "Automatically Send Daily Schedule Entries Sms.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Daily Schedule Entries Email Notification Time")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.DailyScheduleEntriesEmailNotificationTime)
+                    @Html.ValidationMessageFor(m => m.DailyScheduleEntriesEmailNotificationTime)
+                </div>
+                <hr />
+                <div class="field-label">
                     @Html.Raw("Monday (working Day)?")
                 </div>
                 <div class="editor-field">
@@ -204,7 +229,7 @@
 <script type="text/javascript">
     $(function () {
         var dialogName = '#dlgEditOrganizationProfile';
-        createDialog(dialogName, 'Edit Organization Profile', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
+        createDialog(dialogName, 'Edit Organization Profile', onConfirmOK, onConfirmOpen, onConfirmCancel, 500, 700);
     });
 
     function onConfirmOK() {

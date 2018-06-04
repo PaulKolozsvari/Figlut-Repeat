@@ -382,6 +382,8 @@
                 {
                     OrganizationSubscriptionEnabled = true,
                     BillingDayOfTheMonth = 1,
+                    AutomaticallySendDailyScheduleEntriesSms = false,
+                    DailyScheduleEntriesEmailNotificationTime = new TimeSpan(8, 0, 0),
                     OrganizationIdentifierMaxLength = organizationIdentifierMaxLength,
                     IsMondayWorkDay = true,
                     IsTuesdayWorkDay = true,

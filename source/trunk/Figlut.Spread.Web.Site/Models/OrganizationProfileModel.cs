@@ -6,6 +6,7 @@
     using Figlut.Spread.ORM;
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Web;
 
@@ -34,6 +35,11 @@
         public bool OrganizationSubscriptionEnabled { get;set;}
 
         public int BillingDayOfTheMonth { get; set; }
+
+        public bool AutomaticallySendDailyScheduleEntriesSms { get; set; }
+
+        [DataType(DataType.Time)]
+        public TimeSpan DailyScheduleEntriesEmailNotificationTime { get; set; }
 
         public bool IsMondayWorkDay { get; set; }
 
@@ -109,6 +115,8 @@
             this.OrganizationSubscriptionTypeId = organization.OrganizationSubscriptionTypeId;
             this.OrganizationSubscriptionEnabled = organization.OrganizationSubscriptionEnabled;
             this.BillingDayOfTheMonth = organization.BillingDayOfTheMonth;
+            this.AutomaticallySendDailyScheduleEntriesSms = organization.AutomaticallySendDailyScheduleEntriesSms;
+            this.DailyScheduleEntriesEmailNotificationTime = organization.DailyScheduleEntriesEmailNotificationTime;
             this.IsMondayWorkDay = organization.IsMondayWorkDay;
             this.IsTuesdayWorkDay = organization.IsTuesdayWorkDay;
             this.IsWednesdayWorkDay = organization.IsWednesdayWorkDay;
@@ -132,6 +140,8 @@
             organization.OrganizationSubscriptionTypeId = this.OrganizationSubscriptionTypeId;
             organization.OrganizationSubscriptionEnabled = this.OrganizationSubscriptionEnabled;
             organization.BillingDayOfTheMonth = this.BillingDayOfTheMonth;
+            organization.AutomaticallySendDailyScheduleEntriesSms = this.AutomaticallySendDailyScheduleEntriesSms;
+            organization.DailyScheduleEntriesEmailNotificationTime = this.DailyScheduleEntriesEmailNotificationTime;
             organization.IsMondayWorkDay = this.IsMondayWorkDay;
             organization.IsTuesdayWorkDay = this.IsTuesdayWorkDay;
             organization.IsWednesdayWorkDay = this.IsWednesdayWorkDay;
