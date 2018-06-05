@@ -43,6 +43,11 @@
                     @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
                     {
                         @Html.LinkButtonForSubmit("Download", "onDownloadAllSmsCampaignsCsvFileClick()", "btnDownload", "spreadsheet.png")
+                        if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+                        {
+                            smsCampaign = (SmsCampaignModel)grid.Rows[grid.SelectedIndex].Value;
+                            @Html.LinkButtonForSubmit("SMS Queue", "onViewCampaignSmsSentQueueItemsClick()", "btnViewCampaignSmsSentQueueItems", "red-mail-send-icon32.png")
+                        }
                     }
                 </div>
                 <div style="float: right; margin-left:2%; margin-right:2%">
@@ -81,6 +86,7 @@
                 grid.Column("Campaigns", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
                 grid.Column(EntityReader<SmsCampaignModel>.GetPropertyName(p => p.Name, false), "Name"),
                 grid.Column(EntityReader<SmsCampaignModel>.GetPropertyName(p => p.OrganizationSelectedCode, false), "Organization Selected Code"),
+                grid.Column(EntityReader<SmsCampaignModel>.GetPropertyName(p => p.SmsSentQueueItemCount, false), "SMS' in Send Queue"),
                 grid.Column(EntityReader<SmsCampaignModel>.GetPropertyName(p => p.DateCreated, false), "Date Created")
             ))
         </div>
@@ -149,7 +155,7 @@
     function onDeleteAllSmsCampaignsClick() {
         var searchParameters = getSearchParametersString();
         showDialog(
-            '#divConfirmationDialog', 
+            '#divConfirmationDialog',
             '#dlgConfirmation',
             'ConfirmDeleteAllDialog',
             'SmsCampaign',
@@ -161,6 +167,13 @@
         var searchParameters = getSearchParametersString();
         var downloadUrl = '@Url.Action("DownloadCsvFile", "SmsCampaign", new { searchParametersString = "_searchValue" })';
         downloadUrl = downloadUrl.replace('_searchValue', searchParameters);
+        window.location = downloadUrl;
+    }
+
+    function onViewCampaignSmsSentQueueItemsClick() {
+        var selectedSmsCampaignId = '@smsCampaign.SmsCampaignId';
+        var downloadUrl = '@Url.Action("Index", "SmsSentQueueItem", new { smsCampaignId = "_smsCampaignId" })';
+        downloadUrl = downloadUrl.replace('_smsCampaignId', selectedSmsCampaignId);
         window.location = downloadUrl;
     }
 

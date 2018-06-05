@@ -93,13 +93,13 @@
         public bool IsValidSubscriberDetails(out string errorMessage)
         {
             errorMessage = null;
-            //Subscriber
+            //Subscribe
+            string formattedPhoneNumber = null;
             if (string.IsNullOrEmpty(this.SubscriberCellPhoneNumber))
             {
                 errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationSubscriptionModel>.GetPropertyName(p => p.SubscriberCellPhoneNumber, true));
             }
-            string formattedPhoneNumber = null;
-            if (!DataShaper.IsValidPhoneNumber(this.SubscriberCellPhoneNumber, out formattedPhoneNumber))
+            else if (!DataShaper.IsValidPhoneNumber(this.SubscriberCellPhoneNumber, out formattedPhoneNumber))
             {
                 errorMessage = string.Format("{0} is not a valid cell phone number.", this.SubscriberCellPhoneNumber);
             }

@@ -30,6 +30,8 @@
 
         public DateTime DateCreated { get; set; }
 
+        public long SmsSentQueueItemCount { get; set; }
+
         #endregion //Sms Campaign Properties
 
         #region Organization Properties
@@ -76,6 +78,7 @@
             this.OrganizationSelectedCode = view.OrganizationSelectedCode;
             this.OrganizationId = view.OrganizationId;
             this.DateCreated = view.DateCreated;
+            this.SmsSentQueueItemCount = view.SmsSentQueueItemCount;
 
             this.OrganizationName = view.OrganizationName;
         }
@@ -88,6 +91,7 @@
             view.OrganizationSelectedCode = this.OrganizationSelectedCode;
             view.OrganizationId = this.OrganizationId;
             view.DateCreated = this.DateCreated;
+            view.SmsSentQueueItemCount = this.SmsSentQueueItemCount;
 
             view.OrganizationName = this.OrganizationName;
         }

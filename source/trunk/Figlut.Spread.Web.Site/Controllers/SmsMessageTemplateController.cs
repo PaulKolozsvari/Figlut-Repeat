@@ -24,8 +24,8 @@
         #region Constants
 
         private const string SMS_MESSAGE_TEMPLATE_GRID_PARTIAL_VIEW_NAME = "_SmsMessageTemplateGrid";
-        private const string EDIT_SMS_MESSAGE_TEMPLATE_PARTIAL_VIEW_NAME = "_EditSmsMessageTemplateDialog";
-        private const string CREATE_SMS_MESSAGE_TEMPLATE_PARTIAL_VIEW_NAME = "_CreateSmsMessageTemplateDialog";
+        private const string EDIT_SMS_MESSAGE_TEMPLATE_DIALOG_PARTIAL_VIEW_NAME = "_EditSmsMessageTemplateDialog";
+        private const string CREATE_SMS_MESSAGE_TEMPLATE_DIALOG_PARTIAL_VIEW_NAME = "_CreateSmsMessageTemplateDialog";
 
         #endregion //Constants
 
@@ -362,7 +362,7 @@
                 SpreadEntityContext context = SpreadEntityContext.Create();
                 if (!smsMessageTemplateId.HasValue || smsMessageTemplateId.Value == Guid.Empty)
                 {
-                    return PartialView(EDIT_SMS_MESSAGE_TEMPLATE_PARTIAL_VIEW_NAME, new SmsMessageTemplateModel());
+                    return PartialView(EDIT_SMS_MESSAGE_TEMPLATE_DIALOG_PARTIAL_VIEW_NAME, new SmsMessageTemplateModel());
                 }
                 SmsMessageTemplateView smsMessageTemplateView = context.GetSmsMessageTemplateView(smsMessageTemplateId.Value, true);
                 SmsMessageTemplateModel model = new SmsMessageTemplateModel();
@@ -373,7 +373,7 @@
                     Organization organization = context.GetOrganization(model.OrganizationId, true);
                     RefreshOrganizationsList(context, organization);
                 }
-                PartialViewResult result = PartialView(EDIT_SMS_MESSAGE_TEMPLATE_PARTIAL_VIEW_NAME, model);
+                PartialViewResult result = PartialView(EDIT_SMS_MESSAGE_TEMPLATE_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
             }
             catch (Exception ex)
@@ -447,7 +447,7 @@
                         EntityReader<SmsMessageTemplate>.GetPropertyName(p => p.OrganizationId, false)));
                 }
                 model.MaxSmsSendMessageLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
-                PartialViewResult result = PartialView(CREATE_SMS_MESSAGE_TEMPLATE_PARTIAL_VIEW_NAME, model);
+                PartialViewResult result = PartialView(CREATE_SMS_MESSAGE_TEMPLATE_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
             }
             catch (Exception ex)

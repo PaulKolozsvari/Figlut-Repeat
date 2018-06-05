@@ -53,8 +53,8 @@
                         if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
                         {
                             smsMessageTemplate = (SmsMessageTemplateModel)grid.Rows[grid.SelectedIndex].Value;
-                            @Html.LinkButtonForCancel("Delete", "onDeleteSmsMessageTemplateClick()", "onDeleteSmsMessageTemplate")
-                            @Html.LinkButtonForSubmit("Edit", "onEditSmsMessageTemplateClick()", "onEditSmsMessageTemplate", "red-edit.png")
+                            @Html.LinkButtonForCancel("Delete", "onDeleteSmsMessageTemplateClick()", "btnDeleteSmsMessageTemplate")
+                            @Html.LinkButtonForSubmit("Edit", "onEditSmsMessageTemplateClick()", "btnEditSmsMessageTemplate", "red-edit.png")
                         }
                     }
                 </div>
@@ -160,7 +160,7 @@
         showDialog(
             '#divConfirmationDialog',
             '#dlgConfirmation',
-            'cConfirmDeleteAllDialog',
+            'ConfirmDeleteAllDialog',
             'SmsMessageTemplate',
             'searchParametersString',
             searchParameters);

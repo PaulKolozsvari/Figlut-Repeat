@@ -140,6 +140,7 @@ using System.Threading.Tasks;
                 int smsProviderCode = (int)_smsSender.SmsProvider;
                 string errorMessage = null;
                 context.LogFailedSmsSent(smsRequest.recipientNumber, smsRequest.message, smsProviderCode, exFailed, senderUser, out errorMessage);
+                context.FlagSmsSentQueueItemAsFailedToSend(i.SmsSentQueueItemId, errorMessage, true, true, true);
                 throw new Exception(errorMessage);
             }
             if (smsResponse != null)

@@ -212,6 +212,7 @@
     <Compile Include="Controllers\SmsProcessorLogController.cs" />
     <Compile Include="Controllers\SmsReceivedController.cs" />
     <Compile Include="Controllers\SmsSentController.cs" />
+    <Compile Include="Controllers\SmsSentQueueItemController.cs" />
     <Compile Include="Controllers\SpreadController.cs" />
     <Compile Include="Controllers\SubscriberController.cs" />
     <Compile Include="Controllers\SubscriberSubscriptionController.cs" />
@@ -253,6 +254,7 @@
     <Compile Include="Models\SmsProcessorModel.cs" />
     <Compile Include="Models\SmsReceivedLogModel.cs" />
     <Compile Include="Models\SmsSentLogModel.cs" />
+    <Compile Include="Models\SmsSentQueueItemModel.cs" />
     <Compile Include="Models\SubscriberModel.cs" />
     <Compile Include="Models\SubscriberSubscriptionModel.cs" />
     <Compile Include="Models\UserModel.cs" />
@@ -565,6 +567,8 @@
     <Content Include="Views\Shared\_CreateUserDialog.cshtml" />
     <Content Include="Views\Shared\_EditUserProfileDialog.cshtml" />
     <Content Include="Views\Shared\_EditOrganizationProfileDialog.cshtml" />
+    <Content Include="Views\Shared\_SmsSentQueueItemGrid.cshtml" />
+    <Content Include="Views\SmsSentQueueItem\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

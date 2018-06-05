@@ -28,6 +28,8 @@
 
         public DateTime DateCreated { get; set; }
 
+        public long SmsSentQueueItemCount { get; set; }
+
         #endregion //Sms Campaign Properties
 
         #region Organization Properties

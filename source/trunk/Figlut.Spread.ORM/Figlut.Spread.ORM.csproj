@@ -53,6 +53,7 @@
     <Compile Include="Csv\SmsProcessorLogCsv.cs" />
     <Compile Include="Csv\SmsReceivedCsv.cs" />
     <Compile Include="Csv\SmsSentCsv.cs" />
+    <Compile Include="Csv\SmsSentQueueItemCsv.cs" />
     <Compile Include="Csv\SubscriberCsv.cs" />
     <Compile Include="Csv\SubscriberSubscriptionCsv.cs" />
     <Compile Include="Csv\UserCsv.cs" />

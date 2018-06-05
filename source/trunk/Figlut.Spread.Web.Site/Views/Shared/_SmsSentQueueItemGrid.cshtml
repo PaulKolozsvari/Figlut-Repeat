@@ -1,0 +1,204 @@
+﻿@model Figlut.Spread.Web.Site.Models.FilterModel<SmsSentQueueItemModel>
+
+@using Figlut.Server.Toolkit.Data;
+@using Figlut.Spread.Web.Site.Configuration;
+@using Figlut.Spread.Web.Site;
+@using Figlut.Spread.Web.Site.Models;
+@using Figlut.Spread.Web.Site.Extensions;
+@using Figlut.Spread.ORM.Helpers;
+
+@{
+    Figlut.Spread.Web.Site.Models.SmsSentQueueItemModel smsSentQueueItem = new SmsSentQueueItemModel();
+}
+@{
+    int smsPerPageToDisplay = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.SmsPerPagePageToDisplay].SettingValue);
+    var grid = new WebGrid(Model.DataModel, canPage: true, rowsPerPage: smsPerPageToDisplay, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+    grid.Pager(WebGridPagerModes.All);
+}
+
+<div id="gridContent" class="data-grid">
+    <div id="gridWrapper">
+        @Html.HiddenFor(p => p.ParentId)
+        @Html.HiddenFor(p => p.ParentCaption)
+        <div class="centerInformation" style="float:inherit; margin-top:1%; margin-bottom:1%;">
+            <div class="grid-search">
+                <table style="width:99%;">
+                    <tr>
+                        <td style="width:60%;">
+                            <div class="search-text">
+                                @Html.Raw("Search Text")
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.EditorFor(m => m.SearchText)
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="grid-buttons">
+                <div style="float: left; margin-left:2%; margin-right:2%">
+                    @Html.LinkButtonForSubmit("Search", "onSearchSmsSentQueueItemsClick()", "btnSearch", "search.png")
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        @Html.LinkButtonForSubmit("Download", "onDownloadAllSmsSentQueueItemsCsvFileClick()", "btnDownload", "spreadsheet.png")
+                    }
+                </div>
+                <div style="float: right; margin-left:2%; margin-right:2%">
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        @Html.LinkButtonForCancel("Delete All", "onDeleteAllSmsSentQueueItemsClick()", "btnDeleteAllSmsSentQueueItems")
+                        @Html.LinkButtonForSubmit("Retry All", "onRetrySendAllClick()", "btnRetrySendAll", "red-mail-send-icon32.png")
+                        if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+                        {
+                            smsSentQueueItem = (SmsSentQueueItemModel)grid.Rows[grid.SelectedIndex].Value;
+                            @Html.LinkButtonForCancel("Delete", "onDeleteSmsSentQueueItemClick()", "btnDeleteSmsSentQueueItem")
+                            if (smsSentQueueItem.FailedToSend)
+                            {
+                                @Html.LinkButtonForSubmit("Retry", "onRetrySendClick()", "btnRetrySend", "red-mail-send-icon32.png")
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="sms-sent-queue-item-preview">
+            @if (Model.IsAdministrator && grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+            {
+                smsSentQueueItem = (SmsSentQueueItemModel)grid.Rows[grid.SelectedIndex].Value;
+                <div style="float:left; margin-left:2%; margin-right:2%;">
+                    <b>@Html.Raw(string.Format("ID: {0}", smsSentQueueItem.SmsSentQueueItemId.ToString()))</b>
+                </div>
+            }
+            <div style="float: right; margin-left:2%; margin-right:2%">
+                <b>@Html.Raw(string.Format("SMS Sent Queue Items Loaded: {0} of {1}", Model.TotalCount.ToString(), Model.TotalTableCount.ToString()))</b>
+            </div>
+        </div>
+        <div id="gridTableContainer">
+            @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "header",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                columns: grid.Columns(
+                grid.Column("Queue", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
+                grid.Column(EntityReader<SmsSentQueueItemModel>.GetPropertyName(p => p.CellPhoneNumber, false), "Cell Phone Number"),
+                //grid.Column(EntityReader<SmsSentQueueItemModel>.GetPropertyName(p => p.Campaign, false), "Campaign"),
+                //grid.Column(EntityReader<SmsSentQueueItemModel>.GetPropertyName(p => p.SubscriberName, false), "Subscriber Name"),
+                grid.Column(EntityReader<SmsSentQueueItemModel>.GetPropertyName(p => p.FailedToSend, false), "Failed"),
+                //grid.Column(EntityReader<SmsSentQueueItemModel>.GetPropertyName(p => p.FailedToSendErrorMessage, false), "Error"),
+                grid.Column(EntityReader<SmsSentQueueItemModel>.GetPropertyName(p => p.DateCreated, false), "Date Created")
+            ))
+        </div>
+        <div class="sms-sent-queue-item-preview">
+            @if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+            {
+                smsSentQueueItem = (SmsSentQueueItemModel)grid.Rows[grid.SelectedIndex].Value;
+                <div style="float: left; margin-left:2%; margin-right:2%">
+                    <b>@Html.Raw(string.Format("Message: {0}", smsSentQueueItem.MessageContents))</b>
+                </div>
+                if (!string.IsNullOrEmpty(smsSentQueueItem.FailedToSendErrorMessage))
+                {
+                    <div style="float:right; margin-left:2%; margin-right:2%; color: #a30e0e;">
+                        @Html.Raw(string.Format("Error: {0}", smsSentQueueItem.FailedToSendErrorMessage))
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <div id="SmsSentQueueItemErrorField" style="color:#8A0808">
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <br />
+            @Html.Raw(ViewBag.ErrorMessage)
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#SearchText").focus();
+        makeGridRowsPostForm();
+    });
+
+    function onSearchSmsSentQueueItemsClick() {
+        postSmsSentQueueItems();
+    }
+
+    function onDeleteSmsSentQueueItemClick() {
+        showDialog(
+            '#divConfirmationDialog',
+            '#dlgConfirmation',
+            'ConfirmDeleteDialog',
+            'SmsSentQueueItem',
+            'identifier',
+            '@smsSentQueueItem.SmsSentQueueItemId.ToString()');
+    };
+
+    function getSearchParametersString() {
+        var searchParameters = '@string.Format("{0}|{1}|{2}|{3}",
+        Model.SearchText != null ? Model.SearchText : string.Empty,
+        Model.StartDate.HasValue ? Model.StartDate.Value.Date.ToString() : string.Empty,
+        Model.EndDate.HasValue ? Model.EndDate.Value.Date.ToString() : string.Empty,
+        Model.ParentId.ToString())'
+        return searchParameters;
+    }
+
+    function onDeleteAllSmsSentQueueItemsClick() {
+        var searchParameters = getSearchParametersString();
+        showDialog(
+            '#divConfirmationDialog',
+            '#dlgConfirmation',
+            'ConfirmDeleteAllDialog',
+            'SmsSentQueueItem',
+            'searchParametersString',
+            searchParameters);
+    }
+
+    function onDownloadAllSmsSentQueueItemsCsvFileClick() {
+        var searchParameters = getSearchParametersString();
+        var downloadUrl = '@Url.Action("DownloadCsvFile", "SmsSentQueueItem", new { searchParametersString = "_searchValue" })';
+        downloadUrl = downloadUrl.replace('_searchValue', searchParameters);
+        window.location = downloadUrl;
+    }
+
+    function onRetrySendClick() {
+        var smsSentQueueItemId = '@(smsSentQueueItem != null ? smsSentQueueItem.SmsSentQueueItemId.ToString() : string.Empty)';
+        var postBackUrl = '@Url.Action("RetrySend", "SmsSentQueueItem", new { smsSentQueueItemId = "_smsSentQueueItemId" })';
+        postBackUrl = postBackUrl.replace('_smsSentQueueItemId', smsSentQueueItemId);
+        $.ajax({
+            url: postBackUrl,
+            type: 'POST',
+            success: function (data) {
+                if (data.Success) {
+                    postSmsSentQueueItems();
+                } else {
+                    $('#SmsSentQueueItemErrorField').text(data.ErrorMsg);
+                }
+            }
+        })
+    }
+
+    function onRetrySendAllClick() {
+        var searchParameters = getSearchParametersString();
+        var postBackUrl = '@Url.Action("RetrySendAll", "SmsSentQueueItem", new { searchParametersString = "_searchValue" })';
+        postBackUrl = postBackUrl.replace('_searchValue', searchParameters);
+        $.ajax({
+            url: postBackUrl,
+            type: 'POST',
+            success: function (data) {
+                if (data.Success) {
+                    postSmsSentQueueItems();
+                } else {
+                    $('#SmsSentQueueItemErrorField').text(data.ErrorMsg);
+                }
+            }
+        })
+    }
+
+    function postSmsSentQueueItems() {
+        $('form#frmDetails').trigger('submit');
+    };
+
+</script>

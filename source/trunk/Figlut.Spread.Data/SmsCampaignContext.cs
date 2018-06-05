@@ -58,6 +58,7 @@
                                           OrganizationSelectedCode = c.OrganizationSelectedCode,
                                           OrganizationId = c.OrganizationId,
                                           DateCreated = c.DateCreated,
+                                          SmsSentQueueItemCount = GetSmsSentQueueItemCountForSmsCampaign(c.SmsCampaignId),
                                           OrganizationName = sub.Name
                                       }).FirstOrDefault();
             if (result == null && throwExceptionOnNotFound)
@@ -91,6 +92,7 @@
                               OrganizationSelectedCode = c.OrganizationSelectedCode,
                               OrganizationId = c.OrganizationId,
                               DateCreated = c.DateCreated,
+                              SmsSentQueueItemCount = GetSmsSentQueueItemCountForSmsCampaign(c.SmsCampaignId),
                               OrganizationName = sub.Name
                           }).ToList();
             }
@@ -110,10 +112,18 @@
                               OrganizationSelectedCode = c.OrganizationSelectedCode,
                               OrganizationId = c.OrganizationId,
                               DateCreated = c.DateCreated,
+                              SmsSentQueueItemCount = GetSmsSentQueueItemCountForSmsCampaign(c.SmsCampaignId),
                               OrganizationName = sub.Name
                           }).ToList();
             }
             return result;
+        }
+
+        public long GetSmsSentQueueItemCountForSmsCampaign(Guid smsCampaignId)
+        {
+            return (from s in DB.GetTable<SmsSentQueueItem>()
+                    where s.SmsCampaignId == smsCampaignId
+                    select s).LongCount();
         }
 
         public List<SmsCampaign> GetSmsCampaignsByFilter(string searchFilter, Nullable<Guid> organizationId)
