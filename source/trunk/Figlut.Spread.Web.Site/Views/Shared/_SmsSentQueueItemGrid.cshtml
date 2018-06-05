@@ -84,7 +84,7 @@
                 columns: grid.Columns(
                 grid.Column("Queue", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
                 grid.Column(EntityReader<SmsSentQueueItemModel>.GetPropertyName(p => p.CellPhoneNumber, false), "Cell Phone Number"),
-                //grid.Column(EntityReader<SmsSentQueueItemModel>.GetPropertyName(p => p.Campaign, false), "Campaign"),
+                grid.Column(EntityReader<SmsSentQueueItemModel>.GetPropertyName(p => p.Campaign, false), "Campaign"),
                 //grid.Column(EntityReader<SmsSentQueueItemModel>.GetPropertyName(p => p.SubscriberName, false), "Subscriber Name"),
                 grid.Column(EntityReader<SmsSentQueueItemModel>.GetPropertyName(p => p.FailedToSend, false), "Failed"),
                 //grid.Column(EntityReader<SmsSentQueueItemModel>.GetPropertyName(p => p.FailedToSendErrorMessage, false), "Error"),

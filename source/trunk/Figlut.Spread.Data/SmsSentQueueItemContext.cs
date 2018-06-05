@@ -44,21 +44,23 @@
 
         public List<SmsSentQueueItem> GetSmsSentQueueItemsByFilter(string searchFilter, Nullable<Guid> smsCampaignId)
         {
-            string searchFilterLower = searchFilter == null ? string.Empty : searchFilter.ToLower();
+            string searchFilterLower = searchFilter == null ? string.Empty : searchFilter.ToLower().Trim();
             List<SmsSentQueueItem> result = null;
             if (smsCampaignId.HasValue)
             {
                 result = (from s in DB.GetTable<SmsSentQueueItem>()
                           where s.SmsCampaignId == smsCampaignId.Value &&
                           (s.CellPhoneNumber.ToLower().Contains(searchFilterLower) ||
-                          (s.MessageContents.ToLower().Contains(searchFilterLower)))
+                          s.Campaign.ToLower().Contains(searchFilterLower) ||
+                          s.MessageContents.ToLower().Contains(searchFilterLower))
                           select s).ToList();
             }
             else
             {
                 result = (from s in DB.GetTable<SmsSentQueueItem>()
                           where (s.CellPhoneNumber.ToLower().Contains(searchFilterLower) ||
-                          (s.MessageContents.ToLower().Contains(searchFilterLower)))
+                          s.Campaign.ToLower().Contains(searchFilterLower) ||
+                          s.MessageContents.ToLower().Contains(searchFilterLower))
                           select s).ToList();
             }
             return result;

@@ -429,12 +429,16 @@
             {
                 context = SpreadEntityContext.Create();
             }
-            if (IsCurrentUserAdministrator(context) ||
-                GetCurrentOrganization(context, true).OrganizationId == organizationId)
+            return IsCurrentUserAdministrator(context) || (GetCurrentOrganization(context, true).OrganizationId == organizationId);
+        }
+
+        public bool CurrentUserHasAccessToSmsCampaign(Guid smsCampaignId, SpreadEntityContext context)
+        {
+            if (context == null)
             {
-                return true;
+                context = SpreadEntityContext.Create();
             }
-            return false;
+            return IsCurrentUserAdministrator(context) || CurrentUserHasAccessToOrganization(context.GetSmsCampaign(smsCampaignId, true).OrganizationId, context);
         }
 
         protected void RefreshSmsMessageTemplatesList(SpreadEntityContext context)

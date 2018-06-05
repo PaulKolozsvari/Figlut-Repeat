@@ -13,7 +13,14 @@
     <ul id="menu">
         <li>
             <img src="~/Images/Icons/red-balloon-plus-icon32.png" style="float:right; margin-right:1%; margin-left:1%" />
-            <a href="" style="float:right">@Html.Raw(string.Format("SMS Send Queue for Campaign: {0}", Model.ParentCaption))</a>
+            @if (!string.IsNullOrEmpty(Model.ParentCaption))
+            {
+                <a href="" style="float:right">@Html.Raw(string.Format("SMS Send Queue for Campaign: {0}", Model.ParentCaption))</a>
+            }
+            else
+            {
+                <a href="" style="float:right">@Html.Raw(string.Format("SMS Send Queue"))</a>
+            }
         </li>
     </ul>
 </nav>

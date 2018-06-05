@@ -70,8 +70,9 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                Organization currentOrganization = GetCurrentOrganization(context, true);
-                if (!Request.IsAuthenticated || !CurrentUserHasAccessToOrganization(currentOrganization.OrganizationId, context))
+                if (!Request.IsAuthenticated ||
+                    (!smsCampaignId.HasValue && !IsCurrentUserAdministrator(context)) ||
+                    (smsCampaignId.HasValue && !CurrentUserHasAccessToSmsCampaign(smsCampaignId.Value, context)))
                 {
                     return RedirectToHome();
                 }
@@ -93,12 +94,18 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                Organization currentOrganization = GetCurrentOrganization(context, true);
-                if (!Request.IsAuthenticated || !CurrentUserHasAccessToOrganization(currentOrganization.OrganizationId, context))
+                Nullable<Guid> smsCampaignId = null;
+                if (model.ParentId != Guid.Empty && model.ParentId != Guid.Empty)
+                {
+                    smsCampaignId = model.ParentId;
+                }
+                if (!Request.IsAuthenticated ||
+                    (!smsCampaignId.HasValue && !IsCurrentUserAdministrator(context)) ||
+                    (smsCampaignId.HasValue && !CurrentUserHasAccessToSmsCampaign(smsCampaignId.Value, context)))
                 {
                     return RedirectToHome();
                 }
-                FilterModel<SmsSentQueueItemModel> resultModel = GetSmsSentQueueItemFilterModel(context, model, model.ParentId);
+                FilterModel<SmsSentQueueItemModel> resultModel = GetSmsSentQueueItemFilterModel(context, model, smsCampaignId);
                 if (resultModel == null) //There was an error and ViewBag.ErrorMessage has been set. So just return an empty model.
                 {
                     return PartialView(SMS_SENT_QUEUE_ITEM_GRID_PARTIAL_VIEW_NAME, new FilterModel<SmsSentQueueItemModel>());
@@ -119,12 +126,14 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                Organization currentOrganization = GetCurrentOrganization(context, true);
-                if (!Request.IsAuthenticated || !CurrentUserHasAccessToOrganization(currentOrganization.OrganizationId, context))
+                SmsSentQueueItem smsSentQueueItem = context.GetSmsSentQueueItem(smsSentQueueItemId, true);
+                Nullable<Guid> smsCampaignId = smsSentQueueItem.SmsCampaignId;
+                if (!Request.IsAuthenticated ||
+                    (!smsCampaignId.HasValue && !IsCurrentUserAdministrator(context)) ||
+                    (smsCampaignId.HasValue && !CurrentUserHasAccessToSmsCampaign(smsCampaignId.Value, context)))
                 {
                     return RedirectToHome();
                 }
-                SmsSentQueueItem smsSentQueueItem = context.GetSmsSentQueueItem(smsSentQueueItemId, true);
                 context.Delete<SmsSentQueueItem>(smsSentQueueItem);
                 return GetJsonResult(true);
             }
@@ -152,6 +161,12 @@
                 model.DialogDivId = CONFIRMATION_DIALOG_DIV_ID;
                 if (smsSentQueueItem != null && smsSentQueueItem.SmsCampaignId.HasValue)
                 {
+                    Nullable<Guid> smsCampaignId = smsSentQueueItem.SmsCampaignId;
+                    if ((!smsCampaignId.HasValue && !IsCurrentUserAdministrator(context)) ||
+                        (smsCampaignId.HasValue && !CurrentUserHasAccessToSmsCampaign(smsCampaignId.Value, context)))
+                    {
+                        return RedirectToHome();
+                    }
                     SmsCampaign smsCampaign = context.GetSmsCampaign(smsSentQueueItem.SmsCampaignId.Value, true);
                     model.Identifier = identifier;
                     model.ConfirmationMessage = string.Format("Delete selected SMS Queue Item for Campaign '{0}'?", smsCampaign.Name);
@@ -173,12 +188,14 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                Organization currentOrganization = GetCurrentOrganization(context, true);
-                if (!Request.IsAuthenticated || !CurrentUserHasAccessToOrganization(currentOrganization.OrganizationId, context))
+                SmsSentQueueItem smsSentQueueItem = context.GetSmsSentQueueItem(model.Identifier, true);
+                Nullable<Guid> smsCampaignId = smsSentQueueItem.SmsCampaignId;
+                if (!Request.IsAuthenticated ||
+                    (!smsCampaignId.HasValue && !IsCurrentUserAdministrator(context)) ||
+                    (smsCampaignId.HasValue && !CurrentUserHasAccessToSmsCampaign(smsCampaignId.Value, context)))
                 {
                     return RedirectToHome();
                 }
-                SmsSentQueueItem smsSentQueueItem = context.GetSmsSentQueueItem(model.Identifier, true);
                 context.Delete<SmsSentQueueItem>(smsSentQueueItem);
                 return GetJsonResult(true);
             }
@@ -195,11 +212,6 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                Organization currentOrganization = GetCurrentOrganization(context, true);
-                if (!Request.IsAuthenticated || !CurrentUserHasAccessToOrganization(currentOrganization.OrganizationId, context))
-                {
-                    return RedirectToHome();
-                }
                 ConfirmationModel model = new ConfirmationModel();
                 model.PostBackControllerAction = GetCurrentActionName();
                 model.PostBackControllerName = GetCurrentControllerName();
@@ -216,10 +228,25 @@
                 if (!string.IsNullOrEmpty(smsCampaignIdString))
                 {
                     smsCampaignId = Guid.Parse(smsCampaignIdString);
-                    smsCampaign = context.GetSmsCampaign(smsCampaignId.Value, true);
+                    if (smsCampaignId.Value == Guid.Empty)
+                    {
+                        smsCampaignId = null;
+                    }
+                    else
+                    {
+                        smsCampaign = context.GetSmsCampaign(smsCampaignId.Value, true);
+                    }
+                }
+                if (!Request.IsAuthenticated ||
+                    (!smsCampaignId.HasValue && !IsCurrentUserAdministrator(context)) ||
+                    (smsCampaignId.HasValue && !CurrentUserHasAccessToSmsCampaign(smsCampaignId.Value, context)))
+                {
+                    return RedirectToHome();
                 }
                 if (smsCampaign == null)
                 {
+                    model.ParentId = Guid.Empty;
+                    model.ParentCaption = string.Empty;
                     model.ConfirmationMessage = string.Format("Delete all SMS Queue Items loaded for all Campaigns?");
                 }
                 else
@@ -247,17 +274,18 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                Organization currentOrganinzation = GetCurrentOrganization(context, true);
-                if (!Request.IsAuthenticated || !CurrentUserHasAccessToOrganization(currentOrganinzation.OrganizationId, context))
+                Nullable<Guid> smsCampaignId = null;
+                if (model.ParentId != Guid.Empty)
+                {
+                    smsCampaignId = model.ParentId;
+                }
+                if (!Request.IsAuthenticated ||
+                    (!smsCampaignId.HasValue && !IsCurrentUserAdministrator(context)) ||
+                    (smsCampaignId.HasValue && !CurrentUserHasAccessToSmsCampaign(smsCampaignId.Value, context)))
                 {
                     return RedirectToHome();
                 }
-                if (model.ParentId == Guid.Empty)
-                {
-                    return RedirectToError(string.Format("{0} not specified.",
-                        EntityReader<SmsSentQueueItem>.GetPropertyName(p => p.SmsCampaignId, false)));
-                }
-                context.DeleteSmsSentQueueItemsByFilter(model.SearchText, model.ParentId);
+                context.DeleteSmsSentQueueItemsByFilter(model.SearchText, smsCampaignId);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -273,22 +301,25 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                Organization currentOrganinzation = GetCurrentOrganization(context, true);
-                if (!Request.IsAuthenticated || !CurrentUserHasAccessToOrganization(currentOrganinzation.OrganizationId, context))
-                {
-                    return RedirectToHome();
-                }
                 string[] searchParameters;
                 string searchText;
                 GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
                 List<SmsSentQueueItem> smsSentQueueItemList = null;
                 string smsCampaignIdString = searchParameters[searchParameters.Length - 1];
                 Nullable<Guid> smsCampaignId = null;
-                SmsCampaign smsCampaign = null;
                 if (!string.IsNullOrEmpty(smsCampaignIdString))
                 {
                     smsCampaignId = Guid.Parse(smsCampaignIdString);
-                    smsCampaign = context.GetSmsCampaign(smsCampaignId.Value, true);
+                    if (smsCampaignId == Guid.Empty)
+                    {
+                        smsCampaignId = null;
+                    }
+                }
+                if (!Request.IsAuthenticated ||
+                    (!smsCampaignId.HasValue && !IsCurrentUserAdministrator(context)) ||
+                    (smsCampaignId.HasValue && !CurrentUserHasAccessToSmsCampaign(smsCampaignId.Value, context)))
+                {
+                    return RedirectToHome();
                 }
                 smsSentQueueItemList = context.GetSmsSentQueueItemsByFilter(searchText, smsCampaignId);
 
@@ -319,6 +350,13 @@
                     return PartialView(EDIT_SMS_SENT_QUEUE_ITEM_DIALOG_PARTIAL_VIEW_NAME, new SmsSentQueueItemModel());
                 }
                 SmsSentQueueItem smsSentQueueItem = context.GetSmsSentQueueItem(smsSentQueueItemId.Value, true);
+                Nullable<Guid> smsCampaignId = smsSentQueueItem.SmsCampaignId;
+                if (!Request.IsAuthenticated ||
+                    (!smsCampaignId.HasValue && !IsCurrentUserAdministrator(context)) ||
+                    (smsCampaignId.HasValue && !CurrentUserHasAccessToSmsCampaign(smsCampaignId.Value, context)))
+                {
+                    return RedirectToHome();
+                }
                 SmsSentQueueItemModel model = new SmsSentQueueItemModel();
                 model.CopyPropertiesFromSmsSentQueueItem(smsSentQueueItem);
                 PartialViewResult result = PartialView(EDIT_SMS_SENT_QUEUE_ITEM_DIALOG_PARTIAL_VIEW_NAME, model);
@@ -338,17 +376,19 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                Organization currentOrganization = GetCurrentOrganization(context, true);
-                if (!Request.IsAuthenticated || !CurrentUserHasAccessToOrganization(currentOrganization.OrganizationId, context))
-                {
-                    return RedirectToHome();
-                }
                 string errorMessage = null;
                 if (!model.IsValid(out errorMessage))
                 {
                     return GetJsonResult(false, errorMessage);
                 }
                 SmsSentQueueItem smsSentQueueItem = context.GetSmsSentQueueItem(model.SmsSentQueueItemId, true);
+                Nullable<Guid> smsCampaignId = smsSentQueueItem.SmsCampaignId;
+                if (!Request.IsAuthenticated ||
+                    (!smsCampaignId.HasValue && !IsCurrentUserAdministrator(context)) ||
+                    (smsCampaignId.HasValue && !CurrentUserHasAccessToSmsCampaign(smsCampaignId.Value, context)))
+                {
+                    return RedirectToHome();
+                }
                 model.CopyPropertiesToSmsSentQueueItem(smsSentQueueItem);
                 context.Save<SmsSentQueueItem>(smsSentQueueItem, false);
                 return GetJsonResult(true);
@@ -367,12 +407,14 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                Organization currentOrganization = GetCurrentOrganization(context, true);
-                if (!Request.IsAuthenticated || !CurrentUserHasAccessToOrganization(currentOrganization.OrganizationId, context))
+                SmsSentQueueItem smsSentQueueItem = context.GetSmsSentQueueItem(smsSentQueueItemId, true);
+                Nullable<Guid> smsCampaignId = smsSentQueueItem.SmsCampaignId;
+                if (!Request.IsAuthenticated ||
+                    (!smsCampaignId.HasValue && !IsCurrentUserAdministrator(context)) ||
+                    (smsCampaignId.HasValue && !CurrentUserHasAccessToSmsCampaign(smsCampaignId.Value, context)))
                 {
                     return RedirectToHome();
                 }
-                SmsSentQueueItem smsSentQueueItem = context.GetSmsSentQueueItem(smsSentQueueItemId, true);
                 smsSentQueueItem.FailedToSend = false;
                 smsSentQueueItem.FailedToSendErrorMessage = null;
                 context.Save<SmsSentQueueItem>(smsSentQueueItem, false);
@@ -393,27 +435,22 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                Organization currentOrganization = GetCurrentOrganization(context, true);
-                if (!Request.IsAuthenticated || !CurrentUserHasAccessToOrganization(currentOrganization.OrganizationId, context))
-                {
-                    return RedirectToHome();
-                }
                 string[] searchParameters;
                 string searchText;
                 GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
                 string smsCampaignIdString = searchParameters[searchParameters.Length - 1];
                 Nullable<Guid> smsCampaignId = null;
-                SmsCampaign smsCampaign = null;
                 if (!string.IsNullOrEmpty(smsCampaignIdString))
                 {
                     smsCampaignId = Guid.Parse(smsCampaignIdString);
                     if (smsCampaignId == Guid.Empty)
                     {
-                        throw new Exception(string.Format("{0} not specified correctly.", EntityReader<SmsCampaign>.GetPropertyName(p => p.SmsCampaignId, false)));
+                        smsCampaignId = null;
                     }
-                    smsCampaign = context.GetSmsCampaign(smsCampaignId.Value, true);
                 }
-                if (!smsCampaignId.HasValue && IsCurrentUserAdministrator(context))
+                if (!Request.IsAuthenticated ||
+                    (!smsCampaignId.HasValue && !IsCurrentUserAdministrator(context)) ||
+                    (smsCampaignId.HasValue && !CurrentUserHasAccessToSmsCampaign(smsCampaignId.Value, context)))
                 {
                     return RedirectToHome();
                 }
