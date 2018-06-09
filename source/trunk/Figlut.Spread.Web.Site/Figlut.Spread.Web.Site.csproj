@@ -562,13 +562,14 @@
     <Content Include="Views\OrganizationScheduleEntry\Index.cshtml" />
     <Content Include="Views\Shared\_SendSubscriberSmsDialog.cshtml" />
     <Content Include="Views\Shared\_SendSmsDialog.cshtml" />
-    <Content Include="Views\Shared\_LogingDialog.cshtml" />
+    <Content Include="Views\Shared\_LoginDialog.cshtml" />
     <Content Include="Views\Shared\_CreateOrganizationDialog.cshtml" />
     <Content Include="Views\Shared\_CreateUserDialog.cshtml" />
     <Content Include="Views\Shared\_EditUserProfileDialog.cshtml" />
     <Content Include="Views\Shared\_EditOrganizationProfileDialog.cshtml" />
     <Content Include="Views\Shared\_SmsSentQueueItemGrid.cshtml" />
     <Content Include="Views\SmsSentQueueItem\Index.cshtml" />
+    <Content Include="Views\Shared\_ResetPasswordDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

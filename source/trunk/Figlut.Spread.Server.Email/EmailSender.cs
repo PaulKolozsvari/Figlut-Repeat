@@ -283,21 +283,51 @@
                     throw;
                 }
                 ExceptionHandler.HandleException(ex);
+                return false;
             }
             return true;
         }
 
         public bool SendExceptionEmailNotification(Exception exception)
         {
-            StringBuilder result = new StringBuilder();
-            result.AppendLine(exception.Message);
+            StringBuilder message = new StringBuilder();
+            message.AppendLine(exception.Message);
             if (exception.InnerException != null)
             {
-                result.AppendLine(string.Format("Inner Exception : {0}", exception.InnerException.ToString()));
+                message.AppendLine(string.Format("Inner Exception : {0}", exception.InnerException.ToString()));
             }
-            result.AppendLine(exception.StackTrace);
-            string errorMessage = result.ToString();
-            return SendEmail("Figlut Technical Error Notification", errorMessage, null, false, null, null);
+            message.AppendLine(exception.StackTrace);
+            string errorMessage = message.ToString();
+            return SendEmail("Figlut - Technical Error Notification", errorMessage, null, false, null, null);
+        }
+
+        public bool SendUserResetPasswordNotification(
+            string userName, 
+            string emailAddress, 
+            string cellPhoneNumber, 
+            string newPassword,
+            string organizationName)
+        {
+            StringBuilder message = new StringBuilder();
+            message.AppendLine(string.Format("Hi {0},", userName));
+            message.AppendLine();
+            message.AppendLine("Your new Figlut password is:");
+            message.AppendLine();
+            message.AppendLine(newPassword);
+            message.AppendLine();
+            message.AppendLine("You can change your password after logging in.");
+            message.AppendLine();
+            message.AppendLine("Regards,");
+            message.AppendLine();
+            message.AppendLine("Figlut team");
+            List<string> emailRecipients = new List<string>() { emailAddress };
+            return SendEmail(
+                "Figlut - Reset Password Notification", 
+                message.ToString(), 
+                null, 
+                false, 
+                new List<EmailNotificationRecipient>() { new EmailNotificationRecipient() { DisplayName = userName, EmailAddress = emailAddress } },
+                null);
         }
 
         private void LogEmailNotification(MailMessage email, string subject)

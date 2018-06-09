@@ -26,7 +26,8 @@
         #region Constants
 
         private const string USER_GRID_PARTIAL_VIEW_NAME = "_UserGrid";
-        private const string LOGIN_DIALOG_PARTIAL_VIEW_NAME = "_LogingDialog";
+        private const string LOGIN_DIALOG_PARTIAL_VIEW_NAME = "_LoginDialog";
+        private const string RESET_PASSWORD_DIALOG_PARTIAL_VIEW_NAME = "_ResetPasswordDialog";
         private const string EDIT_USER_DIALOG_PARTIAL_VIEW_NAME = "_EditUserDialog";
         private const string CREATE_USER_DIALOG_PARTIAL_VIEW_NAME = "_CreateUserDialog";
         private const string EDIT_USER_PROFILE_DIALOG_PARTIAL_VIEW_NAME = "_EditUserProfileDialog";
@@ -427,6 +428,74 @@
                 return GetJsonResult(false, string.Format("Invalid {0}/{1} or password.",
                     EntityReader<User>.GetPropertyName(p => p.UserName, true),
                         EntityReader<User>.GetPropertyName(p => p.EmailAddress, true)));
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
+
+        public ActionResult ResetPasswordDialog()
+        {
+            try
+            {
+                PartialViewResult result = PartialView(RESET_PASSWORD_DIALOG_PARTIAL_VIEW_NAME, new User());
+                return result;
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                SpreadWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ResetPasswordDialog(User model)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(model.UserName))
+                {
+                    return GetJsonResult(false, string.Format("{0}/{1} not entered.",
+                        EntityReader<User>.GetPropertyName(p => p.UserName, true),
+                        EntityReader<User>.GetPropertyName(p => p.EmailAddress, true)));
+                }
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                User user = context.GetUserByIdentifier(model.UserName, false); //The UserName in the model specified by the user may be the UserName or the EmailAddress. Hence we need to get the original user from the database to set the UserName as the auth cookie.
+                if (user == null)
+                {
+                    return GetJsonResult(false, string.Format("{0} with {1}/{2} of '{3}' does not exist.",
+                        typeof(User).Name,
+                        EntityReader<User>.GetPropertyName(p => p.UserName, true),
+                        EntityReader<User>.GetPropertyName(p => p.EmailAddress, true),
+                        model.UserName));
+                }
+                Organization organization = null;
+                string organizationName = null;
+                if (user.OrganizationId.HasValue)
+                {
+                    organization = context.GetOrganization(user.OrganizationId.Value, true);
+                    organizationName = organization.Name;
+                }
+                string newPassword = DataShaper.GeneratePassword(20, 1);
+                if (!SpreadWebApp.Instance.EmailSender.SendUserResetPasswordNotification(
+                    user.UserName,
+                    user.EmailAddress,
+                    user.CellPhoneNumber,
+                    newPassword,
+                    organizationName))
+                {
+                    return GetJsonResult(false, string.Format(
+                        "Could not send email notification with your new password to {0}. Password has not been reset. Please try again later.", user.EmailAddress));
+                }
+                user.Password = newPassword;
+                context.Save<User>(user, false);
+                return GetJsonResult(true, 
+                    string.Format("Password reset successfully. Please check your email, your new password has been emailed to {0}. You should receive it within the next few minutes. Check your Spam folder if you do not see the email in your Inbox.", 
+                    user.EmailAddress));
             }
             catch (Exception ex)
             {

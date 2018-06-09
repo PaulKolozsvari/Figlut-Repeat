@@ -38,7 +38,8 @@
 <script type="text/javascript">
     $(function () {
         var dialogName = '#dlgLogin';
-        createDialog(dialogName, 'Login', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
+        //createDialog(dialogName, 'Login', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
+        createLoginDialog(dialogName, 'Login', onConfirmOK, onConfirmOpen, onConfirmCancel, onConfirmResetPassword, 450, 450);
     });
 
     function onConfirmOK() {
@@ -61,11 +62,22 @@
     };
 
     function onConfirmOpen() {
-
     }
 
     function onConfirmCancel() {
         //$('#confirmation-message').val('');
         $("#LoginErrorField").html('');
+    }
+
+    function onConfirmResetPassword() {
+        var dialogName = '#dlgLogin';
+        $(dialogName).dialog("close");
+        showDialog(
+            '#divResetPassword',
+            '#dlgResetPassword',
+            'ResetPasswordDialog',
+            'User',
+            '',
+            '@null');
     }
 </script>
