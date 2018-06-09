@@ -339,7 +339,7 @@
                     return GetJsonResult(false, errorMessage);
                 }
                 SmsSentLog smsSentLog = SpreadWebApp.Instance.LogSmsSentToDB(
-                    model.CellPhoneNumberSendSubscriberSmsDialog, model.MessageContentsSendSubscriberSmsDialog, response, currentUser, true); //If this line throws an exception then we don't havea record of the SMS having been sent, therefore cannot deduct credits from the Organization. Therefore there's no point in wrapping this call in a try catch and swallowing any exception i.e. if we don't have a record of the SMS having been sent we cannot charge for it.
+                    model.CellPhoneNumberSendSubscriberSmsDialog, model.MessageContentsSendSubscriberSmsDialog, response, currentUser, true, model.SubscriberId, model.SubscriberName, null, null); //If this line throws an exception then we don't havea record of the SMS having been sent, therefore cannot deduct credits from the Organization. Therefore there's no point in wrapping this call in a try catch and swallowing any exception i.e. if we don't have a record of the SMS having been sent we cannot charge for it.
                 if (response.success)
                 {
                     long smsCredits = context.DecrementSmsCreditFromOrganization(currentOrganization.OrganizationId).SmsCreditsBalance;

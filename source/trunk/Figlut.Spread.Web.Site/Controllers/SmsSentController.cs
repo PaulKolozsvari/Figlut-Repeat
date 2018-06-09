@@ -186,7 +186,7 @@
                     return GetJsonResult(false, errorMessage);
                 }
                 SmsSentLog smsSentLog = SpreadWebApp.Instance.LogSmsSentToDB(
-                    model.CellPhoneNumberSendSmsDialog, model.MessageContentsSendSmsDialog, response, currentUser, true); //If this line throws an exception then we don't havea record of the SMS having been sent, therefore cannot deduct credits from the Organization. Therefore there's no point in wrapping this call in a try catch and swallowing any exception i.e. if we don't have a record of the SMS having been sent we cannot charge for it.
+                    model.CellPhoneNumberSendSmsDialog, model.MessageContentsSendSmsDialog, response, currentUser, true, null, null, null, null); //If this line throws an exception then we don't havea record of the SMS having been sent, therefore cannot deduct credits from the Organization. Therefore there's no point in wrapping this call in a try catch and swallowing any exception i.e. if we don't have a record of the SMS having been sent we cannot charge for it.
                 if (response.success)
                 {
                     long smsCredits = context.DecrementSmsCreditFromOrganization(currentOrganization.OrganizationId).SmsCreditsBalance;
@@ -285,7 +285,7 @@
                     context.LogFailedSmsSent(model.CellPhoneNumber, model.MessageContents, smsProviderCode, exFailed, currentUser, out errorMessage);
                     return GetJsonResult(false, errorMessage);
                 }
-                SpreadWebApp.Instance.LogSmsSentToDB(model.CellPhoneNumber, model.MessageContents, response, currentUser, true); //If this line throws an exception then we don't havea record of the SMS having been sent, therefore cannot deduct credits from the Organization. Therefore there's no point in wrapping this call in a try catch and swallowing any exception i.e. if we don't have a record of the SMS having been sent we cannot charge for it.
+                SpreadWebApp.Instance.LogSmsSentToDB(model.CellPhoneNumber, model.MessageContents, response, currentUser, true, null, null, null, null); //If this line throws an exception then we don't havea record of the SMS having been sent, therefore cannot deduct credits from the Organization. Therefore there's no point in wrapping this call in a try catch and swallowing any exception i.e. if we don't have a record of the SMS having been sent we cannot charge for it.
                 if (response.success)
                 {
                     long smsCredits = context.DecrementSmsCreditFromOrganization(currentOrganization.OrganizationId).SmsCreditsBalance;

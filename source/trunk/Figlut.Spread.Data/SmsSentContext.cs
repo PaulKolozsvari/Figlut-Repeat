@@ -30,7 +30,11 @@
             string messageContents,
             int smsProviderCode,
             User senderUser,
-            bool beforeCreditsDeduction)
+            bool beforeCreditsDeduction,
+            Nullable<Guid> subscriberId,
+            string subscriberName,
+            string smsCampaignName,
+            Nullable<Guid> smsCampaignId)
         {
             SmsSentLog result = null;
             using (TransactionScope t = new TransactionScope())
@@ -49,6 +53,10 @@
                     Tag = null,
                     SmsProviderCode = smsProviderCode,
                     Delivered = false,
+                    SubscriberId = subscriberId,
+                    SubscriberName = subscriberName,
+                    Campaign = smsCampaignName,
+                    SmsCampaignId = smsCampaignId,
                     DateCreated = DateTime.Now
                 };
                 if (senderUser != null)
@@ -89,6 +97,16 @@
                 t.Complete();
             }
             return result;
+        }
+
+        public void UpdateSmsSentLog(Guid smsSentLogId, Nullable<Guid> subscriberId, string subscriberName, string smsCampaignName, Nullable<Guid> smsCamapaignId)
+        {
+            SmsSentLog smsSentLog = GetSmsSentLog(smsSentLogId, true);
+            smsSentLog.SubscriberId = subscriberId;
+            smsSentLog.SubscriberName = subscriberName;
+            smsSentLog.Campaign = smsCampaignName;
+            smsSentLog.SmsCampaignId = smsCamapaignId;
+            DB.SubmitChanges();
         }
 
         public SmsSentLog LogFailedSmsSent(

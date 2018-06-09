@@ -19,6 +19,8 @@
 
         public Guid SubscriberId { get; set; }
 
+        public string SubscriberName { get; set; }
+
         [DataType(DataType.PhoneNumber)]
         public string CellPhoneNumberSendSubscriberSmsDialog { get; set; }
 
@@ -62,6 +64,7 @@
         public void CopyPropertiesFromSubscriber(Subscriber subscriber)
         {
             this.SubscriberId = subscriber.SubscriberId;
+            this.SubscriberName = subscriber.Name;
             this.CellPhoneNumberSendSubscriberSmsDialog = subscriber.CellPhoneNumber;
         }
 

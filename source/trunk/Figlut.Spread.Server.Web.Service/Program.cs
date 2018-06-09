@@ -205,7 +205,16 @@
                 logMessage.AppendLine(smsResponse.ToString());
                 GOC.Instance.Logger.LogMessage(new LogMessage(logMessage.ToString(), LogMessageType.SuccessAudit, LoggingLevel.Maximum));
             }
-            SpreadApp.Instance.LogSmsSentToDB(recipientNumber, message, smsResponse, null, true);
+            SpreadApp.Instance.LogSmsSentToDB(
+                recipientNumber,
+                message,
+                smsResponse,
+                null,
+                true,
+                null,
+                null,
+                null,
+                null);
         }
 
         private static void DownloadAllCountriesPublicHolidays(bool initializeService, int year)

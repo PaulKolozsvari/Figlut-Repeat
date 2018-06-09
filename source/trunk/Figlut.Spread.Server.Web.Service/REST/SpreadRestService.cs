@@ -177,7 +177,7 @@
                     logMessage.AppendLine(smsResponse.ToString());
                     AuditServiceCall(logMessage.ToString());
                 }
-                SmsSentLog result = SpreadApp.Instance.LogSmsSentToDB(smsRequest.recipientNumber, smsRequest.message, smsResponse, user, true);
+                SmsSentLog result = SpreadApp.Instance.LogSmsSentToDB(smsRequest.recipientNumber, smsRequest.message, smsResponse, user, true, null, null, null, null);
                 if (smsResponse.success)
                 {
                     long smsCredits = context.DecrementSmsCreditFromOrganization(organization.OrganizationId).SmsCreditsBalance;
@@ -188,7 +188,8 @@
                         smsCredits),
                         LogMessageType.SuccessAudit, 
                         LoggingLevel.Normal));
-                    context.SaveSubscriber(smsRequest.recipientNumber, null, true, true); //Creates  subscriber for the given cell phone to which this SMS has been sent if the subscriber with the given cell phone number does not already exist.
+                    Subscriber subscriber = context.SaveSubscriber(smsRequest.recipientNumber, null, true, true); //Creates  subscriber for the given cell phone to which this SMS has been sent if the subscriber with the given cell phone number does not already exist.
+                    context.UpdateSmsSentLog(result.SmsSentLogId, subscriber.SubscriberId, subscriber.Name, null, null);
                 }
                 if (SpreadApp.Instance.Settings.TrimSmsSentLogResponseTag && result.Tag.Length > SpreadApp.Instance.Settings.TrimSmsSentLogResponseTagLength)
                 {

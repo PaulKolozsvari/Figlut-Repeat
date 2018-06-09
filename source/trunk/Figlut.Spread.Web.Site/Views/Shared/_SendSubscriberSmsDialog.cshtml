@@ -7,8 +7,17 @@
             <fieldset>
                 <legend>Confirmation Form</legend>
                 @Html.HiddenFor(m => m.SubscriberId)
+                @Html.HiddenFor(m => m.SubscriberName)
                 @Html.HiddenFor(m => m.CellPhoneNumberSendSubscriberSmsDialog)
                 @Html.HiddenFor(m => m.MaxSmsSendMessageLength)
+
+                <div class="field-label">
+                    @Html.Raw(string.Format("Subscriber Name", Model.SubscriberName))
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.SubscriberName, new { disabled = "disabled", @readonly = "readonly", onKeyPress = "return disableEnterKey(event)" })
+                    @Html.ValidationMessageFor(m => m.SubscriberName)
+                </div>
 
                 <div class="field-label">
                     @Html.Raw(string.Format("Subscriber Cell Phone Number", Model.CellPhoneNumberSendSubscriberSmsDialog))
@@ -48,7 +57,7 @@
 <script type="text/javascript">
     $(function () {
         var dialogName = '#dlgSendSubscriberSmsDialog';
-        createDialog(dialogName, 'Send SMS to Subscriber ', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 600);
+        createDialog(dialogName, 'Send SMS to Subscriber ', onConfirmOK, onConfirmOpen, onConfirmCancel, 500, 600);
         $("#MessageContents").focus();
     });
 

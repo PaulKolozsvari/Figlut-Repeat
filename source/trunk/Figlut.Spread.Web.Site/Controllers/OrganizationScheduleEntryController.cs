@@ -162,7 +162,7 @@
                 try
                 {
                     response = SpreadWebApp.Instance.SmsSender.SendSms(new SmsRequest(
-                        scheduleView.CellPhoneNumber, scheduleView.NotificationMessage, maxSmsSendMessageLength, smsSendMessageSuffix, currentOrganization.Identifier, organizationIdentifierIndicator));
+                        scheduleView.CellPhoneNumber, scheduleEntry.NotificationMessage, maxSmsSendMessageLength, smsSendMessageSuffix, currentOrganization.Identifier, organizationIdentifierIndicator));
                 }
                 catch (Exception exFailed) //Failed to send the SMS Web Request to the provider.
                 {
@@ -172,7 +172,7 @@
                     return GetJsonResult(false, errorMessage);
                 }
                 SmsSentLog smsSentLog = SpreadWebApp.Instance.LogSmsSentToDB(
-                    scheduleView.CellPhoneNumber, scheduleView.NotificationMessage, response, currentUser, true); //If this line throws an exception then we don't havea record of the SMS having been sent, therefore cannot deduct credits from the Organization. Therefore there's no point in wrapping this call in a try catch and swallowing any exception i.e. if we don't have a record of the SMS having been sent we cannot charge for it.
+                    scheduleView.CellPhoneNumber, scheduleEntry.NotificationMessage, response, currentUser, true, scheduleView.SubscriberId, scheduleView.SubscriberName, null, null); //If this line throws an exception then we don't havea record of the SMS having been sent, therefore cannot deduct credits from the Organization. Therefore there's no point in wrapping this call in a try catch and swallowing any exception i.e. if we don't have a record of the SMS having been sent we cannot charge for it.
                 if (response.success)
                 {
                     long smsCredits = context.DecrementSmsCreditFromOrganization(currentOrganization.OrganizationId).SmsCreditsBalance;

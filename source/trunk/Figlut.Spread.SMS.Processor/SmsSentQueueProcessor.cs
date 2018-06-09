@@ -162,7 +162,11 @@ using System.Threading.Tasks;
                 smsRequest.message,
                 (int)smsResponse.smsProvider,
                 senderUser,
-                true);
+                true,
+                i.SubscriberId,
+                i.SubscriberName,
+                i.Campaign,
+                i.SmsCampaignId);
             if (smsResponse.success)
             {
                 //long smsCredits = context.DecrementSmsCreditFromOrganization(senderOrganization.OrganizationId).SmsCreditsBalance; //Sms credits are substracted when the SMS' are enqueued.

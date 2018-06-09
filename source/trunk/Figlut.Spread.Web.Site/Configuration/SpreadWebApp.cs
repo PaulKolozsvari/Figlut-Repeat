@@ -283,7 +283,11 @@
             string message, 
             SmsResponse smsResponse, 
             User senderUser,
-            bool beforeCreditsDeduction)
+            bool beforeCreditsDeduction,
+            Nullable<Guid> subscriberId,
+            string subscriberName,
+            string smsCampaignName,
+            Nullable<Guid> smsCampaignId)
         {
             if (smsResponse == null || !Settings.SmsDatabaseLoggingEnabled)
             {
@@ -300,7 +304,11 @@
                 message,
                 (int)smsResponse.smsProvider,
                 senderUser,
-                beforeCreditsDeduction);
+                beforeCreditsDeduction,
+                subscriberId,
+                subscriberName,
+                smsCampaignName,
+                smsCampaignId);
         }
 
         #endregion //Methods

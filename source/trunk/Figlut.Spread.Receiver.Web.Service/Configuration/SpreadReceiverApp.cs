@@ -275,7 +275,11 @@ using Figlut.Spread.SMS.Processor;
             string message, 
             SmsResponse smsResponse, 
             User senderUser,
-            bool beforeCreditsDeduction)
+            bool beforeCreditsDeduction,
+            Nullable<Guid> subscriberId,
+            string subscriberName,
+            string smsCampaignName,
+            Nullable<Guid> smsCampaignId)
         {
             if (smsResponse == null || !Settings.SmsDatabaseLoggingEnabled)
             {
@@ -291,7 +295,11 @@ using Figlut.Spread.SMS.Processor;
                 message,
                 (int)smsResponse.smsProvider,
                 senderUser,
-                beforeCreditsDeduction);
+                beforeCreditsDeduction,
+                subscriberId,
+                subscriberName,
+                smsCampaignName,
+                smsCampaignId);
             return result;
         }
 
