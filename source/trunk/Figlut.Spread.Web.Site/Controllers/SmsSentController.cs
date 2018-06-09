@@ -33,7 +33,10 @@
 
         #region Methods
 
-        private FilterModel<SmsSentLogModel> GetSmsSentFilterModel(SpreadEntityContext context, FilterModel<SmsSentLogModel> model)
+        private FilterModel<SmsSentLogModel> GetSmsSentFilterModel(
+            SpreadEntityContext context, 
+            FilterModel<SmsSentLogModel> model,
+            Nullable<Guid> smsCampaignId)
         {
             if (context == null)
             {
@@ -75,7 +78,7 @@
             List<SmsSentLog> smsSentLogList = null;
             if (model.IsAdministrator)
             {
-                smsSentLogList = context.GetSmsSentLogByFilter(model.SearchText, startDate, endDate, null);
+                smsSentLogList = context.GetSmsSentLogByFilter(model.SearchText, startDate, endDate, null, smsCampaignId);
             }
             else
             {
@@ -85,7 +88,7 @@
                     SetViewBagErrorMessage(string.Format("User {0} is not part of an Organization.", currentUser.UserName));
                     return null;
                 }
-                smsSentLogList = context.GetSmsSentLogByFilter(model.SearchText, startDate, endDate, currentUser.OrganizationId.Value);
+                smsSentLogList = context.GetSmsSentLogByFilter(model.SearchText, startDate, endDate, currentUser.OrganizationId.Value, smsCampaignId);
             }
             List<SmsSentLogModel> modelList = new List<SmsSentLogModel>();
             foreach (SmsSentLog s in smsSentLogList)
@@ -111,6 +114,15 @@
             model.DataModel.Clear();
             model.DataModel = modelList;
             model.TotalTableCount = context.GetAllSmsSentLogCount();
+            if (smsCampaignId.HasValue)
+            {
+                SmsCampaign smsCampaign = context.GetSmsCampaign(smsCampaignId.Value, false);
+                if (smsCampaign != null)
+                {
+                    model.ParentId = smsCampaign.SmsCampaignId;
+                    model.ParentCaption = smsCampaign.Name;
+                }
+            }
             return model;
         }
 
@@ -327,7 +339,7 @@
 
         #endregion //Compose
 
-        public ActionResult Index()
+        public ActionResult Index(Nullable<Guid> smsCampaignId)
         {
             try
             {
@@ -336,7 +348,7 @@
                 {
                     return RedirectToHome();
                 }
-                FilterModel<SmsSentLogModel> model = GetSmsSentFilterModel(context, new FilterModel<SmsSentLogModel>());
+                FilterModel<SmsSentLogModel> model = GetSmsSentFilterModel(context, new FilterModel<SmsSentLogModel>(), smsCampaignId);
                 if (model == null) //There was an error and ViewBag.ErrorMessage has been set. So just return an empty model.
                 {
                     return View(new FilterModel<SmsSentLogModel>());
@@ -363,7 +375,12 @@
                     return RedirectToHome();
                 }
                 ViewBag.SearchFieldIdentifier = model.SearchFieldIdentifier;
-                FilterModel<SmsSentLogModel> resultModel = GetSmsSentFilterModel(context, model);
+                Nullable<Guid> smsCampaignId = null;
+                if (model.ParentId != Guid.Empty)
+                {
+                    smsCampaignId = model.ParentId;
+                }
+                FilterModel<SmsSentLogModel> resultModel = GetSmsSentFilterModel(context, model, smsCampaignId);
                 if (resultModel == null) //There was an error and ViewBag.ErrorMessage has been set. So just return an empty model.
                 {
                     return PartialView(SMS_SENT_GRID_PARTIAL_VIEW_NAME, new FilterModel<SmsSentLogModel>());
@@ -472,20 +489,49 @@
                 Nullable<DateTime> endDate;
                 base.GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText, out startDate, out endDate);
 
+                string smsCampaignIdString = searchParameters[searchParameters.Length - 1];
+                Nullable<Guid> smsCampaignId = null;
+                SmsCampaign smsCampaign = null;
+                if (!string.IsNullOrEmpty(smsCampaignIdString))
+                {
+                    Guid parsedSmsCampaignId = Guid.Parse(smsCampaignIdString);
+                    if (parsedSmsCampaignId != Guid.Empty)
+                    {
+                        smsCampaign = context.GetSmsCampaign(parsedSmsCampaignId, true);
+                        smsCampaignId = parsedSmsCampaignId;
+                    }
+                }
+
                 model.SearchText = searchText;
                 model.StartDate = startDate;
                 model.EndDate = endDate;
+                model.ParentId = smsCampaignId.HasValue ? smsCampaignId.Value : Guid.Empty;
 
                 if (model.StartDate.HasValue && model.EndDate.HasValue)
                 {
-                    model.ConfirmationMessage = string.Format(
-                        "Delete all SMS' currently loaded between {0}-{1}-{2} and {3}-{4}-{5} ?",
-                        model.StartDate.Value.Year.ToString(),
-                        model.StartDate.Value.Month.ToString(),
-                        model.StartDate.Value.Day.ToString(),
-                        model.EndDate.Value.Year.ToString(),
-                        model.EndDate.Value.Month.ToString(),
-                        model.EndDate.Value.Day.ToString());
+                    if (smsCampaign != null)
+                    {
+                        model.ConfirmationMessage = string.Format(
+                            "Delete all SMS' currently loaded between {0}-{1}-{2} and {3}-{4}-{5} for Campaign '{6}'?",
+                            model.StartDate.Value.Year.ToString(),
+                            model.StartDate.Value.Month.ToString(),
+                            model.StartDate.Value.Day.ToString(),
+                            model.EndDate.Value.Year.ToString(),
+                            model.EndDate.Value.Month.ToString(),
+                            model.EndDate.Value.Day.ToString(),
+                            smsCampaign.Name);
+                    }
+                    else
+                    {
+                        model.ConfirmationMessage = string.Format(
+                            "Delete all SMS' currently loaded between {0}-{1}-{2} and {3}-{4}-{5}?",
+                            model.StartDate.Value.Year.ToString(),
+                            model.StartDate.Value.Month.ToString(),
+                            model.StartDate.Value.Day.ToString(),
+                            model.EndDate.Value.Year.ToString(),
+                            model.EndDate.Value.Month.ToString(),
+                            model.EndDate.Value.Day.ToString());
+                    }
                 }
                 PartialViewResult result = PartialView(CONFIRMATION_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
@@ -508,14 +554,19 @@
                 {
                     return RedirectToHome();
                 }
+                Nullable<Guid> smsCampaignId = null;
+                if (model.ParentId != Guid.Empty)
+                {
+                    smsCampaignId = model.ParentId;
+                }
                 if (IsCurrentUserAdministrator(context))
                 {
-                    context.DeleteSmsSentLogByFilter(model.SearchText, model.StartDate.Value, model.EndDate.Value, null);
+                    context.DeleteSmsSentLogByFilter(model.SearchText, model.StartDate. Value, model.EndDate.Value, null, smsCampaignId);
                 }
                 else
                 {
                     Organization organization = GetCurrentOrganization(context, true);
-                    context.DeleteSmsSentLogByFilter(model.SearchText, model.StartDate.Value, model.EndDate.Value, organization.OrganizationId);
+                    context.DeleteSmsSentLogByFilter(model.SearchText, model.StartDate.Value, model.EndDate.Value, organization.OrganizationId, smsCampaignId);
                 }
                 return GetJsonResult(true);
             }
@@ -547,17 +598,28 @@
                 }
                 if (!endDate.HasValue)
                 {
-                    throw new ArgumentException("Start Date not specified.");
+                    throw new ArgumentException("End Date not specified.");
+                }
+                string smsCampaignIdString = searchParameters[searchParameters.Length - 1];
+                Nullable<Guid> smsCampaignId = null;
+                if (!string.IsNullOrEmpty(smsCampaignIdString))
+                {
+                    Guid parsedSmsCampaignId = Guid.Parse(smsCampaignIdString);
+                    if (parsedSmsCampaignId != Guid.Empty)
+                    {
+                        SmsCampaign smsCampaign = context.GetSmsCampaign(parsedSmsCampaignId, true);
+                        smsCampaignId = parsedSmsCampaignId;
+                    }
                 }
                 List<SmsSentLog> smsList = null;
                 if (IsCurrentUserAdministrator(context))
                 {
-                    smsList = context.GetSmsSentLogByFilter(searchText, startDate.Value, endDate.Value, null);
+                    smsList = context.GetSmsSentLogByFilter(searchText, startDate.Value, endDate.Value, null, smsCampaignId);
                 }
                 else
                 {
                     Organization organization = GetCurrentOrganization(context, true);
-                    smsList = context.GetSmsSentLogByFilter(searchText, startDate.Value, endDate.Value, organization.OrganizationId);
+                    smsList = context.GetSmsSentLogByFilter(searchText, startDate.Value, endDate.Value, organization.OrganizationId, smsCampaignId);
                 }
                 bool cellPhoneNumberTrimOnGrid = Convert.ToBoolean(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.CellPhoneNumberTrimOnGrid].SettingValue);
                 int cellPhoneNumberTrimLengthOnGrid = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.CellPhoneNumberTrimLengthOnGrid].SettingValue);

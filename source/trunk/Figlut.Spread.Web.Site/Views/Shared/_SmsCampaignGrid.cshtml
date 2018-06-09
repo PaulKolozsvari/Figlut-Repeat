@@ -46,7 +46,8 @@
                         if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
                         {
                             smsCampaign = (SmsCampaignModel)grid.Rows[grid.SelectedIndex].Value;
-                            @Html.LinkButtonForSubmit("SMS Queue", "onViewCampaignSmsSentQueueItemsClick()", "btnViewCampaignSmsSentQueueItems", "red-mail-send-icon32.png")
+                            @Html.LinkButtonForSubmit("SMS Queue", "onViewCampaignSmsSentQueueItemsClick()", "btnViewCampaignSmsSentQueueItems", "red-mail-open-icon32.png")
+                            @Html.LinkButtonForSubmit("SMS Sent", "onViewSmsSentClick()", "btnViewSmsSent", "red-mail-send-icon32.png")
                         }
                     }
                 </div>
@@ -87,6 +88,7 @@
                 grid.Column(EntityReader<SmsCampaignModel>.GetPropertyName(p => p.Name, false), "Name"),
                 grid.Column(EntityReader<SmsCampaignModel>.GetPropertyName(p => p.OrganizationSelectedCode, false), "Organization Selected Code"),
                 grid.Column(EntityReader<SmsCampaignModel>.GetPropertyName(p => p.SmsSentQueueItemCount, false), "SMS' in Send Queue"),
+                grid.Column(EntityReader<SmsCampaignModel>.GetPropertyName(p => p.SmsSentCount, false), "SMS' Sent"),
                 grid.Column(EntityReader<SmsCampaignModel>.GetPropertyName(p => p.DateCreated, false), "Date Created")
             ))
         </div>
@@ -173,6 +175,13 @@
     function onViewCampaignSmsSentQueueItemsClick() {
         var selectedSmsCampaignId = '@smsCampaign.SmsCampaignId';
         var downloadUrl = '@Url.Action("Index", "SmsSentQueueItem", new { smsCampaignId = "_smsCampaignId" })';
+        downloadUrl = downloadUrl.replace('_smsCampaignId', selectedSmsCampaignId);
+        window.location = downloadUrl;
+    }
+
+    function onViewSmsSentClick() {
+        var selectedSmsCampaignId = '@smsCampaign.SmsCampaignId';
+        var downloadUrl = '@Url.Action("Index", "SmsSent", new { smsCampaignId = "_smsCampaignId" })';
         downloadUrl = downloadUrl.replace('_smsCampaignId', selectedSmsCampaignId);
         window.location = downloadUrl;
     }

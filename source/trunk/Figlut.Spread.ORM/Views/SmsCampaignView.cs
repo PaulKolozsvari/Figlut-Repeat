@@ -30,6 +30,8 @@
 
         public long SmsSentQueueItemCount { get; set; }
 
+        public long SmsSentCount { get; set; }
+
         #endregion //Sms Campaign Properties
 
         #region Organization Properties

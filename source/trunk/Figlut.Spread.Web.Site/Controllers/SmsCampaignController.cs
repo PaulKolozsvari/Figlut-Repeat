@@ -281,12 +281,12 @@
 
                 string organizationIdString = searchParameters[searchParameters.Length - 1];
                 Guid organizationId = Guid.Parse(organizationIdString);
-                Organization organization = context.GetOrganization(organizationId, true);
                 if (organizationId == Guid.Empty)
                 {
                     return RedirectToError(string.Format("{0} not specified.",
                         EntityReader<SmsCampaignModel>.GetPropertyName(p => p.OrganizationId, false)));
                 }
+                Organization organization = context.GetOrganization(organizationId, true);
                 if (!Request.IsAuthenticated || !CurrentUserHasAccessToOrganization(organization.OrganizationId, context))
                 {
                     return RedirectToHome();

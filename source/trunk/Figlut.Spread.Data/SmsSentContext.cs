@@ -196,51 +196,102 @@
             return DB.GetTable<SmsSentLog>().LongCount();
         }
 
-        public List<SmsSentLog> GetSmsSentLogByFilter(string searchFilter, DateTime startDate, DateTime endDate, Nullable<Guid> organizationId)
+        public List<SmsSentLog> GetSmsSentLogByFilter(
+            string searchFilter, 
+            DateTime startDate, 
+            DateTime endDate, 
+            Nullable<Guid> organizationId,
+            Nullable<Guid> smsCampaignId)
         {
             string searchFilterLower = searchFilter == null ? string.Empty : searchFilter.ToLower();
             List<SmsSentLog> result = null;
             if (organizationId.HasValue) //For specified organization only.
             {
-                result = (from s in DB.GetTable<SmsSentLog>()
-                          where (s.OrganizationId.HasValue && s.OrganizationId.Value == organizationId.Value) &&
-                          (s.DateCreated.Date >= startDate.Date && s.DateCreated.Date <= endDate.Date) &&
-                          (s.CellPhoneNumber.ToLower().Contains(searchFilterLower) ||
-                          s.MessageId.ToLower().Contains(searchFilterLower) ||
-                          s.MessageContents.ToLower().Contains(searchFilterLower) ||
-                          s.Success.ToString().ToLower().Contains(searchFilterLower) ||
-                          s.ErrorCode.ToLower().Contains(searchFilterLower) ||
-                          s.ErrorMessage.ToLower().Contains(searchFilterLower))
-                          //s.TableReference.ToLower().Contains(searchFilterLower) ||
-                          //s.RecordReference.ToString().ToLower().Contains(searchFilterLower) ||
-                          //s.Tag.ToLower().Contains(searchFilterLower))
-                          orderby s.DateCreated descending
-                          select s).ToList();
+                if (smsCampaignId.HasValue)
+                {
+                    result = (from s in DB.GetTable<SmsSentLog>()
+                              where (s.OrganizationId.HasValue && s.OrganizationId.Value == organizationId.Value) &&
+                              (s.SmsCampaignId.HasValue && s.SmsCampaignId.Value == smsCampaignId.Value) &&
+                              (s.DateCreated.Date >= startDate.Date && s.DateCreated.Date <= endDate.Date) &&
+                              (s.CellPhoneNumber.ToLower().Contains(searchFilterLower) ||
+                              s.MessageId.ToLower().Contains(searchFilterLower) ||
+                              s.MessageContents.ToLower().Contains(searchFilterLower) ||
+                              s.Success.ToString().ToLower().Contains(searchFilterLower) ||
+                              s.ErrorCode.ToLower().Contains(searchFilterLower) ||
+                              s.ErrorMessage.ToLower().Contains(searchFilterLower))
+                              //s.TableReference.ToLower().Contains(searchFilterLower) ||
+                              //s.RecordReference.ToString().ToLower().Contains(searchFilterLower) ||
+                              //s.Tag.ToLower().Contains(searchFilterLower))
+                              orderby s.DateCreated descending
+                              select s).ToList();
+                }
+                else
+                {
+                    result = (from s in DB.GetTable<SmsSentLog>()
+                              where (s.OrganizationId.HasValue && s.OrganizationId.Value == organizationId.Value) &&
+                              (s.DateCreated.Date >= startDate.Date && s.DateCreated.Date <= endDate.Date) &&
+                              (s.CellPhoneNumber.ToLower().Contains(searchFilterLower) ||
+                              s.MessageId.ToLower().Contains(searchFilterLower) ||
+                              s.MessageContents.ToLower().Contains(searchFilterLower) ||
+                              s.Success.ToString().ToLower().Contains(searchFilterLower) ||
+                              s.ErrorCode.ToLower().Contains(searchFilterLower) ||
+                              s.ErrorMessage.ToLower().Contains(searchFilterLower))
+                              //s.TableReference.ToLower().Contains(searchFilterLower) ||
+                              //s.RecordReference.ToString().ToLower().Contains(searchFilterLower) ||
+                              //s.Tag.ToLower().Contains(searchFilterLower))
+                              orderby s.DateCreated descending
+                              select s).ToList();
+                }
             }
             else //For all organizations.
             {
-                result = (from s in DB.GetTable<SmsSentLog>()
-                          where (s.DateCreated.Date >= startDate.Date && s.DateCreated.Date <= endDate.Date) &&
-                          (s.CellPhoneNumber.ToLower().Contains(searchFilterLower) ||
-                          s.MessageId.ToLower().Contains(searchFilterLower) ||
-                          s.MessageContents.ToLower().Contains(searchFilterLower) ||
-                          s.Success.ToString().ToLower().Contains(searchFilterLower) ||
-                          s.ErrorCode.ToLower().Contains(searchFilterLower) ||
-                          s.ErrorMessage.ToLower().Contains(searchFilterLower))
-                          //s.TableReference.ToLower().Contains(searchFilterLower) ||
-                          //s.RecordReference.ToString().ToLower().Contains(searchFilterLower) ||
-                          //s.Tag.ToLower().Contains(searchFilterLower))
-                          orderby s.DateCreated descending
-                          select s).ToList();
+                if (smsCampaignId.HasValue)
+                {
+                    result = (from s in DB.GetTable<SmsSentLog>()
+                              where (s.SmsCampaignId.HasValue && s.SmsCampaignId.Value == smsCampaignId.Value) &&
+                              (s.DateCreated.Date >= startDate.Date && s.DateCreated.Date <= endDate.Date) &&
+                              (s.CellPhoneNumber.ToLower().Contains(searchFilterLower) ||
+                              s.MessageId.ToLower().Contains(searchFilterLower) ||
+                              s.MessageContents.ToLower().Contains(searchFilterLower) ||
+                              s.Success.ToString().ToLower().Contains(searchFilterLower) ||
+                              s.ErrorCode.ToLower().Contains(searchFilterLower) ||
+                              s.ErrorMessage.ToLower().Contains(searchFilterLower))
+                              //s.TableReference.ToLower().Contains(searchFilterLower) ||
+                              //s.RecordReference.ToString().ToLower().Contains(searchFilterLower) ||
+                              //s.Tag.ToLower().Contains(searchFilterLower))
+                              orderby s.DateCreated descending
+                              select s).ToList();
+                }
+                else
+                {
+                    result = (from s in DB.GetTable<SmsSentLog>()
+                              where (s.DateCreated.Date >= startDate.Date && s.DateCreated.Date <= endDate.Date) &&
+                              (s.CellPhoneNumber.ToLower().Contains(searchFilterLower) ||
+                              s.MessageId.ToLower().Contains(searchFilterLower) ||
+                              s.MessageContents.ToLower().Contains(searchFilterLower) ||
+                              s.Success.ToString().ToLower().Contains(searchFilterLower) ||
+                              s.ErrorCode.ToLower().Contains(searchFilterLower) ||
+                              s.ErrorMessage.ToLower().Contains(searchFilterLower))
+                              //s.TableReference.ToLower().Contains(searchFilterLower) ||
+                              //s.RecordReference.ToString().ToLower().Contains(searchFilterLower) ||
+                              //s.Tag.ToLower().Contains(searchFilterLower))
+                              orderby s.DateCreated descending
+                              select s).ToList();
+                }
             }
             return result;
         }
 
-        public void DeleteSmsSentLogByFilter(string searchFilter, DateTime startDate, DateTime endDate, Nullable<Guid> organizationId)
+        public void DeleteSmsSentLogByFilter(
+            string searchFilter, 
+            DateTime startDate, 
+            DateTime endDate, 
+            Nullable<Guid> organizationId,
+            Nullable<Guid> smsCampaignId)
         {
             using (TransactionScope t = new TransactionScope())
             {
-                List<SmsSentLog> q = GetSmsSentLogByFilter(searchFilter, startDate, endDate, organizationId);
+                List<SmsSentLog> q = GetSmsSentLogByFilter(searchFilter, startDate, endDate, organizationId, smsCampaignId);
                 DB.GetTable<SmsSentLog>().DeleteAllOnSubmit(q);
                 DB.SubmitChanges();
                 t.Complete();

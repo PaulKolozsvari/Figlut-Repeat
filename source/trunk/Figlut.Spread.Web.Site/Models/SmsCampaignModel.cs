@@ -32,6 +32,8 @@
 
         public long SmsSentQueueItemCount { get; set; }
 
+        public long SmsSentCount { get; set; }
+
         #endregion //Sms Campaign Properties
 
         #region Organization Properties
@@ -79,7 +81,7 @@
             this.OrganizationId = view.OrganizationId;
             this.DateCreated = view.DateCreated;
             this.SmsSentQueueItemCount = view.SmsSentQueueItemCount;
-
+            this.SmsSentCount = view.SmsSentCount;
             this.OrganizationName = view.OrganizationName;
         }
 
@@ -92,7 +94,7 @@
             view.OrganizationId = this.OrganizationId;
             view.DateCreated = this.DateCreated;
             view.SmsSentQueueItemCount = this.SmsSentQueueItemCount;
-
+            view.SmsSentCount = this.SmsSentCount;
             view.OrganizationName = this.OrganizationName;
         }
 

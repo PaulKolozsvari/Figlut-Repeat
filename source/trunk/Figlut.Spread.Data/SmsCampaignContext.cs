@@ -59,6 +59,7 @@
                                           OrganizationId = c.OrganizationId,
                                           DateCreated = c.DateCreated,
                                           SmsSentQueueItemCount = GetSmsSentQueueItemCountForSmsCampaign(c.SmsCampaignId),
+                                          SmsSentCount = GetSmsSentCountForSmsCampaign(c.SmsCampaignId),
                                           OrganizationName = sub.Name
                                       }).FirstOrDefault();
             if (result == null && throwExceptionOnNotFound)
@@ -93,6 +94,7 @@
                               OrganizationId = c.OrganizationId,
                               DateCreated = c.DateCreated,
                               SmsSentQueueItemCount = GetSmsSentQueueItemCountForSmsCampaign(c.SmsCampaignId),
+                              SmsSentCount = GetSmsSentCountForSmsCampaign(c.SmsCampaignId),
                               OrganizationName = sub.Name
                           }).ToList();
             }
@@ -113,6 +115,7 @@
                               OrganizationId = c.OrganizationId,
                               DateCreated = c.DateCreated,
                               SmsSentQueueItemCount = GetSmsSentQueueItemCountForSmsCampaign(c.SmsCampaignId),
+                              SmsSentCount = GetSmsSentCountForSmsCampaign(c.SmsCampaignId),
                               OrganizationName = sub.Name
                           }).ToList();
             }
@@ -122,7 +125,16 @@
         public long GetSmsSentQueueItemCountForSmsCampaign(Guid smsCampaignId)
         {
             return (from s in DB.GetTable<SmsSentQueueItem>()
-                    where s.SmsCampaignId == smsCampaignId
+                    where s.SmsCampaignId.HasValue &&
+                    s.SmsCampaignId == smsCampaignId
+                    select s).LongCount();
+        }
+
+        public long GetSmsSentCountForSmsCampaign(Guid smsCampaignId)
+        {
+            return (from s in DB.GetTable<SmsSentLog>()
+                    where s.SmsCampaignId.HasValue &&
+                    s.SmsCampaignId.Value == smsCampaignId
                     select s).LongCount();
         }
 
