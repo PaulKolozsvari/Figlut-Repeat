@@ -235,7 +235,6 @@
     <Compile Include="Models\EditUserPasswordModel.cs" />
     <Compile Include="Models\FilterModel.cs" />
     <Compile Include="Models\GlobalSettingModel.cs" />
-    <Compile Include="Models\GlobalSettingsModel.cs" />
     <Compile Include="Models\HomePageImageGalleryModel.cs" />
     <Compile Include="Models\InformationModel.cs" />
     <Compile Include="Models\OrganizationModel.cs" />

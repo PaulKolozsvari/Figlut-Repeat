@@ -67,15 +67,15 @@
             }
             else if (string.IsNullOrEmpty(this.UserEmailAddress))
             {
-                errorMessage = string.Format("{0} not entered.", EntityReader<UserProfileModel>.GetPropertyName(p => p.UserEmailAddress, true));
+                errorMessage = string.Format("{0} not entered", EntityReader<UserModel>.GetPropertyName(p => p.UserEmailAddress, true));
             }
             else if (!DataShaper.IsValidEmail(this.UserEmailAddress))
             {
-                errorMessage = string.Format("{0} is not a  valid email address.", EntityReader<UserProfileModel>.GetPropertyName(p => p.UserEmailAddress, true));
+                errorMessage = string.Format("{0} is not a valid email address.", this.UserEmailAddress);
             }
             else if (string.IsNullOrEmpty(this.UserCellPhoneNumber))
             {
-                errorMessage = string.Format("{0} is not a  valid email address.", EntityReader<UserProfileModel>.GetPropertyName(p => p.UserCellPhoneNumber, true));
+                errorMessage = string.Format("{0} not entered", EntityReader<UserModel>.GetPropertyName(p => p.UserCellPhoneNumber, true));
             }
             else if (!DataShaper.IsValidPhoneNumber(this.UserCellPhoneNumber, out formattedPhoneNumber))
             {

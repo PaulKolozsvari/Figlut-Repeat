@@ -8,6 +8,8 @@
             <fieldset>
                 <legend>Confirmation Form</legend>
                 @Html.HiddenFor(m => m.UserId)
+                @Html.HiddenFor(m => m.UserPassword)
+                @Html.HiddenFor(m => m.UserPasswordConfirm)
                 @Html.HiddenFor(m => m.OrganizationId)
                 @Html.HiddenFor(m => m.LastLoginDate)
                 @Html.HiddenFor(m => m.LastActivityDate)
@@ -33,7 +35,7 @@
                     @Html.EditorFor(m => m.UserCellPhoneNumber)
                     @Html.ValidationMessageFor(m => m.UserCellPhoneNumber)
                 </div>
-                <div class="field-label">
+                @*<div class="field-label">
                     @Html.Raw("Password *")
                 </div>
                 <div class="editor-field">
@@ -46,7 +48,7 @@
                 <div class="editor-field">
                     @Html.PasswordFor(m => m.UserPasswordConfirm)
                     @Html.ValidationMessageFor(m => m.UserPasswordConfirm)
-                </div>
+                </div>*@
                 @if (ViewBag.UserRolesList != null)
                 {
                     <div class="field-label">
@@ -57,6 +59,10 @@
                     </div>
                 }
                 <br />
+                <div class="field-label">
+                    @Html.Raw("N.B. The user's password will be system generated and sent to the user at the specified email address.")
+                </div>
+                <br />
                 <div id="CreateUserErrorField" style="color:#8A0808"></div>
             </fieldset>
         </form>
@@ -66,12 +72,21 @@
 <script type="text/javascript">
     $(function () {
         var dialogName = '#dlgCreateUser';
-        createDialog(dialogName, 'Create User', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
+        createDialog(dialogName, 'Create User', onConfirmOK, onConfirmOpen, onConfirmCancel, 500, 450);
     });
 
     function onConfirmOK() {
         var dialogName = '#dlgCreateUser';
         var postBackUrl = '@Url.Action("CreateDialog", "User")';
+        var waitMessage = 'Creating user and sending welcome email ...';
+        showDialog(
+            '#divWaitDialog',
+            '#dlgWait',
+            'WaitDialog',
+            'User',
+            'message',
+            waitMessage);
+
         $.ajax({
             url: postBackUrl,
             type: 'POST',
@@ -79,10 +94,12 @@
             success: function (data) {
                 if (data.Success) {
                     $(dialogName).dialog("close");
+                    $('#dlgWait').dialog("close");
                     //Submit the form which will refresh grid to show the change the enabled/disabled.
                     var form = $('#frmDetails');
                     form.submit()
                 } else {
+                    $('#dlgWait').dialog("close");
                     $("#CreateUserErrorField").html(data.ErrorMsg);
                 }
             }

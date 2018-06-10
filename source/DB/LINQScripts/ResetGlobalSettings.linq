@@ -61,6 +61,16 @@ GlobalSetting figlutAddress = new GlobalSetting()
 	DateCreated = DateTime.Now
 };
 GlobalSettings.InsertOnSubmit(figlutAddress);
+GlobalSetting figlutHomePageUrl = new GlobalSetting()
+{
+	GlobalSettingId = Guid.NewGuid(),
+	Category = "Contact",
+	SettingName = "FiglutHomePageUrl",
+	SettingValue = "http://www.figlut.com",
+	Description = "The home page URL of the Figlut website.",
+	DateCreated = DateTime.Now
+};
+GlobalSettings.InsertOnSubmit(figlutHomePageUrl);
 GlobalSetting smsDaysToList = new GlobalSetting()
 {
 	GlobalSettingId = Guid.NewGuid(),
@@ -115,6 +125,26 @@ GlobalSetting createPersistentAuthenticationCookie = new GlobalSetting()
 	Description = "Whether or not to keep a user logged across browser sessions."
 };
 GlobalSettings.InsertOnSubmit(createPersistentAuthenticationCookie);
+GlobalSetting generatedPasswordLength = new GlobalSetting()
+{
+	GlobalSettingId = Guid.NewGuid(),
+	Category = "System",
+	SettingName = "GeneratedPasswordLength",
+	SettingValue = "10",
+	DateCreated = DateTime.Now,
+	Description = "The length of generated passwords for users."
+};
+GlobalSettings.InsertOnSubmit(generatedPasswordLength);
+GlobalSetting generatedPasswordNumberOfNonAlphanumericCharacters = new GlobalSetting()
+{
+	GlobalSettingId = Guid.NewGuid(),
+	Category = "System",
+	SettingName = "GeneratedPasswordNumberOfNonAlphanumericCharacters",
+	SettingValue = true.ToString(),
+	DateCreated = DateTime.Now,
+	Description = "The of non-alphanumeric numeric characters in generated passwords for users."
+};
+GlobalSettings.InsertOnSubmit(generatedPasswordNumberOfNonAlphanumericCharacters);
 GlobalSetting logAllHttpHeaders = new GlobalSetting()
 {
 	GlobalSettingId = Guid.NewGuid(),

@@ -306,7 +306,8 @@
             string emailAddress, 
             string cellPhoneNumber, 
             string newPassword,
-            string organizationName)
+            string organizationName,
+            string homePageUrl)
         {
             StringBuilder message = new StringBuilder();
             message.AppendLine(string.Format("Hi {0},", userName));
@@ -315,7 +316,7 @@
             message.AppendLine();
             message.AppendLine(newPassword);
             message.AppendLine();
-            message.AppendLine("You can change your password after logging in.");
+            message.AppendLine(string.Format("You can change your password after logging in at: {0}", homePageUrl));
             message.AppendLine();
             message.AppendLine("Regards,");
             message.AppendLine();
@@ -326,6 +327,43 @@
                 message.ToString(), 
                 null, 
                 false, 
+                new List<EmailNotificationRecipient>() { new EmailNotificationRecipient() { DisplayName = userName, EmailAddress = emailAddress } },
+                null);
+        }
+
+        public bool SendUserCreatedWelcomeEmail(
+            string currentUserName,
+            string userName,
+            string emailAddress,
+            string cellPhoneNumber,
+            string newPassword,
+            string organizationName,
+            string homePageUrl)
+        {
+            StringBuilder message = new StringBuilder();
+            message.AppendLine(string.Format("Hi {0},", userName));
+            message.AppendLine();
+            message.AppendLine("Welcome to Figlut!");
+            if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(organizationName))
+            {
+                message.AppendLine(string.Format("{0} has added you as a user to the organization {1}.", currentUserName, organizationName));
+            }
+            message.AppendLine(string.Format("To access your account visit {0} and login with the following username and password:", homePageUrl));
+            message.AppendLine();
+            message.AppendLine(string.Format("Username: {0}", userName));
+            message.AppendLine(string.Format("Password: {0}", newPassword));
+            message.AppendLine();
+            message.AppendLine(string.Format("You can change your password after logging in at: {0}", homePageUrl));
+            message.AppendLine();
+            message.AppendLine("Regards,");
+            message.AppendLine();
+            message.AppendLine("Figlut team");
+            List<string> emailRecipients = new List<string>() { emailAddress };
+            return SendEmail(
+                "Figlut - Welcome",
+                message.ToString(),
+                null,
+                false,
                 new List<EmailNotificationRecipient>() { new EmailNotificationRecipient() { DisplayName = userName, EmailAddress = emailAddress } },
                 null);
         }

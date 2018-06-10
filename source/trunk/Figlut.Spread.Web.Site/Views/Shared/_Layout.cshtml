@@ -244,7 +244,7 @@
                                                 <li>@Html.ActionLink("Subscriptions", "Index", "OrganizationSubscription", new { organizationId = currentOrganization.OrganizationId }, null)</li>
                                                 <br />
                                                 <li>@Html.ActionLink("Schedule Entries", "Index", "OrganizationScheduleEntry", new { organizationId = currentOrganization.OrganizationId }, null)</li>
-                                                if (role == UserRole.Administrator || role == UserRole.OrganizationAdmin)
+                                                if (role == UserRole.OrganizationAdmin)
                                                 {
                                                     <br />
                                                     <hr />
@@ -426,7 +426,10 @@
 
             function onManageOrganizationUsersClick() {
                 var currentOrganizationId = '@(currentOrganization != null ? currentOrganization.OrganizationId.ToString() : string.Empty)';
-                if (currentOrganizationId == '') {
+                var currentUserRole = '@(currentUser != null ? ((UserRole)currentUser.RoleId).ToString() : string.Empty)';
+                var administratorRole = '@UserRole.Administrator.ToString()';
+                var organizationAdministratorRole = '@UserRole.OrganizationAdmin.ToString()';
+                if (currentOrganizationId == '' || (currentUserRole != administratorRole && currentUserRole != organizationAdministratorRole)) {
                     return;
                 }
                 var downloadUrl = '@Url.Action("Index", "User", new { organizationId = "_organizationId" })';

@@ -4,6 +4,8 @@
     {
         DisableScreenScalingForMobileDevices,
         CreatePersistentAuthenticationCookie,
+        GeneratedPasswordLength,
+        GeneratedPasswordNumberOfNonAlphanumericCharacters,
         LogAllHttpHeaders,
         LogUserLastActivityDate,
         DefaultCurrencySymbol,
@@ -52,6 +54,7 @@
         FiglutSupportEmailAddress,
         FiglutMarketingEmailAddress,
         FiglutGeneralEmailAddress,
-        FiglutAddress
+        FiglutAddress,
+        FiglutHomePageUrl
     }
 }

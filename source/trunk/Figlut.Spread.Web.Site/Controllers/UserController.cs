@@ -480,13 +480,17 @@
                     organization = context.GetOrganization(user.OrganizationId.Value, true);
                     organizationName = organization.Name;
                 }
-                string newPassword = DataShaper.GeneratePassword(20, 1);
+                int generatedPasswordLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.GeneratedPasswordLength].SettingValue);
+                int generatedPasswordNumberOfNonAlphanumericCharacters = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.GeneratedPasswordNumberOfNonAlphanumericCharacters].SettingValue);
+                string figlutHomePageUrl = SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.FiglutHomePageUrl].SettingValue;
+                string newPassword = DataShaper.GeneratePassword(generatedPasswordLength, generatedPasswordNumberOfNonAlphanumericCharacters);
                 if (!SpreadWebApp.Instance.EmailSender.SendUserResetPasswordNotification(
                     user.UserName,
                     user.EmailAddress,
                     user.CellPhoneNumber,
                     newPassword,
-                    organizationName))
+                    organizationName,
+                    figlutHomePageUrl))
                 {
                     return GetJsonResult(false, string.Format(
                         "Could not send email notification with your new password to {0}. Password has not been reset. Please try again later.", user.EmailAddress));
@@ -804,6 +808,13 @@
                 }
                 User currentUser = GetCurrentUser(context);
                 RefreshUserRolesDropDownList(model, currentUser, context);
+
+                int generatedPasswordLength = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.GeneratedPasswordLength].SettingValue);
+                int generatedPasswordNumberOfNonAlphanumericCharacters = Convert.ToInt32(SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.GeneratedPasswordNumberOfNonAlphanumericCharacters].SettingValue);
+                model.UserId = Guid.NewGuid();
+                model.UserPassword = model.UserPasswordConfirm = DataShaper.GeneratePassword(generatedPasswordLength, generatedPasswordNumberOfNonAlphanumericCharacters);
+                model.DateCreated = DateTime.Now;
+
                 string errorMessage = null;
                 if (!model.IsValid(out errorMessage))
                 {
@@ -827,14 +838,25 @@
                     return GetJsonResult(false, string.Format("A {0} with the {1} of '{2}' already exists.",
                         typeof(User).Name,
                         EntityReader<User>.GetPropertyName(p => p.EmailAddress, true),
-                        model.UserName));
+                        model.UserEmailAddress));
                 }
-                model.UserId = Guid.NewGuid();
-                model.DateCreated = DateTime.Now;
-
                 user = new ORM.User();
                 model.CopyPropertiesToUser(user);
+                Organization userOrganization = null;
+                if (user.OrganizationId.HasValue)
+                {
+                    userOrganization = context.GetOrganization(user.OrganizationId.Value, true);
+                }
                 context.Save<User>(user, false);
+                string figlutHomePageUrl = SpreadWebApp.Instance.GlobalSettings[GlobalSettingName.FiglutHomePageUrl].SettingValue;
+                SpreadWebApp.Instance.EmailSender.SendUserCreatedWelcomeEmail(
+                    currentUser.UserName,
+                    user.UserName,
+                    user.EmailAddress,
+                    user.CellPhoneNumber,
+                    user.Password,
+                    userOrganization != null ? userOrganization.Name : null,
+                    figlutHomePageUrl);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -943,7 +965,6 @@
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
                 if (!Request.IsAuthenticated ||
-                    !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
                     (userId.HasValue && userId.Value != Guid.Empty && !CurrentUserHasAccessToOrganization(GetOrganizationFromUser(context, userId.Value, true).OrganizationId, context)))
                 {
                     return RedirectToHome();
@@ -972,7 +993,6 @@
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
                 if (!Request.IsAuthenticated ||
-                    !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
                     (model.UserId != Guid.Empty && !CurrentUserHasAccessToOrganization(GetOrganizationFromUser(context, model.UserId, true).OrganizationId, context)))
                 {
                     return RedirectToHome();
