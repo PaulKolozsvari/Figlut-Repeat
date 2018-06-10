@@ -140,7 +140,7 @@ GlobalSetting generatedPasswordNumberOfNonAlphanumericCharacters = new GlobalSet
 	GlobalSettingId = Guid.NewGuid(),
 	Category = "System",
 	SettingName = "GeneratedPasswordNumberOfNonAlphanumericCharacters",
-	SettingValue = true.ToString(),
+	SettingValue = "1",
 	DateCreated = DateTime.Now,
 	Description = "The of non-alphanumeric numeric characters in generated passwords for users."
 };
