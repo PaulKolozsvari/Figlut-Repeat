@@ -369,7 +369,11 @@
             {
                 context = SpreadEntityContext.Create();
             }
-            User user = context.GetUser(userId, true);
+            User user = context.GetUser(userId, throwExceptionOnNotFound);
+            if (user == null)
+            {
+                return null;
+            }
             return GetOrganizationFromUser(context, user, throwExceptionOnNotFound);
         }
 
@@ -380,12 +384,9 @@
                 context = SpreadEntityContext.Create();
             }
             Organization result = null;
-            if (!user.OrganizationId.HasValue && throwExceptionOnNotFound)
+            if (!user.OrganizationId.HasValue && !throwExceptionOnNotFound)
             {
-                throw new ArgumentNullException(string.Format("Current {0} '{1}' is not associated to an {2}.",
-                    typeof(User).Name,
-                    user.UserName,
-                    typeof(Organization).Name));
+                return null;
             }
             result = context.GetOrganization(user.OrganizationId.Value, throwExceptionOnNotFound);
             return result;

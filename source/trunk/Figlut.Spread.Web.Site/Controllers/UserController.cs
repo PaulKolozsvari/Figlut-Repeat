@@ -175,9 +175,10 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
+                Organization userOrganization = GetOrganizationFromUser(context, userId, false);
                 if (!Request.IsAuthenticated ||
                     !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
-                    !CurrentUserHasAccessToOrganization(GetOrganizationFromUser(context, userId, true).OrganizationId, context))
+                    (userId != Guid.Empty && userOrganization != null && !CurrentUserHasAccessToOrganization(userOrganization.OrganizationId, context)))
                 {
                     return RedirectToHome();
                 }
@@ -198,9 +199,10 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
+                Organization userOrganization = GetOrganizationFromUser(context, identifier, false);
                 if (!Request.IsAuthenticated ||
                     !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
-                    (identifier != Guid.Empty && !CurrentUserHasAccessToOrganization(GetOrganizationFromUser(context, identifier, true).OrganizationId, context)))
+                    (identifier != Guid.Empty && userOrganization != null && !CurrentUserHasAccessToOrganization(userOrganization.OrganizationId, context)))
                 {
                     return RedirectToHome();
                 }
@@ -231,9 +233,10 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
+                Organization userOrganization = GetOrganizationFromUser(context, model.Identifier, false);
                 if (!Request.IsAuthenticated ||
                     !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
-                    (model.Identifier != Guid.Empty && !CurrentUserHasAccessToOrganization(GetOrganizationFromUser(context, model.Identifier, true).OrganizationId, context)))
+                    (model.Identifier != Guid.Empty && userOrganization != null && !CurrentUserHasAccessToOrganization(userOrganization.OrganizationId, context)))
                 {
                     return RedirectToHome();
                 }
@@ -871,16 +874,17 @@
         {
             try
             {
-                SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated ||
-                    !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
-                    (userId.HasValue && userId.Value != Guid.Empty && !CurrentUserHasAccessToOrganization(GetOrganizationFromUser(context, userId.Value, true).OrganizationId, context)))
-                {
-                    return RedirectToHome();
-                }
                 if (!userId.HasValue)
                 {
                     return PartialView(EDIT_USER_DIALOG_PARTIAL_VIEW_NAME, new UserModel());
+                }
+                SpreadEntityContext context = SpreadEntityContext.Create();
+                Organization userOrganization = userId.HasValue ? GetOrganizationFromUser(context, userId.Value, false) : null;
+                if (!Request.IsAuthenticated ||
+                    !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
+                    (userId.HasValue && userId.Value != Guid.Empty && userOrganization != null && !CurrentUserHasAccessToOrganization(userOrganization.OrganizationId, context)))
+                {
+                    return RedirectToHome();
                 }
                 User user = context.GetUser(userId.Value, true);
                 UserModel model = new UserModel();
@@ -905,9 +909,10 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
+                Organization userOrganization = GetOrganizationFromUser(context, model.UserId, false);
                 if (!Request.IsAuthenticated ||
                     !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
-                    (model.UserId != Guid.Empty && !CurrentUserHasAccessToOrganization(GetOrganizationFromUser(context, model.UserId, true).OrganizationId, context)))
+                    (model.UserId != Guid.Empty && userOrganization != null && !CurrentUserHasAccessToOrganization(userOrganization.OrganizationId, context)))
                 {
                     return RedirectToHome();
                 }
@@ -964,14 +969,16 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
-                if (!Request.IsAuthenticated ||
-                    (userId.HasValue && userId.Value != Guid.Empty && !CurrentUserHasAccessToOrganization(GetOrganizationFromUser(context, userId.Value, true).OrganizationId, context)))
-                {
-                    return RedirectToHome();
-                }
                 if (!userId.HasValue)
                 {
                     return PartialView(EDIT_USER_PASSWORD_DIALOG_PARTIAL_VIEW_NAME, new EditUserPasswordModel());
+                }
+                Organization userOrganization = userId.HasValue ? GetOrganizationFromUser(context, userId.Value, false) : null;
+                if (!Request.IsAuthenticated ||
+                    !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
+                    (userId.HasValue && userId.Value != Guid.Empty && userOrganization != null && !CurrentUserHasAccessToOrganization(userOrganization.OrganizationId, context)))
+                {
+                    return RedirectToHome();
                 }
                 User user = context.GetUser(userId.Value, true);
                 EditUserPasswordModel model = new EditUserPasswordModel() { UserId = user.UserId, UserName = user.UserName };
@@ -992,8 +999,10 @@
             try
             {
                 SpreadEntityContext context = SpreadEntityContext.Create();
+                Organization userOrganization = GetOrganizationFromUser(context, model.UserId, false);
                 if (!Request.IsAuthenticated ||
-                    (model.UserId != Guid.Empty && !CurrentUserHasAccessToOrganization(GetOrganizationFromUser(context, model.UserId, true).OrganizationId, context)))
+                    !IsCurrentUserOfRole(UserRole.OrganizationAdmin, context) ||
+                    (model.UserId != Guid.Empty && userOrganization != null && !CurrentUserHasAccessToOrganization(userOrganization.OrganizationId, context)))
                 {
                     return RedirectToHome();
                 }
