@@ -192,6 +192,7 @@ Google Cloud Hosting:
 Cloud Hosting SA:
 	Cloud Servers: https://cloud.co.za/cloud-servers/#windows
 	Virtual Servers: https://cloud.co.za/virtual-servers/
+    Hetzner: https://hetzner.co.za
 
 SQL Server Versions and differences:
 	https://docs.microsoft.com/en-us/sql/sql-server/editions-and-components-of-sql-server-2017?view=sql-server-2017
@@ -228,3 +229,9 @@ Medication Repeat Subscriptions:
 	https://www.yodruggist.com/blog/prescription-rules/
 	https://clicks.co.za/myMedicines
 	http://www.tangentsolutions.co.za/case-studies/dis-chem-pharmacies/
+
+Payment Gateways:
+	- PayFast (SA company)
+	- Stripe.com: https://stripe.com/us/payments
+		-	Supported Countries: 
+			https://stripe.com/docs/currencies
