@@ -235,3 +235,7 @@ Payment Gateways:
 	- Stripe.com: https://stripe.com/us/payments
 		-	Supported Countries: 
 			https://stripe.com/docs/currencies
+
+
+Create Logos:
+	https://logojoy.com
