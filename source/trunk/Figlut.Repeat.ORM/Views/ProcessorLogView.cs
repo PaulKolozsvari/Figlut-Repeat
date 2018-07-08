@@ -10,15 +10,15 @@
 
     #endregion //Using Directives
 
-    public class SmsProcessorLogView
+    public class ProcessorLogView
     {
         #region Properties
 
-        #region Sms Processor Log Properties
+        #region Processor Log Properties
 
-        public Guid SmsProcessorLogId { get; set; }
+        public Guid ProcessorLogId { get; set; }
 
-        public Guid SmsProcessorId { get; set; }
+        public Guid ProcessorId { get; set; }
 
         public string LogMessageType { get; set; }
 
@@ -26,13 +26,13 @@
 
         public DateTime DateCreated { get; set; }
 
-        #endregion //Sms Processor Log Properties
+        #endregion //Processor Log Properties
 
-        #region Sms Process Properties
+        #region Process Properties
 
-        public string SmsProcessorName { get; set; }
+        public string ProcessorName { get; set; }
 
-        #endregion //Sms Process Properties
+        #endregion //Process Properties
 
         #endregion //Properties
     }

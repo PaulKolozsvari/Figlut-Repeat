@@ -208,8 +208,8 @@
     <Compile Include="Controllers\ScheduleEntryController.cs" />
     <Compile Include="Controllers\SmsCampaignController.cs" />
     <Compile Include="Controllers\SmsMessageTemplateController.cs" />
-    <Compile Include="Controllers\SmsProcessorController.cs" />
-    <Compile Include="Controllers\SmsProcessorLogController.cs" />
+    <Compile Include="Controllers\ProcessorController.cs" />
+    <Compile Include="Controllers\ProcessorLogController.cs" />
     <Compile Include="Controllers\SmsReceivedController.cs" />
     <Compile Include="Controllers\SmsSentController.cs" />
     <Compile Include="Controllers\SmsSentQueueItemController.cs" />
@@ -249,8 +249,8 @@
     <Compile Include="Models\SendSubscriberSmsModel.cs" />
     <Compile Include="Models\SmsCampaignModel.cs" />
     <Compile Include="Models\SmsMessageTemplateModel.cs" />
-    <Compile Include="Models\SmsProcessorLogModel.cs" />
-    <Compile Include="Models\SmsProcessorModel.cs" />
+    <Compile Include="Models\ProcessorLogModel.cs" />
+    <Compile Include="Models\ProcessorModel.cs" />
     <Compile Include="Models\SmsReceivedLogModel.cs" />
     <Compile Include="Models\SmsSentLogModel.cs" />
     <Compile Include="Models\SmsSentQueueItemModel.cs" />
@@ -491,7 +491,6 @@
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\User\Register.cshtml" />
     <Content Include="Views\User\ChangePassword.cshtml" />
-    <Content Include="Views\GlobalSetting\Edit.cshtml" />
     <Content Include="Views\SmsReceived\Index.cshtml" />
     <Content Include="Views\Shared\_SmsReceivedGrid.cshtml" />
     <Content Include="Views\Shared\_SmsSentGrid.cshtml" />
@@ -506,8 +505,8 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Shared\_OrganizationSubscriptionGrid.cshtml" />
     <Content Include="Views\OrganizationSubscription\Index.cshtml" />
-    <Content Include="Views\Shared\_SmsProcessorGrid.cshtml" />
-    <Content Include="Views\SmsProcessor\Index.cshtml" />
+    <Content Include="Views\Shared\_ProcessorGrid.cshtml" />
+    <Content Include="Views\Processor\Index.cshtml" />
     <Content Include="Views\Shared\_GlobalSettingGrid.cshtml" />
     <Content Include="Views\GlobalSetting\Index.cshtml" />
     <Content Include="Views\Shared\_EditGlobalSettingDialog.cshtml" />
@@ -522,8 +521,8 @@
     <Content Include="Views\Shared\_EditSubscriberSubscriptionDialog.cshtml" />
     <Content Include="Views\Shared\_EditOrganizationSubscriptionDialog.cshtml" />
     <Content Include="Views\SubscriberSubscription\ViewSubscriberSubscriptions.cshtml" />
-    <Content Include="Views\Shared\_SmsProcessorLogGrid.cshtml" />
-    <Content Include="Views\SmsProcessorLog\Index.cshtml" />
+    <Content Include="Views\Shared\_ProcessorLogGrid.cshtml" />
+    <Content Include="Views\ProcessorLog\Index.cshtml" />
     <Content Include="Views\Shared\_SmsCampaignGrid.cshtml" />
     <Content Include="Views\Shared\_EditSmsCampaignDialog.cshtml" />
     <Content Include="Views\SmsCampaign\Index.cshtml" />

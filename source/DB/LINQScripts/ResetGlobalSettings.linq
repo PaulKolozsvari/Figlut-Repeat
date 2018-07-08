@@ -3,7 +3,7 @@
     <ID>72244da7-af1c-4a14-a9a5-7097dd8b610c</ID>
     <Persist>true</Persist>
     <Server>PAULKOLOZSV38D1\MSSQLSERVER2012</Server>
-    <Database>FiglutSpread</Database>
+    <Database>FiglutRepeat</Database>
     <ShowServer>true</ShowServer>
   </Connection>
 </Query>
@@ -82,16 +82,16 @@ GlobalSetting smsDaysToList = new GlobalSetting()
 };
 GlobalSettings.InsertOnSubmit(smsDaysToList);
 
-GlobalSetting smsProcessorLogDaysToDisplay = new GlobalSetting()
+GlobalSetting processorLogDaysToDisplay = new GlobalSetting()
 {
 	GlobalSettingId = Guid.NewGuid(),
 	Category = "Grid",
-	SettingName = "SmsProcessorLogDaysToDisplay",
+	SettingName = "ProcessorLogDaysToDisplay",
 	SettingValue = "1",
-	Description = "The number of days to display SMS Processor Log messages when first loading a grid.",
+	Description = "The number of days to display Processor Log messages when first loading a grid.",
 	DateCreated = DateTime.Now
 };
-GlobalSettings.InsertOnSubmit(smsProcessorLogDaysToDisplay);
+GlobalSettings.InsertOnSubmit(processorLogDaysToDisplay);
 
 GlobalSetting webRequestActivityDaysToDisplay = new GlobalSetting()
 {
@@ -329,27 +329,27 @@ GlobalSetting subscriptionsPerPageToDisplay = new GlobalSetting()
 };
 GlobalSettings.InsertOnSubmit(subscriptionsPerPageToDisplay);
 
-GlobalSetting smsProcessorPerPageToDisplay = new GlobalSetting()
+GlobalSetting processorPerPageToDisplay = new GlobalSetting()
 {
 	GlobalSettingId = Guid.NewGuid(),
 	Category = "Grid",
-	SettingName = "SmsProcessorsPerPageToDisplay",
+	SettingName = "ProcessorsPerPageToDisplay",
 	SettingValue = "8",
 	DateCreated = DateTime.Now,
-	Description = "Number of SMS Processors to display per grid page."
+	Description = "Number of Processors to display per grid page."
 };
-GlobalSettings.InsertOnSubmit(smsProcessorPerPageToDisplay);
+GlobalSettings.InsertOnSubmit(processorPerPageToDisplay);
 
-GlobalSetting smsProcessorLogPerPageToDisplay = new GlobalSetting()
+GlobalSetting processorLogPerPageToDisplay = new GlobalSetting()
 {
 	GlobalSettingId = Guid.NewGuid(),
 	Category = "Grid",
-	SettingName = "SmsProcessorLogsPerPageToDisplay",
+	SettingName = "ProcessorLogsPerPageToDisplay",
 	SettingValue = "8",
 	DateCreated = DateTime.Now,
-	Description = "Number of SMS Processors Log messages to display per grid page."
+	Description = "Number of Processors Log messages to display per grid page."
 };
-GlobalSettings.InsertOnSubmit(smsProcessorLogPerPageToDisplay);
+GlobalSettings.InsertOnSubmit(processorLogPerPageToDisplay);
 
 GlobalSetting webRequestActivityPerPageToDisplay = new GlobalSetting()
 {
@@ -492,26 +492,26 @@ GlobalSetting maximumSmsDateRangeDaysToDisplay = new GlobalSetting()
 };
 GlobalSettings.InsertOnSubmit(maximumSmsDateRangeDaysToDisplay);
 
-GlobalSetting smsProcessorMessageTrimOnGrid = new GlobalSetting()
+GlobalSetting processorMessageTrimOnGrid = new GlobalSetting()
 {
 	GlobalSettingId = Guid.NewGuid(),
 	Category = "Grid",
-	SettingName = "SmsProcessorMessageTrimOnGrid",
+	SettingName = "ProcessorMessageTrimOnGrid",
 	SettingValue = true.ToString(),
 	DateCreated = DateTime.Now,
-	Description = "Whether or not to trim the SMS Processor messages on the grid."
+	Description = "Whether or not to trim the Processor messages on the grid."
 };
-GlobalSettings.InsertOnSubmit(smsProcessorMessageTrimOnGrid);
-GlobalSetting smsProcessorMessageTrimLengthOnGrid = new GlobalSetting()
+GlobalSettings.InsertOnSubmit(processorMessageTrimOnGrid);
+GlobalSetting processorMessageTrimLengthOnGrid = new GlobalSetting()
 {
 	GlobalSettingId = Guid.NewGuid(),
 	Category = "Grid",
-	SettingName = "SmsProcessorMessageTrimLengthOnGrid",
+	SettingName = "ProcessorMessageTrimLengthOnGrid",
 	SettingValue = "15",
 	DateCreated = DateTime.Now,
-	Description = "Number of characters to display of the SMS Processor messages on the grid."
+	Description = "Number of characters to display of the Processor messages on the grid."
 };
-GlobalSettings.InsertOnSubmit(smsProcessorMessageTrimLengthOnGrid);
+GlobalSettings.InsertOnSubmit(processorMessageTrimLengthOnGrid);
 
 GlobalSetting smsErrorTrimLengthOnGrid = new GlobalSetting()
 {

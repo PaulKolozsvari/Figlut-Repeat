@@ -260,9 +260,9 @@ using Figlut.Repeat.SMS.Processor;
         {
             string organizationIdentifierIndicator = GlobalSettings[GlobalSettingName.OrganizationIdentifierIndicator].SettingValue;
             string subscriberNameIndicator = GlobalSettings[GlobalSettingName.SubscriberNameIndicator].SettingValue;
-            SmsProcessor processor = RepeatEntityContext.Create().GetSmsProcessor(Settings.SmsReceivedQueueProcessorId, true);
+            Processor processor = RepeatEntityContext.Create().GetProcessor(Settings.SmsReceivedQueueProcessorId, true);
             _smsReceivedQueueProcessor = new SmsReceivedQueueProcessor(
-                processor.SmsProcessorId,
+                processor.ProcessorId,
                 processor.ExecutionInterval,
                 startImmediately,
                 organizationIdentifierIndicator,

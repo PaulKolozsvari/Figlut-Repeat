@@ -100,9 +100,9 @@
             startDate = endDate.Subtract(new TimeSpan(smsDaysToDisplay - 1, 0, 0, 0)); //e.g. if the smsDaysToDisplay is 1, then subtract 0, which will include only today's SMS'.
         }
 
-        public void GetGlobalSettingSmsProcessorLogDaysDateRange(out DateTime startDate, out DateTime endDate)
+        public void GetGlobalSettingProcessorLogDaysDateRange(out DateTime startDate, out DateTime endDate)
         {
-            GlobalSetting setting = GetGlobalSettingBySettingName(GlobalSettingName.SmsProcessorLogDaysToDisplay, true);
+            GlobalSetting setting = GetGlobalSettingBySettingName(GlobalSettingName.ProcessorLogDaysToDisplay, true);
             int daysToDisplay = Convert.ToInt32(setting.SettingValue);
             endDate = DateTime.Now;
             startDate = endDate.Subtract(new TimeSpan(daysToDisplay - 1, 0, 0, 0)); //e.g. if the daysToDisplay is 1, then subtract 0, which will include only today's logs'.

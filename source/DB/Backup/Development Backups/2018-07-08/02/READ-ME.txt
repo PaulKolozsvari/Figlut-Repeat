@@ -1,0 +1,1 @@
+Renamed the SMS process to just Processor, same with he SMS Processor Log table.

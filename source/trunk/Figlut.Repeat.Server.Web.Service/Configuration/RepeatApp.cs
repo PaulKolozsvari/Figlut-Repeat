@@ -23,7 +23,7 @@
     using Figlut.Repeat.SMS.Clickatell;
     using Figlut.Repeat.Data;
     using Figlut.Repeat.ORM.Helpers;
-using Figlut.Repeat.SMS.Processor;
+    using Figlut.Repeat.SMS.Processor;
     using Figlut.Server.Toolkit.Web.Service.Inspector;
     using Figlut.Server.Toolkit.Data.iCalendar;
 
@@ -275,13 +275,13 @@ using Figlut.Repeat.SMS.Processor;
             int maxSmsSendMessageLength = Convert.ToInt32(GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
             string smsSendMessageSuffix = GlobalSettings[GlobalSettingName.SmsSendMessageSuffix].SettingValue;
             int organizationIdentifierMaxLength = Convert.ToInt32(GlobalSettings[GlobalSettingName.OrganizationIdentifierMaxLength].SettingValue);
-            SmsProcessor processor = RepeatEntityContext.Create().GetSmsProcessor(Settings.SmsSentQueueProcessorId, true);
+            Processor processor = RepeatEntityContext.Create().GetProcessor(Settings.SmsSentQueueProcessorId, true);
             _smsSentQueueProcessor = new SmsSentQueueProcessor(
                 this.SmsSender,
                 maxSmsSendMessageLength,
                 smsSendMessageSuffix,
                 organizationIdentifierMaxLength,
-                processor.SmsProcessorId,
+                processor.ProcessorId,
                 processor.ExecutionInterval,
                 startImmediately,
                 organizationIdentifierIndicator,

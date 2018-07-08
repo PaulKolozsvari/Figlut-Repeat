@@ -21,13 +21,13 @@ using System.Threading.Tasks;
         #region Constructors
 
         public SmsReceivedQueueProcessor(
-            Guid smsProcessorId,
+            Guid processorId,
             int executionInterval, 
             bool startImmediately,
             string organizationIdentifierIndicator,
             string subscriberNameIndicator,
             EmailSender emailSender) : 
-            base(smsProcessorId, executionInterval, startImmediately, organizationIdentifierIndicator, subscriberNameIndicator, emailSender)
+            base(processorId, executionInterval, startImmediately, organizationIdentifierIndicator, subscriberNameIndicator, emailSender)
         {
         }
 
@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
         #region Methods
 
-        protected override bool ProcessNextItemInQueue(RepeatEntityContext context, Guid smsProcessorId, string organizationIdentifierIndicator, string subscriberIdentifierIndicator)
+        protected override bool ProcessNextItemInQueue(RepeatEntityContext context, Guid processorId, string organizationIdentifierIndicator, string subscriberIdentifierIndicator)
         {
             if (context == null)
             {
@@ -55,8 +55,8 @@ using System.Threading.Tasks;
             }
             foreach (SmsReceivedQueueItem i in items)
             {
-                context.LogSmsProcesorAction(
-                    smsProcessorId,
+                context.LogProcesorAction(
+                    processorId,
                     string.Format("Executing {0}. {1} items in queue. Processing SMS from '{2}': {3}",
                     DataShaper.ShapeCamelCaseString(typeof(SmsReceivedQueueProcessor).Name),
                     itemsInQueue,
@@ -80,16 +80,16 @@ using System.Threading.Tasks;
                     subscriberIdentifierIndicator,
                     i.DateCreated,
                     i.SmsReceivedQueueItemId,
-                    smsProcessorId,
+                    processorId,
                     out organization,
                     out subscriber);
                 if (smsReceivedLog != null)
                 {
                     string message = string.Format("Processed SMS from {0}: {1}", smsReceivedLog.CellPhoneNumber, smsReceivedLog.MessageContents);
                     GOC.Instance.Logger.LogMessage(new LogMessage(message, LogMessageType.SuccessAudit, LoggingLevel.Normal));
-                    context.LogSmsProcesorAction(smsProcessorId, message, LogMessageType.SuccessAudit.ToString());
+                    context.LogProcesorAction(processorId, message, LogMessageType.SuccessAudit.ToString());
 
-                    SendEmailNotification(smsReceivedLog, organization, subscriber, context, smsProcessorId);
+                    SendEmailNotification(smsReceivedLog, organization, subscriber, context, processorId);
                 }
             }
             return true;
@@ -100,7 +100,7 @@ using System.Threading.Tasks;
             Organization organization, 
             Subscriber subscriber, 
             RepeatEntityContext context,
-            Guid smsProcessorId)
+            Guid processorId)
         {
             string processorActionMessage = null;
             List<EmailNotificationRecipient> recipients = new List<EmailNotificationRecipient>();
@@ -162,7 +162,7 @@ using System.Threading.Tasks;
                 }
             }
             base._emailSender.SendEmail(subject, body.ToString(), null, false, recipients, null);
-            context.LogSmsProcesorAction(smsProcessorId, processorActionMessage, LogMessageType.SuccessAudit.ToString());
+            context.LogProcesorAction(processorId, processorActionMessage, LogMessageType.SuccessAudit.ToString());
             return true;
         }
 

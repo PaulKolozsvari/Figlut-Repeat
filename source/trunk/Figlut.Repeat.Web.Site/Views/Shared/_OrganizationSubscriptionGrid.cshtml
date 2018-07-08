@@ -42,7 +42,7 @@
                     @Html.LinkButtonForSubmit("Search", "onSearchOrganizationSubscriptionsClick()", "btnSearch", "search.png")
                     @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
                     {
-                        @Html.LinkButtonForSubmit("Download", "onDownloadAllOrganizationSubscriptionsCsvFileClick()", "btnDownload", "Repeatsheet.png")
+                        @Html.LinkButtonForSubmit("Download", "onDownloadAllOrganizationSubscriptionsCsvFileClick()", "btnDownload", "spreadsheet.png")
                         if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
                         {
                             organizationSubscription = (OrganizationSubscriptionModel)grid.Rows[grid.SelectedIndex].Value;

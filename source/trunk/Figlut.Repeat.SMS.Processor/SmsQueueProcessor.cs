@@ -21,17 +21,17 @@
         #region Constructors
 
         public SmsQueueProcessor(
-            Guid smsProcessorId,
+            Guid processorId,
             int executionInterval,
             bool startImmediately,
             string organizationIdentifierIndicator,
             string subscriberNameIndicator,
             EmailSender emailSender)
         {
-            if (smsProcessorId == Guid.Empty)
+            if (processorId == Guid.Empty)
             {
                 throw new ArgumentException(string.Format("{0} may not be empty when constructing a {1}.",
-                    EntityReader<SmsQueueProcessor>.GetPropertyName(p => p.SmsProcessorId, false),
+                    EntityReader<SmsQueueProcessor>.GetPropertyName(p => p.ProcessorId, false),
                     this.GetType().Name));
             }
             if (executionInterval < 0)
@@ -58,7 +58,7 @@
                     EntityReader<SmsQueueProcessor>.GetPropertyName(p => p.EmailSender, false),
                     this.GetType().Name));
             }
-            _smsProcessorId = smsProcessorId;
+            _processorId = processorId;
             _organizationIdentifierIndicator = organizationIdentifierIndicator;
             _subscriberIdentifierIndicator = subscriberNameIndicator;
             _emailSender = emailSender;
@@ -77,7 +77,7 @@
 
         #region Fields
 
-        protected Guid _smsProcessorId;
+        protected Guid _processorId;
 
         protected int _executionInterval;
         protected bool _currentlyProcessing;
@@ -94,9 +94,9 @@
 
         #region Properties
 
-        public Guid SmsProcessorId
+        public Guid ProcessorId
         {
-            get { return _smsProcessorId; }
+            get { return _processorId; }
         }
 
         public int ExecutionInterval
@@ -180,9 +180,9 @@
             }
         }
 
-        protected void ProcessQueue(SmsQueueProcessor processor)
+        protected void ProcessQueue(SmsQueueProcessor smsQueueProcessor)
         {
-            if (processor.CurrentlyProcessing)
+            if (smsQueueProcessor.CurrentlyProcessing)
             {
                 return;
             }
@@ -190,20 +190,20 @@
             {
                 try
                 {
-                    processor.SetCurrentlyProcessingFlag(true);
-                    Guid smsProcessorId = processor.SmsProcessorId;
+                    smsQueueProcessor.SetCurrentlyProcessingFlag(true);
+                    Guid processorId = smsQueueProcessor.ProcessorId;
                     RepeatEntityContext context = RepeatEntityContext.Create();
-                    SmsProcessor smsProcessor = context.GetSmsProcessor(smsProcessorId, true);
-                    GOC.Instance.Logger.LogMessage(new LogMessage(string.Format("Starting execution of {0} ...", DataShaper.ShapeCamelCaseString(smsProcessor.Name)), LogMessageType.Information, LoggingLevel.Maximum));
-                    smsProcessor.LastExecutionDate = DateTime.Now;
+                    Processor processor = context.GetProcessor(processorId, true);
+                    GOC.Instance.Logger.LogMessage(new LogMessage(string.Format("Starting execution of {0} ...", DataShaper.ShapeCamelCaseString(processor.Name)), LogMessageType.Information, LoggingLevel.Maximum));
+                    processor.LastExecutionDate = DateTime.Now;
                     context.DB.SubmitChanges();
-                    string organizationIdentifierIndicator = processor.OrganizationIdentifierIndicator;
-                    string subscriberIdentifierIndicator = processor.SubscriberIdentifierIndicator;
+                    string organizationIdentifierIndicator = smsQueueProcessor.OrganizationIdentifierIndicator;
+                    string subscriberIdentifierIndicator = smsQueueProcessor.SubscriberIdentifierIndicator;
                     while (true)
                     {
                         try
                         {
-                            if (!ProcessNextItemInQueue(context, smsProcessorId, organizationIdentifierIndicator, subscriberIdentifierIndicator))
+                            if (!ProcessNextItemInQueue(context, processorId, organizationIdentifierIndicator, subscriberIdentifierIndicator))
                             {
                                 break;
                             }
@@ -211,19 +211,19 @@
                         catch (Exception ex)
                         {
                             ExceptionHandler.HandleException(ex);
-                            context.LogSmsProcesorAction(smsProcessorId, ex.Message, LogMessageType.Error.ToString());
+                            context.LogProcesorAction(processorId, ex.Message, LogMessageType.Error.ToString());
                         }
                     }
-                    GOC.Instance.Logger.LogMessage(new LogMessage(string.Format("Executed {0} successfully.", DataShaper.ShapeCamelCaseString(smsProcessor.Name)), LogMessageType.SuccessAudit, LoggingLevel.Maximum));
+                    GOC.Instance.Logger.LogMessage(new LogMessage(string.Format("Executed {0} successfully.", DataShaper.ShapeCamelCaseString(processor.Name)), LogMessageType.SuccessAudit, LoggingLevel.Maximum));
                 }
                 finally
                 {
-                    processor.SetCurrentlyProcessingFlag(false);
+                    smsQueueProcessor.SetCurrentlyProcessingFlag(false);
                 }
             }
         }
 
-        protected abstract bool ProcessNextItemInQueue(RepeatEntityContext context, Guid smsProcessorId, string organizationIdentifierIndicator, string subscriberIdentifierIndicator);
+        protected abstract bool ProcessNextItemInQueue(RepeatEntityContext context, Guid processorId, string organizationIdentifierIndicator, string subscriberIdentifierIndicator);
 
         #endregion //Methods
     }

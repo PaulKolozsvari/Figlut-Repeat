@@ -49,8 +49,8 @@
     <Compile Include="Csv\ScheduleEntryCsv.cs" />
     <Compile Include="Csv\SmsCampaignCsv.cs" />
     <Compile Include="Csv\SmsMessageTemplateCsv.cs" />
-    <Compile Include="Csv\SmsProcessorCsv.cs" />
-    <Compile Include="Csv\SmsProcessorLogCsv.cs" />
+    <Compile Include="Csv\ProcessorCsv.cs" />
+    <Compile Include="Csv\ProcessorLogCsv.cs" />
     <Compile Include="Csv\SmsReceivedCsv.cs" />
     <Compile Include="Csv\SmsSentCsv.cs" />
     <Compile Include="Csv\SmsSentQueueItemCsv.cs" />
@@ -79,7 +79,7 @@
     <Compile Include="Views\ScheduleView.cs" />
     <Compile Include="Views\SmsCampaignView.cs" />
     <Compile Include="Views\SmsMessageTemplateView.cs" />
-    <Compile Include="Views\SmsProcessorLogView.cs" />
+    <Compile Include="Views\ProcessorLogView.cs" />
     <Compile Include="Views\SubscriberSubscriptionView.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -60,8 +60,8 @@
     <Compile Include="OrganizationContext.cs" />
     <Compile Include="SmsDeliveryReportContext.cs" />
     <Compile Include="SmsMessageTemplateContext.cs" />
-    <Compile Include="SmsProcessorContext.cs" />
-    <Compile Include="SmsProcessorLogContext.cs" />
+    <Compile Include="ProcessorContext.cs" />
+    <Compile Include="ProcessorLogContext.cs" />
     <Compile Include="SmsReceivedContext.cs" />
     <Compile Include="SmsReceivedProcessingContext.cs" />
     <Compile Include="SmsSentContext.cs" />

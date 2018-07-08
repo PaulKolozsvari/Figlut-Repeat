@@ -41,7 +41,7 @@
                     @Html.LinkButtonForSubmit("Search", "onSearchCountriesClick()", "btnSearch", "search.png")
                     @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
                     {
-                        @Html.LinkButtonForSubmit("Download", "onDownloadAllCountriesCsvFileClick()", "btnDownload", "Repeatsheet.png")
+                        @Html.LinkButtonForSubmit("Download", "onDownloadAllCountriesCsvFileClick()", "btnDownload", "spreadsheet.png")
                         if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
                         {
                             country = (CountryModel)grid.Rows[grid.SelectedIndex].Value;

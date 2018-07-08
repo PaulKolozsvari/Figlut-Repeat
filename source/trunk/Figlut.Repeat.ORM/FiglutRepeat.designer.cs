@@ -81,12 +81,6 @@ namespace Figlut.Repeat.ORM
     partial void InsertSmsMessageTemplate(SmsMessageTemplate instance);
     partial void UpdateSmsMessageTemplate(SmsMessageTemplate instance);
     partial void DeleteSmsMessageTemplate(SmsMessageTemplate instance);
-    partial void InsertSmsProcessor(SmsProcessor instance);
-    partial void UpdateSmsProcessor(SmsProcessor instance);
-    partial void DeleteSmsProcessor(SmsProcessor instance);
-    partial void InsertSmsProcessorLog(SmsProcessorLog instance);
-    partial void UpdateSmsProcessorLog(SmsProcessorLog instance);
-    partial void DeleteSmsProcessorLog(SmsProcessorLog instance);
     partial void InsertSmsReceivedLog(SmsReceivedLog instance);
     partial void UpdateSmsReceivedLog(SmsReceivedLog instance);
     partial void DeleteSmsReceivedLog(SmsReceivedLog instance);
@@ -108,6 +102,12 @@ namespace Figlut.Repeat.ORM
     partial void InsertUser(User instance);
     partial void UpdateUser(User instance);
     partial void DeleteUser(User instance);
+    partial void InsertProcessor(Processor instance);
+    partial void UpdateProcessor(Processor instance);
+    partial void DeleteProcessor(Processor instance);
+    partial void InsertProcessorLog(ProcessorLog instance);
+    partial void UpdateProcessorLog(ProcessorLog instance);
+    partial void DeleteProcessorLog(ProcessorLog instance);
     #endregion
 		
 		public FiglutRepeatDataContext() : 
@@ -284,22 +284,6 @@ namespace Figlut.Repeat.ORM
 			}
 		}
 		
-		public System.Data.Linq.Table<SmsProcessor> SmsProcessors
-		{
-			get
-			{
-				return this.GetTable<SmsProcessor>();
-			}
-		}
-		
-		public System.Data.Linq.Table<SmsProcessorLog> SmsProcessorLogs
-		{
-			get
-			{
-				return this.GetTable<SmsProcessorLog>();
-			}
-		}
-		
 		public System.Data.Linq.Table<SmsReceivedLog> SmsReceivedLogs
 		{
 			get
@@ -353,6 +337,22 @@ namespace Figlut.Repeat.ORM
 			get
 			{
 				return this.GetTable<User>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Processor> Processors
+		{
+			get
+			{
+				return this.GetTable<Processor>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ProcessorLog> ProcessorLogs
+		{
+			get
+			{
+				return this.GetTable<ProcessorLog>();
 			}
 		}
 	}
@@ -6486,391 +6486,6 @@ namespace Figlut.Repeat.ORM
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SmsProcessor")]
-	public partial class SmsProcessor : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private System.Guid _SmsProcessorId;
-		
-		private string _Name;
-		
-		private int _ExecutionInterval;
-		
-		private System.Nullable<System.DateTime> _LastExecutionDate;
-		
-		private System.DateTime _DateCreated;
-		
-		private EntitySet<SmsProcessorLog> _SmsProcessorLogs;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnSmsProcessorIdChanging(System.Guid value);
-    partial void OnSmsProcessorIdChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnExecutionIntervalChanging(int value);
-    partial void OnExecutionIntervalChanged();
-    partial void OnLastExecutionDateChanging(System.Nullable<System.DateTime> value);
-    partial void OnLastExecutionDateChanged();
-    partial void OnDateCreatedChanging(System.DateTime value);
-    partial void OnDateCreatedChanged();
-    #endregion
-		
-		public SmsProcessor()
-		{
-			this._SmsProcessorLogs = new EntitySet<SmsProcessorLog>(new Action<SmsProcessorLog>(this.attach_SmsProcessorLogs), new Action<SmsProcessorLog>(this.detach_SmsProcessorLogs));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SmsProcessorId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
-		public System.Guid SmsProcessorId
-		{
-			get
-			{
-				return this._SmsProcessorId;
-			}
-			set
-			{
-				if ((this._SmsProcessorId != value))
-				{
-					this.OnSmsProcessorIdChanging(value);
-					this.SendPropertyChanging();
-					this._SmsProcessorId = value;
-					this.SendPropertyChanged("SmsProcessorId");
-					this.OnSmsProcessorIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExecutionInterval", DbType="Int NOT NULL")]
-		public int ExecutionInterval
-		{
-			get
-			{
-				return this._ExecutionInterval;
-			}
-			set
-			{
-				if ((this._ExecutionInterval != value))
-				{
-					this.OnExecutionIntervalChanging(value);
-					this.SendPropertyChanging();
-					this._ExecutionInterval = value;
-					this.SendPropertyChanged("ExecutionInterval");
-					this.OnExecutionIntervalChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastExecutionDate", DbType="DateTime")]
-		public System.Nullable<System.DateTime> LastExecutionDate
-		{
-			get
-			{
-				return this._LastExecutionDate;
-			}
-			set
-			{
-				if ((this._LastExecutionDate != value))
-				{
-					this.OnLastExecutionDateChanging(value);
-					this.SendPropertyChanging();
-					this._LastExecutionDate = value;
-					this.SendPropertyChanged("LastExecutionDate");
-					this.OnLastExecutionDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
-		public System.DateTime DateCreated
-		{
-			get
-			{
-				return this._DateCreated;
-			}
-			set
-			{
-				if ((this._DateCreated != value))
-				{
-					this.OnDateCreatedChanging(value);
-					this.SendPropertyChanging();
-					this._DateCreated = value;
-					this.SendPropertyChanged("DateCreated");
-					this.OnDateCreatedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SmsProcessor_SmsProcessorLog", Storage="_SmsProcessorLogs", ThisKey="SmsProcessorId", OtherKey="SmsProcessorId")]
-		public EntitySet<SmsProcessorLog> SmsProcessorLogs
-		{
-			get
-			{
-				return this._SmsProcessorLogs;
-			}
-			set
-			{
-				this._SmsProcessorLogs.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_SmsProcessorLogs(SmsProcessorLog entity)
-		{
-			this.SendPropertyChanging();
-			entity.SmsProcessor = this;
-		}
-		
-		private void detach_SmsProcessorLogs(SmsProcessorLog entity)
-		{
-			this.SendPropertyChanging();
-			entity.SmsProcessor = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SmsProcessorLog")]
-	public partial class SmsProcessorLog : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private System.Guid _SmsProcessorLogId;
-		
-		private System.Guid _SmsProcessorId;
-		
-		private string _LogMessageType;
-		
-		private string _Message;
-		
-		private System.DateTime _DateCreated;
-		
-		private EntityRef<SmsProcessor> _SmsProcessor;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnSmsProcessorLogIdChanging(System.Guid value);
-    partial void OnSmsProcessorLogIdChanged();
-    partial void OnSmsProcessorIdChanging(System.Guid value);
-    partial void OnSmsProcessorIdChanged();
-    partial void OnLogMessageTypeChanging(string value);
-    partial void OnLogMessageTypeChanged();
-    partial void OnMessageChanging(string value);
-    partial void OnMessageChanged();
-    partial void OnDateCreatedChanging(System.DateTime value);
-    partial void OnDateCreatedChanged();
-    #endregion
-		
-		public SmsProcessorLog()
-		{
-			this._SmsProcessor = default(EntityRef<SmsProcessor>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SmsProcessorLogId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
-		public System.Guid SmsProcessorLogId
-		{
-			get
-			{
-				return this._SmsProcessorLogId;
-			}
-			set
-			{
-				if ((this._SmsProcessorLogId != value))
-				{
-					this.OnSmsProcessorLogIdChanging(value);
-					this.SendPropertyChanging();
-					this._SmsProcessorLogId = value;
-					this.SendPropertyChanged("SmsProcessorLogId");
-					this.OnSmsProcessorLogIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SmsProcessorId", DbType="UniqueIdentifier NOT NULL")]
-		public System.Guid SmsProcessorId
-		{
-			get
-			{
-				return this._SmsProcessorId;
-			}
-			set
-			{
-				if ((this._SmsProcessorId != value))
-				{
-					if (this._SmsProcessor.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnSmsProcessorIdChanging(value);
-					this.SendPropertyChanging();
-					this._SmsProcessorId = value;
-					this.SendPropertyChanged("SmsProcessorId");
-					this.OnSmsProcessorIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogMessageType", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string LogMessageType
-		{
-			get
-			{
-				return this._LogMessageType;
-			}
-			set
-			{
-				if ((this._LogMessageType != value))
-				{
-					this.OnLogMessageTypeChanging(value);
-					this.SendPropertyChanging();
-					this._LogMessageType = value;
-					this.SendPropertyChanged("LogMessageType");
-					this.OnLogMessageTypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Message", DbType="VarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Message
-		{
-			get
-			{
-				return this._Message;
-			}
-			set
-			{
-				if ((this._Message != value))
-				{
-					this.OnMessageChanging(value);
-					this.SendPropertyChanging();
-					this._Message = value;
-					this.SendPropertyChanged("Message");
-					this.OnMessageChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
-		public System.DateTime DateCreated
-		{
-			get
-			{
-				return this._DateCreated;
-			}
-			set
-			{
-				if ((this._DateCreated != value))
-				{
-					this.OnDateCreatedChanging(value);
-					this.SendPropertyChanging();
-					this._DateCreated = value;
-					this.SendPropertyChanged("DateCreated");
-					this.OnDateCreatedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SmsProcessor_SmsProcessorLog", Storage="_SmsProcessor", ThisKey="SmsProcessorId", OtherKey="SmsProcessorId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		internal SmsProcessor SmsProcessor
-		{
-			get
-			{
-				return this._SmsProcessor.Entity;
-			}
-			set
-			{
-				SmsProcessor previousValue = this._SmsProcessor.Entity;
-				if (((previousValue != value) 
-							|| (this._SmsProcessor.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._SmsProcessor.Entity = null;
-						previousValue.SmsProcessorLogs.Remove(this);
-					}
-					this._SmsProcessor.Entity = value;
-					if ((value != null))
-					{
-						value.SmsProcessorLogs.Add(this);
-						this._SmsProcessorId = value.SmsProcessorId;
-					}
-					else
-					{
-						this._SmsProcessorId = default(System.Guid);
-					}
-					this.SendPropertyChanged("SmsProcessor");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SmsReceivedLog")]
 	public partial class SmsReceivedLog : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -9919,6 +9534,391 @@ namespace Figlut.Repeat.ORM
 		{
 			this.SendPropertyChanging();
 			entity.User = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Processor")]
+	public partial class Processor : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _ProcessorId;
+		
+		private string _Name;
+		
+		private int _ExecutionInterval;
+		
+		private System.Nullable<System.DateTime> _LastExecutionDate;
+		
+		private System.DateTime _DateCreated;
+		
+		private EntitySet<ProcessorLog> _ProcessorLogs;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnProcessorIdChanging(System.Guid value);
+    partial void OnProcessorIdChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnExecutionIntervalChanging(int value);
+    partial void OnExecutionIntervalChanged();
+    partial void OnLastExecutionDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnLastExecutionDateChanged();
+    partial void OnDateCreatedChanging(System.DateTime value);
+    partial void OnDateCreatedChanged();
+    #endregion
+		
+		public Processor()
+		{
+			this._ProcessorLogs = new EntitySet<ProcessorLog>(new Action<ProcessorLog>(this.attach_ProcessorLogs), new Action<ProcessorLog>(this.detach_ProcessorLogs));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessorId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid ProcessorId
+		{
+			get
+			{
+				return this._ProcessorId;
+			}
+			set
+			{
+				if ((this._ProcessorId != value))
+				{
+					this.OnProcessorIdChanging(value);
+					this.SendPropertyChanging();
+					this._ProcessorId = value;
+					this.SendPropertyChanged("ProcessorId");
+					this.OnProcessorIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExecutionInterval", DbType="Int NOT NULL")]
+		public int ExecutionInterval
+		{
+			get
+			{
+				return this._ExecutionInterval;
+			}
+			set
+			{
+				if ((this._ExecutionInterval != value))
+				{
+					this.OnExecutionIntervalChanging(value);
+					this.SendPropertyChanging();
+					this._ExecutionInterval = value;
+					this.SendPropertyChanged("ExecutionInterval");
+					this.OnExecutionIntervalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastExecutionDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> LastExecutionDate
+		{
+			get
+			{
+				return this._LastExecutionDate;
+			}
+			set
+			{
+				if ((this._LastExecutionDate != value))
+				{
+					this.OnLastExecutionDateChanging(value);
+					this.SendPropertyChanging();
+					this._LastExecutionDate = value;
+					this.SendPropertyChanged("LastExecutionDate");
+					this.OnLastExecutionDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
+		public System.DateTime DateCreated
+		{
+			get
+			{
+				return this._DateCreated;
+			}
+			set
+			{
+				if ((this._DateCreated != value))
+				{
+					this.OnDateCreatedChanging(value);
+					this.SendPropertyChanging();
+					this._DateCreated = value;
+					this.SendPropertyChanged("DateCreated");
+					this.OnDateCreatedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Processor_ProcessorLog", Storage="_ProcessorLogs", ThisKey="ProcessorId", OtherKey="ProcessorId")]
+		public EntitySet<ProcessorLog> ProcessorLogs
+		{
+			get
+			{
+				return this._ProcessorLogs;
+			}
+			set
+			{
+				this._ProcessorLogs.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_ProcessorLogs(ProcessorLog entity)
+		{
+			this.SendPropertyChanging();
+			entity.Processor = this;
+		}
+		
+		private void detach_ProcessorLogs(ProcessorLog entity)
+		{
+			this.SendPropertyChanging();
+			entity.Processor = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProcessorLog")]
+	public partial class ProcessorLog : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _ProcessorLogId;
+		
+		private System.Guid _ProcessorId;
+		
+		private string _LogMessageType;
+		
+		private string _Message;
+		
+		private System.DateTime _DateCreated;
+		
+		private EntityRef<Processor> _Processor;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnProcessorLogIdChanging(System.Guid value);
+    partial void OnProcessorLogIdChanged();
+    partial void OnProcessorIdChanging(System.Guid value);
+    partial void OnProcessorIdChanged();
+    partial void OnLogMessageTypeChanging(string value);
+    partial void OnLogMessageTypeChanged();
+    partial void OnMessageChanging(string value);
+    partial void OnMessageChanged();
+    partial void OnDateCreatedChanging(System.DateTime value);
+    partial void OnDateCreatedChanged();
+    #endregion
+		
+		public ProcessorLog()
+		{
+			this._Processor = default(EntityRef<Processor>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessorLogId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid ProcessorLogId
+		{
+			get
+			{
+				return this._ProcessorLogId;
+			}
+			set
+			{
+				if ((this._ProcessorLogId != value))
+				{
+					this.OnProcessorLogIdChanging(value);
+					this.SendPropertyChanging();
+					this._ProcessorLogId = value;
+					this.SendPropertyChanged("ProcessorLogId");
+					this.OnProcessorLogIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessorId", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid ProcessorId
+		{
+			get
+			{
+				return this._ProcessorId;
+			}
+			set
+			{
+				if ((this._ProcessorId != value))
+				{
+					if (this._Processor.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnProcessorIdChanging(value);
+					this.SendPropertyChanging();
+					this._ProcessorId = value;
+					this.SendPropertyChanged("ProcessorId");
+					this.OnProcessorIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogMessageType", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string LogMessageType
+		{
+			get
+			{
+				return this._LogMessageType;
+			}
+			set
+			{
+				if ((this._LogMessageType != value))
+				{
+					this.OnLogMessageTypeChanging(value);
+					this.SendPropertyChanging();
+					this._LogMessageType = value;
+					this.SendPropertyChanged("LogMessageType");
+					this.OnLogMessageTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Message", DbType="VarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Message
+		{
+			get
+			{
+				return this._Message;
+			}
+			set
+			{
+				if ((this._Message != value))
+				{
+					this.OnMessageChanging(value);
+					this.SendPropertyChanging();
+					this._Message = value;
+					this.SendPropertyChanged("Message");
+					this.OnMessageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
+		public System.DateTime DateCreated
+		{
+			get
+			{
+				return this._DateCreated;
+			}
+			set
+			{
+				if ((this._DateCreated != value))
+				{
+					this.OnDateCreatedChanging(value);
+					this.SendPropertyChanging();
+					this._DateCreated = value;
+					this.SendPropertyChanged("DateCreated");
+					this.OnDateCreatedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Processor_ProcessorLog", Storage="_Processor", ThisKey="ProcessorId", OtherKey="ProcessorId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		internal Processor Processor
+		{
+			get
+			{
+				return this._Processor.Entity;
+			}
+			set
+			{
+				Processor previousValue = this._Processor.Entity;
+				if (((previousValue != value) 
+							|| (this._Processor.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Processor.Entity = null;
+						previousValue.ProcessorLogs.Remove(this);
+					}
+					this._Processor.Entity = value;
+					if ((value != null))
+					{
+						value.ProcessorLogs.Add(this);
+						this._ProcessorId = value.ProcessorId;
+					}
+					else
+					{
+						this._ProcessorId = default(System.Guid);
+					}
+					this.SendPropertyChanged("Processor");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

@@ -292,26 +292,6 @@
       <Association Name="Organization_SmsMessageTemplate" Member="Organization" AccessModifier="Internal" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Organization" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.SmsProcessor" Member="SmsProcessors">
-    <Type Name="SmsProcessor">
-      <Column Name="SmsProcessorId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="ExecutionInterval" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="LastExecutionDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="SmsProcessor_SmsProcessorLog" Member="SmsProcessorLogs" ThisKey="SmsProcessorId" OtherKey="SmsProcessorId" Type="SmsProcessorLog" />
-    </Type>
-  </Table>
-  <Table Name="dbo.SmsProcessorLog" Member="SmsProcessorLogs">
-    <Type Name="SmsProcessorLog">
-      <Column Name="SmsProcessorLogId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="SmsProcessorId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
-      <Column Name="LogMessageType" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Message" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="SmsProcessor_SmsProcessorLog" Member="SmsProcessor" AccessModifier="Internal" ThisKey="SmsProcessorId" OtherKey="SmsProcessorId" Type="SmsProcessor" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.SmsReceivedLog" Member="SmsReceivedLogs">
     <Type Name="SmsReceivedLog">
       <Column Name="SmsReceivedLogId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -446,6 +426,26 @@
       <Association Name="User_ServerAction" Member="ServerActions" ThisKey="UserId" OtherKey="UserId" Type="ServerAction" />
       <Association Name="User_ServerError" Member="ServerErrors" ThisKey="UserId" OtherKey="UserId" Type="ServerError" />
       <Association Name="Organization_User" Member="Organization" AccessModifier="Internal" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Organization" IsForeignKey="true" DeleteRule="SET NULL" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Processor" Member="Processors">
+    <Type Name="Processor">
+      <Column Name="ProcessorId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ExecutionInterval" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LastExecutionDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Processor_ProcessorLog" Member="ProcessorLogs" ThisKey="ProcessorId" OtherKey="ProcessorId" Type="ProcessorLog" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProcessorLog" Member="ProcessorLogs">
+    <Type Name="ProcessorLog">
+      <Column Name="ProcessorLogId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ProcessorId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="LogMessageType" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Message" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Processor_ProcessorLog" Member="Processor" AccessModifier="Internal" ThisKey="ProcessorId" OtherKey="ProcessorId" Type="Processor" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
 </Database>

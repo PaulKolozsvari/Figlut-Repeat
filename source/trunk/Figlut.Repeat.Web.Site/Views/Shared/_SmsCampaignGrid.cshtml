@@ -42,7 +42,7 @@
                     @Html.LinkButtonForSubmit("Search", "onSearchSmsCampaignsClick()", "btnSearch", "search.png")
                     @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
                     {
-                        @Html.LinkButtonForSubmit("Download", "onDownloadAllSmsCampaignsCsvFileClick()", "btnDownload", "Repeatsheet.png")
+                        @Html.LinkButtonForSubmit("Download", "onDownloadAllSmsCampaignsCsvFileClick()", "btnDownload", "spreadsheet.png")
                         if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
                         {
                             smsCampaign = (SmsCampaignModel)grid.Rows[grid.SelectedIndex].Value;

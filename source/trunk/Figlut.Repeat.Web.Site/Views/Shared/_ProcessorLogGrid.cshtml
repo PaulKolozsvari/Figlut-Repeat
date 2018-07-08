@@ -1,4 +1,4 @@
-﻿@model Figlut.Repeat.Web.Site.Models.FilterModel<SmsProcessorModel>
+﻿@model Figlut.Repeat.Web.Site.Models.FilterModel<ProcessorLogModel>
 
 @using Figlut.Server.Toolkit.Data;
 @using Figlut.Repeat.Web.Site.Configuration;
@@ -8,11 +8,11 @@
 @using Figlut.Repeat.ORM.Helpers;
 
 @{
-    Figlut.Repeat.Web.Site.Models.SmsProcessorModel smsProcessor = new SmsProcessorModel();
+    Figlut.Repeat.Web.Site.Models.ProcessorLogModel processorLog = new ProcessorLogModel();
 }
 @{
-    int smsProcessorsPerPageToDisplay = Convert.ToInt32(RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.SmsProcessorsPerPageToDisplay].SettingValue);
-    var grid = new WebGrid(Model.DataModel, canPage: true, rowsPerPage: smsProcessorsPerPageToDisplay, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+    int processorLogsPerPageToDisplay = Convert.ToInt32(RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.ProcessorLogsPerPageToDisplay].SettingValue);
+    var grid = new WebGrid(Model.DataModel, canPage: true, rowsPerPage: processorLogsPerPageToDisplay, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
     grid.Pager(WebGridPagerModes.All);
 }
 
@@ -27,46 +27,60 @@
                                 @Html.Raw("Search Text")
                             </div>
                         </td>
+                        <td>
+                            <div class="field-label">
+                                @Html.Raw("Start Date")
+                            </div>
+                        </td>
+                        <td>
+                            <div class="field-label">
+                                @Html.Raw("End Date")
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <td>
                             @Html.EditorFor(m => m.SearchText)
+                        </td>
+                        <td>
+                            @Html.EditorFor(m => m.StartDate, new { disabled = "disabled", @readonly = "readonly" })
+                        </td>
+                        <td>
+                            @Html.EditorFor(m => m.EndDate, new { disabled = "disabled", @readonly = "readonly" })
                         </td>
                     </tr>
                 </table>
             </div>
             <div class="grid-buttons">
                 <div style="float: left; margin-left:2%; margin-right:2%">
-                    @Html.LinkButtonForSubmit("Search", "onSearchSmsProcessorsClick()", "btnSearch", "search.png")
+                    @Html.LinkButtonForSubmit("Search", "onSearchProcessorLogClick()", "btnSearch", "search.png")
                     @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
                     {
-                        @Html.LinkButtonForSubmit("Download", "onDownloadAllSmsProcessorsFileClick()", "btnDownload", "Repeatsheet.png")
+                        @Html.LinkButtonForSubmit("Download", "onDownloadAllProcesserLogCsvFileClick()", "btnDownload", "spreadsheet.png")
                     }
-                    @Html.LinkButtonForSubmit("View Log", "onLogClick()", "btnLog", "red-book-icon32.png")
                 </div>
                 <div style="float: right; margin-left:2%; margin-right:2%">
                     @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
                     {
-                        @Html.LinkButtonForCancel("Delete All", "onDeleteAllSmsProcessorsClick()", "btnDeleteAllSmsProcessors")
+                        @Html.LinkButtonForCancel("Delete All", "onDeleteAllProcessorLogClick()", "btnDeleteAllProcessorLog")
                         if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
                         {
-                            smsProcessor = (SmsProcessorModel)grid.Rows[grid.SelectedIndex].Value;
-                            @Html.LinkButtonForCancel("Delete", "onDeleteSmsProcessorClick()", "btnDeleteSmsProcessor")
+                            processorLog = (ProcessorLogModel)grid.Rows[grid.SelectedIndex].Value;
+                            @Html.LinkButtonForCancel("Delete", "onDeleteProcessorLogClick()", "btnDeleteProcessorLog")
                         }
                     }
                 </div>
             </div>
         </div>
-        <div class="sms-processor-preview">
+        <div class="message-preview">
             @if (Model.IsAdministrator && grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
             {
-                smsProcessor = (SmsProcessorModel)grid.Rows[grid.SelectedIndex].Value;
                 <div style="float:left; margin-left:2%; margin-right:2%;">
-                    <b>@Html.Raw(string.Format("ID: {0}", smsProcessor.SmsProcessorId.ToString()))</b>
+                    <b>@Html.Raw(string.Format("ID: {0}", processorLog.ProcessorLogId.ToString()))</b>
                 </div>
             }
             <div style="float: right; margin-left:2%; margin-right:2%">
-                <b>@Html.Raw(string.Format("Sms Processors Loaded: {0} of {1}", Model.TotalCount.ToString(), Model.TotalTableCount.ToString()))</b>
+                <b>@Html.Raw(string.Format("Messages Loaded: {0} of {1}", Model.TotalCount.ToString(), Model.TotalTableCount.ToString()))</b>
             </div>
         </div>
         <div id="gridTableContainer">
@@ -76,27 +90,27 @@
                 alternatingRowStyle: "alt",
                 selectedRowStyle: "select",
                 columns: grid.Columns(
-                grid.Column("SMS Processors", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
-                grid.Column(EntityReader<SmsProcessorModel>.GetPropertyName(p => p.Name, false), "Name"),
-                grid.Column(EntityReader<SmsProcessorModel>.GetPropertyName(p => p.ExecutionInterval, false), "Execution Interval"),
-                grid.Column(EntityReader<SmsProcessorModel>.GetPropertyName(p => p.LastExecutionDate, false), "Last Execution Date"),
-                grid.Column(EntityReader<SmsProcessorModel>.GetPropertyName(p => p.DateCreated, false), "Date Created")
+                grid.Column("Received", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
+                grid.Column(EntityReader<ProcessorLogModel>.GetPropertyName(p => p.ProcessorName, false), "Processor"),
+                grid.Column(EntityReader<ProcessorLogModel>.GetPropertyName(p => p.LogMessageType, false), "Message Type"),
+                grid.Column(EntityReader<ProcessorLogModel>.GetPropertyName(p => p.MessageTrimmed, false), "Message"),
+                grid.Column(EntityReader<ProcessorLogModel>.GetPropertyName(p => p.DateCreated, false), "Date")
             ))
         </div>
-        <div class="sms-processor-preview">
+        <div class="message-preview">
             @if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
             {
-                smsProcessor = (SmsProcessorModel)grid.Rows[grid.SelectedIndex].Value;
+                processorLog = (ProcessorLogModel)grid.Rows[grid.SelectedIndex].Value;
                 <div style="float: left; margin-left:2%; margin-right:2%">
-                    <b>@Html.Raw(string.Format("Name: {0}", smsProcessor.Name))</b>   
+                    <b>@Html.Raw(string.Format("Date: {0}", processorLog.DateCreated))</b>   
                 </div>
                 <div style="float:right; margin-left:2%; margin-right:2%; color: #a30e0e;">
-                    @Html.Raw(string.Format("{0} milliseconds", smsProcessor.ExecutionInterval.ToString()))
+                    @Html.Raw(string.Format("{0}", processorLog.Message))
                 </div>
             }
         </div>
     </div>
-    <div id="SmsProcessorsErrorField" style="color:#8A0808">
+    <div id="ProcessorLogErrorField" style="color:#8A0808">
         @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
         {
             <br />
@@ -112,18 +126,18 @@
         enableDatepickers();
     });
 
-    function onSearchSmsProcessorsClick() {
-        postSmsProcessors();
+    function onSearchProcessorLogClick() {
+        postProcessorLog();
     }
 
-    function onDeleteSmsProcessorClick() {
+    function onDeleteProcessorLogClick() {
         showDialog(
             '#divConfirmationDialog',
             '#dlgConfirmation',
             'ConfirmDeleteDialog',
-            'SmsProcessor',
+            'ProcessorLog',
             'identifier',
-            '@smsProcessor.SmsProcessorId.ToString()');
+            '@processorLog.ProcessorLogId.ToString()');
     };
 
     function getSearchParametersString() {
@@ -134,30 +148,25 @@
         return searchParameters;
     }
 
-    function onDeleteAllSmsProcessorsClick() {
+    function onDeleteAllProcessorLogClick() {
         var searchParameters = getSearchParametersString();
         showDialog(
             '#divConfirmationDialog',
             '#dlgConfirmation',
             'ConfirmDeleteAllDialog',
-            'SmsProcessor',
+            'ProcessorLog',
             'searchParametersString',
             searchParameters);
     }
 
-    function onDownloadAllSmsProcessorsFileClick() {
+    function onDownloadAllProcesserLogCsvFileClick() {
         var searchParameters = getSearchParametersString();
-        var downloadUrl = '@Url.Action("DownloadCsvFile", "SmsProcessor", new { searchParametersString = "_searchValue" })';
+        var downloadUrl = '@Url.Action("DownloadCsvFile", "ProcessorLog", new { searchParametersString = "_searchValue" })';
         downloadUrl = downloadUrl.replace('_searchValue', searchParameters);
         window.location = downloadUrl;
     }
 
-    function onLogClick() {
-        var downloadUrl = '@Url.Action("Index", "SmsProcessorLog")';
-        window.location = downloadUrl;
-    }
-
-    function postSmsProcessors() {
+    function postProcessorLog() {
         $('form#frmDetails').trigger('submit');
     };
 

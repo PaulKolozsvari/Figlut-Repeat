@@ -40,7 +40,7 @@
                     @Html.LinkButtonForSubmit("Search", "onSearchSubscribersClick()", "btnSearch", "search.png")
                     @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
                     {
-                        @Html.LinkButtonForSubmit("Download", "onDownloadAllSubscribersCsvFileClick()", "btnDownload", "Repeatsheet.png")
+                        @Html.LinkButtonForSubmit("Download", "onDownloadAllSubscribersCsvFileClick()", "btnDownload", "spreadsheet.png")
                         if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
                         {
                             subscriber = (SubscriberModel)grid.Rows[grid.SelectedIndex].Value;

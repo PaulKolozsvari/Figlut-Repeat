@@ -150,7 +150,7 @@
             string subscriberNameIndicator,
             DateTime dateReceived,
             Nullable<Guid> smsReceivedQueueItemIdToDelete,
-            Guid smsProcessorId,
+            Guid processorId,
             out Organization organization,
             out Subscriber subscriber)
         {
@@ -168,7 +168,7 @@
                 SmsReceivedParsed smsReceived = new SmsReceivedParsed(cellPhoneNumber, messageId, messageContents, dateReceivedOriginalFormat, campaign, dataField, nonce, nonceDateOriginalFormat, checksum, organizationIdentifierIndicator, subscriberNameIndicator);
                 if (!string.IsNullOrEmpty(smsReceived.WarningMessage))
                 {
-                    this.LogSmsProcesorAction(smsProcessorId, smsReceived.WarningMessage, LogMessageType.Warning.ToString());
+                    this.LogProcesorAction(processorId, smsReceived.WarningMessage, LogMessageType.Warning.ToString());
                     GOC.Instance.Logger.LogMessage(new LogMessage(smsReceived.WarningMessage, LogMessageType.Warning, LoggingLevel.Normal));
                 }
                 if (!smsReceived.ParsedSuccessfully)
@@ -192,7 +192,7 @@
                             EntityReader<Organization>.GetPropertyName(p => p.Identifier, false),
                             smsReceived.OrganizationIdentifier);
                         GOC.Instance.Logger.LogMessage(new LogMessage(organizationMissingWarningMessage, LogMessageType.Warning, LoggingLevel.Normal));
-                        this.LogSmsProcesorAction(smsProcessorId, organizationMissingWarningMessage, LogMessageType.Warning.ToString());
+                        this.LogProcesorAction(processorId, organizationMissingWarningMessage, LogMessageType.Warning.ToString());
                     }
                 }
                 if (smsReceivedQueueItemIdToDelete.HasValue)

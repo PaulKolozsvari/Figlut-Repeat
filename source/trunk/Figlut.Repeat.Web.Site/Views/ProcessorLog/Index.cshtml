@@ -1,4 +1,4 @@
-﻿@model Figlut.Repeat.Web.Site.Models.FilterModel<SmsProcessorModel>
+﻿@model Figlut.Repeat.Web.Site.Models.FilterModel<ProcessorLogModel>
 
 @using Figlut.Server.Toolkit.Data;
 @using Figlut.Repeat.Web.Site.Configuration;
@@ -6,19 +6,19 @@
 @using Figlut.Repeat.Web.Site.Models;
 
 @{
-    ViewBag.Title = "SMS Processors";
+    ViewBag.Title = "Processor Log";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <nav>
     <ul id="menu">
         <li>
-            <img src="~/Images/Icons/red-laptop-icon32.png" style="float:right; margin-right:1%; margin-left:1%"/>
-            <a href="" style="float:right">SMS Processors</a>
+            <img src="~/Images/Icons/red-book-icon32.png" style="float:right; margin-right:1%; margin-left:1%"/>
+            <a href="" style="float:right">Processor Log</a>
         </li>
     </ul>
 </nav>
 <hr />
-@using (Ajax.BeginForm("Index", "SmsProcessor", new AjaxOptions{
+@using (Ajax.BeginForm("Index", "ProcessorLog", new AjaxOptions {
     InsertionMode = InsertionMode.Replace,
     UpdateTargetId = "gridPartial",
     HttpMethod = "POST"},
@@ -26,7 +26,7 @@
 {
     <div id="gridPartial">
         @{
-            Html.RenderPartial("_SmsProcessorGrid", Model);
+            Html.RenderPartial("_ProcessorLogGrid", Model);
         }
     </div>
 }
@@ -36,11 +36,10 @@
         $(document).keypress(function (event) {
             if (event.which == 13) {
                 //$("#btnSearch").click();
-                postSmsProcessors();
+                postProcessorLog();
                 return false; //Cancel the default form's post behaviour when enter key is pressed i.e. if this is not set (or set to true) then the form will be posted twice when pressing the enter key.
             }
         });
-        @*loadDialog("#divConfirmationDialog", "#dlgConfirmation", "ConfirmDeleteDialog", "SmsSent", 'identifier', '@smsSent.SmsSentLogId.ToString()');*@
-        loadDialog("#divConfirmationDialog", "#dlgConfirmation", "ConfirmDeleteDialog", "SmsProcessor", 'identifier', '@Guid.Empty');
+        loadDialog("#divConfirmationDialog", "#dlgConfirmation", "ConfirmDeleteDialog", "ProcessorLog", 'identifier', '@Guid.Empty');
     });
 </script>

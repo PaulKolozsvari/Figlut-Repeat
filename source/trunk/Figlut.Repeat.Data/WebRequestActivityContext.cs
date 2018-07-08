@@ -125,7 +125,7 @@
             if (result == null && throwExceptionOnNotFound)
             {
                 throw new NullReferenceException(string.Format("Could not find {0} with {1} of '{2}'.",
-                    typeof(SmsProcessorLog).Name,
+                    typeof(ProcessorLog).Name,
                     EntityReader<WebRequestActivity>.GetPropertyName(p => p.WebRequestActivityId, false),
                     webRequestActivityId.ToString()));
             }

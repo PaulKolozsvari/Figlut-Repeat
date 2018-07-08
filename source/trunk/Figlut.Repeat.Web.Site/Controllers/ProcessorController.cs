@@ -7,8 +7,6 @@
     using Figlut.Repeat.Data;
     using Figlut.Repeat.ORM;
     using Figlut.Repeat.ORM.Csv;
-    using Figlut.Repeat.ORM.Helpers;
-    using Figlut.Repeat.ORM.Views;
     using Figlut.Repeat.Web.Site.Configuration;
     using Figlut.Repeat.Web.Site.Models;
     using System;
@@ -19,71 +17,34 @@
 
     #endregion //Using Directives
 
-    public class SmsProcessorLogController : RepeatController
+    public class ProcessorController : RepeatController
     {
         #region Constants
 
-        private const string SMS_PROCESSOR_LOG_GRID_PARTIAL_VIEW_NAME = "_SmsProcessorLogGrid";
+        private const string PROCESSOR_GRID_PARTIAL_VIEW_NAME = "_ProcessorGrid";
 
         #endregion //Constants
 
         #region Methods
 
-        private FilterModel<SmsProcessorLogModel> GetSmsProcessorLogFilterModel(
-            RepeatEntityContext context, 
-            FilterModel<SmsProcessorLogModel> model, 
-            Nullable<Guid> smsProcessorId)
+        private FilterModel<ProcessorModel> GetProcessorFilterModel(RepeatEntityContext context, FilterModel<ProcessorModel> model)
         {
             if (context == null)
             {
                 context = RepeatEntityContext.Create();
             }
-            DateTime startDate;
-            DateTime endDate;
-            if (!model.StartDate.HasValue || !model.EndDate.HasValue) //Has not been specified by the user on the page yet i.e. this is the first time the page is loading.
-            {
-                context.GetGlobalSettingSmsProcessorLogDaysDateRange(out startDate, out endDate);
-                model.StartDate = startDate;
-                model.EndDate = endDate;
-            }
-            else
-            {
-                if (model.StartDate > model.EndDate)
-                {
-                    SetViewBagErrorMessage(string.Format("{0} may not be later than {1}.",
-                        EntityReader<FilterModel<SmsProcessorLogModel>>.GetPropertyName(p => p.StartDate, true),
-                        EntityReader<FilterModel<SmsProcessorLogModel>>.GetPropertyName(p => p.EndDate, true)));
-                    return null;
-                }
-                startDate = model.StartDate.Value;
-                endDate = model.EndDate.Value;
-            }
             model.IsAdministrator = IsCurrentUserAdministrator(context);
-            if (!model.IsAdministrator)
+            List<Processor> processorList = context.GetProcessorsByFilter(model.SearchText);
+            List<ProcessorModel> modelList = new List<ProcessorModel>();
+            foreach (Processor s in processorList)
             {
-                User currentUser = GetCurrentUser(context);
-                SetViewBagErrorMessage(string.Format("User {0} does nto have administrator rights to view SMS Processor Logs. ", currentUser.UserName));
-                return null;
-            }
-            bool smsProcessorMessageTrimOnGrid = Convert.ToBoolean(RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.SmsProcessorMessageTrimOnGrid].SettingValue);
-            int smsProcessorMessageTrimLengthOnGrid = Convert.ToInt32(RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.SmsProcessorMessageTrimLengthOnGrid].SettingValue);
-            List<SmsProcessorLogView> smsProcessorLogViewList = null;
-            smsProcessorLogViewList = context.GetSmsProcessorLogViewsByFilter(model.SearchText, startDate, endDate, null);
-
-            List<SmsProcessorLogModel> modelList = new List<SmsProcessorLogModel>();
-            foreach (SmsProcessorLogView v in smsProcessorLogViewList)
-            {
-                SmsProcessorLogModel m = new SmsProcessorLogModel();
-                m.CopyPropertiesFromSmsProcessorLogView(v);
-                if (smsProcessorMessageTrimOnGrid)
-                {
-                    m.MessageTrimmed = DataEditor.GetTrimmedMessageContents(v.Message, smsProcessorMessageTrimLengthOnGrid);
-                }
+                ProcessorModel m = new ProcessorModel();
+                m.CopyPropertiesFromProcessor(s);
                 modelList.Add(m);
             }
             model.DataModel.Clear();
             model.DataModel = modelList;
-            model.TotalTableCount = context.GetAllSmsProcessorLogsCount();
+            model.TotalTableCount = context.GetAllProcessorCount();
             return model;
         }
 
@@ -100,10 +61,10 @@
                 {
                     return RedirectToHome();
                 }
-                FilterModel<SmsProcessorLogModel> model = GetSmsProcessorLogFilterModel(context, new FilterModel<SmsProcessorLogModel>(), null);
+                FilterModel<ProcessorModel> model = GetProcessorFilterModel(context, new FilterModel<ProcessorModel>());
                 if (model == null) //There was an error and ViewBag.ErrorMessage has been set. So just return an empty model.
                 {
-                    return View(new FilterModel<SmsProcessorLogModel>());
+                    return View(new FilterModel<ProcessorModel>());
                 }
                 ViewBag.SearchFieldIdentifier = model.SearchFieldIdentifier;
                 return View(model);
@@ -117,7 +78,7 @@
         }
 
         [HttpPost]
-        public ActionResult Index(FilterModel<SmsProcessorLogModel> model)
+        public ActionResult Index(FilterModel<ProcessorModel> model)
         {
             try
             {
@@ -127,12 +88,12 @@
                     return RedirectToHome();
                 }
                 ViewBag.SearchFieldIdentifier = model.SearchFieldIdentifier;
-                FilterModel<SmsProcessorLogModel> resultModel = GetSmsProcessorLogFilterModel(context, model, null);
+                FilterModel<ProcessorModel> resultModel = GetProcessorFilterModel(context, model);
                 if (resultModel == null) //There was an error and ViewBag.ErrorMessage has been set. So just return an empty model.
                 {
-                    return PartialView(SMS_PROCESSOR_LOG_GRID_PARTIAL_VIEW_NAME, new FilterModel<SmsProcessorLogModel>());
+                    return PartialView(PROCESSOR_GRID_PARTIAL_VIEW_NAME, new FilterModel<ProcessorModel>());
                 }
-                return PartialView(SMS_PROCESSOR_LOG_GRID_PARTIAL_VIEW_NAME, resultModel);
+                return PartialView(PROCESSOR_GRID_PARTIAL_VIEW_NAME, resultModel);
             }
             catch (Exception ex)
             {
@@ -143,7 +104,7 @@
         }
 
         [HttpPost]
-        public ActionResult Delete(Guid smsProcessorLogId)
+        public ActionResult Delete(Guid processorId)
         {
             try
             {
@@ -152,8 +113,8 @@
                 {
                     return RedirectToHome();
                 }
-                SmsProcessorLog smsProcessorLog = context.GetSmsProcessorLog(smsProcessorLogId, true);
-                context.Delete<SmsProcessorLog>(smsProcessorLog);
+                Processor processor = context.GetProcessor(processorId, true);
+                context.Delete<Processor>(processor);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -173,15 +134,15 @@
                 {
                     return RedirectToHome();
                 }
-                SmsProcessorLog smsProcessorLog = context.GetSmsProcessorLog(identifier, false);
+                Processor processor = context.GetProcessor(identifier, false);
                 ConfirmationModel model = new ConfirmationModel();
                 model.PostBackControllerAction = GetCurrentActionName();
                 model.PostBackControllerName = GetCurrentControllerName();
                 model.DialogDivId = CONFIRMATION_DIALOG_DIV_ID;
-                if (smsProcessorLog != null)
+                if (processor != null)
                 {
                     model.Identifier = identifier;
-                    model.ConfirmationMessage = string.Format("Delete SMS Processor Log message at '{0}' ?", smsProcessorLog.DateCreated);
+                    model.ConfirmationMessage = string.Format("Delete Processor '{0}'?", processor.Name);
                 }
                 PartialViewResult result = PartialView(CONFIRMATION_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
@@ -204,8 +165,8 @@
                 {
                     return RedirectToHome();
                 }
-                SmsProcessorLog smsProcessorLog = context.GetSmsProcessorLog(model.Identifier, true);
-                context.Delete<SmsProcessorLog>(smsProcessorLog);
+                Processor processor = context.GetProcessor(model.Identifier, true);
+                context.Delete<Processor>(processor);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -232,25 +193,9 @@
 
                 string[] searchParameters;
                 string searchText;
-                Nullable<DateTime> startDate;
-                Nullable<DateTime> endDate;
-                GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText, out startDate, out endDate);
-
+                GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
                 model.SearchText = searchText;
-                model.StartDate = startDate;
-                model.EndDate = endDate;
-
-                if (model.StartDate.HasValue && model.EndDate.HasValue)
-                {
-                    model.ConfirmationMessage = string.Format(
-                        "Delete all SMS Processor Log messages currently loaded between {0}-{1}-{2} and {3}-{4}-{5} ?",
-                        model.StartDate.Value.Year.ToString(),
-                        model.StartDate.Value.Month.ToString(),
-                        model.StartDate.Value.Day.ToString(),
-                        model.EndDate.Value.Year.ToString(),
-                        model.EndDate.Value.Month.ToString(),
-                        model.EndDate.Value.Day.ToString());
-                }
+                model.ConfirmationMessage = "Delete all Processsors currently loaded?";
                 PartialViewResult result = PartialView(CONFIRMATION_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
             }
@@ -272,7 +217,7 @@
                 {
                     return RedirectToHome();
                 }
-                context.DeleteSmsProcessorLogByFilter(model.SearchText, model.StartDate.Value, model.EndDate.Value, null);
+                context.DeleteProcessorsByFilter(model.SearchText);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -294,26 +239,16 @@
                 }
                 string[] searchParameters;
                 string searchText;
-                Nullable<DateTime> startDate;
-                Nullable<DateTime> endDate;
-                GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText, out startDate, out endDate);
-                if (!startDate.HasValue)
+                GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
+                List<Processor> processorsList = context.GetProcessorsByFilter(searchText);
+                EntityCache<Guid, ProcessorCsv> cache = new EntityCache<Guid, ProcessorCsv>();
+                foreach (Processor o in processorsList)
                 {
-                    throw new ArgumentException("Start Date not specified.");
+                    ProcessorCsv csv = new ProcessorCsv();
+                    csv.CopyPropertiesFromProcessor(o);
+                    cache.Add(csv.ProcessorId, csv);
                 }
-                if (!endDate.HasValue)
-                {
-                    throw new ArgumentException("End Date not specified.");
-                }
-                List<SmsProcessorLogView> smsProcessorLogViewList = context.GetSmsProcessorLogViewsByFilter(searchText, startDate.Value, endDate.Value, null);
-                EntityCache<Guid, SmsProcessorLogCsv> cache = new EntityCache<Guid, SmsProcessorLogCsv>();
-                foreach (SmsProcessorLogView v in smsProcessorLogViewList)
-                {
-                    SmsProcessorLogCsv csv = new SmsProcessorLogCsv();
-                    csv.CopyPropertiesFromSmsProcessorLogView(v);
-                    cache.Add(csv.SmsProcessorLogId, csv);
-                }
-                return GetCsvFileResult<SmsProcessorLogCsv>(cache);
+                return GetCsvFileResult<ProcessorCsv>(cache);
             }
             catch (Exception ex)
             {

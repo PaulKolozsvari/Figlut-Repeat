@@ -25,13 +25,13 @@ using System.Threading.Tasks;
             int maxSmsSendMessageLength,
             string smsSendMessageSuffix,
             int organizationIdentifierMaxLength,
-            Guid smsProcessorId,
+            Guid processorId,
             int executionInterval,
             bool startImmediately,
             string organizationIdentifierIndicator,
             string subscriberNameIndicator,
             EmailSender emailSender) : 
-            base(smsProcessorId, executionInterval, startImmediately, organizationIdentifierIndicator, subscriberNameIndicator, emailSender)
+            base(processorId, executionInterval, startImmediately, organizationIdentifierIndicator, subscriberNameIndicator, emailSender)
         {
             if (smsSender == null)
             {
@@ -77,7 +77,7 @@ using System.Threading.Tasks;
 
         #region Methods
 
-        protected override bool ProcessNextItemInQueue(RepeatEntityContext context, Guid smsProcessorId, string organizationIdentifierIndicator, string subscriberIdentifierIndicator)
+        protected override bool ProcessNextItemInQueue(RepeatEntityContext context, Guid processorId, string organizationIdentifierIndicator, string subscriberIdentifierIndicator)
         {
             long itemsInQueue = context.GetAllSmsSentQueueItemCount(true);
             if (itemsInQueue < 1) //Continue processing items until the queue has been emptied i.e. there are no more items in the queue.
@@ -93,8 +93,8 @@ using System.Threading.Tasks;
             }
             foreach (SmsSentQueueItem i in items)
             {
-                context.LogSmsProcesorAction(
-                    smsProcessorId,
+                context.LogProcesorAction(
+                    processorId,
                     string.Format("Executing {0}. {1} items in queue. Processing SMS to '{2}': {3}",
                     DataShaper.ShapeCamelCaseString(typeof(SmsSentQueueProcessor).Name),
                     itemsInQueue,
@@ -105,7 +105,7 @@ using System.Threading.Tasks;
                 if (smsSentLog != null)
                 {
                     string message = string.Format("Processed SMS to {0}: {1}", smsSentLog.CellPhoneNumber, smsSentLog.MessageContents);
-                    context.LogSmsProcesorAction(smsProcessorId, message, LogMessageType.SuccessAudit.ToString());
+                    context.LogProcesorAction(processorId, message, LogMessageType.SuccessAudit.ToString());
                     GOC.Instance.Logger.LogMessage(new LogMessage(message, LogMessageType.SuccessAudit, LoggingLevel.Normal));
                 }
             }
@@ -132,7 +132,7 @@ using System.Threading.Tasks;
             {
                 string auditMessage = auditM.ToString();
                 GOC.Instance.Logger.LogMessage(new LogMessage(auditMessage, LogMessageType.Information, LoggingLevel.Maximum));
-                context.LogSmsProcesorAction(this.SmsProcessorId, auditMessage, LogMessageType.Information.ToString());
+                context.LogProcesorAction(this.ProcessorId, auditMessage, LogMessageType.Information.ToString());
                 smsResponse = _smsSender.SendSms(smsRequest);
             }
             catch (Exception exFailed) //Failed to send the SMS Web Request to the provider.
@@ -150,7 +150,7 @@ using System.Threading.Tasks;
                 responseM.AppendLine(smsResponse.ToString());
                 string responseMessage = responseM.ToString();
                 GOC.Instance.Logger.LogMessage(new LogMessage(responseMessage, LogMessageType.Information, LoggingLevel.Maximum));
-                context.LogSmsProcesorAction(this.SmsProcessorId, responseMessage, LogMessageType.Information.ToString());
+                context.LogProcesorAction(this.ProcessorId, responseMessage, LogMessageType.Information.ToString());
             }
             SmsSentLog result = RepeatEntityContext.Create().LogSmsSent(
                 smsRequest.recipientNumber,
@@ -172,7 +172,7 @@ using System.Threading.Tasks;
                 //long smsCredits = context.DecrementSmsCreditFromOrganization(senderOrganization.OrganizationId).SmsCreditsBalance; //Sms credits are substracted when the SMS' are enqueued.
                 string successMessage = string.Format("{0} '{1}' has sent an SMS. Credits remaining: {2}.", typeof(Organization).Name, senderOrganization.Name, senderOrganization.SmsCreditsBalance);
                 GOC.Instance.Logger.LogMessage(new LogMessage(successMessage, LogMessageType.SuccessAudit, LoggingLevel.Normal));
-                context.LogSmsProcesorAction(this.SmsProcessorId, successMessage, LogMessageType.SuccessAudit.ToString());
+                context.LogProcesorAction(this.ProcessorId, successMessage, LogMessageType.SuccessAudit.ToString());
                 context.DeleteSmsSentQueueItem(i.SmsSentQueueItemId, true, true);
                 context.SaveSubscriber(i.CellPhoneNumber, i.SubscriberName, true, true); //Creates  subscriber for the given cell phone to which this SMS has been sent if the subscriber with the given cell phone number does not already exist.
             }
