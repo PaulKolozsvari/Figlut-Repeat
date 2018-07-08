@@ -1,0 +1,527 @@
+﻿@model Figlut.Repeat.Web.Site.Models.HomePageImageGalleryModel
+
+@using Figlut.Repeat.Web.Site.Extensions;
+@using Figlut.Repeat.Web.Site.Configuration;
+@using Figlut.Repeat.ORM.Helpers;
+
+@{
+    ViewBag.Title = "Figlut";
+}
+
+@section featured {
+}
+<nav>
+    <ul id="menu">
+        <li>
+            <img src="~/Images/Icons/red-home-icon32.png" style="float:right; margin-right:1%; margin-left:1%"/>
+            <a href="" style="float:right">Home</a>
+            <a href="#how-it-works" style="float:left">How it works</a>
+        </li>
+    </ul>
+</nav>
+<hr />
+@*<i></i>*@
+@*<h4 class="centerInformation">SMS Solution Provider</h4>*@
+<div class="mainimagebanner">
+    <img src="~/Images/Figlut/BlueCoffee/MainImage.jpg" style="width:60%; text-align:center; border-radius:1%;"/>
+</div>
+<div class="phonebanner">
+    <div style="width:22%; position:absolute; bottom:385%; left:56%; color:#e2f4fc; font-size:1em;">
+@*        <b style="font-size:1.5em">FiGLUT ...</b>
+        <br />
+        <br />*@
+        <i><b>bridging the communication gap</b> between YOUR</i>
+        <br />
+        <br />
+        <i style="color:#3195c2"><b>business/organization</b> & ....</i>
+        <br />
+        <br />
+        <i style="color:#287ca2">your <b>CUSTOMERS/PEOPLE</b></i>
+        <br />
+@*        <br />
+        <br />
+        <i style="color:#3195c2">We help small and medium sized businesses and organizations to promote themselves and strengthen their customer retention.</i>*@
+    </div>
+    <img src="~/Images/Figlut/BlueCoffee/iPhoneTransparentTextCut.png" style="width:12%; position:absolute; bottom:140%; left:76%;" />
+    <img src="~/Images/WhyItWorksGallery/01-WhyItWorks.jpg" style="width:14%; position:absolute; bottom:260%; left:11%;" />
+    <img src="~/Images/WhyItWorksGallery/02-WhyItWorks.jpg" style="width:14%; position:absolute; top:-140%; left:3%;" />
+    <img src="~/Images/WhyItWorksGallery/03-WhyItWorks.jpg" style="width:14%; position:absolute; bottom:260%; left:30%;" />
+    <img src="~/Images/WhyItWorksGallery/04-WhyItWorks.jpg" style="width:14%; position:absolute; top:-140%; left:21%;" />
+    <img src="~/Images/WhyItWorksGallery/05-WhyItWorks.jpg" style="width:14%; position:absolute; top:-140%; left:57%;" />
+    <img src="~/Images/WhyItWorksGallery/06-WhyItWorks.jpg" style="width:14%; position:absolute; bottom:260%; left:49%;" />
+    <img src="~/Images/WhyItWorksGallery/07-WhyItWorks.jpg" style="width:14%; position:absolute; top:-140%; left:39%;" />
+</div>
+
+@*
+    http://forums.asp.net/t/1983642.aspx?Customized+horizontal+scrolling+content+slider
+    https://www.google.co.za/?gws_rd=ssl#q=Horizontal+scroll+gallery+in+mVC+4
+
+    http://www.istockphoto.com/vector/abstract-background-gm480416462-68972627
+*@
+<a id="how-it-works"></a>
+<nav>
+    <ul id="menu">
+        <li>
+            <img src="~/Images/Icons/red-laptop-icon32.png" style="float:right; margin-right:1%; margin-left:1%"/>
+            <a href="#back-to-top" style="float:left">Back to top</a>
+            <a href="#how-it-works" style="float:right">How it works</a>
+        </li>
+    </ul>
+</nav>
+<hr />
+@{
+    string figlutPhoneNumber = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.FiglutPhoneNumber].SettingValue;
+    string figlutSupportEmailAddress = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.FiglutSupportEmailAddress].SettingValue;
+    string figlutMarketingEmailAddress = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.FiglutMarketingEmailAddress].SettingValue;
+    string figlutGeneralEmailAddress = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.FiglutGeneralEmailAddress].SettingValue;
+    string figlutAddress = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.FiglutAddress].SettingValue;
+}
+<br />
+<div class="description">
+    <a href="@Url.Action("Register", "User")" style="background-color:transparent">
+        Register
+    </a> 
+    <i>for <b>FREE</b> to get your own unique organization keyword e.g. #BLUECOFFEE. No setup fees, no commitment, no risk. You have nothing to lose by giving it a try.</i>
+</div>
+<br />
+<h3 class="description-title">How it works</h3>
+<table>
+    <tr>
+        <td style="width:33%">
+            <div class="description">
+                <b class="description-step">Step 1</b>
+            </div>
+        </td>
+        <td style="width:33%">
+            <b class="description-step">Step 2</b>
+        </td>
+        <td style="width:33%">
+            <b class="description-step">Step 3</b>
+        </td>
+    </tr>
+    <tr>
+        <td style="width:33%">
+            <div class="photobanner-how-it-works">
+                <img src="~/Images/HowItWorksGallery/WithoutText/BlueCoffeeInFrameFinal.jpg" style="width:100%; height:250px"/>
+            </div>
+        </td>
+        <td style="width:33%">
+            <div class="photobanner-how-it-works">
+                <img src="~/Images/HowItWorksGallery/WithoutText/MonitorSubscribers.png" style="width:100%; height:250px"/>
+            </div>
+        </td>
+        <td style="width:33%">
+            <div class="photobanner-how-it-works">
+                <img src="~/Images/HowItWorksGallery/WithoutText/TextWrappedFinal.jpg" style="width:100%; height:250px"/>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>            
+            <div class="description">
+                <b>Promote your notifications</b>
+                <br />
+                <p style="font-size:12px">
+                    <i>
+                        Customize, download and print your promotional poster.
+                        <br />
+                        <br />
+                        People subscribe by sending an SMS using your unique keyword 
+                        <br />
+                        e.g. <b>"SMS #BLUECOFFEE to @figlutPhoneNumber to subscribe"</b>.
+                        <br />
+                        <br />
+                        Ask your staff to inform people of your notifications and how to subscribe.
+                    </i>
+                </p>
+            </div>
+        </td>
+        <td>
+            <div class="description">
+                <b>Monitor your subscribers</b>
+                <br />
+                <p style="font-size:12px">
+                    <i>
+                        Using this website, keep an eye out on how many subscribers you currenty have.
+                        Receive an <b>Email notification</b> for each new subscriber you have.
+                        View their cell phone numbers and names.
+                        <br />
+                        <br />
+                        N.B. Your <b>subscribers can manage their own subscriptions</b>.
+                    </i>
+                </p>
+            </div>
+        </td>
+        <td>
+            <div class="description">
+                <b>Send / Receive messages</b>
+                <br />
+                <p style="font-size:12px">
+                    <i>
+                        Once you have sufficient subscribers, purchase some SMS credits and <b>notify them of your promotions, product updates, voucher codes, events etc.</b>
+                        <br />
+                        <br />
+                        <b>Receive feedback from your subscribers</b>, by them sending you an SMS using your organization keyword e.g. "#BLUECOFFEE You guys make really great coffee and offer the best service."
+                    </i>
+                </p>
+            </div>
+        </td>
+    </tr>
+</table>
+<br />
+<br />
+<br />
+<br />
+
+@*Features*@
+<a id="features"></a>
+<nav>
+    <ul id="menu">
+        <li>
+            <img src="~/Images/Icons/red-ok-icon32.png" style="float:right; margin-right:1%; margin-left:1%"/>
+            <a href="#how-it-works" style="float:left">How it works</a>
+            <a href="#features" style="float:right">Features</a>
+        </li>
+    </ul>
+</nav>
+<hr />
+<div class="description">
+    <i>
+        Figlut offers the following features to help you <b>promote your business/organization and connect you to your customers (or organization members).</b>.
+    </i>
+</div>
+<br />
+<h3 class="description-title">Features</h3>
+<table>
+    <tr>
+        <td style="width:33%">
+            <div class="description">
+                <b class="description-step">Receive Messages</b>
+            </div>
+        </td>
+        <td style="width:33%">
+            <div class="description">
+                <b class="description-step">Manage Subscriptions</b>
+            </div>
+        </td>
+        <td style="width:33%">
+            <div class="description">
+                <b class="description-step">Broadcast Messages</b>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="width:33%">
+            <div class="photobanner-contact">
+                <img src="~/Images/BlueIcons/receive-message.png" style="width:50%; height:50%"/>
+            </div>
+        </td>
+        <td style="width:33%">
+            <div class="photobanner-contact">
+                <img src="~/Images/BlueIcons/subscribe2.png" style="width:50%; height:50%"/>
+            </div>
+        </td>
+        <td style="width:33%">
+            <div class="photobanner-contact">
+                <img src="~/Images/BlueIcons/broadcast-messages.png" style="width:50%; height:50%"/>
+            </div>
+        </td>
+@*        <td style="width:33%">
+            <div class="photobanner-contact">
+                <img src="~/Images/BlueIcons/integration.png" style="width:50%; height:50%"/>
+            </div>
+        </td>*@
+    </tr>
+    <tr>
+        <td>            
+            <div class="description">
+                <br />
+                <b>Receive messages from your subscribers/customers</b>
+                <p style="font-size:12px">
+                    Your customers (or organization members) can send you messages by sending an SMS with a hashtag and your organization identifier to the Figlut
+                    phone number:
+                    <br />
+                    <b> @figlutPhoneNumber</b>
+                    <br />
+                    <br />
+                    <b>Received messages are forwarded to your email immediately and can also be viewed on the Figlut website.</b>
+                    <br />
+                    <br />
+                    e.g. <i>Hi <b>#BLUECOFFEE</b>. I really love your coffee shop, but one of your waiters is rude.</i>
+                    <br />
+                    <br />
+                </p>
+            </div>
+        </td>
+        <td>
+            <div class="description">
+                <b>Subscription management</b>
+                <p style="font-size:12px">
+                    When receiving an SMS, the person's <b>cell phone number automatically gets saved as a subscriber to your organization</b>
+                    and can be mananged from the Figlut website.
+                    <br />
+                    <br />
+                    People can <b><i>optionally</i></b> include their name in the SMS
+                    <br />
+                    e.g. <i>Hi <b>#BLUECOFFEE</b>. I'd like to subscribe to notifcations from you. <b>*John</b>.</i>
+                    <br />
+                    <br />
+                    <b>Subscribers manage their own subscriptions</b>
+                    by using the Figlut website to search for and manage subscriptions linked to their cell phone number.
+                </p>
+            </div>
+        </td>
+        <td>
+            <div class="description">
+                <b>Send notification to your subscribers</b>
+                <p style="font-size:12px">
+                    Once you have sufficient subscribers, purchase some SMS credits and notify them of your promotions, product updates, voucher codes, events etc.
+                    <br />
+                    <br />
+                    <b>This process is as simple as typing up your messages on the Figlut website and creating your SMS campaign.</b>
+                    <br />
+                    <br />
+                </p>
+            </div>
+        </td>
+    </tr>
+</table>
+<br />
+
+@*Services*@
+<a id="services"></a>
+<nav>
+    <ul id="menu">
+        <li>
+            <img src="~/Images/Icons/red-user-icon32.png" style="float:right; margin-right:1%; margin-left:1%"/>
+            <a href="#features" style="float:left">Features</a>
+            <a href="#services" style="float:right">Services</a>
+        </li>
+    </ul>
+</nav>
+<hr />
+<div class="description">
+    <i>
+        We offer the following services to help you <b>promote your business/organization and develop custom solutions to meet your business needs.</b>.
+    </i>
+</div>
+<br />
+<h3 class="description-title">Services</h3>
+<table>
+    <tr>
+        <td style="width:33%">
+            <div class="description">
+                <b class="description-step">Marketing Material</b>
+            </div>
+        </td>
+        <td style="width:33%">
+            <div class="description">
+                <b class="description-step">Custom Development</b>
+            </div>
+        </td>
+        <td style="width:33%">
+            <div class="description">
+                <b class="description-step">Developer Integration</b>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="width:33%">
+            <div class="photobanner-contact">
+                <img src="~/Images/BlueIcons/poster-red-mountain.png" style="width:50%; height:50%"/>
+            </div>
+        </td>
+        <td style="width:33%">
+            <div class="photobanner-contact">
+                <img src="~/Images/BlueIcons/idea2.png" style="width:50%; height:50%"/>
+            </div>
+        </td>
+        <td style="width:33%">
+            <div class="photobanner-contact">
+                <img src="~/Images/BlueIcons/integration.png" style="width:50%; height:50%"/>
+            </div>
+        </td>
+@*        <td style="width:33%">
+            <div class="photobanner-contact">
+                <img src="~/Images/BlueIcons/integration.png" style="width:50%; height:50%"/>
+            </div>
+        </td>*@
+    </tr>
+    <tr>
+        <td>            
+            <div class="description">
+                <b>Marketing services</b>
+                <p style="font-size:12px">
+                    We offer services to create posters and pamphlets with your company logo describing how to subscribe to notifications from your company.
+                    <br />
+                    <br />
+                    e.g. Blue Coffee occasionaly sends out notifications about specials, events and promotions. To subscriber SMS <b>#BLUECOFFEE</b> to <b>@figlutPhoneNumber</b>
+                </p>
+            </div>
+        </td>
+        <td>
+            <div class="description">
+                <br />
+                <br />
+                <b>Custom software development services</b>
+                <p style="font-size:12px">
+                    Should you have custom business requirements related to communicating with your customers and/or promoting your business, we can help with that.
+                    We offer software development and consulting services to develop custom apps that fit your specific business needs.
+                    We can then integrate these external apps into the Figlut system for SMS notifications.
+                    <br />
+                    <br />
+                    e.g. we have developed an app for <b>Pharmacies</b> to manage their customers and their <b>Repeat medication schedules</b>. 
+                    <b>Using Figlut.com, the Repeat app automatically sends out SMS notifications</b> to all the patients requiring
+                    their medication on the day to remind them of the medication being delivered within 24 hours.
+                </p>
+            </div>
+        </td>
+        <td>
+            <div class="description">
+                <b>Integrate your existing system into Figlut</b>
+                <p style="font-size:12px">
+                    Figlut provides a REST Web Service API (Application Programming Interface) to allow you to integrate your existing software into Figlut.
+                    Should you not have your own software developers to handle the integration, we can offer our own software development services to you.
+                    <br />
+                    <br />
+                    e.g. <b>you could send SMS notifications directly from your current system via Figlut</b> and/or manage Figlut subscriptions directly from your own system.
+                </p>
+            </div>
+        </td>
+    </tr>
+</table>
+<br />
+<br />
+
+
+@*Contact*@
+<a id="contact"></a>
+<nav>
+    <ul id="menu">
+        <li>
+            <img src="~/Images/Icons/red-address-book-icon32.png" style="float:right; margin-right:1%; margin-left:1%"/>
+            <a href="#services" style="float:left">Services</a>
+            <a href="#contact" style="float:right">Contact</a>
+        </li>
+    </ul>
+</nav>
+<hr />
+<div class="description">
+    <i>
+        We would love to see your business/organization flourish and get you connected to your customers!
+        <b>Give us a shout</b> so we can help you get started with marketing your organization!
+    </i>
+</div>
+<br />
+<h3 class="description-title">Contact Us</h3>
+<table>
+    <tr>
+        <td style="width:33%">
+            <b class="description-step">SMS</b>
+        </td>
+        <td style="width:33%">
+            <div class="description">
+                <b class="description-step">Email</b>
+            </div>
+        </td>
+        <td style="width:33%">
+            <b class="description-step">Call</b>
+        </td>
+    </tr>
+    <tr>
+        <td style="width:33%">
+            <div class="photobanner-contact">
+                <img src="~/Images/BlueIcons/sms2.png" style="width:50%; height:50%"/>
+            </div>
+        </td>
+        <td style="width:33%">
+            <div class="photobanner-contact">
+                <img src="~/Images/BlueIcons/send-message3.png" style="width:50%; height:50%"/>
+            </div>
+        </td>
+        <td style="width:33%">
+            <div class="photobanner-contact">
+                <img src="~/Images/BlueIcons/smartphone.png" style="width:50%; height:50%"/>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>            
+            <div class="description">
+                <br />
+                SMS <b>#figlut</b> and your message to <b>@figlutPhoneNumber</b>
+                <p style="font-size:12px">
+                    e.g. Hi <b>#figlut</b> team. How do I get started with marketing my business?
+                </p>
+            </div>
+        </td>
+        <td>
+            <div class="description">
+                <b>Drop us an email</b>
+                <p style="font-size:12px">
+                    Send an email to the Figlut team: <a href="mailto:@Html.Raw(figlutGeneralEmailAddress)">@Html.Raw(figlutGeneralEmailAddress)</a>
+                </p>
+            </div>
+        </td>
+        <td>
+            <div class="description">
+                <b>Give us a call</b>
+                <p style="font-size:12px">
+                    Speak to an executive: 
+                    <br />
+                    <b>+27 (83) 395 8283</b> / <b>+27 (79) 875 4747</b>
+                </p>
+            </div>
+        </td>
+    </tr>
+</table>
+<br />
+<br />
+<br />
+<br />
+<br />
+
+@*About*@
+<a id="about"></a>
+<nav>
+    <ul id="menu">
+        <li>
+            <img src="~/Images/Icons/red-balloon-2-icon32.png" style="float:right; margin-right:1%; margin-left:1%"/>
+            <a href="#contact" style="float:left">Contact</a>
+            <a href="#about" style="float:right">About</a>
+        </li>
+    </ul>
+</nav>
+<hr />
+<div class="description">
+    <i>
+        Figlut is a company that aims to help small and medium sized businesses and organizations to promote themselves and <b>most importantly strengthen their customer retention</b>.
+    </i>
+</div>
+<br />
+<h3 class="description-title">About</h3>
+<div class="centerAbout" style="width:50%; left: 50%">
+    <i>
+        <b>Customer retention</b> has traditionally ranked low as a business priority: as recently as 2012, marketers ranked “driving sales” as their highest concern while “engaging customers” and “building customer loyalty” tied for last place. This is despite clear evidence that existing customers are more valuable than new customers.
+        This trend is beneficial: according to a study by Bain & Company, increasing customer retention rates by just 5% increases profits by 25% to 95%. What’s more, 82% of companies agree that retention is cheaper to execute than acquisition. 
+        In order to build a relationship with customers we first need to increase the number of interactions with them. Some quick wins such as running competitions and once off promotions create opportunities for customers to engage and ultimately repurchase. 
+        Do not mistake a repurchase as a relationship with customer. A relationship takes time to nurture. Customer retention is the first step to customer loyalty but there is still a lot of work to be done. 
+    </i>
+    <br />
+    <br />
+    <a href="~/Files/Figlut-The-Value-of-Customer-Retention-and-Customer-Loyalty.pdf" target="_blank">Download</a> and read our full White paper on <i>The Value of Customer Retention and Customer Loyalty</i>
+</div>
+<br />
+<br />
+
+@section scripts {
+    <script type="text/javascript">
+        var $root = $('html, body');
+        $('a').click(function () {
+            $root.animate({
+                scrollTop: $($.attr(this, 'href')).offset().top
+            }, 500);
+            return false;
+        });
+    </script>
+}

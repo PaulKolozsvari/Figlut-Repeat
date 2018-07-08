@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FiglutDesktopManagerSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance&amp;quot;">
+  <ShowMessageBoxOnException>true</ShowMessageBoxOnException>
+  <FormBarHeight>21</FormBarHeight>
+  <StartInFullScreen>true</StartInFullScreen>
+  <WebServiceBaseUrl>http://127.0.0.1:2983/FiglutRepeat</WebServiceBaseUrl>
+  <WebServiceRequestTimeout>30000</WebServiceRequestTimeout>
+  <WebServiceTextResponseEncoding>UTF8</WebServiceTextResponseEncoding>
+  <WebServiceMessagingFormat>JSON</WebServiceMessagingFormat>
+  <LogToFile>false</LogToFile>
+  <LogToWindowsEventLog>true</LogToWindowsEventLog>
+  <LogToConsole>false</LogToConsole>
+  <LogFileName>FRepeat.Log.txt</LogFileName>
+  <EventSourceName>FRepeat.Source</EventSourceName>
+  <EventLogName>FRepeat.Log</EventLogName>
+  <LoggingLevel>Normal</LoggingLevel>
+</FiglutDesktopManagerSettings>

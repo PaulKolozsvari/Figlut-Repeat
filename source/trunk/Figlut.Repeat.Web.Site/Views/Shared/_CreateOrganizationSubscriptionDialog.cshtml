@@ -1,0 +1,119 @@
+﻿@model Figlut.Repeat.Web.Site.Models.OrganizationSubscriptionModel
+<div id="dlgCreateOrganizationSubscription">
+    <img src="~/Images/Icons/red-document-plus-icon32.png" style="float:right; margin-right:1%; margin-left:1%" />
+    <div class="centerForm">
+        <form id="CreateOrganizationSubscriptionForm">
+            @Html.ValidationSummary(true, "Failed to create.")
+            <fieldset>
+                <legend>Confirmation Form</legend>
+                @Html.HiddenFor(m => m.SubscriptionId)
+                @Html.HiddenFor(m => m.OrganizationId)
+                @Html.HiddenFor(m => m.SubscriberId)
+                @Html.HiddenFor(m => m.OrganizationId)
+
+                @Html.HiddenFor(m => m.DateCreated)
+                @Html.HiddenFor(m => m.SubscriberName)
+                @Html.HiddenFor(m => m.SubscriberIsEnabled)
+                @Html.HiddenFor(m => m.SubscriberDateCreated)
+
+                <div class="field-label">
+                    @Html.Raw("Subscriber Cell Phone Number *")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.TextBoxFor(m => m.SubscriberCellPhoneNumber)
+                    @Html.ValidationMessageFor(m => m.SubscriberCellPhoneNumber)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Customer Full Name")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.CustomerFullName)
+                    @Html.ValidationMessageFor(m => m.CustomerFullName)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Customer Email Address")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.CustomerEmailAddress)
+                    @Html.ValidationMessageFor(m => m.CustomerEmailAddress)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Customer Identifier")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.CustomerIdentifier)
+                    @Html.ValidationMessageFor(m => m.CustomerIdentifier)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Customer Physical Address")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.CustomerPhysicalAddress)
+                    @Html.ValidationMessageFor(m => m.CustomerPhysicalAddress)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Customer Notes")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.CustomerNotes)
+                    @Html.ValidationMessageFor(m => m.CustomerNotes)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Enabled")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.Enabled, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.Enabled, "Enabled is required.")
+                </div>
+                <br />
+                <div id="CreateOrganizationSubscriptionErrorField" style="color:#8A0808"></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var dialogName = '#dlgCreateOrganizationSubscription';
+        createDialog(dialogName, 'Create Organization Subscription', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
+    });
+
+    function onConfirmOK() {
+        var dialogName = '#dlgCreateOrganizationSubscription';
+        var postBackUrl = '@Url.Action("CreateDialog", "OrganizationSubscription")';
+        $.ajax({
+            url: postBackUrl,
+            type: 'POST',
+            data: $("#CreateOrganizationSubscriptionForm").serialize(),
+            success: function (data) {
+                if (data.Success) {
+                    $(dialogName).dialog("close");
+                    //Submit the form which will refresh grid to show the change the enabled/disabled.
+                    var form = $('#frmDetails');
+                    form.submit()
+                } else {
+                    $("#CreateOrganizationSubscriptionErrorField").html(data.ErrorMsg);
+                }
+            }
+        })
+    };
+
+    function onConfirmOpen() {
+
+    }
+
+    function onConfirmCancel() {
+        //$('#confirmation-message').val('');
+        $("#CreateOrganizationSubscriptionErrorField").html('');
+    }
+</script>

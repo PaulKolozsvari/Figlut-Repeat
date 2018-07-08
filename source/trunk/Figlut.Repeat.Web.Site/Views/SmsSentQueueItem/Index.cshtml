@@ -1,0 +1,54 @@
+﻿@model Figlut.Repeat.Web.Site.Models.FilterModel<SmsSentQueueItemModel>
+
+@using Figlut.Server.Toolkit.Data;
+@using Figlut.Repeat.Web.Site.Configuration;
+@using Figlut.Repeat.Web.Site;
+@using Figlut.Repeat.Web.Site.Models;
+
+@{
+    ViewBag.Title = "Campaign SMS Send Queue";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<nav>
+    <ul id="menu">
+        <li>
+            <img src="~/Images/Icons/red-mail-open-icon32.png" style="float:right; margin-right:1%; margin-left:1%" />
+            @if (!string.IsNullOrEmpty(Model.ParentCaption))
+            {
+                <a href="" style="float:right">@Html.Raw(string.Format("SMS Send Queue for Campaign: {0}", Model.ParentCaption))</a>
+            }
+            else
+            {
+                <a href="" style="float:right">@Html.Raw(string.Format("SMS Send Queue"))</a>
+            }
+        </li>
+    </ul>
+</nav>
+<hr />
+@using (Ajax.BeginForm("Index", "SmsSentQueueItem", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    UpdateTargetId = "gridPartial",
+    HttpMethod = "POST"
+},
+new { @id = "frmDetails" }))
+{
+    <div id="gridPartial">
+        @{
+            Html.RenderPartial("_SmsSentQueueItemGrid", Model);
+        }
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).keypress(function (event) {
+            if (event.which == 13) {
+                //$("#btnSearch").click();
+                postSmsSentQueueItems();
+                return false; //Cancel the default form's post behaviour when enter key is pressed i.e. if this is not set (or set to true) then the form will be posted twice when pressing the enter key.
+            }
+        });
+        loadDialog("#divConfirmationDialog", "#dlgConfirmation", "ConfirmDeleteDialog", "SmsSentQueueItem", 'identifier', '@Guid.Empty');
+    });
+</script>

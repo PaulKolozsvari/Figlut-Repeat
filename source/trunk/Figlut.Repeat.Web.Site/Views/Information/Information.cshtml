@@ -1,0 +1,20 @@
+﻿@using Figlut.Repeat.Web.Site.Configuration;
+
+@{
+    ViewBag.Title = RepeatWebApp.Instance.Settings.ApplicationName;
+    ViewBag.PageTitle = "Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="centerInformation">
+    @using (Html.BeginForm())
+    {
+         <div style="color:#208657">
+            @if (!string.IsNullOrEmpty(ViewBag.InformationMessage))
+            {
+                <br />
+                @Html.Raw(ViewBag.InformationMessage);
+            }
+        </div>
+    }
+</div>

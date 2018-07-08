@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RepeatSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ShowMessageBoxOnException>false</ShowMessageBoxOnException>
+  <ApplicationName>Figlut Repeat REST API</ApplicationName>
+  <ICalendarUrl>http://www.kayaposoft.com/enrico/ics/v1.0?country={0}&amp;fromDate={1}&amp;toDate={2}</ICalendarUrl><!--e.g. http://www.kayaposoft.com/enrico/ics/v1.0?country=zaf&fromDate=01-01-2018&toDate=31-12-2018-->
+  <SmsNotificationsEnabled>true</SmsNotificationsEnabled>
+  <SmsDatabaseLoggingEnabled>true</SmsDatabaseLoggingEnabled>
+  <TrimSmsSentLogResponseTag>true</TrimSmsSentLogResponseTag>
+  <TrimSmsSentLogResponseTagLength>50</TrimSmsSentLogResponseTagLength>
+  <SmsProvider>Zoom</SmsProvider><!--Zoom/Clickatell-->
+  <ZoomUrl>https://zoomconnect.com/zoom/api/rest/v1/sms/send</ZoomUrl>
+  <ZoomAccountEmailAddress>paul.kolozsvari@binarychef.com</ZoomAccountEmailAddress>
+  <ZoomAccountToken>b6d5fa52-56e2-4190-b742-ec4d3697f034</ZoomAccountToken>
+  <ClickatellUrl>http://api.clickatell.com/http/sendmsg</ClickatellUrl>
+  <ClickatellUser>paulkolo</ClickatellUser>
+  <ClickatellPassword>XMRDMMgTCbERFP</ClickatellPassword>
+  <ClickatellApiId>3531847</ClickatellApiId>
+  <SmsReceivedQueueProcessorId>999ED78E-1CB6-4A56-89AD-AEA9DA63A035</SmsReceivedQueueProcessorId>
+  <SmsSentQueueProcessorId>232E0992-CA64-4C1E-B960-A79469927D5A</SmsSentQueueProcessorId>
+  <SmsDeliveryReportQueueProcessorId>BA82D2D2-B6BD-4281-B396-D327FE94CE9D</SmsDeliveryReportQueueProcessorId>
+  <EmailNotificationsEnabled>true</EmailNotificationsEnabled>
+  <EmailDatabaseLoggingEnabled>true</EmailDatabaseLoggingEnabled>
+  <EmailDatabaseLogMessageContents>true</EmailDatabaseLogMessageContents>
+  <ThrowEmailFailExceptions>false</ThrowEmailFailExceptions>
+  <EmailProvider>GMail</EmailProvider><!--GMail-->
+  <GMailSMTPServer>smtp.gmail.com</GMailSMTPServer>
+  <GMailSmtpUserName>notifications@figlut.com</GMailSmtpUserName>
+  <GMailSmtpPassword>f!GlUT.n0t!fIKaTiOns27-1</GMailSmtpPassword>
+  <GMailSmtpPort>587</GMailSmtpPort>
+  <SenderEmailAddress>notifications@figlut.com</SenderEmailAddress>
+  <SenderDisplayName>Figlut Repeat Notification</SenderDisplayName>
+  <IncludeDefaultEmailRecipients>true</IncludeDefaultEmailRecipients>
+  <DefaultEmailRecipients>
+    <EmailNotificationRecipient>
+      <EmailAddress>team@figlut.com</EmailAddress>
+      <DisplayName>Figlut Team</DisplayName>
+    </EmailNotificationRecipient>
+  </DefaultEmailRecipients>
+  <LogToFile>false</LogToFile>
+  <LogToWindowsEventLog>true</LogToWindowsEventLog>
+  <LogToConsole>true</LogToConsole>
+  <LogFileName>FRepeat.Log.txt</LogFileName>
+  <EventSourceName>FRepeat.Source</EventSourceName>
+  <EventLogName>FRepeat.Log</EventLogName>
+  <LoggingLevel>Maximum</LoggingLevel>
+  <DatabaseConnectionString>Data Source=PAULKOLOZSV38D1\MSSQLSERVER2012;Initial Catalog=FiglutRepeat;Persist Security Info=True;User ID=sa;Password=27830529</DatabaseConnectionString>
+  <DatabaseCommandTimeout>30000</DatabaseCommandTimeout>
+  <LinqToSQLClassesAssemblyFileName>Figlut.Repeat.ORM.dll</LinqToSQLClassesAssemblyFileName>
+  <LinqToSQLClassesNamespace>Figlut.Repeat.ORM</LinqToSQLClassesNamespace>
+  <HostAddressSuffix>FiglutRepeat</HostAddressSuffix>
+  <PortNumber>2983</PortNumber>
+  <UseAuthentication>true</UseAuthentication>
+  <IncludeExceptionDetailInResponse>false</IncludeExceptionDetailInResponse>
+  <TextResponseEncoding>UTF8</TextResponseEncoding>
+  <MaxBufferPoolSize>2147483647</MaxBufferPoolSize>
+  <MaxBufferSize>2147483647</MaxBufferSize>
+  <MaxReceivedMessageSize>2147483647</MaxReceivedMessageSize>
+  <TraceHttpMessages>false</TraceHttpMessages>
+  <TraceHttpMessageHeaders>false</TraceHttpMessageHeaders>
+  <AuditServiceCalls>true</AuditServiceCalls>
+</RepeatSettings>

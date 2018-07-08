@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RepeatWebSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ShowMessageBoxOnException>false</ShowMessageBoxOnException>
+  <ApplicationName>Figlut</ApplicationName>
+  <ICalendarUrl>http://www.kayaposoft.com/enrico/ics/v1.0?country={0}&amp;fromDate={1}&amp;toDate={2}</ICalendarUrl><!--e.g. http://www.kayaposoft.com/enrico/ics/v1.0?country=zaf&fromDate=01-01-2018&toDate=31-12-2018-->
+  <HowitWorksImageGalleryDirectory>C:\Docs\Git\Figlut-Repeat\source\trunk\Figlut.Repeat.Web.Site\Images\HowItWorksGallery</HowitWorksImageGalleryDirectory>
+  <WhyItWorksImageGalleryDirectory>C:\Docs\Git\Figlut-Repeat\source\trunk\Figlut.Repeat.Web.Site\Images\WhyItWorksGallery</WhyItWorksImageGalleryDirectory>
+  <SmsNotificationsEnabled>true</SmsNotificationsEnabled>
+  <SmsDatabaseLoggingEnabled>true</SmsDatabaseLoggingEnabled>
+  <SmsDatabaseLogMessageContents>true</SmsDatabaseLogMessageContents>
+  <SmsProvider>Zoom</SmsProvider><!--Zoom/Clickatell-->
+  <ZoomUrl>https://zoomconnect.com/zoom/api/rest/v1/sms/send</ZoomUrl>
+  <ZoomAccountEmailAddress>paul.kolozsvari@binarychef.com</ZoomAccountEmailAddress>
+  <ZoomAccountToken>b6d5fa52-56e2-4190-b742-ec4d3697f034</ZoomAccountToken>
+  <ClickatellUrl>http://api.clickatell.com/http/sendmsg</ClickatellUrl>
+  <ClickatellUser>paulkolo</ClickatellUser>
+  <ClickatellPassword>XMRDMMgTCbERFP</ClickatellPassword>
+  <ClickatellApiId>3531847</ClickatellApiId>
+  <EmailNotificationsEnabled>true</EmailNotificationsEnabled>
+  <EmailDatabaseLoggingEnabled>true</EmailDatabaseLoggingEnabled>
+  <EmailDatabaseLogMessageContents>true</EmailDatabaseLogMessageContents>
+  <ThrowEmailFailExceptions>false</ThrowEmailFailExceptions>
+  <EmailProvider>GMail</EmailProvider><!--GMail-->
+  <GMailSMTPServer>smtp.gmail.com</GMailSMTPServer>
+  <GMailSmtpUserName>notifications@figlut.com</GMailSmtpUserName>
+  <GMailSmtpPassword>f!GlUT.n0t!fIKaTiOns27-1</GMailSmtpPassword>
+  <GMailSmtpPort>587</GMailSmtpPort>
+  <SenderEmailAddress>notifications@figlut.com</SenderEmailAddress>
+  <SenderDisplayName>Figlut Repeat Notification</SenderDisplayName>
+  <IncludeDefaultEmailRecipients>true</IncludeDefaultEmailRecipients>
+  <DefaultEmailRecipients>
+    <EmailNotificationRecipient>
+      <EmailAddress>team@figlut.com</EmailAddress>
+      <DisplayName>Figlut Team</DisplayName>
+    </EmailNotificationRecipient>
+  </DefaultEmailRecipients>
+  <LogToFile>false</LogToFile>
+  <LogToWindowsEventLog>false</LogToWindowsEventLog>
+  <LogToConsole>false</LogToConsole>
+  <LogFileName>FRepeat.Log.txt</LogFileName>
+  <EventSourceName>FRepeat.Source</EventSourceName>
+  <EventLogName>FRepeat.Log</EventLogName>
+  <LoggingLevel>Maximum</LoggingLevel>
+  <DatabaseConnectionString>Data Source=PAULKOLOZSV38D1\MSSQLSERVER2012;Initial Catalog=FiglutRepeat;Persist Security Info=True;User ID=sa;Password=27830529</DatabaseConnectionString>
+  <DatabaseCommandTimeout>30000</DatabaseCommandTimeout>
+  <LinqToSQLClassesAssemblyFileName>Figlut.Repeat.ORM.dll</LinqToSQLClassesAssemblyFileName>
+  <LinqToSQLClassesNamespace>Figlut.Repeat.ORM</LinqToSQLClassesNamespace>
+  <MerchantId>12317192</MerchantId>
+  <MerchantKey>bv0tu3fwzg1mo</MerchantKey>
+  <PassPhrase>zhhKb4pXcvX8XZmd9p7pMggdtv3KqT</PassPhrase>
+  <ProcessUrl>https://sandbox.payfast.co.za/eng/process?</ProcessUrl>
+  <ValidateUrl>https://sandbox.payfast.co.za/eng/query/validate</ValidateUrl>
+  <ReturnUrl>https://payfast-demo-mvc.azurewebsites.net/home/return</ReturnUrl>
+  <CancelUrl>https://payfast-demo-mvc.azurewebsites.net/home/cancel</CancelUrl>
+  <NotifyUrl>https://payfast-demo-mvc.azurewebsites.net/home/notify</NotifyUrl>
+  <ReturnUrl>https://payfast-demo-mvc.azurewebsites.net/home/return</ReturnUrl>
+  <CancelUrl>https://payfast-demo-mvc.azurewebsites.net/home/cancel</CancelUrl>
+  <NotifyUrl>https://payfast-demo-mvc.azurewebsites.net/home/notify</NotifyUrl>
+</RepeatWebSettings>

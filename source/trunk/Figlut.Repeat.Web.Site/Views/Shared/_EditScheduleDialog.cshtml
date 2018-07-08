@@ -1,0 +1,290 @@
+﻿@model Figlut.Repeat.Web.Site.Models.ScheduleModel
+
+<div id="dlgEditSchedule">
+    <img src="~/Images/Icons/red-document-plus-icon32.png" style="float:right; margin-right:1%; margin-left:1%" />
+    <div class="centerForm">
+        <form id="EditScheduleForm">
+            @Html.ValidationSummary(true, "Failed to edit.")
+            <fieldset>
+                <legend>Confirmation Form</legend>
+                @Html.HiddenFor(m => m.ScheduleId)
+                @Html.HiddenFor(m => m.SubscriptionId)
+                @Html.HiddenFor(m => m.CreateScheduleEntries)
+                @Html.HiddenFor(m => m.DateCreated)
+                @Html.HiddenFor(m => m.OrganizationId)
+                @Html.HiddenFor(m => m.SubscriberId)
+                @Html.HiddenFor(m => m.SubscriptionEnabled)
+                @Html.HiddenFor(m => m.CustomerFullName)
+                @Html.HiddenFor(m => m.CustomerIdentifier)
+                @Html.HiddenFor(m => m.CustomerPhysicalAddress)
+                @Html.HiddenFor(m => m.CustomerNotes)
+                @Html.HiddenFor(m => m.SubscriptionDateCreated)
+                @Html.HiddenFor(m => m.CellPhoneNumber)
+                @Html.HiddenFor(m => m.SubscriberName)
+                @Html.HiddenFor(m => m.SubscriberEnabled)
+                @Html.HiddenFor(m => m.MaxSmsSendMessageLength)
+
+                @if (ViewBag.SmsMessageTemplateList != null)
+                {
+                    <div class="field-label">
+                        @Html.Raw("SMS Message Templates")
+                    </div>
+                    <div class="editor-field">
+                        @Html.DropDownList("SmsMessageTemplateId", ViewBag.SmsMessageTemplateList as List<SelectListItem>, new { @class = "drop-down-field", @onchange = "onSmsMessageTemplateChanged()" })
+                    </div>
+                }
+                else
+                {
+                    @Html.HiddenFor(m => m.SmsMessageTemplateId)
+                }
+                <div class="field-label">
+                    @Html.Raw(string.Format("Notification Message (max {0} characters) *", Model.MaxSmsSendMessageLength))
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.NotificationMessageEdit)
+                    @Html.ValidationMessageFor(m => m.NotificationMessageEdit)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Schedule Name *")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.ScheduleName)
+                    @Html.ValidationMessageFor(m => m.ScheduleName)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Days Repeat Interval")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.DaysRepeatInterval, new { @type = "number" })
+                    @Html.ValidationMessageFor(m => m.DaysRepeatInterval)
+                </div>
+                <div class="field-label">
+                    @Html.Raw(string.Format("Entries' Time:"))
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.EntriesTime)
+                    @Html.ValidationMessageFor(m => m.EntriesTime)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Quantity")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.Quantity, new { @type = "number" })
+                    @Html.ValidationMessageFor(m => m.Quantity)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Unit of measure")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.UnitOfMeasure)
+                    @Html.ValidationMessageFor(m => m.UnitOfMeasure)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Notes")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.Notes)
+                    @Html.ValidationMessageFor(m => m.Notes)
+                </div>
+                <hr />
+                <div class="field-label">
+                    @Html.Raw("Exclude Non-working Days (will not affect existing entries)")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.ExcludeNonWorkingDays, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.ExcludeNonWorkingDays, "Is Monday Working Day is required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Exclude Public Holidays Days (will not affect existing entries)")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.ExcludePublicHolidays, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.ExcludePublicHolidays, "Is Monday Working Day is required.")
+                </div>
+                <hr />
+                <div class="field-label">
+                    @Html.Raw("Monday (working Day)?")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsMondayWorkDay, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsMondayWorkDay, "Is Monday Working Day is required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Tuesday (working Day)?")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsTuesdayWorkDay, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsTuesdayWorkDay, "Is Tuesday Working Day is required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Wednesday (working Day)?")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsWednesdayWorkDay, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsWednesdayWorkDay, "Is Wednesday Working Day is required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Thursday (working Day)?")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsThursdayWorkDay, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsThursdayWorkDay, "Is Thursday Working Dayis required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Friday (working Day)?")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsFridayWorkDay, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsFridayWorkDay, "Is Friday Working Dayis required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Saturday (working Day)?")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsSaturdayWorkDay, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsSaturdayWorkDay, "Is Saturday Working Day is required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Sunday (working Day)?")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsSundayWorkDay, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsSundayWorkDay, "Is Sunday Working Day is required.")
+                </div>
+                <br />
+                <div id="EditScheduleErrorField" style="color:#8A0808"></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var dialogName = '#dlgEditSchedule';
+        createDialog(dialogName, 'Edit Schedule', onConfirmOK, onConfirmOpen, onConfirmCancel, 500, 700);
+        enableDatepickers();
+    });
+
+    function onSmsMessageTemplateChanged() {
+        var smsMessageTemplate = $('#SmsMessageTemplateId').val();
+        $("#NotificationMessageEdit").val(smsMessageTemplate);
+    }
+
+    function onConfirmOK() {
+        var dialogName = '#dlgEditSchedule';
+        var postBackUrl = '@Url.Action("EditDialog", "Schedule")';
+        $.ajax({
+            url: postBackUrl,
+            type: 'POST',
+            data: $("#EditScheduleForm").serialize(),
+            success: function (data) {
+                if (data.Success) {
+                    $(dialogName).dialog("close");
+                    //Submit the form which will refresh grid to show the change the enabled/disabled.
+                    var form = $('#frmDetails');
+                    form.submit()
+                } else {
+                    $("#EditScheduleErrorField").html(data.ErrorMsg);
+                }
+            }
+        })
+    };
+
+    function onConfirmOpen() {
+    }
+
+    function onConfirmCancel() {
+        //$('#confirmation-message').val('');
+        $("#EditScheduleErrorField").html('');
+    }
+</script>

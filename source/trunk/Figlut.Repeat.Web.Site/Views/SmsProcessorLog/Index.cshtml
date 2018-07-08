@@ -1,0 +1,45 @@
+﻿@model Figlut.Repeat.Web.Site.Models.FilterModel<SmsProcessorLogModel>
+
+@using Figlut.Server.Toolkit.Data;
+@using Figlut.Repeat.Web.Site.Configuration;
+@using Figlut.Repeat.Web.Site;
+@using Figlut.Repeat.Web.Site.Models;
+
+@{
+    ViewBag.Title = "SMS Processor Log";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<nav>
+    <ul id="menu">
+        <li>
+            <img src="~/Images/Icons/red-book-icon32.png" style="float:right; margin-right:1%; margin-left:1%"/>
+            <a href="" style="float:right">SMS Processor Log</a>
+        </li>
+    </ul>
+</nav>
+<hr />
+@using (Ajax.BeginForm("Index", "SmsProcessorLog", new AjaxOptions {
+    InsertionMode = InsertionMode.Replace,
+    UpdateTargetId = "gridPartial",
+    HttpMethod = "POST"},
+    new { @id = "frmDetails" } ))
+{
+    <div id="gridPartial">
+        @{
+            Html.RenderPartial("_SmsProcessorLogGrid", Model);
+        }
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).keypress(function (event) {
+            if (event.which == 13) {
+                //$("#btnSearch").click();
+                postSmsProcessorLog();
+                return false; //Cancel the default form's post behaviour when enter key is pressed i.e. if this is not set (or set to true) then the form will be posted twice when pressing the enter key.
+            }
+        });
+        loadDialog("#divConfirmationDialog", "#dlgConfirmation", "ConfirmDeleteDialog", "SmsProcessorLog", 'identifier', '@Guid.Empty');
+    });
+</script>

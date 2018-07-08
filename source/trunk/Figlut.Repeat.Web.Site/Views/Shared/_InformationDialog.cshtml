@@ -1,0 +1,44 @@
+﻿@model Figlut.Repeat.Web.Site.Models.InformationModel
+
+<div id="dlgInformation">
+    <div class="centerForm">
+        <form id="WaitForm">
+            @Html.ValidationSummary(true, "Failed to load information dialog.")
+            <fieldset>
+                <legend>Information Form</legend>
+                @Html.HiddenFor(m => m.Identifier)
+                <div class="field-label" id="information-message" style="font-size:.8em">
+                    @Html.Raw(Model.InformationMessage)
+                    <br />
+                    <br />
+                </div>
+                <br />
+                <br />
+                <div id="InformationErrorField" style="color:#8A0808"></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var dialogName = '#' + '@Model.DialogDivId';
+        createDialog(dialogName, 'Information', onInformationOK, onInformationOpen, undefined, 300, 400);
+    });
+
+    function onInformationOK() {
+        var dialogName = '#' + '@Model.DialogDivId';
+        $(dialogName).dialog("close");
+@*        var url = '@Url.Content("~/Home")';
+        window.location.href = url;*@
+    };
+
+    function onInformationOpen() {
+
+    }
+
+    function onInformationCancel() {
+        //$('#information-message').val('');
+        $("#InformationErrorField,#InformationMessage").html('');
+    }
+</script>

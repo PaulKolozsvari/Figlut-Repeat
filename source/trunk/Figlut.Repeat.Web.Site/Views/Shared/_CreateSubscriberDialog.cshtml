@@ -1,0 +1,84 @@
+﻿@model Figlut.Repeat.Web.Site.Models.SubscriberModel
+
+<div id="dlgCreateSubscriber">
+    <img src="~/Images/Icons/red-document-plus-icon32.png" style="float:right; margin-right:1%; margin-left:1%" />
+    <div class="centerForm">
+        <form id="CreateSubscriberForm">
+            @Html.ValidationSummary(true, "Failed to Create.")
+            <fieldset>
+                <legend>Confirmation Form</legend>
+                @Html.HiddenFor(m => m.SubscriberId)
+                @Html.HiddenFor(m => m.DateCreated)
+                <div class="field-label">
+                    @Html.Raw("Cell Phone Number")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.CellPhoneNumber)
+                    @Html.ValidationMessageFor(m => m.CellPhoneNumber)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Name")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.Name)
+                    @Html.ValidationMessageFor(m => m.Name)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Enabled")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.Enabled, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.Enabled, "Enabled is required.")
+                </div>
+                <br />
+                <div id="CreateSubscriberErrorField" style="color:#8A0808"></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var dialogName = '#dlgCreateSubscriber';
+        createDialog(dialogName, 'Create Subscriber', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
+    });
+
+    function onConfirmOK() {
+        var dialogName = '#dlgCreateSubscriber';
+        var postBackUrl = '@Url.Action("CreateDialog", "Subscriber")';
+        $.ajax({
+            url: postBackUrl,
+            type: 'POST',
+            data: $("#CreateSubscriberForm").serialize(),
+            success: function (data) {
+                if (data.Success) {
+                    $(dialogName).dialog("close");
+                    //Submit the form which will refresh grid to show the change the enabled/disabled.
+                    var form = $('#frmDetails');
+                    form.submit()
+                } else {
+                    $("#CreateSubscriberErrorField").html(data.ErrorMsg);
+                }
+            }
+        })
+    };
+
+    function onConfirmOpen() {
+
+    }
+
+    function onConfirmCancel() {
+        //$('#confirmation-message').val('');
+        $("#CreateSubscriberErrorField").html('');
+    }
+</script>

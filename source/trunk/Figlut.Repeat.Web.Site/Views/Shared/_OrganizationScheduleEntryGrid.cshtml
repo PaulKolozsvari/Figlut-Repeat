@@ -1,0 +1,235 @@
+﻿@model Figlut.Repeat.Web.Site.Models.FilterModel<ScheduleEntryModel>
+
+@using Figlut.Server.Toolkit.Data;
+@using Figlut.Repeat.Web.Site.Configuration;
+@using Figlut.Repeat.Web.Site;
+@using Figlut.Repeat.Web.Site.Models;
+@using Figlut.Repeat.Web.Site.Extensions;
+@using Figlut.Repeat.ORM.Helpers;
+
+@{
+    Figlut.Repeat.Web.Site.Models.ScheduleEntryModel scheduleEntry = new ScheduleEntryModel();
+}
+@{
+    int scheduleEntriesPerPageToDisplay = Convert.ToInt32(RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.ScheduleEntriesPerPageToDisplay].SettingValue);
+    var grid = new WebGrid(Model.DataModel, canPage: true, rowsPerPage: scheduleEntriesPerPageToDisplay, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+    grid.Pager(WebGridPagerModes.All);
+}
+
+<div id="gridContent" class="data-grid">
+    <div id="gridWrapper">
+        @Html.HiddenFor(p => p.ParentId)
+        @Html.HiddenFor(p => p.ParentCaption)
+        <div class="centerInformation" style="float:inherit; margin-top:1%; margin-bottom:1%;">
+            <div class="grid-search">
+                <table style="width:99%">
+                    <tr>
+                        <td style="width:60%;">
+                            <div class="search-text">
+                                @Html.Raw("Search Text")
+                            </div>
+                        </td>
+                        <td>
+                            <div class="field-label">
+                                @Html.Raw("Date")
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.EditorFor(m => m.SearchText)
+                        </td>
+                        <td>
+                            @Html.EditorFor(m => m.StartDate, new { disabled = "disabled", @readonly = "readonly" })
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="grid-buttons">
+                <div style="float: left; margin-left:2%; margin-right:2%">
+                    @Html.LinkButtonForSubmit("Search", "onSearchScheduleEntriesClick()", "btnSearch", "search.png")
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        @Html.LinkButtonForSubmit("Download", "onDownloadAllScheduleEntriesCsvFileClick()", "btnDownload", "Repeatsheet.png")
+                    }
+                </div>
+                <div style="float: right; margin-left:2%; margin-right:2%">
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        @Html.LinkButtonForCancel("Delete All", "onDeleteAllScheduleEntriesClick()", "btnDeleteAllScheduleEntries")
+                        if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+                        {
+                            scheduleEntry = (ScheduleEntryModel)grid.Rows[grid.SelectedIndex].Value;
+                            @Html.LinkButtonForCancel("Delete", "onDeleteScheduleEntryClick()", "btnDeleteScheduleEntry")
+                            @Html.LinkButtonForSubmit("Edit", "onEditScheduleEntryClick()", "btnEditScheduleEntry", "red-edit.png")
+                            @Html.LinkButtonForSubmit("SMS", "onSendSmsScheduleEntryClick()", "btnSendSmsScheduleEntry", "red-mail-send-icon32.png")
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="schedule-entry-preview">
+            @if (Model.IsAdministrator && grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+            {
+                scheduleEntry = (ScheduleEntryModel)grid.Rows[grid.SelectedIndex].Value;
+                <div style="float:left; margin-left:2%; margin-right:2%;">
+                    <b>@Html.Raw(string.Format("ID: {0}", scheduleEntry.ScheduleEntryId.ToString()))</b>
+                </div>
+            }
+            <div style="float: right; margin-left:2%; margin-right:2%">
+                <b>@Html.Raw(string.Format("Schedule Entries Loaded: {0} of {1}", Model.TotalCount.ToString(), Model.TotalTableCount.ToString()))</b>
+            </div>
+        </div>
+        <div id="gridTableContainer">
+            @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "header",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                columns: grid.Columns(
+                grid.Column("Entries", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
+                grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.CustomerFullName, false), "Customer"),
+                grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.ScheduleName, false), "Schedule"),
+                grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.EntryDateFormatted, false), "Entry Date"),
+                grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.EntryDateDayOfWeek, false), "Entry Day"),
+                grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.NotificationDateFormatted, false), "Notification Date"),
+                grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.NotificationDateDayOfWeek, false), "Notification Day"),
+                grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.EntryTime, false), "Time"),
+                grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.SMSNotificationSent, false), "SMS Sent"),
+                grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.SMSDateSent, false), "SMS Sent Date")
+            ))
+        </div>
+        <div class="schedule-entry-preview">
+            @if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+            {
+                scheduleEntry = (ScheduleEntryModel)grid.Rows[grid.SelectedIndex].Value;
+                if (!string.IsNullOrEmpty(scheduleEntry.SMSMessageId))
+                {
+                    <div style="float: left; margin-left:2%; margin-right:2%">
+                        <b>@Html.Raw(string.Format("SMS Message ID: {0}", scheduleEntry.SMSMessageId))</b>
+                    </div>
+                }
+                <div style="float:right; margin-left:2%; margin-right:2%; color: #a30e0e;">
+                    @Html.Raw(string.Format("Message: {0}", scheduleEntry.NotificationMessage))
+                </div>
+            }
+        </div>
+    </div>
+    <div id="OrganizationScheduleEntriesErrorField" style="color:#8A0808">
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <br />
+            @Html.Raw(ViewBag.ErrorMessage)
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#SearchText").focus();
+        makeGridRowsPostForm();
+        enableDatepickers();
+    });
+
+    function onSearchScheduleEntriesClick() {
+        postOrganizationScheduleEntries();
+    }
+
+    function onEditScheduleEntryClick() {
+        showDialog(
+            '#divEditScheduleEntry',
+            '#dlgEditScheduleEntry',
+            'EditDialog',
+            'ScheduleEntry',
+            'scheduleEntryId',
+            '@scheduleEntry.ScheduleEntryId.ToString()');
+    };
+
+    function onDeleteScheduleEntryClick() {
+        showDialog(
+            '#divConfirmationDialog',
+            '#dlgConfirmation',
+            'ConfirmDeleteDialog',
+            'OrganizationScheduleEntry',
+            'identifier',
+            '@scheduleEntry.ScheduleEntryId.ToString()');
+    };
+
+    function onSendSmsScheduleEntryClick() {
+        sendEnabled = false;
+
+        var cellPhoneNumber = '@scheduleEntry.CellPhoneNumber'
+        var waitMessage = 'Sending SMS to ' + cellPhoneNumber + ' ...';
+        var informationMessage = 'SMS sent successfully to ' + cellPhoneNumber + '.';
+        $("#btnSendSmsScheduleEntry").hide();
+        showDialog(
+            '#divWaitDialog',
+            '#dlgWait',
+            'WaitDialog',
+            'SmsSent',
+            'message',
+            waitMessage);
+
+        //$("#btnComposeStandaloneSmsSend").attr("disabled", true);
+        var url = '@Url.Action("SendSms", "OrganizationScheduleEntry", new { scheduleEntryId = "_scheduleEntryId" })';
+        url = url.replace('_scheduleEntryId', '@scheduleEntry.ScheduleEntryId.ToString()');
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            //data: $('form#frmDetails').serialize(),
+            success: function (data) {
+                if (data.Success) {
+                    $("#btnSendSmsScheduleEntry").show();
+                    $('#dlgWait').dialog("close");
+                    showDialog(
+                        '#divInformationDialog',
+                        '#dlgInformation',
+                        'InformationDialog',
+                        'OrganizationScheduleEntry',
+                        'message',
+                        informationMessage);
+                    postOrganizationScheduleEntries();
+                    refreshSmsCreditsBalanceMenu();
+                } else {
+                    $('#dlgWait').dialog("close");
+                    $("#btnSendSmsScheduleEntry").show();
+                    $("#OrganizationScheduleEntriesErrorField").html(data.ErrorMsg);
+                    sendEnabled = true;
+                }
+            }
+        })
+    }
+
+    function getSearchParametersString() {
+        var searchParameters = '@string.Format("{0}|{1}|{2}|{3}",
+        Model.SearchText != null ? Model.SearchText : string.Empty,
+        Model.StartDate.HasValue ? Model.StartDate.Value.Date.ToString() : string.Empty,
+        Model.EndDate.HasValue ? Model.EndDate.Value.Date.ToString() : string.Empty,
+        Model.ParentId.ToString())'
+        return searchParameters;
+    }
+
+    function onDeleteAllScheduleEntriesClick() {
+        var searchParameters = getSearchParametersString();
+        showDialog(
+            '#divConfirmationDialog',
+            '#dlgConfirmation',
+            'ConfirmDeleteAllDialog',
+            'OrganizationScheduleEntry',
+            'searchParametersString',
+            searchParameters);
+    }
+
+    function onDownloadAllScheduleEntriesCsvFileClick() {
+        var searchParameters = getSearchParametersString();
+        var downloadUrl = '@Url.Action("DownloadCsvFile", "OrganizationScheduleEntry", new { searchParametersString = "_searchValue" })';
+        downloadUrl = downloadUrl.replace('_searchValue', searchParameters);
+        window.location = downloadUrl;
+    }
+
+    function postOrganizationScheduleEntries() {
+        $('form#frmDetails').trigger('submit');
+    };
+
+</script>

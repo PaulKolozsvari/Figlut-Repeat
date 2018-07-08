@@ -1,0 +1,29 @@
+﻿ZoomConnection Production Forwarding URL:
+	
+	Receive SMS: 
+		Old: http://www.figlut.com:2983/FiglutRepeat/receive-sms-zoomconnect
+		New: http://www.figlut.com:2984/FiglutRepeatReceiver/receive-sms-zoomconnect
+	
+	Delivery report:
+		Old: http://www.figlut.com:2983/FiglutRepeat/delivery-report-sms-zoomconnect
+		New: http://www.figlut.com:2984/FiglutRepeatReceiver/delivery-report-sms-zoomconnect
+
+	Sender: 
+		New: http://www.figlut.com:2983/FiglutRepeat
+
+ZoomConnection Development Forwarding URL (via DynDNS) configured on LinkSys router and www.no-ip.com:
+	
+	Receive SMS: 
+		http://paulkolo.ddns.net:2984/FiglutRepeatReceiver/receive-sms-zoomconnect
+
+	Delivery report:
+		http://paulkolo.ddns.net:2984/FiglutRepeatReceiver/delivery-report-sms-zoomconnect
+
+	NO IP Login Details:
+	
+		URL: https://www.noip.com
+		Username: paulkolo
+		Password: short password
+
+How to do port forwarding on Mac OS X El Capitan:
+	http://apple.stackexchange.com/questions/230300/what-is-the-modern-way-to-do-port-forwarding-on-el-capitan-forward-port-80-to/230331#230331

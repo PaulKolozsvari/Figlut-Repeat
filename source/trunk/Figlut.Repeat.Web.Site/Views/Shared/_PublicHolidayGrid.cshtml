@@ -1,0 +1,191 @@
+﻿@model Figlut.Repeat.Web.Site.Models.FilterModel<PublicHolidayModel>
+
+@using Figlut.Server.Toolkit.Data;
+@using Figlut.Repeat.Web.Site.Configuration;
+@using Figlut.Repeat.Web.Site;
+@using Figlut.Repeat.Web.Site.Models;
+@using Figlut.Repeat.Web.Site.Extensions;
+@using Figlut.Repeat.ORM.Helpers;
+
+@{
+    Figlut.Repeat.Web.Site.Models.PublicHolidayModel publicHoliday = new PublicHolidayModel();
+}
+@{
+    int publicHolidaysPerPageToDisplay = Convert.ToInt32(RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.PublicHolidaysPerPagePageToDisplay].SettingValue);
+    var grid = new WebGrid(Model.DataModel, canPage: true, rowsPerPage: publicHolidaysPerPageToDisplay, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+    grid.Pager(WebGridPagerModes.All);
+}
+
+<div id="gridContent" class="data-grid">
+    <div id="gridWrapper">
+        @Html.HiddenFor(p => p.ParentId)
+        @Html.HiddenFor(p => p.ParentCaption)
+        <div class="centerInformation" style="float:inherit; margin-top:1%; margin-bottom:1%;">
+            <div class="grid-search">
+                <table style="width:99%;">
+                    <tr>
+                        <td style="width:60%;">
+                            <div class="search-text">
+                                @Html.Raw("Search Text")
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.EditorFor(m => m.SearchText)
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="grid-buttons">
+                <div style="float: left; margin-left:2%; margin-right:2%">
+                    @Html.LinkButtonForSubmit("Search", "onSearchPublicHolidaysClick()", "btnSearch", "search.png")
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        @Html.LinkButtonForSubmit("Download", "onDownloadAllPublicHolidaysCsvFileClick()", "btnDownload", "Repeatsheet.png")
+                    }
+                </div>
+                <div style="float: right; margin-left:2%; margin-right:2%">
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage) && Model.IsAdministrator)
+                    {
+                        @Html.LinkButtonForSubmit("Generate", "onGeneratePublicHolidaysForYear()", "btnGeneratePublicHolidaysForYear", "red-calendar-icon32.png")
+                        @Html.LinkButtonForSubmit("Create", "onCreatePublicHolidayClick()", "btnCreatePublicHoliday", "red-document-plus-icon32.png")
+                        @Html.LinkButtonForCancel("Delete All", "onDeleteAllPublicHolidaysClick()", "btnDeleteAllPublicHolidays")
+                        if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+                        {
+                            publicHoliday = (PublicHolidayModel)grid.Rows[grid.SelectedIndex].Value;
+                            @Html.LinkButtonForCancel("Delete", "onDeletePublicHolidayClick()", "btnDeletePublicHoliday")
+                            @Html.LinkButtonForSubmit("Edit", "onEditPublicHolidayClick()", "btnEditPublicHoliday", "red-edit.png")
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="public-holiday-preview">
+            @if (Model.IsAdministrator && grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+            {
+                publicHoliday = (PublicHolidayModel)grid.Rows[grid.SelectedIndex].Value;
+                <div style="float:left; margin-left:2%; margin-right:2%;">
+                    <b>@Html.Raw(string.Format("ID: {0}", publicHoliday.PublicHolidayId.ToString()))</b>
+                </div>
+            }
+            <div style="float: right; margin-left:2%; margin-right:2%">
+                <b>@Html.Raw(string.Format("Public Holidays Loaded: {0} of {1}", Model.TotalCount.ToString(), Model.TotalTableCount.ToString()))</b>
+            </div>
+        </div>
+        <div id="gridTableContainer">
+            @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "header",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                columns: grid.Columns(
+                grid.Column("Holidays", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
+                grid.Column(EntityReader<PublicHolidayModel>.GetPropertyName(p => p.EventName, false), "Event"),
+                grid.Column(EntityReader<PublicHolidayModel>.GetPropertyName(p => p.DateIdentifier, false), "Date")
+            ))
+        </div>
+        <div class="public-holiday-preview">
+            @if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+            {
+                publicHoliday = (PublicHolidayModel)grid.Rows[grid.SelectedIndex].Value;
+                <div style="float: left; margin-left:2%; margin-right:2%">
+                    <b>@Html.Raw(string.Format("Event: {0}", publicHoliday.EventName))</b>
+                </div>
+                <div style="float:right; margin-left:2%; margin-right:2%; color: #a30e0e;">
+                    @Html.Raw(string.Format("{0}", publicHoliday.DateIdentifier))
+                </div>
+            }
+        </div>
+    </div>
+    <div id="PublicHolidayErrorField" style="color:#8A0808">
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <br />
+            @Html.Raw(ViewBag.ErrorMessage)
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#SearchText").focus();
+        makeGridRowsPostForm();
+    });
+
+    function onSearchPublicHolidaysClick() {
+        postPublicHolidays();
+    }
+
+    function onDeletePublicHolidayClick() {
+        showDialog(
+            '#divConfirmationDialog',
+            '#dlgConfirmation',
+            'ConfirmDeleteDialog',
+            'PublicHoliday',
+            'identifier',
+            '@publicHoliday.PublicHolidayId.ToString()');
+    };
+
+    function onEditPublicHolidayClick() {
+        showDialog(
+            '#divEditPublicHoliday',
+            '#dlgEditPublicHoliday',
+            'EditDialog',
+            'PublicHoliday',
+            'publicHolidayId',
+            '@publicHoliday.PublicHolidayId.ToString()');
+    };
+
+    function onCreatePublicHolidayClick() {
+        showDialog(
+            '#divCreatePublicHoliday',
+            '#dlgCreatePublicHoliday',
+            'CreateDialog',
+            'PublicHoliday',
+            'countryId',
+            '@Model.ParentId');
+    };
+
+    function onGeneratePublicHolidaysForYear() {
+        showDialog(
+            '#divGenerateCountryPublicHolidays',
+            '#dlgGenerateCountryPublicHolidays',
+            'GenerateCountryPublicHolidays',
+            'PublicHoliday',
+            'countryId',
+            '@Model.ParentId.ToString()');
+    };
+
+    function getSearchParametersString() {
+        var searchParameters = '@string.Format("{0}|{1}|{2}|{3}",
+        Model.SearchText != null ? Model.SearchText : string.Empty,
+        Model.StartDate.HasValue ? Model.StartDate.Value.Date.ToString() : string.Empty,
+        Model.EndDate.HasValue ? Model.EndDate.Value.Date.ToString() : string.Empty,
+        Model.ParentId.ToString())'
+        return searchParameters;
+    }
+
+    function onDeleteAllPublicHolidaysClick() {
+        var searchParameters = getSearchParametersString();
+        showDialog(
+            '#divConfirmationDialog',
+            '#dlgConfirmation',
+            'ConfirmDeleteAllDialog',
+            'PublicHoliday',
+            'searchParametersString',
+            searchParameters);
+    }
+
+    function onDownloadAllPublicHolidaysCsvFileClick() {
+        var searchParameters = getSearchParametersString();
+        var downloadUrl = '@Url.Action("DownloadCsvFile", "PublicHoliday", new { searchParametersString = "_searchValue" })';
+        downloadUrl = downloadUrl.replace('_searchValue', searchParameters);
+        window.location = downloadUrl;
+    }
+
+    function postPublicHolidays() {
+        $('form#frmDetails').trigger('submit');
+    };
+
+</script>

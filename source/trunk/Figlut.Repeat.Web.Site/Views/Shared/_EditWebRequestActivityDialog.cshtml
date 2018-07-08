@@ -1,0 +1,291 @@
+﻿@model Figlut.Repeat.Web.Site.Models.WebRequestActivityModel
+
+<div id="dlgEditWebRequestActivity">
+    <img src="~/Images/Icons/red-edit32.png" style="float:right; margin-right:1%; margin-left:1%"/>
+    <div class="centerForm">
+        <form id="EditWebRequestActivityForm">
+            @Html.ValidationSummary(true, "Failed to edit.")
+            <fieldset>
+                <legend>Confirmation Form</legend>
+                @Html.HiddenFor(m => m.WebRequestActivityId)
+                @Html.HiddenFor(m => m.DateCreated)
+                @Html.HiddenFor(m => m.UserId)
+               <div class="field-label">
+                    @Html.Raw("Web Request Activity ID")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.TextBoxFor(m => m.WebRequestActivityId, new { disabled = "disabled", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.WebRequestActivityId)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Date")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.TextBoxFor(m => m.DateCreated, new { disabled = "disabled", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.DateCreated)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Request Verb")
+                </div>
+                <div class="editor-field">
+                    @Html.EditorFor(m => m.RequestVerb)
+                    @Html.ValidationMessageFor(m => m.RequestVerb)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Request URL")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.RequestUrl)
+                    @Html.ValidationMessageFor(m => m.RequestUrl)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Request Referrer Url")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.RequestReferrerUrl)
+                    @Html.ValidationMessageFor(m => m.RequestReferrerUrl)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Controller")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.Controller)
+                    @Html.ValidationMessageFor(m => m.Controller)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Action")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.Action)
+                    @Html.ValidationMessageFor(m => m.Action)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("User Agent")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.UserAgent)
+                    @Html.ValidationMessageFor(m => m.UserAgent)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("IP Address")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.UserHostAddress)
+                    @Html.ValidationMessageFor(m => m.UserHostAddress)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Host Name")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.UserHostName)
+                    @Html.ValidationMessageFor(m => m.UserHostName)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("ClientType")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.ClientType)
+                    @Html.ValidationMessageFor(m => m.ClientType)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Is Crawler")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsCrawler, new SelectList(
+                        new[] 
+                        { 
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsCrawler, "Enabled is required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Is Mobile Device")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsMobileDevice, new SelectList(
+                        new[] 
+                        { 
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsMobileDevice, "Enabled is required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Mobile Device Manufacturer")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.MobileDeviceManufacturer)
+                    @Html.ValidationMessageFor(m => m.MobileDeviceManufacturer)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Mobile Device Model")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.MobileDeviceModel)
+                    @Html.ValidationMessageFor(m => m.MobileDeviceModel)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Platform")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.Platform)
+                    @Html.ValidationMessageFor(m => m.Platform)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("User")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.UserName)
+                    @Html.ValidationMessageFor(m => m.UserName)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Source Application")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.SourceApplication)
+                    @Html.ValidationMessageFor(m => m.SourceApplication)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Who Is Status")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.WhoIsStatus)
+                    @Html.ValidationMessageFor(m => m.WhoIsStatus)
+                </div>
+                                <div class="field-label">
+                    @Html.Raw("Country")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.WhoIsCountry)
+                    @Html.ValidationMessageFor(m => m.WhoIsCountry)
+                </div>
+                                <div class="field-label">
+                    @Html.Raw("Country Code")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.WhoIsCountryCode)
+                    @Html.ValidationMessageFor(m => m.WhoIsCountryCode)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Region")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.WhoIsRegion)
+                    @Html.ValidationMessageFor(m => m.WhoIsRegion)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("RegionName")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.WhoIsRegionName)
+                    @Html.ValidationMessageFor(m => m.WhoIsRegionName)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("City")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.WhoIsCity)
+                    @Html.ValidationMessageFor(m => m.WhoIsCity)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Zip")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.WhoIsZip)
+                    @Html.ValidationMessageFor(m => m.WhoIsZip)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Latitude")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.WhoIsLatitude)
+                    @Html.ValidationMessageFor(m => m.WhoIsLatitude)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Longitude")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.WhoIsLongitude)
+                    @Html.ValidationMessageFor(m => m.WhoIsLongitude)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Time Zone")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.WhoIsTimeZone)
+                    @Html.ValidationMessageFor(m => m.WhoIsTimeZone)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("ISP")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.WhoIsISP)
+                    @Html.ValidationMessageFor(m => m.WhoIsISP)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Organization")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.WhoIsOrg)
+                    @Html.ValidationMessageFor(m => m.WhoIsOrg)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Comments")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.Comments)
+                    @Html.ValidationMessageFor(m => m.Comments)
+                </div>
+                <br />
+                <div id="EditWebRequestActivityErrorField" style="color:#8A0808"></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var dialogName = '#dlgEditWebRequestActivity';
+        createDialog(dialogName, 'Edit Web Request Activity', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
+    });
+
+    function onConfirmOK() {
+        var dialogName = '#dlgEditWebRequestActivity';
+        var postBackUrl = '@Url.Action("EditDialog", "WebRequestActivity")';
+        $.ajax({
+            url: postBackUrl,
+            type: 'POST',
+            data: $("#EditWebRequestActivityForm").serialize(),
+            success: function (data) {
+                if (data.Success) {
+                    $(dialogName).dialog("close");
+                    //Submit the form which will refresh grid to show the change the enabled/disabled.
+                    var form = $('#frmDetails');
+                    form.submit()
+                } else {
+                    $("#EditWebRequestActivityErrorField").html(data.ErrorMsg);
+                }
+            }
+        })
+    };
+
+    function onConfirmOpen() {
+
+    }
+
+    function onConfirmCancel() {
+        //$('#confirmation-message').val('');
+        $("#EditWebRequestActivityErrorField").html('');
+    }
+</script>

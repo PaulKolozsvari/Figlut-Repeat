@@ -1,0 +1,20 @@
+﻿@using Figlut.Repeat.Web.Site.Configuration;
+
+@{
+    ViewBag.Title = RepeatWebApp.Instance.Settings.ApplicationName;
+    ViewBag.PageTitle = "Error";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="centerInformation">
+    @using (Html.BeginForm())
+    {
+         <div style="color:#8A0808">
+            @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+            {
+                <br />
+                @Html.Raw(ViewBag.ErrorMessage);
+            }
+        </div>
+    }
+</div>
