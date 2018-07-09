@@ -99,6 +99,10 @@
       <Project>{1e8c9fdb-fc2b-4d4b-80b4-86cb1bf75214}</Project>
       <Name>Figlut.Repeat.ORM</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Figlut.Repeat.Processors\Figlut.Repeat.Processors.csproj">
+      <Project>{C04F3302-E4A7-4E1E-98EA-7623845231AF}</Project>
+      <Name>Figlut.Repeat.Processors</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Figlut.Repeat.Server.Email\Figlut.Repeat.Email.csproj">
       <Project>{ff111d9a-952f-4821-8963-d06ee452f629}</Project>
       <Name>Figlut.Repeat.Email</Name>
@@ -106,10 +110,6 @@
     <ProjectReference Include="..\Figlut.Repeat.Server.SMS\Figlut.Repeat.SMS.csproj">
       <Project>{46c82dc4-2e0f-4abd-9ff3-888e6976de20}</Project>
       <Name>Figlut.Repeat.SMS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Figlut.Repeat.SMS.Processor\Figlut.Repeat.SMS.Processor.csproj">
-      <Project>{c04f3302-e4a7-4e1e-98ea-7623845231af}</Project>
-      <Name>Figlut.Repeat.SMS.Processor</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

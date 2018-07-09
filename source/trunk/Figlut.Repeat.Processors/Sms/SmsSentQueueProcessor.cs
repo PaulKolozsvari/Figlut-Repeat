@@ -1,4 +1,4 @@
-﻿namespace Figlut.Repeat.SMS.Processor
+﻿namespace Figlut.Repeat.Processors.Sms
 {
     #region Using Directives
 
@@ -13,10 +13,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+    using Figlut.Repeat.SMS;
 
     #endregion //Using Directives
 
-    public class SmsSentQueueProcessor : SmsQueueProcessor
+    public class SmsSentQueueProcessor : FiglutProcessor
     {
         #region Constructors
 

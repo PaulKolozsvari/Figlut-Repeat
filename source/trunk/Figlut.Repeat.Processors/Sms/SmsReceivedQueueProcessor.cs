@@ -1,4 +1,4 @@
-﻿namespace Figlut.Repeat.SMS.Processor
+﻿namespace Figlut.Repeat.Processors.Sms
 {
     #region Using Directives
 
@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
     #endregion //Using Directives
 
-    public class SmsReceivedQueueProcessor : SmsQueueProcessor
+    public class SmsReceivedQueueProcessor : FiglutProcessor
     {
         #region Constructors
 

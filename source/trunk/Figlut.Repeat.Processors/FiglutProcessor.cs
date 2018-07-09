@@ -1,4 +1,4 @@
-﻿namespace Figlut.Repeat.SMS.Processor
+﻿namespace Figlut.Repeat.Processors
 {
     #region Using Directives
 
@@ -16,11 +16,11 @@
 
     #endregion //Using Directives
 
-    public abstract class SmsQueueProcessor
+    public abstract class FiglutProcessor
     {
         #region Constructors
 
-        public SmsQueueProcessor(
+        public FiglutProcessor(
             Guid processorId,
             int executionInterval,
             bool startImmediately,
@@ -31,31 +31,31 @@
             if (processorId == Guid.Empty)
             {
                 throw new ArgumentException(string.Format("{0} may not be empty when constructing a {1}.",
-                    EntityReader<SmsQueueProcessor>.GetPropertyName(p => p.ProcessorId, false),
+                    EntityReader<FiglutProcessor>.GetPropertyName(p => p.ProcessorId, false),
                     this.GetType().Name));
             }
             if (executionInterval < 0)
             {
                 throw new ArgumentOutOfRangeException(string.Format("{0} may not be less than 0 when constructing a {1}.",
-                    EntityReader<SmsQueueProcessor>.GetPropertyName(p => p.ExecutionInterval, false),
+                    EntityReader<FiglutProcessor>.GetPropertyName(p => p.ExecutionInterval, false),
                     this.GetType().Name));
             }
             if (string.IsNullOrEmpty(organizationIdentifierIndicator))
             {
                 throw new ArgumentNullException(string.Format("{0} may not be null when constructing a {1}.",
-                    EntityReader<SmsQueueProcessor>.GetPropertyName(p => p.OrganizationIdentifierIndicator, false),
+                    EntityReader<FiglutProcessor>.GetPropertyName(p => p.OrganizationIdentifierIndicator, false),
                     this.GetType().Name));
             }
             if (string.IsNullOrEmpty(subscriberNameIndicator))
             {
                 throw new ArgumentNullException(string.Format("{0} may not be null when constructing a {1}.",
-                    EntityReader<SmsQueueProcessor>.GetPropertyName(p => p.SubscriberIdentifierIndicator, false),
+                    EntityReader<FiglutProcessor>.GetPropertyName(p => p.SubscriberIdentifierIndicator, false),
                     this.GetType().Name));
             }
             if (emailSender == null)
             {
                 throw new ArgumentNullException(string.Format("{0} may not be null when constructing a {1}.",
-                    EntityReader<SmsQueueProcessor>.GetPropertyName(p => p.EmailSender, false),
+                    EntityReader<FiglutProcessor>.GetPropertyName(p => p.EmailSender, false),
                     this.GetType().Name));
             }
             _processorId = processorId;
@@ -180,7 +180,7 @@
             }
         }
 
-        protected void ProcessQueue(SmsQueueProcessor smsQueueProcessor)
+        protected void ProcessQueue(FiglutProcessor smsQueueProcessor)
         {
             if (smsQueueProcessor.CurrentlyProcessing)
             {

@@ -37,5 +37,14 @@ Processor smsDeliveryReportQueueProcessor = new Processor()
 };
 Processors.InsertOnSubmit(smsDeliveryReportQueueProcessor);
 
+Processor scheduleProcessor = new Processor()
+{
+	ProcessorId = Guid.NewGuid(),
+	Name = "Schedule Processor",
+	ExecutionInterval = 10000,
+	DateCreated = DateTime.Now
+};
+Processors.InsertOnSubmit(scheduleProcessor);
+
 SubmitChanges();
 Processors.Dump();

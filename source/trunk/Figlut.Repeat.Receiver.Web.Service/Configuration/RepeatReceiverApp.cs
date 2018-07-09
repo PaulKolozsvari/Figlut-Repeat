@@ -23,8 +23,8 @@
     using Figlut.Repeat.SMS.Clickatell;
     using Figlut.Repeat.Data;
     using Figlut.Repeat.ORM.Helpers;
-using Figlut.Repeat.SMS.Processor;
     using Figlut.Server.Toolkit.Web.Service.Inspector;
+    using Figlut.Repeat.Processors.Sms;
 
     #endregion //Using Directives
 

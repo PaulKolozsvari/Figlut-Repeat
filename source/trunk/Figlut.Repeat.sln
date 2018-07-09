@@ -19,8 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Figlut.Repeat.Web.Site", "F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Figlut.Server.Toolkit.45", "..\..\..\Figlut-Suite\source\trunk\Windows\Figlut.Server.Toolkit.45\Figlut.Server.Toolkit.45.csproj", "{A7C9A24D-E19B-42F5-A298-805A489334EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Figlut.Repeat.SMS.Processor", "Figlut.Repeat.SMS.Processor\Figlut.Repeat.SMS.Processor.csproj", "{C04F3302-E4A7-4E1E-98EA-7623845231AF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Figlut.Repeat.Receiver.Web.Service", "Figlut.Repeat.Receiver.Web.Service\Figlut.Repeat.Receiver.Web.Service.csproj", "{45BC4B7B-9C16-4766-AEF6-5F77EE3BBB81}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Figlut.Repeat.ImportSubcribers", "Figlut.Repeat.ImportSubcribers\Figlut.Repeat.ImportSubcribers.csproj", "{B7EE4942-3884-4631-A573-70E400CF17A2}"
@@ -34,6 +32,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Figlut.Repeat.Desktop.Utilities", "Figlut.Repeat.Desktop.Utilities\Figlut.Repeat.Desktop.Utilities.csproj", "{9FE4C36B-16E5-4C40-B247-CBFE966027EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Figlut.Repeat.Desktop.UI", "Figlut.Repeat.Desktop.UI\Figlut.Repeat.Desktop.UI.csproj", "{A9EEABC3-7D15-45EF-8687-7AE1A00CF541}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Figlut.Repeat.Processors", "Figlut.Repeat.Processors\Figlut.Repeat.Processors.csproj", "{C04F3302-E4A7-4E1E-98EA-7623845231AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -124,16 +124,6 @@ Global
 		{A7C9A24D-E19B-42F5-A298-805A489334EF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A7C9A24D-E19B-42F5-A298-805A489334EF}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
 		{A7C9A24D-E19B-42F5-A298-805A489334EF}.SingleImage|Any CPU.Build.0 = Release|Any CPU
-		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
-		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
-		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
-		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
-		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
-		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 		{45BC4B7B-9C16-4766-AEF6-5F77EE3BBB81}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
 		{45BC4B7B-9C16-4766-AEF6-5F77EE3BBB81}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
 		{45BC4B7B-9C16-4766-AEF6-5F77EE3BBB81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -194,6 +184,16 @@ Global
 		{A9EEABC3-7D15-45EF-8687-7AE1A00CF541}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A9EEABC3-7D15-45EF-8687-7AE1A00CF541}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
 		{A9EEABC3-7D15-45EF-8687-7AE1A00CF541}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

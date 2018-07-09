@@ -7,8 +7,8 @@
     <ProjectGuid>{C04F3302-E4A7-4E1E-98EA-7623845231AF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Figlut.Repeat.SMS.Processor</RootNamespace>
-    <AssemblyName>Figlut.Repeat.SMS.Processor</AssemblyName>
+    <RootNamespace>Figlut.Repeat.Processors</RootNamespace>
+    <AssemblyName>Figlut.Repeat.Processors</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -41,9 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SmsQueueProcessor.cs" />
-    <Compile Include="SmsReceivedQueueProcessor.cs" />
-    <Compile Include="SmsSentQueueProcessor.cs" />
+    <Compile Include="FiglutProcessor.cs" />
+    <Compile Include="Schedule\ScheduleProcessor.cs" />
+    <Compile Include="Sms\SmsReceivedQueueProcessor.cs" />
+    <Compile Include="Sms\SmsSentQueueProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Figlut-Suite\source\trunk\Windows\Figlut.Server.Toolkit.45\Figlut.Server.Toolkit.45.csproj">

@@ -446,6 +446,38 @@
             }
         }
 
+        #region Schedule Processor Queries
+
+        public List<ScheduleEntry> GetPastScheduleEntriesSmsNotificationNotSent(DateTime olderThanDateTime)
+        {
+            return (from e in DB.GetTable<ScheduleEntry>()
+                    where !e.SMSNotificationSent &&
+                    e.EntryDate.Date <= olderThanDateTime.Date &&
+                    e.EntryTime <= olderThanDateTime.TimeOfDay
+                    select e).ToList();
+        }
+
+        public long GetPastScheduleEntriesSmsNotificationNotSentCount(DateTime olderThanDateTime)
+        {
+            return (from e in DB.GetTable<ScheduleEntry>()
+                    where !e.SMSNotificationSent &&
+                    e.EntryDate.Date <= olderThanDateTime.Date &&
+                    e.EntryTime <= olderThanDateTime.TimeOfDay
+                    select e).LongCount();
+        }
+
+
+        public List<ScheduleEntry> GetTopPastScheduleEntriesSmsNotificationNotSent(DateTime olderThanDateTime, int numberOfEntries)
+        {
+            return (from e in DB.GetTable<ScheduleEntry>()
+                    where !e.SMSNotificationSent &&
+                    e.EntryDate.Date <= olderThanDateTime.Date &&
+                    e.EntryTime <= olderThanDateTime.TimeOfDay
+                    select e).Take(numberOfEntries).ToList();
+        }
+
+        #endregion //Schedule Processor Queries
+
         #endregion //Schedule Entry
     }
 }
