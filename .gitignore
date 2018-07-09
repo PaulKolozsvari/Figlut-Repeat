@@ -371,3 +371,5 @@ source/trunk/Figlut.Repeat.Server.Web.Service.TestDriver/bin/
 source/trunk/Figlut.Repeat.Web.Site/Figlut.Repeat.Web.Site.csproj.user
 source/trunk/Figlut.Repeat.Server.Web.Service/Figlut.Repeat.Web.Service.csproj.user
 source/trunk/Figlut.Repeat.SMS.Processor/obj/
+source/trunk/Figlut.Repeat.Processors/bin/Debug/
+source/trunk/Figlut.Repeat.Processors/obj/
