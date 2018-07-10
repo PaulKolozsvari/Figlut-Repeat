@@ -167,7 +167,7 @@
                 {
                     int smsProviderCode = (int)RepeatApp.Instance.Settings.SmsProvider;
                     string errorMessage = null;
-                    context.LogFailedSmsSent(smsRequest.recipientNumber, smsRequest.message, smsProviderCode, exFailed, user, out errorMessage);
+                    context.LogFailedSmsSent(smsRequest.recipientNumber, smsRequest.message, smsProviderCode, exFailed, user, organization, out errorMessage);
                     throw new Exception(errorMessage);
                 }
                 if (smsResponse != null)
@@ -177,7 +177,7 @@
                     logMessage.AppendLine(smsResponse.ToString());
                     AuditServiceCall(logMessage.ToString());
                 }
-                SmsSentLog result = RepeatApp.Instance.LogSmsSentToDB(smsRequest.recipientNumber, smsRequest.message, smsResponse, user, true, null, null, null, null);
+                SmsSentLog result = RepeatApp.Instance.LogSmsSentToDB(smsRequest.recipientNumber, smsRequest.message, smsResponse, user, organization, true, null, null, null, null);
                 if (smsResponse.success)
                 {
                     long smsCredits = context.DecrementSmsCreditFromOrganization(organization.OrganizationId).SmsCreditsBalance;

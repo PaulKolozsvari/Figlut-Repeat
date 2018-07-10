@@ -140,7 +140,7 @@ using System.Threading.Tasks;
             {
                 int smsProviderCode = (int)_smsSender.SmsProvider;
                 string errorMessage = null;
-                context.LogFailedSmsSent(smsRequest.recipientNumber, smsRequest.message, smsProviderCode, exFailed, senderUser, out errorMessage);
+                context.LogFailedSmsSent(smsRequest.recipientNumber, smsRequest.message, smsProviderCode, exFailed, senderUser, senderOrganization, out errorMessage);
                 context.FlagSmsSentQueueItemAsFailedToSend(i.SmsSentQueueItemId, errorMessage, true, true, true);
                 throw new Exception(errorMessage);
             }
@@ -163,6 +163,7 @@ using System.Threading.Tasks;
                 smsRequest.message,
                 (int)smsResponse.smsProvider,
                 senderUser,
+                senderOrganization,
                 true,
                 i.SubscriberId,
                 i.SubscriberName,

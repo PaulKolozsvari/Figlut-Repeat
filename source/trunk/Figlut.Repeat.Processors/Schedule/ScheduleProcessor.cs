@@ -106,24 +106,30 @@
                     scheduleView.CellPhoneNumber,
                     e.NotificationMessage),
                     LogMessageType.Information.ToString());
-                if (organization.SmsCreditsBalance < 1 && !organization.AllowSmsCreditsDebt)
+                //if (organization.SmsCreditsBalance < 1 && !organization.AllowSmsCreditsDebt)
+                //{
+                //    throw new Exception(string.Format("{0} '{1}' has insufficient SMS credits to send an SMS.", typeof(Organization).Name, organization.Name));
+                //}
+                SmsSentLog smsSentLog = ProcessScheduleEntryQueueItem(scheduleView, e, context);
+                if (smsSentLog != null)
                 {
-                    throw new Exception(string.Format("{0} '{1}' has insufficient SMS credits to send an SMS.", typeof(Organization).Name, organization.Name));
+                    string message = string.Format("Processed Schedule Entry SMS to {0}: {1}", smsSentLog.CellPhoneNumber, smsSentLog.MessageContents);
+                    context.LogProcesorAction(processorId, message, LogMessageType.SuccessAudit.ToString());
+                    GOC.Instance.Logger.LogMessage(new LogMessage(message, LogMessageType.SuccessAudit, LoggingLevel.Normal));
                 }
             }
+            return true;
         }
 
-        protected SmsSentLog ProcessScheduleEntryQueueItem(ScheduleView scheduleView, ScheduleEntry e, RepeatEntityContext context)
+        protected SmsSentLog ProcessScheduleEntryQueueItem(ScheduleView scheduleView, ScheduleEntry scheduleEntry, RepeatEntityContext context)
         {
             if (context == null)
             {
                 context = RepeatEntityContext.Create();
             }
-            User senderUser = null;
-            Organization senderOrganization = null;
-            ValidateSmsSending(i, context, out senderUser, out senderOrganization);
+            Organization senderOrganization = context.GetOrganization(scheduleView.OrganizationId, true);
 
-            SmsRequest smsRequest = new SmsRequest(i.CellPhoneNumber, i.MessageContents, _maxSmsSendMessageLength, _smsSendMessageSuffix, senderOrganization.Identifier, base._organizationIdentifierIndicator);
+            SmsRequest smsRequest = new SmsRequest(scheduleView.CellPhoneNumber, scheduleEntry.NotificationMessage, _maxSmsSendMessageLength, _smsSendMessageSuffix, senderOrganization.Identifier, base._organizationIdentifierIndicator);
             StringBuilder auditM = new StringBuilder();
             auditM.AppendLine("Sending SMS: ");
             auditM.AppendLine(string.Format("recipientNumber: {0}", smsRequest.recipientNumber));
@@ -140,8 +146,7 @@
             {
                 int smsProviderCode = (int)_smsSender.SmsProvider;
                 string errorMessage = null;
-                context.LogFailedSmsSent(smsRequest.recipientNumber, smsRequest.message, smsProviderCode, exFailed, senderUser, out errorMessage);
-                context.FlagSmsSentQueueItemAsFailedToSend(i.SmsSentQueueItemId, errorMessage, true, true, true);
+                context.LogFailedSmsSent(smsRequest.recipientNumber, smsRequest.message, smsProviderCode, exFailed, null, senderOrganization, out errorMessage);
                 throw new Exception(errorMessage);
             }
             if (smsResponse != null)
@@ -162,20 +167,28 @@
                 smsResponse.messageId,
                 smsRequest.message,
                 (int)smsResponse.smsProvider,
-                senderUser,
+                null,
+                senderOrganization,
                 true,
-                i.SubscriberId,
-                i.SubscriberName,
-                i.Campaign,
-                i.SmsCampaignId);
+                scheduleView.SubscriberId,
+                scheduleView.SubscriberName,
+                null,
+                null);
             if (smsResponse.success)
             {
-                //long smsCredits = context.DecrementSmsCreditFromOrganization(senderOrganization.OrganizationId).SmsCreditsBalance; //Sms credits are substracted when the SMS' are enqueued.
-                string successMessage = string.Format("{0} '{1}' has sent an SMS. Credits remaining: {2}.", typeof(Organization).Name, senderOrganization.Name, senderOrganization.SmsCreditsBalance);
+                long smsCredits = context.DecrementSmsCreditFromOrganization(senderOrganization.OrganizationId).SmsCreditsBalance; //Sms credits are substracted when the SMS' are enqueued.
+                string successMessage = string.Format("{0} '{1}' has sent an SMS. Credits remaining: {2}.", typeof(Organization).Name, senderOrganization.Name, smsCredits);
                 GOC.Instance.Logger.LogMessage(new LogMessage(successMessage, LogMessageType.SuccessAudit, LoggingLevel.Normal));
                 context.LogProcesorAction(this.ProcessorId, successMessage, LogMessageType.SuccessAudit.ToString());
-                context.DeleteSmsSentQueueItem(i.SmsSentQueueItemId, true, true);
-                context.SaveSubscriber(i.CellPhoneNumber, i.SubscriberName, true, true); //Creates  subscriber for the given cell phone to which this SMS has been sent if the subscriber with the given cell phone number does not already exist.
+
+                scheduleEntry.SMSNotificationSent = true;
+                scheduleEntry.SMSMessageId = smsResponse.messageId;
+                scheduleEntry.SMSDateSent = DateTime.Now;
+                if (result != null)
+                {
+                    scheduleEntry.SmsSentLogId = result.SmsSentLogId;
+                }
+                context.Save<ScheduleEntry>(scheduleEntry, false);
             }
             else //Got a response from the provider, but sending the SMS failed.
             {
@@ -193,48 +206,9 @@
                     errorM.AppendFormat("Message ID: {0}", smsResponse.messageId);
                 }
                 string errorMessage = errorM.ToString();
-                context.FlagSmsSentQueueItemAsFailedToSend(i.SmsSentQueueItemId, errorMessage, true, true, true);
                 throw new Exception(errorMessage);
             }
             return result;
-        }
-
-        private void ValidateSmsSending(SmsSentQueueItem i, RepeatEntityContext context, out User senderUser, out Organization senderOrganization)
-        {
-            senderUser = i.SenderUserId.HasValue ? context.GetUser(i.SenderUserId.Value, true) : null;
-            string failedToSendErrorMessage = null;
-            if (senderUser == null)
-            {
-                failedToSendErrorMessage = string.Format("{0} with {1} of '{2}' created at '{3}' does not have a {4} value. Cannot link to a {5}.",
-                    typeof(SmsSentQueueItem).Name, //0
-                    EntityReader<SmsSentQueueItem>.GetPropertyName(p => p.SmsSentQueueItemId, false), //1
-                    i.SmsSentQueueItemId.ToString(), //2
-                    i.DateCreated.ToString(), //3
-                    EntityReader<SmsSentQueueItem>.GetPropertyName(p => p.SenderUserId, false), //4
-                    typeof(User).Name);
-                context.FlagSmsSentQueueItemAsFailedToSend(i.SmsSentQueueItemId, failedToSendErrorMessage, true, true, true);
-                throw new NullReferenceException(failedToSendErrorMessage); //5
-            }
-            senderOrganization = i.OrganizationId.HasValue ? context.GetOrganization(i.OrganizationId.Value, true) : null;
-            if (senderOrganization == null)
-            {
-                failedToSendErrorMessage = string.Format("{0} with {1} of '{2}' created at '{3}' does not have a {4} value. Cannot link to a {5}.",
-                    typeof(SmsSentQueueItem).Name, //0
-                    EntityReader<SmsSentQueueItem>.GetPropertyName(p => p.SmsSentQueueItemId, false), //1
-                    i.SmsSentQueueItemId.ToString(), //2
-                    i.DateCreated.ToString(), //3
-                    EntityReader<SmsSentQueueItem>.GetPropertyName(p => p.OrganizationId, false), //4
-                    typeof(Organization).Name);
-                context.FlagSmsSentQueueItemAsFailedToSend(i.SmsSentQueueItemId, failedToSendErrorMessage, true, true, true);
-                throw new NullReferenceException(failedToSendErrorMessage); //5
-            }
-            //Validation and subtraction of credits was done when the SMS was enqueued, so no need to validate credits here.
-            //if (senderOrganization.SmsCreditsBalance < 1 && !senderOrganization.AllowSmsCreditsDebt)
-            //{
-            //    failedToSendErrorMessage = string.Format("{0} '{1}' has insufficient SMS credits to send an SMS.", typeof(Organization).Name, senderOrganization.Name);
-            //    context.FlagSmsSentQueueItemAsFailedToSend(i.SmsSentQueueItemId, failedToSendErrorMessage, true, true, true);
-            //    throw new NullReferenceException(failedToSendErrorMessage);
-            //}
         }
 
         #endregion //Methods

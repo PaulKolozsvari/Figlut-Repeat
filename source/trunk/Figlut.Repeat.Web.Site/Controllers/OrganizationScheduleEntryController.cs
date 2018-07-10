@@ -168,11 +168,11 @@
                 {
                     int smsProviderCode = (int)RepeatWebApp.Instance.Settings.SmsProvider;
                     context.LogFailedSmsSent(
-                        scheduleView.CellPhoneNumber, scheduleView.NotificationMessage, smsProviderCode, exFailed, currentUser, out errorMessage);
+                        scheduleView.CellPhoneNumber, scheduleView.NotificationMessage, smsProviderCode, exFailed, currentUser, currentOrganization, out errorMessage);
                     return GetJsonResult(false, errorMessage);
                 }
                 SmsSentLog smsSentLog = RepeatWebApp.Instance.LogSmsSentToDB(
-                    scheduleView.CellPhoneNumber, scheduleEntry.NotificationMessage, response, currentUser, true, scheduleView.SubscriberId, scheduleView.SubscriberName, null, null); //If this line throws an exception then we don't havea record of the SMS having been sent, therefore cannot deduct credits from the Organization. Therefore there's no point in wrapping this call in a try catch and swallowing any exception i.e. if we don't have a record of the SMS having been sent we cannot charge for it.
+                    scheduleView.CellPhoneNumber, scheduleEntry.NotificationMessage, response, currentUser, currentOrganization, true, scheduleView.SubscriberId, scheduleView.SubscriberName, null, null); //If this line throws an exception then we don't have a record of the SMS having been sent, therefore cannot deduct credits from the Organization. Therefore there's no point in wrapping this call in a try catch and swallowing any exception i.e. if we don't have a record of the SMS having been sent we cannot charge for it.
                 if (response.success)
                 {
                     long smsCredits = context.DecrementSmsCreditFromOrganization(currentOrganization.OrganizationId).SmsCreditsBalance;

@@ -30,6 +30,7 @@
             string messageContents,
             int smsProviderCode,
             User senderUser,
+            Organization senderOrganization,
             bool beforeCreditsDeduction,
             Nullable<Guid> subscriberId,
             string subscriberName,
@@ -62,35 +63,17 @@
                 if (senderUser != null)
                 {
                     result.SenderUserId = senderUser.UserId;
-                    if (senderUser.OrganizationId.HasValue)
-                    {
-                        Organization senderOrganization = GetOrganization(senderUser.OrganizationId.Value, false);
-                        if (senderOrganization != null)
-                        {
-                            result.OrganizationId = senderOrganization.OrganizationId;
-                            string beforeCreditsDeductionMessage = beforeCreditsDeduction ? "before credits deduction" : "after credits deduction";
-                            result.Tag = string.Format("{0} '{1}' {2} ({3}): {4}",
-                                typeof(Organization).Name,
-                                senderOrganization.Name,
-                                EntityReader<Organization>.GetPropertyName(p => p.SmsCreditsBalance, true),
-                                beforeCreditsDeductionMessage,
-                                senderOrganization.SmsCreditsBalance);
-                        }
-                        else
-                        {
-                            GOC.Instance.Logger.LogMessage(new LogMessage(string.Format("Could not find {0} with {1} of '{2}', when saving {3} with {4} of '{5}'. Associated {6}: {7}",
-                                typeof(Organization).Name, //0
-                                EntityReader<Organization>.GetPropertyName(p => p.OrganizationId, false), //1
-                                senderUser.OrganizationId.Value, //2
-                                typeof(SmsSentLog).Name, //3
-                                EntityReader<SmsSentLog>.GetPropertyName(p => p.SmsSentLogId, false), //4
-                                result.SmsSentLogId, //5
-                                typeof(User).Name, //6
-                                senderUser.UserName), //7
-                                LogMessageType.Warning,
-                                LoggingLevel.Normal));
-                        }
-                    }
+                }
+                if (senderOrganization != null)
+                {
+                    result.OrganizationId = senderOrganization.OrganizationId;
+                    string beforeCreditsDeductionMessage = beforeCreditsDeduction ? "before credits deduction" : "after credits deduction";
+                    result.Tag = string.Format("{0} '{1}' {2} ({3}): {4}",
+                        typeof(Organization).Name,
+                        senderOrganization.Name,
+                        EntityReader<Organization>.GetPropertyName(p => p.SmsCreditsBalance, true),
+                        beforeCreditsDeductionMessage,
+                        senderOrganization.SmsCreditsBalance);
                 }
                 DB.GetTable<SmsSentLog>().InsertOnSubmit(result);
                 DB.SubmitChanges();
@@ -115,6 +98,7 @@
             int smsProviderCode,
             Exception ex,
             User senderUser,
+            Organization senderOrganization,
             out string errorMessage)
         {
             SmsSentLog result = null;
@@ -145,28 +129,10 @@
                 if (senderUser != null)
                 {
                     result.SenderUserId = senderUser.UserId;
-                    if (senderUser.OrganizationId.HasValue)
-                    {
-                        Organization senderOrganization = GetOrganization(senderUser.OrganizationId.Value, false);
-                        if (senderOrganization != null)
-                        {
-                            result.OrganizationId = senderOrganization.OrganizationId;
-                        }
-                        else
-                        {
-                            GOC.Instance.Logger.LogMessage(new LogMessage(string.Format("Could not find {0} with {1} of '{2}', when saving {3} with {4} of '{5}'. Associated {6}: {7}",
-                                typeof(Organization).Name, //0
-                                EntityReader<Organization>.GetPropertyName(p => p.OrganizationId, false), //1
-                                senderUser.OrganizationId.Value, //2
-                                typeof(SmsSentLog).Name, //3
-                                EntityReader<SmsSentLog>.GetPropertyName(p => p.SmsSentLogId, false), //4
-                                result.SmsSentLogId, //5
-                                typeof(User).Name, //6
-                                senderUser.UserName), //7
-                                LogMessageType.Warning,
-                                LoggingLevel.Normal));
-                        }
-                    }
+                }
+                if (senderOrganization != null)
+                {
+                    result.OrganizationId = senderOrganization.OrganizationId;
                 }
                 DB.GetTable<SmsSentLog>().InsertOnSubmit(result);
                 DB.SubmitChanges();
