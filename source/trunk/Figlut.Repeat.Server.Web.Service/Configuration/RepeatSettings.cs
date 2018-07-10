@@ -82,6 +82,8 @@
 
         public Guid SmsDeliveryReportQueueProcessorId { get; set; }
 
+        public Guid ScheduleProcessorId { get; set; }
+
         #endregion //Sms Processors
 
         #region Email

@@ -106,10 +106,10 @@
                     scheduleView.CellPhoneNumber,
                     e.NotificationMessage),
                     LogMessageType.Information.ToString());
-                //if (organization.SmsCreditsBalance < 1 && !organization.AllowSmsCreditsDebt)
-                //{
-                //    throw new Exception(string.Format("{0} '{1}' has insufficient SMS credits to send an SMS.", typeof(Organization).Name, organization.Name));
-                //}
+                if (organization.SmsCreditsBalance < 1 && !organization.AllowSmsCreditsDebt)
+                {
+                    throw new Exception(string.Format("{0} '{1}' has insufficient SMS credits to send an SMS.", typeof(Organization).Name, organization.Name));
+                }
                 SmsSentLog smsSentLog = ProcessScheduleEntryQueueItem(scheduleView, e, context);
                 if (smsSentLog != null)
                 {

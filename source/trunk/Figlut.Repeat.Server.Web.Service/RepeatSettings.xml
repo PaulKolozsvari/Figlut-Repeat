@@ -18,6 +18,7 @@
   <SmsReceivedQueueProcessorId>999ED78E-1CB6-4A56-89AD-AEA9DA63A035</SmsReceivedQueueProcessorId>
   <SmsSentQueueProcessorId>232E0992-CA64-4C1E-B960-A79469927D5A</SmsSentQueueProcessorId>
   <SmsDeliveryReportQueueProcessorId>BA82D2D2-B6BD-4281-B396-D327FE94CE9D</SmsDeliveryReportQueueProcessorId>
+  <ScheduleProcessorId>5259E5FA-D001-494A-97AC-DE2897ABAC08</ScheduleProcessorId>
   <EmailNotificationsEnabled>true</EmailNotificationsEnabled>
   <EmailDatabaseLoggingEnabled>true</EmailDatabaseLoggingEnabled>
   <EmailDatabaseLogMessageContents>true</EmailDatabaseLogMessageContents>

@@ -26,6 +26,7 @@
     using Figlut.Server.Toolkit.Web.Service.Inspector;
     using Figlut.Server.Toolkit.Data.iCalendar;
     using Figlut.Repeat.Processors.Sms;
+    using Figlut.Repeat.Processors.Schedule;
 
     #endregion //Using Directives
 
@@ -73,6 +74,7 @@
         #region SMS Processors
 
         private SmsSentQueueProcessor _smsSentQueueProcessor;
+        private ScheduleProcessor _scheduleProcessor;
 
         #endregion //SMS Processors
 
@@ -178,6 +180,7 @@
                 InitializeServiceHost(settings);
             }
             InitializeSmsSentQueueProcessor(true);
+            InitializeScheduleProcessor(true);
             GOC.Instance.Logger.LogMessage(new LogMessage("Application Initialized.", LogMessageType.SuccessAudit, LoggingLevel.Normal));
         }
 
@@ -277,6 +280,27 @@
             int organizationIdentifierMaxLength = Convert.ToInt32(GlobalSettings[GlobalSettingName.OrganizationIdentifierMaxLength].SettingValue);
             Processor processor = RepeatEntityContext.Create().GetProcessor(Settings.SmsSentQueueProcessorId, true);
             _smsSentQueueProcessor = new SmsSentQueueProcessor(
+                this.SmsSender,
+                maxSmsSendMessageLength,
+                smsSendMessageSuffix,
+                organizationIdentifierMaxLength,
+                processor.ProcessorId,
+                processor.ExecutionInterval,
+                startImmediately,
+                organizationIdentifierIndicator,
+                subscriberNameIndicator,
+                this.EmailSender);
+        }
+
+        private void InitializeScheduleProcessor(bool startImmediately)
+        {
+            string organizationIdentifierIndicator = GlobalSettings[GlobalSettingName.OrganizationIdentifierIndicator].SettingValue;
+            string subscriberNameIndicator = GlobalSettings[GlobalSettingName.SubscriberNameIndicator].SettingValue;
+            int maxSmsSendMessageLength = Convert.ToInt32(GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
+            string smsSendMessageSuffix = GlobalSettings[GlobalSettingName.SmsSendMessageSuffix].SettingValue;
+            int organizationIdentifierMaxLength = Convert.ToInt32(GlobalSettings[GlobalSettingName.OrganizationIdentifierMaxLength].SettingValue);
+            Processor processor = RepeatEntityContext.Create().GetProcessor(Settings.ScheduleProcessorId, true);
+            _scheduleProcessor = new ScheduleProcessor(
                 this.SmsSender,
                 maxSmsSendMessageLength,
                 smsSendMessageSuffix,

@@ -39,7 +39,7 @@ Processors.InsertOnSubmit(smsDeliveryReportQueueProcessor);
 
 Processor scheduleProcessor = new Processor()
 {
-	ProcessorId = Guid.NewGuid(),
+	ProcessorId = Guid.Parse("5259E5FA-D001-494A-97AC-DE2897ABAC08"),
 	Name = "Schedule Processor",
 	ExecutionInterval = 10000,
 	DateCreated = DateTime.Now
