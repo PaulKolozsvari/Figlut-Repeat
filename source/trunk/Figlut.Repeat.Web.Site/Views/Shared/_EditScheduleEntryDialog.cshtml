@@ -57,9 +57,46 @@
                     @Html.Raw("SMS Notification Sent")
                 </div>
                 <div class="editor-field">
-                    @Html.CheckBoxFor(m => m.SMSNotificationSent)
-                    @Html.ValidationMessageFor(m => m.SMSNotificationSent)
+                    @Html.DropDownListFor(m => m.SMSNotificationSent, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.SMSNotificationSent, "SMSNotificationSent is required.")
                 </div>
+                <div class="field-label">
+                    @Html.Raw("Failed To Send")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.FailedToSend, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.FailedToSend, "SMSNotificationSent is required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Failed To Send Error Message")
+                </div>
+                <div class="editor-field">
+                    @*@Html.TextBoxFor(m => m.FailedToSendErrorMessage, new { disabled = "disabled", @readonly = "readonly" })*@
+                    @Html.EditorFor(m => m.FailedToSendErrorMessage)
+                    @Html.ValidationMessageFor(m => m.FailedToSendErrorMessage)
+                </div>
+
+                <br />
                 <br />
                 <div id="EditScheduleEntryErrorField" style="color:#8A0808"></div>
             </fieldset>

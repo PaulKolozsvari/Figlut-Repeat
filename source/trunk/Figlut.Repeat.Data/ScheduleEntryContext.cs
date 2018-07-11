@@ -62,6 +62,8 @@
                                                   NotificationDate = scheduleEntry.NotificationDate,
                                                   NotificationDateFormatted = scheduleEntry.NotificationDateFormatted,
                                                   NotificationDateDayOfWeek = scheduleEntry.NotificationDateDayOfWeek,
+                                                  FailedToSend = scheduleEntry.FailedToSend,
+                                                  FailedToSendErrorMessage = scheduleEntry.FailedToSendErrorMessage,
                                                   SMSNotificationSent = scheduleEntry.SMSNotificationSent,
                                                   SMSMessageId = scheduleEntry.SMSMessageId,
                                                   SMSDateSent = scheduleEntry.SMSDateSent,
@@ -135,6 +137,8 @@
                               NotificationDate = scheduleEntry.NotificationDate,
                               NotificationDateFormatted = scheduleEntry.NotificationDateFormatted,
                               NotificationDateDayOfWeek = scheduleEntry.NotificationDateDayOfWeek,
+                              FailedToSend = scheduleEntry.FailedToSend,
+                              FailedToSendErrorMessage = scheduleEntry.FailedToSendErrorMessage,
                               SMSNotificationSent = scheduleEntry.SMSNotificationSent,
                               SMSMessageId = scheduleEntry.SMSMessageId,
                               SMSDateSent = scheduleEntry.SMSDateSent,
@@ -191,6 +195,8 @@
                               NotificationDate = scheduleEntry.NotificationDate,
                               NotificationDateFormatted = scheduleEntry.NotificationDateFormatted,
                               NotificationDateDayOfWeek = scheduleEntry.NotificationDateDayOfWeek,
+                              FailedToSend = scheduleEntry.FailedToSend,
+                              FailedToSendErrorMessage = scheduleEntry.FailedToSendErrorMessage,
                               SMSNotificationSent = scheduleEntry.SMSNotificationSent,
                               SMSMessageId = scheduleEntry.SMSMessageId,
                               SMSDateSent = scheduleEntry.SMSDateSent,
@@ -301,6 +307,8 @@
                               NotificationDate = scheduleEntry.NotificationDate,
                               NotificationDateFormatted = scheduleEntry.NotificationDateFormatted,
                               NotificationDateDayOfWeek = scheduleEntry.NotificationDateDayOfWeek,
+                              FailedToSend = scheduleEntry.FailedToSend,
+                              FailedToSendErrorMessage = scheduleEntry.FailedToSendErrorMessage,
                               SMSNotificationSent = scheduleEntry.SMSNotificationSent,
                               SMSMessageId = scheduleEntry.SMSMessageId,
                               SMSDateSent = scheduleEntry.SMSDateSent,
@@ -357,6 +365,8 @@
                               NotificationDate = scheduleEntry.NotificationDate,
                               NotificationDateFormatted = scheduleEntry.NotificationDateFormatted,
                               NotificationDateDayOfWeek = scheduleEntry.NotificationDateDayOfWeek,
+                              FailedToSend = scheduleEntry.FailedToSend,
+                              FailedToSendErrorMessage = scheduleEntry.FailedToSendErrorMessage,
                               SMSNotificationSent = scheduleEntry.SMSNotificationSent,
                               SMSMessageId = scheduleEntry.SMSMessageId,
                               SMSDateSent = scheduleEntry.SMSDateSent,
@@ -448,32 +458,107 @@
 
         #region Schedule Processor Queries
 
-        public List<ScheduleEntry> GetPastScheduleEntriesSmsNotificationNotSent(DateTime olderThanDateTime)
+        public List<ScheduleEntry> GetPastScheduleEntriesSmsNotificationNotSent(DateTime olderThanDateTime, bool excludeFailedToSend)
         {
-            return (from e in DB.GetTable<ScheduleEntry>()
-                    where !e.SMSNotificationSent &&
-                    e.EntryDate.Date <= olderThanDateTime.Date &&
-                    e.EntryTime <= olderThanDateTime.TimeOfDay
-                    select e).ToList();
+            if (excludeFailedToSend)
+            {
+                return (from e in DB.GetTable<ScheduleEntry>()
+                        where !e.FailedToSend &&
+                        !e.SMSNotificationSent &&
+                        e.EntryDate.Date <= olderThanDateTime.Date &&
+                        e.EntryTime <= olderThanDateTime.TimeOfDay
+                        select e).ToList();
+            }
+            else
+            {
+                return (from e in DB.GetTable<ScheduleEntry>()
+                        where !e.SMSNotificationSent &&
+                        e.EntryDate.Date <= olderThanDateTime.Date &&
+                        e.EntryTime <= olderThanDateTime.TimeOfDay
+                        select e).ToList();
+            }
         }
 
-        public long GetPastScheduleEntriesSmsNotificationNotSentCount(DateTime olderThanDateTime)
+        public long GetPastScheduleEntriesSmsNotificationNotSentCount(DateTime olderThanDateTime, bool excludeFailedToSend)
         {
-            return (from e in DB.GetTable<ScheduleEntry>()
-                    where !e.SMSNotificationSent &&
-                    e.EntryDate.Date <= olderThanDateTime.Date &&
-                    e.EntryTime <= olderThanDateTime.TimeOfDay
-                    select e).LongCount();
+            if (excludeFailedToSend)
+            {
+                return (from e in DB.GetTable<ScheduleEntry>()
+                        where !e.FailedToSend &&
+                        !e.SMSNotificationSent &&
+                        e.EntryDate.Date <= olderThanDateTime.Date &&
+                        e.EntryTime <= olderThanDateTime.TimeOfDay
+                        select e).LongCount();
+            }
+            else
+            {
+                return (from e in DB.GetTable<ScheduleEntry>()
+                        where !e.SMSNotificationSent &&
+                        e.EntryDate.Date <= olderThanDateTime.Date &&
+                        e.EntryTime <= olderThanDateTime.TimeOfDay
+                        select e).LongCount();
+            }
         }
 
 
-        public List<ScheduleEntry> GetTopPastScheduleEntriesSmsNotificationNotSent(DateTime olderThanDateTime, int numberOfEntries)
+        public List<ScheduleEntry> GetTopPastScheduleEntriesSmsNotificationNotSent(DateTime olderThanDateTime, int numberOfEntries, bool excludeFailedToSend)
         {
-            return (from e in DB.GetTable<ScheduleEntry>()
-                    where !e.SMSNotificationSent &&
-                    e.EntryDate.Date <= olderThanDateTime.Date &&
-                    e.EntryTime <= olderThanDateTime.TimeOfDay
-                    select e).Take(numberOfEntries).ToList();
+            if (excludeFailedToSend)
+            {
+                return (from e in DB.GetTable<ScheduleEntry>()
+                        where !excludeFailedToSend &&
+                        !e.SMSNotificationSent &&
+                        e.EntryDate.Date <= olderThanDateTime.Date &&
+                        e.EntryTime <= olderThanDateTime.TimeOfDay
+                        select e).Take(numberOfEntries).ToList();
+            }
+            else
+            {
+                return (from e in DB.GetTable<ScheduleEntry>()
+                        where !e.SMSNotificationSent &&
+                        e.EntryDate.Date <= olderThanDateTime.Date &&
+                        e.EntryTime <= olderThanDateTime.TimeOfDay
+                        select e).Take(numberOfEntries).ToList();
+            }
+        }
+
+        public void FlagScheduleEntryAsFailedToSend(
+                Guid scheduleEntryId,
+                string failedToSendErrorMessage,
+                bool throwExceptionOnNotFound,
+                bool submitChanges,
+                bool startTransaction)
+        {
+            if (startTransaction)
+            {
+                using (TransactionScope t = new TransactionScope())
+                {
+                    ScheduleEntry e = GetScheduleEntry(scheduleEntryId, throwExceptionOnNotFound);
+                    if (e != null)
+                    {
+                        e.FailedToSend = true;
+                        e.FailedToSendErrorMessage = failedToSendErrorMessage;
+                    }
+                    if (submitChanges)
+                    {
+                        DB.SubmitChanges();
+                    }
+                    t.Complete();
+                }
+            }
+            else
+            {
+                ScheduleEntry e = GetScheduleEntry(scheduleEntryId, throwExceptionOnNotFound);
+                if (e != null)
+                {
+                    e.FailedToSend = true;
+                    e.FailedToSendErrorMessage = failedToSendErrorMessage;
+                }
+                if (submitChanges)
+                {
+                    DB.SubmitChanges();
+                }
+            }
         }
 
         #endregion //Schedule Processor Queries

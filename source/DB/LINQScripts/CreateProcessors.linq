@@ -34,6 +34,7 @@ Processor smsDeliveryReportQueueProcessor = new Processor()
 {
 	ProcessorId = Guid.Parse("BA82D2D2-B6BD-4281-B396-D327FE94CE9D"),
 	Name = "Sms Delivery Report Queue Processor",
+	Enabled = true,
 	ExecutionInterval = 10000,
 	DateCreated = DateTime.Now
 };
@@ -43,6 +44,7 @@ Processor scheduleProcessor = new Processor()
 {
 	ProcessorId = Guid.Parse("5259E5FA-D001-494A-97AC-DE2897ABAC08"),
 	Name = "Schedule Processor",
+	Enabled = true,
 	ExecutionInterval = 10000,
 	DateCreated = DateTime.Now
 };

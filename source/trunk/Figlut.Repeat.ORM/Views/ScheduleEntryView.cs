@@ -36,6 +36,10 @@
 
         public string NotificationDateDayOfWeek { get; set; }
 
+        public bool FailedToSend { get; set; }
+
+        public string FailedToSendErrorMessage { get; set; }
+
         public bool SMSNotificationSent { get; set; }
 
         public string SMSMessageId { get; set; }

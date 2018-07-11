@@ -37,6 +37,10 @@
 
         public string NotificationDateDayOfWeek { get; set; }
 
+        public bool FailedToSend { get; set; }
+
+        public string FailedToSendErrorMessage { get; set; }
+
         public bool SMSNotificationSent { get; set; }
 
         public string SMSMessageId { get; set; }
@@ -105,6 +109,8 @@
             this.NotificationDate = view.NotificationDate;
             this.NotificationDateFormatted = view.NotificationDateFormatted;
             this.NotificationDateDayOfWeek = view.NotificationDateDayOfWeek;
+            this.FailedToSend = view.FailedToSend;
+            this.FailedToSendErrorMessage = view.FailedToSendErrorMessage;
             this.SMSNotificationSent = view.SMSNotificationSent;
             this.SMSMessageId = view.SMSMessageId;
             this.SMSDateSent = view.SMSDateSent;
@@ -140,6 +146,8 @@
             view.EntryDateFormatted = this.EntryDateFormatted;
             view.NotificationDate = this.NotificationDate;
             view.NotificationDateFormatted = this.NotificationDateFormatted;
+            view.FailedToSend = this.FailedToSend;
+            view.FailedToSendErrorMessage = this.FailedToSendErrorMessage;
             view.SMSNotificationSent = this.SMSNotificationSent;
             view.SMSMessageId = this.SMSMessageId;
             view.SMSDateSent = this.SMSDateSent;

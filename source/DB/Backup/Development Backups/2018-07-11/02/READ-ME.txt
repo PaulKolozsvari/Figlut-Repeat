@@ -1,0 +1,1 @@
+Added FailedToSend and FailedToSendErrorMessage fields on the ScheduleEntry to keep track of which SMS messages failed to send when running the Schedule Processor.

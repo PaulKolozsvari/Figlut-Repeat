@@ -82,12 +82,12 @@
             string subscriberIdentifierIndicator)
         {
             DateTime currentDateTime = DateTime.Now;
-            long entriesInQueue = context.GetPastScheduleEntriesSmsNotificationNotSentCount(currentDateTime);
+            long entriesInQueue = context.GetPastScheduleEntriesSmsNotificationNotSentCount(currentDateTime, true);
             if (entriesInQueue < 1) //Continue processing entries until the queue has been emptied i.e. there are no more entries in the queue.
             {
                 return false;
             }
-            List<ScheduleEntry> entries = context.GetTopPastScheduleEntriesSmsNotificationNotSent(currentDateTime, 1);
+            List<ScheduleEntry> entries = context.GetTopPastScheduleEntriesSmsNotificationNotSent(currentDateTime, 1, true);
             if (entries.Count < 1)
             {
                 throw new Exception(string.Format("{0} {1}s are supposed to exist, but none could be queried with TOP command.",
@@ -147,6 +147,7 @@
                 int smsProviderCode = (int)_smsSender.SmsProvider;
                 string errorMessage = null;
                 context.LogFailedSmsSent(smsRequest.recipientNumber, smsRequest.message, smsProviderCode, exFailed, null, senderOrganization, out errorMessage);
+                context.FlagScheduleEntryAsFailedToSend(scheduleEntry.ScheduleEntryId, errorMessage, true, true, true);
                 throw new Exception(errorMessage);
             }
             if (smsResponse != null)
