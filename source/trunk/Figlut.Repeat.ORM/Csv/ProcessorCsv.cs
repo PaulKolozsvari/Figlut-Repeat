@@ -18,6 +18,8 @@
 
         public string Name { get; set; }
 
+        public bool Enabled { get; set; }
+
         public int ExecutionInterval { get; set; }
 
         public Nullable<DateTime> LastExecutionDate { get; set; }
@@ -32,6 +34,7 @@
         {
             this.ProcessorId = processor.ProcessorId;
             this.Name = processor.Name;
+            this.Enabled = processor.Enabled;
             this.ExecutionInterval = processor.ExecutionInterval;
             this.LastExecutionDate = processor.LastExecutionDate;
             this.DateCreated = processor.DateCreated;
@@ -41,6 +44,7 @@
         {
             processor.ProcessorId = this.ProcessorId;
             processor.Name = this.Name;
+            processor.Enabled = this.Enabled;
             processor.ExecutionInterval = this.ExecutionInterval;
             processor.LastExecutionDate = this.LastExecutionDate;
             processor.DateCreated = this.DateCreated;

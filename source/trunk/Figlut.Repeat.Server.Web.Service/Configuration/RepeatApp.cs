@@ -179,8 +179,8 @@
             {
                 InitializeServiceHost(settings);
             }
-            InitializeSmsSentQueueProcessor(true);
-            InitializeScheduleProcessor(true);
+            InitializeSmsSentQueueProcessor();
+            InitializeScheduleProcessor();
             GOC.Instance.Logger.LogMessage(new LogMessage("Application Initialized.", LogMessageType.SuccessAudit, LoggingLevel.Normal));
         }
 
@@ -271,7 +271,7 @@
                 settings.DefaultEmailRecipients);
         }
 
-        private void InitializeSmsSentQueueProcessor(bool startImmediately)
+        private void InitializeSmsSentQueueProcessor()
         {
             string organizationIdentifierIndicator = GlobalSettings[GlobalSettingName.OrganizationIdentifierIndicator].SettingValue;
             string subscriberNameIndicator = GlobalSettings[GlobalSettingName.SubscriberNameIndicator].SettingValue;
@@ -286,13 +286,13 @@
                 organizationIdentifierMaxLength,
                 processor.ProcessorId,
                 processor.ExecutionInterval,
-                startImmediately,
+                processor.Enabled,
                 organizationIdentifierIndicator,
                 subscriberNameIndicator,
                 this.EmailSender);
         }
 
-        private void InitializeScheduleProcessor(bool startImmediately)
+        private void InitializeScheduleProcessor()
         {
             string organizationIdentifierIndicator = GlobalSettings[GlobalSettingName.OrganizationIdentifierIndicator].SettingValue;
             string subscriberNameIndicator = GlobalSettings[GlobalSettingName.SubscriberNameIndicator].SettingValue;
@@ -307,7 +307,7 @@
                 organizationIdentifierMaxLength,
                 processor.ProcessorId,
                 processor.ExecutionInterval,
-                startImmediately,
+                processor.Enabled,
                 organizationIdentifierIndicator,
                 subscriberNameIndicator,
                 this.EmailSender);

@@ -1,8 +1,5 @@
 ﻿@model Figlut.Repeat.Web.Site.Models.FilterModel<ProcessorModel>
 
-@using Figlut.Server.Toolkit.Data;
-@using Figlut.Repeat.Web.Site.Configuration;
-@using Figlut.Repeat.Web.Site;
 @using Figlut.Repeat.Web.Site.Models;
 
 @{
@@ -41,5 +38,6 @@
             }
         });
         loadDialog("#divConfirmationDialog", "#dlgConfirmation", "ConfirmDeleteDialog", "Processor", 'identifier', '@Guid.Empty');
+        loadDialog("#divEditProcessor", "#dlgEditProcessor", "EditDialog", "Processor", 'processorId', '@null');
     });
 </script>

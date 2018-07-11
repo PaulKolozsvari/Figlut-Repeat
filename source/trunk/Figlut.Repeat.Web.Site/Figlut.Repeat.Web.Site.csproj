@@ -352,13 +352,14 @@
     <Content Include="Images\FiglutLogo\logo_smaller.png" />
     <Content Include="Images\FiglutLogo\vector-files\print_v1.pdf" />
     <Content Include="Images\FiglutLogo\vector-files\print_v2_white.pdf" />
+    <Content Include="Images\FiglutRepeatLogo\Paul-Repeat.Figlut-AppLogo-FINAL-Black.png" />
+    <Content Include="Images\FiglutRepeatLogo\Paul-Repeat.Figlut-AppLogo-FINAL-Blue for dark BG.png" />
+    <Content Include="Images\FiglutRepeatLogo\Paul-Repeat.Figlut-AppLogo-FINAL-Blue.png" />
+    <Content Include="Images\FiglutRepeatLogo\Paul-Repeat.Figlut-AppLogo-FINAL-White.png" />
     <Content Include="Images\Figlut\BlueCoffee\BlueCoffee.ldsp" />
     <Content Include="Images\FiglutLogo\logo_high_resolution.png" />
     <Content Include="Images\FiglutLogo\logo_small.png" />
     <Content Include="Images\FiglutLogo\logo_v1.png" />
-    <Content Include="Images\FiglutLogo\logo_v2_hex_000000.png" />
-    <Content Include="Images\FiglutLogo\logo_v3_hex_007398.png" />
-    <Content Include="Images\FiglutLogo\logo_white_transparent.png" />
     <Content Include="Images\FiglutLogo\square\square_v1.png" />
     <Content Include="Images\FiglutLogo\square\square_v2.png" />
     <Content Include="Images\FiglutLogo\square\square_v3.png" />
@@ -568,6 +569,7 @@
     <Content Include="Views\Shared\_SmsSentQueueItemGrid.cshtml" />
     <Content Include="Views\SmsSentQueueItem\Index.cshtml" />
     <Content Include="Views\Shared\_ResetPasswordDialog.cshtml" />
+    <Content Include="Views\Shared\_EditProcessorDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

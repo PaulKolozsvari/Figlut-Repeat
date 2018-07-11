@@ -102,12 +102,12 @@ namespace Figlut.Repeat.ORM
     partial void InsertUser(User instance);
     partial void UpdateUser(User instance);
     partial void DeleteUser(User instance);
-    partial void InsertProcessor(Processor instance);
-    partial void UpdateProcessor(Processor instance);
-    partial void DeleteProcessor(Processor instance);
     partial void InsertProcessorLog(ProcessorLog instance);
     partial void UpdateProcessorLog(ProcessorLog instance);
     partial void DeleteProcessorLog(ProcessorLog instance);
+    partial void InsertProcessor(Processor instance);
+    partial void UpdateProcessor(Processor instance);
+    partial void DeleteProcessor(Processor instance);
     #endregion
 		
 		public FiglutRepeatDataContext() : 
@@ -340,19 +340,19 @@ namespace Figlut.Repeat.ORM
 			}
 		}
 		
-		public System.Data.Linq.Table<Processor> Processors
-		{
-			get
-			{
-				return this.GetTable<Processor>();
-			}
-		}
-		
 		public System.Data.Linq.Table<ProcessorLog> ProcessorLogs
 		{
 			get
 			{
 				return this.GetTable<ProcessorLog>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Processor> Processors
+		{
+			get
+			{
+				return this.GetTable<Processor>();
 			}
 		}
 	}
@@ -9537,192 +9537,6 @@ namespace Figlut.Repeat.ORM
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Processor")]
-	public partial class Processor : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private System.Guid _ProcessorId;
-		
-		private string _Name;
-		
-		private int _ExecutionInterval;
-		
-		private System.Nullable<System.DateTime> _LastExecutionDate;
-		
-		private System.DateTime _DateCreated;
-		
-		private EntitySet<ProcessorLog> _ProcessorLogs;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnProcessorIdChanging(System.Guid value);
-    partial void OnProcessorIdChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnExecutionIntervalChanging(int value);
-    partial void OnExecutionIntervalChanged();
-    partial void OnLastExecutionDateChanging(System.Nullable<System.DateTime> value);
-    partial void OnLastExecutionDateChanged();
-    partial void OnDateCreatedChanging(System.DateTime value);
-    partial void OnDateCreatedChanged();
-    #endregion
-		
-		public Processor()
-		{
-			this._ProcessorLogs = new EntitySet<ProcessorLog>(new Action<ProcessorLog>(this.attach_ProcessorLogs), new Action<ProcessorLog>(this.detach_ProcessorLogs));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessorId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
-		public System.Guid ProcessorId
-		{
-			get
-			{
-				return this._ProcessorId;
-			}
-			set
-			{
-				if ((this._ProcessorId != value))
-				{
-					this.OnProcessorIdChanging(value);
-					this.SendPropertyChanging();
-					this._ProcessorId = value;
-					this.SendPropertyChanged("ProcessorId");
-					this.OnProcessorIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExecutionInterval", DbType="Int NOT NULL")]
-		public int ExecutionInterval
-		{
-			get
-			{
-				return this._ExecutionInterval;
-			}
-			set
-			{
-				if ((this._ExecutionInterval != value))
-				{
-					this.OnExecutionIntervalChanging(value);
-					this.SendPropertyChanging();
-					this._ExecutionInterval = value;
-					this.SendPropertyChanged("ExecutionInterval");
-					this.OnExecutionIntervalChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastExecutionDate", DbType="DateTime")]
-		public System.Nullable<System.DateTime> LastExecutionDate
-		{
-			get
-			{
-				return this._LastExecutionDate;
-			}
-			set
-			{
-				if ((this._LastExecutionDate != value))
-				{
-					this.OnLastExecutionDateChanging(value);
-					this.SendPropertyChanging();
-					this._LastExecutionDate = value;
-					this.SendPropertyChanged("LastExecutionDate");
-					this.OnLastExecutionDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
-		public System.DateTime DateCreated
-		{
-			get
-			{
-				return this._DateCreated;
-			}
-			set
-			{
-				if ((this._DateCreated != value))
-				{
-					this.OnDateCreatedChanging(value);
-					this.SendPropertyChanging();
-					this._DateCreated = value;
-					this.SendPropertyChanged("DateCreated");
-					this.OnDateCreatedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Processor_ProcessorLog", Storage="_ProcessorLogs", ThisKey="ProcessorId", OtherKey="ProcessorId")]
-		public EntitySet<ProcessorLog> ProcessorLogs
-		{
-			get
-			{
-				return this._ProcessorLogs;
-			}
-			set
-			{
-				this._ProcessorLogs.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_ProcessorLogs(ProcessorLog entity)
-		{
-			this.SendPropertyChanging();
-			entity.Processor = this;
-		}
-		
-		private void detach_ProcessorLogs(ProcessorLog entity)
-		{
-			this.SendPropertyChanging();
-			entity.Processor = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProcessorLog")]
 	public partial class ProcessorLog : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -9919,6 +9733,216 @@ namespace Figlut.Repeat.ORM
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Processor")]
+	public partial class Processor : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _ProcessorId;
+		
+		private string _Name;
+		
+		private bool _Enabled;
+		
+		private int _ExecutionInterval;
+		
+		private System.Nullable<System.DateTime> _LastExecutionDate;
+		
+		private System.DateTime _DateCreated;
+		
+		private EntitySet<ProcessorLog> _ProcessorLogs;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnProcessorIdChanging(System.Guid value);
+    partial void OnProcessorIdChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnEnabledChanging(bool value);
+    partial void OnEnabledChanged();
+    partial void OnExecutionIntervalChanging(int value);
+    partial void OnExecutionIntervalChanged();
+    partial void OnLastExecutionDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnLastExecutionDateChanged();
+    partial void OnDateCreatedChanging(System.DateTime value);
+    partial void OnDateCreatedChanged();
+    #endregion
+		
+		public Processor()
+		{
+			this._ProcessorLogs = new EntitySet<ProcessorLog>(new Action<ProcessorLog>(this.attach_ProcessorLogs), new Action<ProcessorLog>(this.detach_ProcessorLogs));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessorId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid ProcessorId
+		{
+			get
+			{
+				return this._ProcessorId;
+			}
+			set
+			{
+				if ((this._ProcessorId != value))
+				{
+					this.OnProcessorIdChanging(value);
+					this.SendPropertyChanging();
+					this._ProcessorId = value;
+					this.SendPropertyChanged("ProcessorId");
+					this.OnProcessorIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Enabled", DbType="Bit NOT NULL")]
+		public bool Enabled
+		{
+			get
+			{
+				return this._Enabled;
+			}
+			set
+			{
+				if ((this._Enabled != value))
+				{
+					this.OnEnabledChanging(value);
+					this.SendPropertyChanging();
+					this._Enabled = value;
+					this.SendPropertyChanged("Enabled");
+					this.OnEnabledChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExecutionInterval", DbType="Int NOT NULL")]
+		public int ExecutionInterval
+		{
+			get
+			{
+				return this._ExecutionInterval;
+			}
+			set
+			{
+				if ((this._ExecutionInterval != value))
+				{
+					this.OnExecutionIntervalChanging(value);
+					this.SendPropertyChanging();
+					this._ExecutionInterval = value;
+					this.SendPropertyChanged("ExecutionInterval");
+					this.OnExecutionIntervalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastExecutionDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> LastExecutionDate
+		{
+			get
+			{
+				return this._LastExecutionDate;
+			}
+			set
+			{
+				if ((this._LastExecutionDate != value))
+				{
+					this.OnLastExecutionDateChanging(value);
+					this.SendPropertyChanging();
+					this._LastExecutionDate = value;
+					this.SendPropertyChanged("LastExecutionDate");
+					this.OnLastExecutionDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateCreated", DbType="DateTime NOT NULL")]
+		public System.DateTime DateCreated
+		{
+			get
+			{
+				return this._DateCreated;
+			}
+			set
+			{
+				if ((this._DateCreated != value))
+				{
+					this.OnDateCreatedChanging(value);
+					this.SendPropertyChanging();
+					this._DateCreated = value;
+					this.SendPropertyChanged("DateCreated");
+					this.OnDateCreatedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Processor_ProcessorLog", Storage="_ProcessorLogs", ThisKey="ProcessorId", OtherKey="ProcessorId")]
+		public EntitySet<ProcessorLog> ProcessorLogs
+		{
+			get
+			{
+				return this._ProcessorLogs;
+			}
+			set
+			{
+				this._ProcessorLogs.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_ProcessorLogs(ProcessorLog entity)
+		{
+			this.SendPropertyChanging();
+			entity.Processor = this;
+		}
+		
+		private void detach_ProcessorLogs(ProcessorLog entity)
+		{
+			this.SendPropertyChanging();
+			entity.Processor = null;
 		}
 	}
 }

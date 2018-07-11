@@ -15,6 +15,7 @@ Processor smsReceivedQueueProcessor = new Processor()
 {
 	ProcessorId = Guid.Parse("999ED78E-1CB6-4A56-89AD-AEA9DA63A035"),
 	Name = "Sms Received Queue Processor",
+	Enabled = true,
 	ExecutionInterval = 10000,
 	DateCreated = DateTime.Now
 };
@@ -23,6 +24,7 @@ Processor smsSentQueueProcessor = new Processor()
 {
 	ProcessorId = Guid.Parse("232E0992-CA64-4C1E-B960-A79469927D5A"),
 	Name = "Sms Sent Queue Processor",
+	Enabled = true,
 	ExecutionInterval = 10000,
 	DateCreated = DateTime.Now
 };

@@ -9,10 +9,6 @@
     using Figlut.Repeat.Email;
     using Figlut.Repeat.ORM;
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     #endregion //Using Directives
 

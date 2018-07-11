@@ -52,6 +52,7 @@
                         {
                             processor = (ProcessorModel)grid.Rows[grid.SelectedIndex].Value;
                             @Html.LinkButtonForCancel("Delete", "onDeleteProcessorClick()", "btnDeleteProcessor")
+                            @Html.LinkButtonForSubmit("Edit", "onEditProcessorClick()", "btnEditSubscriber", "red-edit.png")
                         }
                     }
                 </div>
@@ -78,6 +79,7 @@
                 columns: grid.Columns(
                 grid.Column("Processors", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
                 grid.Column(EntityReader<ProcessorModel>.GetPropertyName(p => p.Name, false), "Name"),
+                grid.Column(EntityReader<ProcessorModel>.GetPropertyName(p => p.Enabled, false), "Enabled"),
                 grid.Column(EntityReader<ProcessorModel>.GetPropertyName(p => p.ExecutionInterval, false), "Execution Interval"),
                 grid.Column(EntityReader<ProcessorModel>.GetPropertyName(p => p.LastExecutionDate, false), "Last Execution Date"),
                 grid.Column(EntityReader<ProcessorModel>.GetPropertyName(p => p.DateCreated, false), "Date Created")
@@ -123,6 +125,16 @@
             'ConfirmDeleteDialog',
             'Processor',
             'identifier',
+            '@processor.ProcessorId.ToString()');
+    };
+
+    function onEditProcessorClick() {
+        showDialog(
+            '#divEditProcessor',
+            '#dlgEditProcessor',
+            'EditDialog',
+            'Processor',
+            'processorId',
             '@processor.ProcessorId.ToString()');
     };
 

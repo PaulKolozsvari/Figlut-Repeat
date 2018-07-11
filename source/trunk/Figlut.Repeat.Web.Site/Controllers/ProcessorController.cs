@@ -22,6 +22,7 @@
         #region Constants
 
         private const string PROCESSOR_GRID_PARTIAL_VIEW_NAME = "_ProcessorGrid";
+        private const string EDIT_PROCESSOR_DIALOG_PARTIAL_VIEW_NAME = "_EditProcessorDialog";
 
         #endregion //Constants
 
@@ -255,6 +256,57 @@
                 ExceptionHandler.HandleException(ex);
                 RepeatWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
                 return RedirectToError(ex.Message);
+            }
+        }
+
+        public ActionResult EditDialog(Nullable<Guid> processorId)
+        {
+            try
+            {
+                RepeatEntityContext context = RepeatEntityContext.Create();
+                if (!Request.IsAuthenticated || !IsCurrentUserAdministrator(context))
+                {
+                    return RedirectToHome();
+                }
+                if (!processorId.HasValue)
+                {
+                    return PartialView(EDIT_PROCESSOR_DIALOG_PARTIAL_VIEW_NAME, new ProcessorModel());
+                }
+                Processor processor = context.GetProcessor(processorId.Value, true);
+                ProcessorModel model = new ProcessorModel();
+                model.CopyPropertiesFromProcessor(processor);
+                PartialViewResult result = PartialView(EDIT_PROCESSOR_DIALOG_PARTIAL_VIEW_NAME, model);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                RepeatWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult EditDialog(ProcessorModel model)
+        {
+            try
+            {
+                string errorMessage = null;
+                if (!model.IsValid(out errorMessage))
+                {
+                    return GetJsonResult(false, errorMessage);
+                }
+                RepeatEntityContext context = RepeatEntityContext.Create();
+                Processor processor = context.GetProcessor(model.ProcessorId, true);
+                model.CopyPropertiesToProcessor(processor);
+                context.Save<Processor>(processor, false);
+                return GetJsonResult(true);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                RepeatWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
             }
         }
 
