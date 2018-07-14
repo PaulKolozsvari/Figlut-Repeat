@@ -62,20 +62,18 @@
 
 
 /*Header Hover*/
-.webGrid th:hover {
-    color: #fff;
-    background-image: -ms-linear-gradient(bottom, #999 0%, #fff 100%);
-    background-image: -o-linear-gradient(bottom, #999 0%, #fff 100%);
-    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #999), color-stop(1, #fff));
-    background-image: -webkit-linear-gradient(bottom, #999 0%, #fff 100%);
-    background-image: linear-gradient(bottom, #999 0%, #fff 100%);
-
-    /*padding-left: 10%;
+    .webGrid th:hover {
+        color: #fff;
+        background-image: -ms-linear-gradient(bottom, #1e7aa3 0%, #fff 100%);
+        background-image: -o-linear-gradient(bottom, #1e7aa3 0%, #fff 100%);
+        background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #1e7aa3), color-stop(1, #fff));
+        background-image: -webkit-linear-gradient(bottom, #1e7aa3 0%, #fff 100%);
+        background-image: linear-gradient(bottom, #1e7aa3 0%, #fff 100%);
+        /*padding-left: 10%;
     padding-right: 10%;*/
-
-    /*Uncomment these lines to expand the columns when hovering over them.*/
-    /*width: 40%;*/
-}
+        /*Uncomment these lines to expand the columns when hovering over them.*/
+        /*width: 40%;*/
+    }
 
 
 /*Row Hover*/

@@ -325,6 +325,10 @@
     <Content Include="Content\themes\base\jquery.ui.tooltip.css" />
     <Content Include="Content\WebGrid.css" />
     <Content Include="favicon.ico" />
+    <Content Include="Figlut-AppLogo-FINAL-Black.ico" />
+    <Content Include="Figlut-AppLogo-FINAL-Blue-Dark-Red.ico" />
+    <Content Include="Figlut-AppLogo-FINAL-Blue-Red.ico" />
+    <Content Include="Figlut-AppLogo-FINAL-Blue.ico" />
     <Content Include="FiglutIcon-Black.ico" />
     <Content Include="FiglutIcon-Blue.ico" />
     <Content Include="FiglutIcon.ico" />
@@ -354,6 +358,8 @@
     <Content Include="Images\FiglutLogo\vector-files\print_v2_white.pdf" />
     <Content Include="Images\FiglutRepeatLogo\Figlut-AppLogo-FINAL-Black.png" />
     <Content Include="Images\FiglutRepeatLogo\Figlut-AppLogo-FINAL-Blue for dark BG.png" />
+    <Content Include="Images\FiglutRepeatLogo\Figlut-AppLogo-FINAL-Blue-Dark-Red.png" />
+    <Content Include="Images\FiglutRepeatLogo\Figlut-AppLogo-FINAL-Blue-Red.png" />
     <Content Include="Images\FiglutRepeatLogo\Figlut-AppLogo-FINAL-Blue.png" />
     <Content Include="Images\FiglutRepeatLogo\Figlut-AppLogo-FINAL-White.png" />
     <Content Include="Images\Figlut\BlueCoffee\BlueCoffee.ldsp" />

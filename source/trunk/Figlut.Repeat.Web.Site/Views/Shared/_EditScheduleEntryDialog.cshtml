@@ -15,6 +15,8 @@
                 @Html.HiddenFor(m => m.NotificationDateFormatted)
                 @Html.HiddenFor(m => m.NotificationDateDayOfWeek)
                 @Html.HiddenFor(m => m.SMSMessageId)
+                @Html.HiddenFor(m => m.SMSDateSent)
+                @Html.HiddenFor(m => m.SmsSentLogId)
                 @Html.HiddenFor(m => m.DateCreated)
                 @Html.HiddenFor(m => m.SubscriptionId)
                 @Html.HiddenFor(m => m.ScheduleName)
@@ -91,8 +93,7 @@
                     @Html.Raw("Failed To Send Error Message")
                 </div>
                 <div class="editor-field">
-                    @*@Html.TextBoxFor(m => m.FailedToSendErrorMessage, new { disabled = "disabled", @readonly = "readonly" })*@
-                    @Html.EditorFor(m => m.FailedToSendErrorMessage)
+                    @Html.TextBoxFor(m => m.FailedToSendErrorMessage, new { disabled = "disabled", @readonly = "readonly" })
                     @Html.ValidationMessageFor(m => m.FailedToSendErrorMessage)
                 </div>
 

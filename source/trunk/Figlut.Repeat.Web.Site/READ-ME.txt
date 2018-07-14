@@ -25,3 +25,47 @@ Troubleshooting IIS Worker Process High CPU:
 Client-side debugging of ASP.NET projects in Google Chrome
 	https://www.c-sharpcorner.com/article/debugging-with-chrome-in-visual-studio-2017/
 	https://blogs.msdn.microsoft.com/webdev/2016/11/21/client-side-debugging-of-asp-net-projects-in-google-chrome/
+
+Images for the website:
+	https://www.istockphoto.com/za/photo/hourglass-and-calendar-gm886661830-246176114
+	https://www.istockphoto.com/za/photo/hourglass-on-calendar-gm611076268-105069171
+	https://www.istockphoto.com/za/photo/time-management-schedule-and-deadline-concept-gm926677582-254259182
+	https://www.istockphoto.com/za/photo/hourglass-on-laptop-computer-concept-for-time-management-gm937749836-256473572
+
+	https://www.istockphoto.com/za/photo/person-drawing-tracker-chart-on-notebook-gm928080758-254565861
+	https://www.pexels.com/photo/schedule-planning-startup-launching-7376/
+	https://www.pexels.com/photo/people-in-front-of-macbook-pro-1089550/
+
+	Calendar
+	https://www.pexels.com/photo/two-men-holding-pen-and-calendar-sitting-beside-table-1187439/
+	https://www.pexels.com/photo/two-person-playing-chess-910330/
+	https://www.pexels.com/photo/daily-report-schedule-paper-on-brown-clipboard-955449/
+	https://www.istockphoto.com/za/photo/closed-up-of-day-number-clean-white-desktop-calendar-as-business-deadline-time-gm911862884-251048161
+	https://www.istockphoto.com/za/photo/january-calendar-with-focus-on-new-years-day-gm451284037-30328062
+	https://www.istockphoto.com/za/photo/busy-schedule-gm157180341-1583974
+	https://www.istockphoto.com/za/photo/calender-rotes-kreuz-am-donnerstag-deutscher-kalender-mit-buntstift-gm183025125-14317912
+	https://www.istockphoto.com/za/search/more-like-this/183025123?mediatype=photography&excludenudity=true&sort=best
+	https://www.istockphoto.com/za/photo/calender-termin-eintragen-deutscher-kalender-am-freitag-gm183025123-14317908
+	https://www.istockphoto.com/za/photo/senior-hands-holding-pill-box-gm867849146-145180339
+	https://www.istockphoto.com/za/photo/everday-health-care-gm171375198-21112574
+	https://www.istockphoto.com/za/photo/daily-meds-gm93271642-1334485
+	https://www.istockphoto.com/za/photo/pillbox-gm93299414-8907504
+	https://www.istockphoto.com/za/photo/seven-day-weekly-morning-and-night-pill-containers-gm618743168-107752105
+	https://www.istockphoto.com/za/photo/medicine-pill-box-daily-planner-and-prescription-bottles-gm514772969-48359162
+	https://www.istockphoto.com/za/photo/person-writing-workout-plan-in-notebook-gm922112426-253164071
+	https://www.istockphoto.com/za/photo/human-hand-making-exercise-plan-on-notebook-gm928088330-254567741
+	https://www.istockphoto.com/za/photo/person-drawing-tracker-chart-on-notebook-gm928088348-254567738
+	https://www.istockphoto.com/za/photo/person-drawing-tracker-chart-on-notebook-gm928088358-254567739
+	https://www.istockphoto.com/za/photo/persons-hand-filling-meal-plan-on-notebook-gm928088306-254567729
+	https://www.pexels.com/photo/flat-lay-photography-of-calendar-1020323/
+
+	Watering house plants:
+	https://www.pexels.com/photo/apartment-beverage-bottle-clean-544112/
+
+	Barber Schedule:
+	https://www.istockphoto.com/za/photo/male-barber-standing-by-cash-register-taking-booking-gm473422986-64437347
+	https://www.istockphoto.com/za/photo/portrait-of-hipster-barber-standing-outside-shop-gm473421992-64439157
+	https://www.istockphoto.com/za/photo/receptionist-on-phone-with-at-hair-salon-front-desk-gm184994532-18666132
+	https://www.istockphoto.com/za/photo/happy-guy-getting-haircut-by-hairdresser-gm640274034-115891189
+	
+	
