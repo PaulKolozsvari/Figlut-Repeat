@@ -6,12 +6,11 @@ div.buttons
     display: inline-block;
     margin: 10px 0;
 }
-.button
-{
+.button {
     display: block;
     float: inherit;
     width: 90px;
-    display:inline-block;
+    display: inline-block;
     max-width: 120px;
     text-align: center;
     border-top: 1px solid #CCC;
@@ -19,7 +18,7 @@ div.buttons
     border-bottom: 1px solid #AAA;
     border-right: 1px solid #AAA;
     /*background-color: #f1f6f1;*/
-    background-color : transparent;
+    background-color: transparent;
     font-family: Verdana, Helvetica, sans-serif;
     font-size: 75%;
     line-height: 110%;
@@ -33,12 +32,11 @@ div.buttons
     box-shadow: 1px 1px 2px #969696;
     -moz-box-shadow: 1px 1px 2px #969696; /* Firefox */
     -webkit-box-shadow: 1px 1px 2px #969696; /* Safari and Chrome */
-
-    background: -ms-linear-gradient(top, #fff 0%, #3195c2 100%);
-    background: -o-linear-gradient(top, #fff 0%, #3195c2 100%);
-    background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #fff), color-stop(1, #3195c2));
-    background: -webkit-linear-gradient(top, #fff 0%, #3195c2 100%);
-    background: linear-gradient(top, #fff 0%, #3195c2 100%);
+    background: -ms-linear-gradient(top, #fff 0%, #1e7aa3 100%);
+    background: -o-linear-gradient(top, #fff 0%, #1e7aa3 100%);
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #fff), color-stop(1, #1e7aa3));
+    background: -webkit-linear-gradient(top, #fff 0%, #1e7aa3 100%);
+    background: linear-gradient(top, #fff 0%, #1e7aa3 100%);
 }
 
 .button:active, .button.focus {

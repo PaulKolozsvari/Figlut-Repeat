@@ -4,7 +4,6 @@
     width: 80%;
     /*max-width: 300px;*/
     /*background-color: transparent;*/
-    /*color: #3195c2;*/
     color: #3195c2;
     /*padding-top: 50px;*/
     margin-left: auto;
@@ -12,13 +11,16 @@
     margin-bottom: auto;
     margin-top: auto;
     /*width: auto;*/
-
-    background-image: -ms-linear-gradient(bottom, #dcebf1 0%, #fff 80%);
+    /*background-image: -ms-linear-gradient(bottom, #dcebf1 0%, #fff 80%);
     background-image: -o-linear-gradient(bottom, #dcebf1 0%, #fff 80%);
     background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #dcebf1), color-stop(1, #fff));
     background-image: -webkit-linear-gradient(bottom, #dcebf1 0%, #fff 80%);
-    background-image: linear-gradient(bottom, #dcebf1 0%, #fff 80%);
-
+    background-image: linear-gradient(bottom, #dcebf1 0%, #fff 80%);*/
+    background-image: -ms-linear-gradient(bottom, #e7e7e7 0%, #fff 80%);
+    background-image: -o-linear-gradient(bottom, #e7e7e7 0%, #fff 80%);
+    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #e7e7e7), color-stop(1, #fff));
+    background-image: -webkit-linear-gradient(bottom, #e7e7e7 0%, #fff 80%);
+    background-image: linear-gradient(bottom, #e7e7e7 0%, #fff 80%);
     /*color: #dcebf1;*/
 }
 
@@ -39,11 +41,16 @@
 }
 
 .header {
-    background-image: -ms-linear-gradient(bottom, #3195c2 0%, #fff 100%);
+    /*background-image: -ms-linear-gradient(bottom, #3195c2 0%, #fff 100%);
     background-image: -o-linear-gradient(bottom, #3195c2 0%, #fff 100%);
     background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #3195c2), color-stop(1, #fff));
     background-image: -webkit-linear-gradient(bottom, #3195c2 0%, #fff 100%);
-    background-image: linear-gradient(bottom, #3195c2 0%, #fff 100%);
+    background-image: linear-gradient(bottom, #3195c2 0%, #fff 100%);*/
+    background-image: -ms-linear-gradient(bottom, #1e7aa3 0%, #fff 100%);
+    background-image: -o-linear-gradient(bottom, #1e7aa3 0%, #fff 100%);
+    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #1e7aa3), color-stop(1, #fff));
+    background-image: -webkit-linear-gradient(bottom, #1e7aa3 0%, #fff 100%);
+    background-image: linear-gradient(bottom, #1e7aa3 0%, #fff 100%);
     font-weight: bold;
     color: white;
 }
@@ -57,11 +64,11 @@
 /*Header Hover*/
 .webGrid th:hover {
     color: #fff;
-    background-image: -ms-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
-    background-image: -o-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
-    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #a30e0e), color-stop(1, #fff));
-    background-image: -webkit-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
-    background-image: linear-gradient(bottom, #a30e0e 0%, #fff 100%);
+    background-image: -ms-linear-gradient(bottom, #999 0%, #fff 100%);
+    background-image: -o-linear-gradient(bottom, #999 0%, #fff 100%);
+    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #999), color-stop(1, #fff));
+    background-image: -webkit-linear-gradient(bottom, #999 0%, #fff 100%);
+    background-image: linear-gradient(bottom, #999 0%, #fff 100%);
 
     /*padding-left: 10%;
     padding-right: 10%;*/
@@ -72,13 +79,12 @@
 
 
 /*Row Hover*/
-.webGrid tr:hover{
-    background-image: -ms-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
-    background-image: -o-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
-    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #a30e0e), color-stop(1, #fff));
-    background-image: -webkit-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
-    background-image: linear-gradient(bottom, #a30e0e 0%, #fff 100%);
-
+.webGrid tr:hover {
+    background-image: -ms-linear-gradient(bottom, #999 0%, #fff 100%);
+    background-image: -o-linear-gradient(bottom, #999 0%, #fff 100%);
+    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #999), color-stop(1, #fff));
+    background-image: -webkit-linear-gradient(bottom, #999 0%, #fff 100%);
+    background-image: linear-gradient(bottom, #999 0%, #fff 100%);
     background-color: transparent;
     color: #fff;
     cursor: pointer;
@@ -86,13 +92,12 @@
 
 /* Footer*/
 .webGrid tfoot td {
-    background-image: -ms-linear-gradient(bottom, #3195c2 0%, #fff 100%);
-    background-image: -o-linear-gradient(bottom, #3195c2 0%, #fff 100%);
-    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #3195c2), color-stop(1, #fff));
-    background-image: -webkit-linear-gradient(bottom, #3195c2 0%, #fff 100%);
-    background-image: linear-gradient(bottom, #3195c2 0%, #fff 100%);
+    background-image: -ms-linear-gradient(bottom, #e7e7e7 0%, #e7e7e7 100%);
+    background-image: -o-linear-gradient(bottom, #e7e7e7 0%, #e7e7e7 100%);
+    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #e7e7e7), color-stop(1, #e7e7e7));
+    background-image: -webkit-linear-gradient(bottom, #e7e7e7 0%, #e7e7e7 100%);
+    background-image: linear-gradient(bottom, #e7e7e7 0%, #e7e7e7 100%);
     padding: 5px;
-
     font-size: 1.2em;
 }
 
@@ -122,11 +127,11 @@
 
 .select {
     color: #fff;
-    background-image: -ms-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
-    background-image: -o-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
-    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #a30e0e), color-stop(1, #fff));
-    background-image: -webkit-linear-gradient(bottom, #a30e0e 0%, #fff 100%);
-    background-image: linear-gradient(bottom, #a30e0e 0%, #fff 100%);
+    background-image: -ms-linear-gradient(bottom, #999 0%, #fff 100%);
+    background-image: -o-linear-gradient(bottom, #999 0%, #fff 100%);
+    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #999), color-stop(1, #fff));
+    background-image: -webkit-linear-gradient(bottom, #999 0%, #fff 100%);
+    background-image: linear-gradient(bottom, #999 0%, #fff 100%);
 }
 
 /*Links on a selected row*/

@@ -352,10 +352,10 @@
     <Content Include="Images\FiglutLogo\logo_smaller.png" />
     <Content Include="Images\FiglutLogo\vector-files\print_v1.pdf" />
     <Content Include="Images\FiglutLogo\vector-files\print_v2_white.pdf" />
-    <Content Include="Images\FiglutRepeatLogo\Paul-Repeat.Figlut-AppLogo-FINAL-Black.png" />
-    <Content Include="Images\FiglutRepeatLogo\Paul-Repeat.Figlut-AppLogo-FINAL-Blue for dark BG.png" />
-    <Content Include="Images\FiglutRepeatLogo\Paul-Repeat.Figlut-AppLogo-FINAL-Blue.png" />
-    <Content Include="Images\FiglutRepeatLogo\Paul-Repeat.Figlut-AppLogo-FINAL-White.png" />
+    <Content Include="Images\FiglutRepeatLogo\Figlut-AppLogo-FINAL-Black.png" />
+    <Content Include="Images\FiglutRepeatLogo\Figlut-AppLogo-FINAL-Blue for dark BG.png" />
+    <Content Include="Images\FiglutRepeatLogo\Figlut-AppLogo-FINAL-Blue.png" />
+    <Content Include="Images\FiglutRepeatLogo\Figlut-AppLogo-FINAL-White.png" />
     <Content Include="Images\Figlut\BlueCoffee\BlueCoffee.ldsp" />
     <Content Include="Images\FiglutLogo\logo_high_resolution.png" />
     <Content Include="Images\FiglutLogo\logo_small.png" />
