@@ -147,7 +147,8 @@
         #region Methods
 
         internal void Initialize(
-            bool initializeServiceHost)
+            bool initializeServiceHost, 
+            bool initializeProcessors)
         {
             RepeatSettings settings = Settings;
             GOC.Instance.ApplicationName = settings.ApplicationName;
@@ -179,8 +180,11 @@
             {
                 InitializeServiceHost(settings);
             }
-            InitializeSmsSentQueueProcessor();
-            InitializeScheduleProcessor();
+            if (initializeProcessors)
+            {
+                InitializeSmsSentQueueProcessor();
+                InitializeScheduleProcessor();
+            }
             GOC.Instance.Logger.LogMessage(new LogMessage("Application Initialized.", LogMessageType.SuccessAudit, LoggingLevel.Normal));
         }
 

@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FiglutProcessor.cs" />
+    <Compile Include="IntervalProcessor.cs" />
     <Compile Include="Schedule\ScheduleProcessor.cs" />
     <Compile Include="Sms\SmsReceivedQueueProcessor.cs" />
     <Compile Include="Sms\SmsSentQueueProcessor.cs" />

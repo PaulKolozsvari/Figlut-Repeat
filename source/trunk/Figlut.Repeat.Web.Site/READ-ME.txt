@@ -26,6 +26,9 @@ Client-side debugging of ASP.NET projects in Google Chrome
 	https://www.c-sharpcorner.com/article/debugging-with-chrome-in-visual-studio-2017/
 	https://blogs.msdn.microsoft.com/webdev/2016/11/21/client-side-debugging-of-asp-net-projects-in-google-chrome/
 
+Creating an image carousel:
+	http://www.dotnetcurry.com/jquery/1173/responsive-image-carousel-bootstrap-jquery
+
 Images for the website:
 	https://www.istockphoto.com/za/photo/hourglass-and-calendar-gm886661830-246176114
 	https://www.istockphoto.com/za/photo/hourglass-on-calendar-gm611076268-105069171
@@ -67,5 +70,30 @@ Images for the website:
 	https://www.istockphoto.com/za/photo/portrait-of-hipster-barber-standing-outside-shop-gm473421992-64439157
 	https://www.istockphoto.com/za/photo/receptionist-on-phone-with-at-hair-salon-front-desk-gm184994532-18666132
 	https://www.istockphoto.com/za/photo/happy-guy-getting-haircut-by-hairdresser-gm640274034-115891189
-	
-	
+
+Get images into mobile device or laptop frames i.e. mockup generators:
+	https://placeit.net/
+	http://magicmockups.com
+	http://iphonefaketext.com (fake messages on iPhone)
+
+	Mockups I like:
+	https://placeit.net/c/mockups/stages/macbook-air-mockup-floating-over-a-transparent-background-a11421?customG_0=5db41649
+	https://placeit.net/c/mockups/stages/macbook-pro-mockup-floating-over-a-transparent-background-a11409
+	https://placeit.net/c/mockups/stages/iphone-6-mockup-template-against-a-white-and-blue-backdrop-a4812
+	https://placeit.net/c/mockups/stages/laptop-mockup-of-a-macbook-air-over-transparent-background?customG_0=7954d2a0 ***
+	https://placeit.net/c/mockups/stages/mockup-of-a-man-working-in-his-macbook-pro-a20755?customG_0=e128075c **
+
+	Stock Photos I like:
+	https://www.istockphoto.com/za/photo/smiling-man-texting-at-night-gm695831248-128698437
+	https://www.istockphoto.com/za/photo/pretty-woman-texting-on-the-phone-gm917971216-252528235
+	https://www.istockphoto.com/za/photo/checking-messages-gm697611734-129206991
+	https://www.istockphoto.com/za/photo/getting-their-feet-into-the-door-of-business-gm858111468-141881435
+
+Create a Collage: 
+	https://www.fotor.com/features/collage.html
+
+Sample Repeat Messages:
+	Good morning. Yet another month has flown by. Your chronic medication will be delivered in the next 24 hours. Friendly Pharmacy.
+	Hi John. It's Mike here, your personal trainer. Don't forget it's training day today! See you at the gym at 6pm.
+	You're only as good as your last haircut! It's time to get back to the Barber Boys for your regular haircut and beard trim!
+	Thank you for purchasing the Areca Palm tree from the Green Nursery! Just a friendly reminder that it's time to water it again today.

@@ -464,12 +464,19 @@ ul#menu ul {
 ----------------------------------------------------------*/
 /* featured */
 .featured {
-    background-color: #fff;
+    /*background-color: #fff;
     background-image: -ms-linear-gradient(top, #3195c2 10%, #fff 60%);
     background-image: -o-linear-gradient(top, #3195c2 10%, #fff 60%);
     background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #3195c2), color-stop(1, #fff));
     background-image: -webkit-linear-gradient(top, #3195c2 10%, #fff 60%);
     background-image: linear-gradient(top, #3195c2 10%, #fff 60%);
+    border-radius: 5px;*/
+    background-color: #fff;
+    background-image: -ms-linear-gradient(top, #236a8a 50%, #fff 100%);
+    background-image: -o-linear-gradient(top, #236a8a 50%, #fff 100%);
+    background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #236a8a), color-stop(1, #fff));
+    background-image: -webkit-linear-gradient(top, #236a8a 50%, #fff 100%);
+    background-image: linear-gradient(top, #236a8a 50%, #fff 100%);
     border-radius: 5px;
 }
 
@@ -1050,7 +1057,7 @@ hr {
     transition: all 2.0s ease;
     opacity: 0.80; 
     filter: alpha(opacity=80);
-    border-radius:1%;
+    border-radius:2%;
 }
 
 .phonebanner img:hover {

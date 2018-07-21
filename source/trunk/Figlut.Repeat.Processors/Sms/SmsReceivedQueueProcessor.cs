@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
     #endregion //Using Directives
 
-    public class SmsReceivedQueueProcessor : FiglutProcessor
+    public class SmsReceivedQueueProcessor : IntervalProcessor
     {
         #region Constructors
 

@@ -59,7 +59,7 @@
 
         internal static void Start(bool initializeServiceHost)
         {
-            RepeatApp.Instance.Initialize(initializeServiceHost);
+            RepeatApp.Instance.Initialize(initializeServiceHost, true);
         }
 
         internal static new void Stop()

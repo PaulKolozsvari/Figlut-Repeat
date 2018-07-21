@@ -18,7 +18,7 @@
 
     #endregion //Using Directives
 
-    public class ScheduleProcessor : FiglutProcessor
+    public class ScheduleProcessor : IntervalProcessor
     {
         public ScheduleProcessor(
             SmsSender smsSender,
