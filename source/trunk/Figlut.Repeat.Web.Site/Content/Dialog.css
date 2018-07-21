@@ -9,12 +9,11 @@
 .ui-draggable .ui-dialog-titlebar {
     -moz-box-shadow: 1px 1px 2px #969696; /* Firefox */
     -webkit-box-shadow: 1px 1px 2px #969696; /* Safari and Chrome */
-
-    background: -ms-linear-gradient(top, #fff 0%, #3195c2 100%);
-    background: -o-linear-gradient(top, #fff 0%, #3195c2 100%);
-    background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #fff), color-stop(1, #3195c2));
-    background: -webkit-linear-gradient(top, #fff 0%, #3195c2 100%);
-    background: linear-gradient(top, #fff 0%, #3195c2 100%);
+    background: -ms-linear-gradient(top, #fff 0%, #1e7aa3 100%);
+    background: -o-linear-gradient(top, #fff 0%, #1e7aa3 100%);
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #fff), color-stop(1, #1e7aa3));
+    background: -webkit-linear-gradient(top, #fff 0%, #1e7aa3 100%);
+    background: linear-gradient(top, #fff 0%, #1e7aa3 100%);
     color: #fff;
 }
 
@@ -35,15 +34,14 @@
 }*/
 
 .ok-dialog-button {
-    background: -ms-linear-gradient(top, #fff 0%, #3195c2 100%);
-    background: -o-linear-gradient(top, #fff 0%, #3195c2 100%);
-    background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #fff), color-stop(1, #3195c2));
-    background: -webkit-linear-gradient(top, #fff 0%, #3195c2 100%);
-    background: linear-gradient(top, #fff 0%, #3195c2 100%);
+    background: -ms-linear-gradient(top, #fff 0%, #1e7aa3 100%);
+    background: -o-linear-gradient(top, #fff 0%, #1e7aa3 100%);
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #fff), color-stop(1, #1e7aa3));
+    background: -webkit-linear-gradient(top, #fff 0%, #1e7aa3 100%);
+    background: linear-gradient(top, #fff 0%, #1e7aa3 100%);
     color: #fff;
     margin-right: 10%;
-    border:none;
-
+    border: none;
     -webkit-transition: all 0.2s ease;
     -moz-transition: all 0.2s ease;
     -o-transition: all 0.2s ease;
@@ -61,15 +59,14 @@
 }
 
 .cancel-dialog-button {
-    background: -ms-linear-gradient(top, #fff 0%, #3195c2 100%);
-    background: -o-linear-gradient(top, #fff 0%, #3195c2 100%);
-    background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #fff), color-stop(1, #3195c2));
-    background: -webkit-linear-gradient(top, #fff 0%, #3195c2 100%);
-    background: linear-gradient(top, #fff 0%, #3195c2 100%);
+    background: -ms-linear-gradient(top, #fff 0%, #1e7aa3 100%);
+    background: -o-linear-gradient(top, #fff 0%, #1e7aa3 100%);
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #fff), color-stop(1, #1e7aa3));
+    background: -webkit-linear-gradient(top, #fff 0%, #1e7aa3 100%);
+    background: linear-gradient(top, #fff 0%, #1e7aa3 100%);
     color: #fff;
     margin-left: 100px;
-    border:none;
-
+    border: none;
     -webkit-transition: all 0.2s ease;
     -moz-transition: all 0.2s ease;
     -o-transition: all 0.2s ease;

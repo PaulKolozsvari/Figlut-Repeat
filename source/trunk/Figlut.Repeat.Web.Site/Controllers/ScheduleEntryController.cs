@@ -536,7 +536,7 @@
                 {
                     ScheduleId = scheduleId.Value,
                     NotificationMessage = schedule != null ? schedule.NotificationMessage: null,
-                    EntryTime = new TimeSpan(9, 0, 0),
+                    EntryTime = schedule != null ? schedule.EntriesTime : new TimeSpan(9, 0, 0),
                     EntryDateCreate = DateTime.Now,
                     NotificationDateCreate = DateTime.Now
                 });

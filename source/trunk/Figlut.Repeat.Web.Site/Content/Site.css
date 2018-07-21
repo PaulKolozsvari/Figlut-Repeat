@@ -409,34 +409,31 @@ ul#menu {
 
 /* sub menu
 ----------------------------------------------------------*/
-ul#menu ul {
-    font-size: 1.0em;
-    font-weight: 600;
-    margin: 0 0 10px;
-    margin-left: 0.5%;
-    margin-right: 0.5%;
-    padding-top: 1%;
-    padding-bottom: 1%;
-    padding-left: 1%;
-    padding-right: 1%;
-    text-align: center;
-
-    display: none;
-    position:absolute;
-
-    background-color: #fff;
-    background-image: -ms-linear-gradient(bottom, #3195c2 0%, #fff 60%);
-    background-image: -o-linear-gradient(bottom, #3195c2 0%, #fff 60%);
-    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #3195c2), color-stop(1, #fff));
-    background-image: -webkit-linear-gradient(bottom, #3195c2 0%, #fff 60%);
-    background-image: linear-gradient(bottom, #3195c2 0%, #fff 60%);
-    border-radius: 2%;
-
-    filter:alpha(opacity=90);
-    -moz-opacity:0.90;
-    -khtml-opacity: 0.90;
-    opacity: 0.90;
-}
+    ul#menu ul {
+        font-size: 1.0em;
+        font-weight: 600;
+        margin: 0 0 10px;
+        margin-left: 0.5%;
+        margin-right: 0.5%;
+        padding-top: 1%;
+        padding-bottom: 1%;
+        padding-left: 1%;
+        padding-right: 1%;
+        text-align: center;
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        background-image: -ms-linear-gradient(bottom, #236a8a 0%, #fff 60%);
+        background-image: -o-linear-gradient(bottom, #236a8a 0%, #fff 60%);
+        background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #236a8a), color-stop(1, #fff));
+        background-image: -webkit-linear-gradient(bottom, #236a8a 0%, #fff 60%);
+        background-image: linear-gradient(bottom, #236a8a 0%, #fff 60%);
+        border-radius: 2%;
+        filter: alpha(opacity=90);
+        -moz-opacity: 0.90;
+        -khtml-opacity: 0.90;
+        opacity: 0.90;
+    }
 
     ul#menu ul li {
         display: normal;

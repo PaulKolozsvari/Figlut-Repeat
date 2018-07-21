@@ -29,7 +29,11 @@ Client-side debugging of ASP.NET projects in Google Chrome
 Creating an image carousel:
 	http://www.dotnetcurry.com/jquery/1173/responsive-image-carousel-bootstrap-jquery
 
+Search and Download Free Icons:
+	https://www.flaticon.com/free-icon/robot_900973#term=robot&page=1&position=96
+
 Images for the website:
+
 	https://www.istockphoto.com/za/photo/hourglass-and-calendar-gm886661830-246176114
 	https://www.istockphoto.com/za/photo/hourglass-on-calendar-gm611076268-105069171
 	https://www.istockphoto.com/za/photo/time-management-schedule-and-deadline-concept-gm926677582-254259182

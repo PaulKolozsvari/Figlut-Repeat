@@ -23,20 +23,19 @@
     width: 100%;
     font: 9pt Arial, sans-serif;
     background-color: #fff;
-    background-image: -ms-linear-gradient(bottom, #3195c2 0%, #fff 100%);
-    background-image: -o-linear-gradient(bottom, #3195c2 0%, #fff 100%);
-    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #3195c2), color-stop(1, #fff));
-    background-image: -webkit-linear-gradient(bottom, #3195c2 0%, #fff 100%);
-    background-image: linear-gradient(bottom, #3195c2 0%, #fff 100%);
-
+    background-image: -ms-linear-gradient(bottom, #1e7aa3 0%, #fff 100%);
+    background-image: -o-linear-gradient(bottom, #1e7aa3 0%, #fff 100%);
+    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #1e7aa3), color-stop(1, #fff));
+    background-image: -webkit-linear-gradient(bottom, #1e7aa3 0%, #fff 100%);
+    background-image: linear-gradient(bottom, #1e7aa3 0%, #fff 100%);
     /*padding-top: 10%;
     padding-bottom: 1%;*/
     margin-left: auto;
     margin-right: auto;
     margin-bottom: auto;
     margin-top: auto;
-    text-align:center;
-    border:none;
+    text-align: center;
+    border: none;
 }
 
 /*Set the arrows as background for the previous and next links.*/
