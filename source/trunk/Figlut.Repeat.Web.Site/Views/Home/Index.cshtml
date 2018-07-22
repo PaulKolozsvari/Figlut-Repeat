@@ -5,7 +5,7 @@
 @using Figlut.Repeat.ORM.Helpers;
 
 @{
-    ViewBag.Title = "Figlut";
+    ViewBag.Title = "Repeat by Figlut";
 }
 
 @section featured {
@@ -192,12 +192,13 @@
 <hr />
 <div class="description">
     <i>
-        We offer the following features to help you manage your <b>customers, staff or your own life.</b>
+        We offer the following features to help you manage your <b>customers, staff or your own schedule.</b>
     </i>
 </div>
 <br />
 <h3 class="description-title">Features</h3>
 <table>
+    <!--First Row Features-->
     <tr>
         <td style="width:33%">
             <div class="description">
@@ -215,6 +216,8 @@
             </div>
         </td>
     </tr>
+
+    <!--Second Row Features-->
     <tr>
         <td style="width:33%">
             <div class="photobanner-contact">
@@ -228,7 +231,7 @@
         </td>
         <td style="width:33%">
             <div class="photobanner-contact">
-                <img src="~/Images/BlueIcons/broadcast-messages.png" style="width:50%; height:50%"/>
+                <img src="~/Images/BlueIcons/send-message.png" style="width:50%; height:50%"/>
             </div>
         </td>
     </tr>
@@ -238,16 +241,16 @@
                 <br />
                 <b>Receive messages from your subscribers/customers</b>
                 <p style="font-size:12px">
-                    Your customers (or organization members) can send you messages by sending an SMS with a hashtag and your organization identifier to the Figlut
-                    phone number:
+                    Your customers (or organization members) can send you messages by sending an SMS with a hashtag and your organization identifier to the Repeat
+                    phone number.
                     <br />
                     <b> @figlutPhoneNumber</b>
                     <br />
                     <br />
-                    <b>Received messages are forwarded to your email immediately and can also be viewed on the Figlut website.</b>
+                    <b>Received messages are forwarded to your email immediately and can also be viewed on the Repeat website.</b>
                     <br />
                     <br />
-                    e.g. <i>Hi <b>#BLUECOFFEE</b>. I really love your coffee shop, but one of your waiters is rude.</i>
+                    e.g. '<i>Hi <b>#PHARMACY</b>, please do not deliver my medication today as I am currently out of town.</i>'
                     <br />
                     <br />
                 </p>
@@ -273,7 +276,7 @@
         </td>
         <td>
             <div class="description">
-                <b>Send notification to your subscribers</b>
+                <b>Send notifications to your subscribers</b>
                 <p style="font-size:12px">
                     Once you have sufficient subscribers, purchase some SMS credits and notify them of your promotions, product updates, voucher codes, events etc.
                     <br />
@@ -289,26 +292,21 @@
     <tr>
         <td style="width:33%">
             <div class="description">
-                <b class="description-step">Repeat Schedules</b>
-            </div>
-        </td>
-        <td style="width:33%">
-            <div class="description">
                 <b class="description-step">Message Templates</b>
             </div>
         </td>
         <td style="width:33%">
             <div class="description">
-                <b class="description-step">Daily Email Reports</b>
+                <b class="description-step">Repeat Schedules</b>
+            </div>
+        </td>
+        <td style="width:33%">
+            <div class="description">
+                <b class="description-step">Configure Work Days</b>
             </div>
         </td>
     </tr>
     <tr>
-        <td style="width:33%">
-            <div class="photobanner-contact">
-                <img src="~/Images/BlueIcons/calendar-5.png" style="width:50%; height:50%" />
-            </div>
-        </td>
         <td style="width:33%">
             <div class="photobanner-contact">
                 <img src="~/Images/BlueIcons/template.png" style="width:50%; height:50%" />
@@ -316,63 +314,152 @@
         </td>
         <td style="width:33%">
             <div class="photobanner-contact">
-                <img src="~/Images/BlueIcons/paper-list.png" style="width:50%; height:50%" />
+                <img src="~/Images/BlueIcons/calendar-5.png" style="width:50%; height:50%" />
+            </div>
+        </td>
+        <td style="width:33%">
+            <div class="photobanner-contact">
+                <img src="~/Images/BlueIcons/plan.png" style="width:50%; height:50%" />
             </div>
         </td>
     </tr>
     <tr>
         <td>
             <div class="description">
-                <br />
-                <b>Generate and manage repeat schedules for you subscribers</b>
+                <b>Create & Manage Message Templates</b>
                 <p style="font-size:12px">
-                    Schedules for repeat notifications can be created by setting a start and end date, setting the days interval, the time at which
-                    the notifcation should be sent out and the message to be sent. For example: a schedule can be created to send John an SMS every 5 days
-                    at 18:00 for the next 90 days.
+                    Message templates allow you to save time without having to type up the message every time when composing a notification or creating a repeat schedule.
                     <br />
                     <br />
                     <br />
-                    Schedules can be generated by taking into account and excluding public holidays and other non-working days from the schedule i.e. if a repeat date
-                    falls on a non-working day (weekend or public holiday), its notification date can be rolled back to a working day. For example, suppose
-                    a customer requires their pharmacy to deliver their medication to them every 30 days: if a repeat date happens to fall on a date on whcih the pharmacy does not
-                    do deliveries, such as a Sunday, then the notification date can be rolled back to a Friday i.e. notifying the customer on the Friday that the delivery will be 
-                    taking place in the next 24 hours. Working days can be configured on a schedule by schedule basis or as a global default setting on the organization's profile 
-                    i.e. per customer schedule or on the pharmacy's default settings.
+                    <br />
+                </p>
+            </div>
+        </td>
+        <td>
+            <div class="description">
+                <br />
+                <b>Generate & manage repeat schedules for you subscribers</b>
+                <p style="font-size:12px">
+                    Schedules for repeat notifications can be generated by setting a start and end date, setting the days interval, the time at which
+                    the notifcation should be sent out and the message to be sent.
                     <br />
                     <br />
+                    For example: a schedule can be created to send John an SMS every 5 days at 18:00 for the next 90 days.
                     Repeat notifications can be configured to be sent out automatically by the Repeat system, or you can manually send out each day's notifications one by one.
                     <br />
                     <br />
+                    <br />
+                    <br />
+                    <br />
                 </p>
             </div>
         </td>
         <td>
             <div class="description">
-                <b>Message Templates</b>
+                <b>Configure Work Days</b>
                 <p style="font-size:12px">
-                    When receiving an SMS, the person's <b>cell phone number automatically gets saved as a subscriber to your organization</b>
-                    and can be mananged from the Figlut website.
+                    Schedules can be generated by taking into account and excluding public holidays and other non-working days from the schedule i.e. if a repeat date
+                    falls on a non-working day (weekend or public holiday), its notification date can be rolled back to a working day. This feature can be enabled or 
+                    disabled per repeat schedule.
                     <br />
                     <br />
-                    People can <b><i>optionally</i></b> include their name in the SMS
+                    For example, suppose a customer requires their pharmacy to deliver their medication to them every 30 days: if a repeat date happens to fall on a date on 
+                    which the pharmacy does not do deliveries, such as a Sunday, the notification date can then be rolled back to a Friday.
                     <br />
-                    e.g. <i>Hi <b>#BLUECOFFEE</b>. I'd like to subscribe to notifcations from you. <b>*John</b>.</i>
+                    <br />
+                    The settings to define which days are working days and which are not can configured on a each schedule or as a global default setting on your organization's profile.
+                    <br />
+                </p>
+            </div>
+        </td>
+    </tr>
+
+    <!--Third Row Features-->
+    <tr>
+        <td style="width:33%">
+            <div class="description">
+                <b class="description-step">Daily Repeat List</b>
+            </div>
+        </td>
+        <td style="width:33%">
+            <div class="description">
+                <b class="description-step">Automatic Notifications</b>
+            </div>
+        </td>
+        <td style="width:33%">
+            <div class="description">
+                <b class="description-step">Reports</b>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="width:33%">
+            <div class="photobanner-contact">
+                <img src="~/Images/BlueIcons/paper-list.png" style="width:50%; height:50%" />
+            </div>
+        </td>
+        <td style="width:33%">
+            <div class="photobanner-contact">
+                <img src="~/Images/BlueIcons/robot-2.png" style="width:50%; height:50%" />
+            </div>
+        </td>
+        <td style="width:33%">
+            <div class="photobanner-contact">
+                <img src="~/Images/BlueIcons/report-diagram.png" style="width:50%; height:50%" />
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="description">
+                <b>View and receive daily repeat entries</b>
+                <p style="font-size:12px">
+                    You will receive daily emails listing the repeat entries for the day. This will allow you to plan out your day in terms of which 
+                    subscribers (customers/staff members) are up for repeats for the day. The time of day at which you receive these emails can be configured in your 
+                    organization's profile settings.
                     <br />
                     <br />
-                    <b>Subscribers manage their own subscriptions</b>
-                    by using the Figlut website to search for and manage subscriptions linked to their cell phone number.
+                    The same daily repeat entries list can also be viewed from the Repeat website for the current day as well for any other specific day.
+                    <br />
+                    <br />
                 </p>
             </div>
         </td>
         <td>
             <div class="description">
-                <b>Send notification to your subscribers</b>
+                <br />
+                <b>Repeat notifications sent automatically</b>
                 <p style="font-size:12px">
-                    Once you have sufficient subscribers, purchase some SMS credits and notify them of your promotions, product updates, voucher codes, events etc.
+                    As repeat notifications come up the Repeat system can automatically send them out to the subscribers without requiring any manual intervention from you.
                     <br />
                     <br />
-                    <b>This process is as simple as typing up your messages on the Figlut website and creating your SMS campaign.</b>
+                    Alternatively, this setting can be disabled allowing you to manually send out each repeat notification for the day. The daily email will remind you
+                    of which repeats are due for the day, at which point you can login to the Repeat website and manually send them out one by one.
                     <br />
+                    <br />
+                    Enabling or disabling the automatic sending of notifications can be configiured in your organization's profile settings.
+                    <br />
+                    <br />
+                    <br />
+                </p>
+            </div>
+        </td>
+        <td>
+            <div class="description">
+                <b>Reports for forecasting</b>
+                <p style="font-size:12px">
+                    Reports can be viewed and downloaded to see how many upcoming repeat entries are due for this week, month, year etc. This will allow you to forecast
+                    the number of sales you can expect going forward i.e. how many customers will have upcoming repeats in the near future.
+                    <br />
+                    <br />
+                    For example, it would allow a barber shop or salon to forecast the number of people that are up for a haircut this week or month. Furthermore, it allows
+                    you as the business owner to be proactive in terms of notifying and checking in with customers to confirm their appointments.
+                    <br />
+                    <br />
+                    Furthermore the Repeat system allows you see which customers have missed repeats (appointments) and for how long they haven't been back to your business.
+                    Once again enabling you as the business owner be proactive by contacting the customers and asking them why they haven't been back and if there is anything
+                    they're unhappy with i.e. as opposed to you only realising this months later when it becomes to late to try and retain the customer.
                     <br />
                 </p>
             </div>
@@ -542,9 +629,9 @@
         <td>            
             <div class="description">
                 <br />
-                SMS <b>#figlut</b> and your message to <b>@figlutPhoneNumber</b>
+                SMS <b>#repeat</b> and your message to <b>@figlutPhoneNumber</b>
                 <p style="font-size:12px">
-                    e.g. Hi <b>#figlut</b> team. How do I get started with marketing my business?
+                    e.g. Hi <b>#repeat</b> team. How do I get started with marketing my business?
                 </p>
             </div>
         </td>
@@ -552,7 +639,7 @@
             <div class="description">
                 <b>Drop us an email</b>
                 <p style="font-size:12px">
-                    Send an email to the Figlut team: <a href="mailto:@Html.Raw(figlutGeneralEmailAddress)">@Html.Raw(figlutGeneralEmailAddress)</a>
+                    Send an email to the Figlut Repeat team: <a href="mailto:@Html.Raw(figlutGeneralEmailAddress)">@Html.Raw(figlutGeneralEmailAddress)</a>
                 </p>
             </div>
         </td>
@@ -562,7 +649,7 @@
                 <p style="font-size:12px">
                     Speak to an executive: 
                     <br />
-                    <b>+27 (83) 395 8283</b> / <b>+27 (79) 875 4747</b>
+                    <b>+27 (83) 395 8283</b>
                 </p>
             </div>
         </td>
@@ -588,6 +675,7 @@
 <hr />
 <div class="description">
     <i>
+        The Repeat software system is a product developed by Figlut.
         Figlut is a company that aims to help small and medium sized businesses and organizations to promote themselves and <b>most importantly strengthen their customer retention</b>.
     </i>
 </div>

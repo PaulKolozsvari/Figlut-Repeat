@@ -334,7 +334,10 @@
     <Content Include="FiglutIcon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Images\BlueIcons\1495477135_39_Email_Marketing.png" />
+    <Content Include="Images\BlueIcons\administrator.png" />
     <Content Include="Images\BlueIcons\auto.png" />
+    <Content Include="Images\BlueIcons\browser.png" />
+    <Content Include="Images\BlueIcons\businessman.png" />
     <Content Include="Images\BlueIcons\calendar-2.png" />
     <Content Include="Images\BlueIcons\calendar-3.png" />
     <Content Include="Images\BlueIcons\calendar-4.png" />
@@ -348,12 +351,17 @@
     <Content Include="Images\BlueIcons\cancel-user.png" />
     <Content Include="Images\BlueIcons\checklist.png" />
     <Content Include="Images\BlueIcons\development.png" />
+    <Content Include="Images\BlueIcons\diagram.png" />
     <Content Include="Images\BlueIcons\email-envelope-outline-shape-with-rounded-corners.png" />
+    <Content Include="Images\BlueIcons\employee.png" />
     <Content Include="Images\BlueIcons\event.png" />
+    <Content Include="Images\BlueIcons\growth.png" />
     <Content Include="Images\BlueIcons\idea.png" />
     <Content Include="Images\BlueIcons\idea2.png" />
+    <Content Include="Images\BlueIcons\news.png" />
     <Content Include="Images\BlueIcons\notebook.png" />
     <Content Include="Images\BlueIcons\paper-list.png" />
+    <Content Include="Images\BlueIcons\plan.png" />
     <Content Include="Images\BlueIcons\poster-red-mountain.png" />
     <Content Include="Images\BlueIcons\poster-red-people.png" />
     <Content Include="Images\BlueIcons\poster.png" />
@@ -362,6 +370,7 @@
     <Content Include="Images\BlueIcons\repeat-3.png" />
     <Content Include="Images\BlueIcons\repeat.png" />
     <Content Include="Images\BlueIcons\report-2.png" />
+    <Content Include="Images\BlueIcons\report-diagram.png" />
     <Content Include="Images\BlueIcons\report.png" />
     <Content Include="Images\BlueIcons\robot-2.png" />
     <Content Include="Images\BlueIcons\robot.png" />
@@ -385,8 +394,10 @@
     <Content Include="Images\BlueIcons\speech-bubble.png" />
     <Content Include="Images\BlueIcons\subscribe.png" />
     <Content Include="Images\BlueIcons\subscribe2.png" />
+    <Content Include="Images\BlueIcons\team.png" />
     <Content Include="Images\BlueIcons\template.png" />
     <Content Include="Images\BlueIcons\think.png" />
+    <Content Include="Images\BlueIcons\worker.png" />
     <Content Include="Images\FiglutLogo\logo_smaller.png" />
     <Content Include="Images\FiglutLogo\vector-files\print_v1.pdf" />
     <Content Include="Images\FiglutLogo\vector-files\print_v2_white.pdf" />
