@@ -96,8 +96,18 @@ Get images into mobile device or laptop frames i.e. mockup generators:
 Create a Collage: 
 	https://www.fotor.com/features/collage.html
 
+Use cases:
+	Pharmacies (collect or delivery medications)
+	Dentists (regular teeth cleaning)
+	Doctors & Veterinaries (vaccinations, checkups, flea pills, chronic medication for your pets etc.)
+	Personal Trainers (reminders of work out days)
+	Barbers & Salons (reminders to come and get your haircut)
+	Plant Nurseries (reminders to water your purchased plants)
+
+
 Sample Repeat Messages:
 	Good morning. Yet another month has flown by. Your chronic medication will be delivered in the next 24 hours. Friendly Pharmacy.
-	Hi John. It's Mike here, your personal trainer. Don't forget it's training day today! See you at the gym at 6pm.
+	Good afternoon Marry. It's time to come back to Dr. Smith for your teeth cleaning. Reply 'yes' to confirm for tomorrow.
+	Hi Marry. It's Sarah here, your personal trainer. Don't forget it's training day today! See you at the gym at 6pm.
 	You're only as good as your last haircut! It's time to get back to the Barber Boys for your regular haircut and beard trim!
 	Thank you for purchasing the Areca Palm tree from the Green Nursery! Just a friendly reminder that it's time to water it again today.

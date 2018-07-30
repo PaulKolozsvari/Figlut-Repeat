@@ -274,6 +274,17 @@
                             </li>
                             <li>
                                 @{
+                                    string useCasesAnchor = "#use-cases";
+                                    string useCasesUrl = Url.Action("Index", "Home") + useCasesAnchor;
+                                    if (currentController == "Home" && currentAction == "Index") //Visiter is on the home page.
+                                    {
+                                        useCasesUrl = useCasesAnchor;
+                                    }
+                                    <a href="@useCasesUrl">Use Cases</a>
+                                }
+                            </li>
+                            <li>
+                                @{
                                     string featuresAnchor = "#features";
                                     string featuresUrl = Url.Action("Index", "Home") + featuresAnchor;
                                     if(currentController == "Home" && currentAction == "Index") //Visiter is on the home page.
