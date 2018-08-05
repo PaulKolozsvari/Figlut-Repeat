@@ -35,17 +35,44 @@
     function onConfirmOK() {
         var dialogName = '#' + '@Model.DialogDivId';
         var postBackUrl = '@Url.Action(Model.PostBackControllerAction, Model.PostBackControllerName)';
+        var showWaitDialog = '@Model.ShowWaitDialog';
+        var waitMessage = '@Model.WaitMessage';
+        var waitDialogSuccessMessage = '@Model.WaitDialogSuccessMessage';
+        if (showWaitDialog)
+        {
+            showDialog(
+                '#divWaitDialog',
+                '#dlgWait',
+                'WaitDialog',
+                'Home',
+                'message',
+                waitMessage);
+        }
         $.ajax({
             url: postBackUrl,
             type: 'POST',
             data: $("#ConfirmationForm").serialize(),
             success: function (data) {
                 if (data.Success) {
+                    $('#dlgWait').dialog("close");
                     $(dialogName).dialog("close");
+
+                    showDialog(
+                        '#divInformationDialog',
+                        '#dlgInformation',
+                        'InformationDialog',
+                        'Home',
+                        'message',
+                        waitDialogSuccessMessage);
+
                     //Submit the form which will refresh grid to show the change the enabled/disabled.
                     var form = $('#frmDetails');
                     form.submit()
                 } else {
+                    if (showWaitDialog)
+                    {
+                        $('#dlgWait').dialog("close");
+                    }
                     $("#ConfirmationErrorField").html(data.ErrorMsg);
                 }
             }

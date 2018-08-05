@@ -382,6 +382,92 @@
             }
         }
 
+        public ActionResult ConfirmEmailEntriesList(string searchParametersString)
+        {
+            try
+            {
+                RepeatEntityContext context = RepeatEntityContext.Create();
+                if (!Request.IsAuthenticated)
+                {
+                    return RedirectToHome();
+                }
+                ConfirmationModel model = new ConfirmationModel();
+                model.PostBackControllerAction = GetCurrentActionName();
+                model.PostBackControllerName = GetCurrentControllerName();
+                model.DialogDivId = CONFIRMATION_DIALOG_DIV_ID;
+
+                string[] searchParameters;
+                string searchText;
+                Nullable<DateTime> startDate = null;
+                Nullable<DateTime> endDate = null;
+                GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText, out startDate, out endDate);
+
+                string organizationIdString = searchParameters[searchParameters.Length - 1];
+                Guid organizationId = Guid.Parse(organizationIdString);
+                if (organizationId == Guid.Empty)
+                {
+                    return RedirectToError(string.Format("{0} not specified.",
+                        EntityReader<Organization>.GetPropertyName(p => p.OrganizationId, false)));
+                }
+                if (!startDate.HasValue || startDate.Value == new DateTime())
+                {
+                    return RedirectToError(string.Format("{0} not specified.",
+                        EntityReader<ScheduleEntry>.GetPropertyName(p => p.EntryDate, false)));
+                }
+                Organization organization = context.GetOrganization(organizationId, true);
+                model.ParentId = organization.OrganizationId;
+                model.ParentCaption = string.Format("{0}", organization.Name);
+                model.SearchText = searchText;
+                model.StartDate = startDate;
+                model.EndDate = endDate;
+                model.ConfirmationMessage = string.Format("Email schedule entries list for {0} to {1}?", DataShaper.GetDefaultDateString(model.StartDate.Value), organization.EmailAddress);
+                model.ShowWaitDialog = true;
+                model.WaitMessage = string.Format("Emailing schedule entries list for {0} to {1} ...", DataShaper.GetDefaultDateString(model.StartDate.Value), organization.EmailAddress);
+                model.WaitDialogSuccessMessage = string.Format("Schedule entries list for {0} successfully sent to {1}.", DataShaper.GetDefaultDateString(model.StartDate.Value), organization.EmailAddress);
+                PartialViewResult result = PartialView(CONFIRMATION_DIALOG_PARTIAL_VIEW_NAME, model);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                RepeatWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ConfirmEmailEntriesList(ConfirmationModel model)
+        {
+            try
+            {
+                RepeatEntityContext context = RepeatEntityContext.Create();
+                if (model.ParentId == Guid.Empty)
+                {
+                    return RedirectToError(string.Format("{0} not specified.",
+                        EntityReader<Organization>.GetPropertyName(p => p.OrganizationId, false)));
+                }
+                if (!model.StartDate.HasValue || model.StartDate == new DateTime())
+                {
+                    return RedirectToError(string.Format("{0} not specified.",
+                        EntityReader<ScheduleEntry>.GetPropertyName(p => p.EntryDate, false)));
+                }
+                if (!Request.IsAuthenticated)
+                {
+                    return RedirectToHome();
+                }
+                List<ScheduleEntryView> entries = context.GetScheduleEntryViewsForOrganizationByFilter(model.SearchText, model.ParentId, model.StartDate.Value);
+                System.Threading.Thread.Sleep(5000);
+                throw new Exception("Could not connect to email server.");
+                return GetJsonResult(true);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.HandleException(ex);
+                RepeatWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
+                return GetJsonResult(false, ex.Message);
+            }
+        }
+
         public ActionResult DownloadCsvFile(string searchParametersString)
         {
             try

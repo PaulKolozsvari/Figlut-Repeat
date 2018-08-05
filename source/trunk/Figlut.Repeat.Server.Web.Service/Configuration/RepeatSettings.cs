@@ -82,7 +82,7 @@
 
         public Guid SmsDeliveryReportQueueProcessorId { get; set; }
 
-        public Guid ScheduleProcessorId { get; set; }
+        public Guid ScheduleEntriesProcessorId { get; set; }
 
         #endregion //Sms Processors
 

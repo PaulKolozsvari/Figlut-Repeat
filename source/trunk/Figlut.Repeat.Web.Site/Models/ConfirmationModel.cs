@@ -63,6 +63,21 @@
         /// </summary>
         public string ParentCaption { get; set; }
 
+        /// <summary>
+        /// Whether or not to display a wait dialog while posting back to the PostBackControllerAction.
+        /// </summary>
+        public bool ShowWaitDialog { get; set; }
+
+        /// <summary>
+        /// The wait message to display on the wait dialog.
+        /// </summary>
+        public string WaitMessage { get; set; }
+
+        /// <summary>
+        /// The message to display after wait dialog has been closed after a successful postback to the PostBackControllerAction.
+        /// </summary>
+        public string WaitDialogSuccessMessage { get; set; }
+
         #endregion //Properties
     }
 }

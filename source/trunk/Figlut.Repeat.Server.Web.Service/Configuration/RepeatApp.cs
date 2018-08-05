@@ -183,7 +183,7 @@
             if (initializeProcessors)
             {
                 InitializeSmsSentQueueProcessor();
-                InitializeScheduleProcessor();
+                InitializeScheduleEntriesProcessor();
             }
             GOC.Instance.Logger.LogMessage(new LogMessage("Application Initialized.", LogMessageType.SuccessAudit, LoggingLevel.Normal));
         }
@@ -296,14 +296,14 @@
                 this.EmailSender);
         }
 
-        private void InitializeScheduleProcessor()
+        private void InitializeScheduleEntriesProcessor()
         {
             string organizationIdentifierIndicator = GlobalSettings[GlobalSettingName.OrganizationIdentifierIndicator].SettingValue;
             string subscriberNameIndicator = GlobalSettings[GlobalSettingName.SubscriberNameIndicator].SettingValue;
             int maxSmsSendMessageLength = Convert.ToInt32(GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
             string smsSendMessageSuffix = GlobalSettings[GlobalSettingName.SmsSendMessageSuffix].SettingValue;
             int organizationIdentifierMaxLength = Convert.ToInt32(GlobalSettings[GlobalSettingName.OrganizationIdentifierMaxLength].SettingValue);
-            Processor processor = RepeatEntityContext.Create().GetProcessor(Settings.ScheduleProcessorId, true);
+            Processor processor = RepeatEntityContext.Create().GetProcessor(Settings.ScheduleEntriesProcessorId, true);
             _scheduleProcessor = new ScheduleProcessor(
                 this.SmsSender,
                 maxSmsSendMessageLength,

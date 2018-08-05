@@ -51,6 +51,7 @@
                     @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
                     {
                         @Html.LinkButtonForSubmit("Download", "onDownloadAllScheduleEntriesCsvFileClick()", "btnDownload", "spreadsheet.png")
+                        @Html.LinkButtonForSubmit("Email List", "onEmailEntriesListClick()", "btnEmailEntriesList", "red-mail-icon32.png")
                     }
                 </div>
                 <div style="float: right; margin-left:2%; margin-right:2%">
@@ -166,7 +167,7 @@
             '#divWaitDialog',
             '#dlgWait',
             'WaitDialog',
-            'SmsSent',
+            'OrganizationScheduleEntry',
             'message',
             waitMessage);
 
@@ -216,6 +217,17 @@
             '#divConfirmationDialog',
             '#dlgConfirmation',
             'ConfirmDeleteAllDialog',
+            'OrganizationScheduleEntry',
+            'searchParametersString',
+            searchParameters);
+    }
+
+    function onEmailEntriesListClick() {
+        var searchParameters = getSearchParametersString();
+        showDialog(
+            '#divConfirmationDialog',
+            '#dlgConfirmation',
+            'ConfirmEmailEntriesList',
             'OrganizationScheduleEntry',
             'searchParametersString',
             searchParameters);

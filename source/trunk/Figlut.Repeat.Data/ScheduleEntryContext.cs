@@ -506,7 +506,7 @@
             if (excludeFailedToSend)
             {
                 return (from e in DB.GetTable<ScheduleEntry>()
-                        where !excludeFailedToSend &&
+                        where !e.FailedToSend &&
                         !e.SMSNotificationSent &&
                         e.EntryDate.Date <= olderThanDateTime.Date &&
                         e.EntryTime <= olderThanDateTime.TimeOfDay
