@@ -51,7 +51,7 @@
                     @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
                     {
                         @Html.LinkButtonForSubmit("Download", "onDownloadAllScheduleEntriesCsvFileClick()", "btnDownload", "spreadsheet.png")
-                        @Html.LinkButtonForSubmit("Email List", "onEmailEntriesListClick()", "btnEmailEntriesList", "red-mail-icon32.png")
+                        @Html.LinkButtonForSubmit("Email", "onSendEmailEntriesListClick()", "btnEmailEntriesList", "red-mail-icon32.png")
                     }
                 </div>
                 <div style="float: right; margin-left:2%; margin-right:2%">
@@ -90,6 +90,7 @@
                 columns: grid.Columns(
                 grid.Column("Entries", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
                 grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.CustomerFullName, false), "Customer"),
+                grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.CellPhoneNumber, false), "Cell Phone"),
                 grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.ScheduleName, false), "Schedule"),
                 grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.EntryDateFormatted, false), "Entry Date"),
                 grid.Column(EntityReader<ScheduleEntryModel>.GetPropertyName(p => p.EntryDateDayOfWeek, false), "Entry Day"),
@@ -222,12 +223,12 @@
             searchParameters);
     }
 
-    function onEmailEntriesListClick() {
+    function onSendEmailEntriesListClick() {
         var searchParameters = getSearchParametersString();
         showDialog(
             '#divConfirmationDialog',
             '#dlgConfirmation',
-            'ConfirmEmailEntriesList',
+            'ConfirmSendEmailEntriesList',
             'OrganizationScheduleEntry',
             'searchParametersString',
             searchParameters);

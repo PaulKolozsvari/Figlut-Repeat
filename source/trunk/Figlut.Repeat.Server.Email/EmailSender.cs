@@ -15,6 +15,7 @@
     using System.Net.Mime;
     using System.Text;
     using System.Threading.Tasks;
+    using Figlut.Repeat.ORM.Views;
 
     #endregion //Using Directives
 
@@ -301,6 +302,44 @@
             return SendEmail("Figlut - Technical Error Notification", errorMessage, null, false, null, null);
         }
 
+        public bool SendScheduleEntriesListEmail(
+            string organziationName,
+            DateTime entriesDate,
+            List<ScheduleEntryView> scheduleEntries,
+            List<string> recipients,
+            string homePageUrl)
+        {
+            StringBuilder message = new StringBuilder();
+            message.AppendLine("Hi,");
+            message.AppendLine();
+            message.AppendLine(string.Format("The following repeats are scheduled for {0} on {1}:",
+                organziationName,
+                DataShaper.GetDefaultDateString(entriesDate)));
+            foreach (ScheduleEntryView e in scheduleEntries)
+            {
+                message.AppendLine(string.Format("Subscriber Name: {0} - Schedule Name: {1} - Email: {2} - Cell Phone: {3} - Notification Date: {4} - Entry Date: {5} - Entry Time: {6}",
+                    e.CustomerFullName,
+                    e.ScheduleName,
+                    e.CustomerEmailAddress,
+                    e.CellPhoneNumber,
+                    DataShaper.GetDefaultDateString(e.NotificationDate),
+                    DataShaper.GetDefaultDateString(e.EntryDate),
+                    e.EntryTime.ToString()));
+            }
+            message.AppendLine();
+            message.AppendLine("Visit {0} to manage these Schedule Entries and send out the notifications to your subscribers.");
+            message.AppendLine();
+            List<EmailNotificationRecipient> emailRecipients = new List<EmailNotificationRecipient>();
+            recipients.ForEach(p => emailRecipients.Add(new EmailNotificationRecipient() { DisplayName = p, EmailAddress = p }));
+            return SendEmail(
+                string.Format("Figlut Repeat - Schedule Entries {0}", DataShaper.GetDefaultDateString(entriesDate)),
+                message.ToString(),
+                null,
+                false,
+                emailRecipients,
+                null);
+        }
+
         public bool SendUserResetPasswordNotification(
             string userName, 
             string emailAddress, 
@@ -320,10 +359,10 @@
             message.AppendLine();
             message.AppendLine("Regards,");
             message.AppendLine();
-            message.AppendLine("Figlut team");
+            message.AppendLine("Figlut Repeat team");
             List<string> emailRecipients = new List<string>() { emailAddress };
             return SendEmail(
-                "Figlut - Reset Password Notification", 
+                "Figlut Repeat - Reset Password Notification", 
                 message.ToString(), 
                 null, 
                 false, 
@@ -343,7 +382,7 @@
             StringBuilder message = new StringBuilder();
             message.AppendLine(string.Format("Hi {0},", userName));
             message.AppendLine();
-            message.AppendLine("Welcome to Figlut!");
+            message.AppendLine("Welcome to Figlut Repeat!");
             if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(organizationName))
             {
                 message.AppendLine(string.Format("{0} has added you as a user to the organization {1}.", currentUserName, organizationName));
@@ -357,10 +396,10 @@
             message.AppendLine();
             message.AppendLine("Regards,");
             message.AppendLine();
-            message.AppendLine("Figlut team");
+            message.AppendLine("Figlut Repeat team");
             List<string> emailRecipients = new List<string>() { emailAddress };
             return SendEmail(
-                "Figlut - Welcome",
+                "Figlut Repeat - Welcome",
                 message.ToString(),
                 null,
                 false,

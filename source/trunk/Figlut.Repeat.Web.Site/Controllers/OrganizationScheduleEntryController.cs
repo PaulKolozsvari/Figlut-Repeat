@@ -382,7 +382,7 @@
             }
         }
 
-        public ActionResult ConfirmEmailEntriesList(string searchParametersString)
+        public ActionResult ConfirmSendEmailEntriesList(string searchParametersString)
         {
             try
             {
@@ -436,7 +436,7 @@
         }
 
         [HttpPost]
-        public ActionResult ConfirmEmailEntriesList(ConfirmationModel model)
+        public ActionResult ConfirmSendEmailEntriesList(ConfirmationModel model)
         {
             try
             {
@@ -455,9 +455,10 @@
                 {
                     return RedirectToHome();
                 }
+                string figlutHomePageUrl = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.FiglutHomePageUrl].SettingValue;
+                Organization organizationView = context.GetOrganization(model.ParentId, true);
                 List<ScheduleEntryView> entries = context.GetScheduleEntryViewsForOrganizationByFilter(model.SearchText, model.ParentId, model.StartDate.Value);
-                System.Threading.Thread.Sleep(5000);
-                throw new Exception("Could not connect to email server.");
+                RepeatWebApp.Instance.EmailSender.SendScheduleEntriesListEmail(organizationView.Name, model.StartDate.Value, entries, new List<string>() { organizationView.EmailAddress }, figlutHomePageUrl);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
