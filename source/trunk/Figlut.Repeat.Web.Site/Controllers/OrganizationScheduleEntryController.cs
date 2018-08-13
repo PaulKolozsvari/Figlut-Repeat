@@ -458,7 +458,13 @@
                 string figlutHomePageUrl = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.FiglutHomePageUrl].SettingValue;
                 Organization organizationView = context.GetOrganization(model.ParentId, true);
                 List<ScheduleEntryView> entries = context.GetScheduleEntryViewsForOrganizationByFilter(model.SearchText, model.ParentId, model.StartDate.Value);
-                RepeatWebApp.Instance.EmailSender.SendScheduleEntriesListEmail(organizationView.Name, model.StartDate.Value, entries, new List<string>() { organizationView.EmailAddress }, figlutHomePageUrl);
+                RepeatWebApp.Instance.EmailSender.SendScheduleEntriesListEmailHtml(
+                    organizationView.Name,
+                    model.StartDate.Value,
+                    entries, new List<string>() { organizationView.EmailAddress },
+                    figlutHomePageUrl,
+                    RepeatWebApp.Instance.Settings.DailyScheduleEntriesEmailDirectory,
+                    RepeatWebApp.Instance.Settings.DailyScheduleEntriesEmailFilesDirectory);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

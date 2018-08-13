@@ -239,3 +239,7 @@ Payment Gateways:
 
 Create Logos:
 	https://logojoy.com
+
+Creating and editing HTML code in C#:
+	HTML Agility Pack: get the Nuget package:
+		http://html-agility-pack.net/?z=codeplex

@@ -21,7 +21,7 @@
   <ScheduleEntriesProcessorId>5259E5FA-D001-494A-97AC-DE2897ABAC08</ScheduleEntriesProcessorId>
   <EmailNotificationsEnabled>true</EmailNotificationsEnabled>
   <EmailDatabaseLoggingEnabled>true</EmailDatabaseLoggingEnabled>
-  <EmailDatabaseLogMessageContents>true</EmailDatabaseLogMessageContents>
+  <EmailDatabaseLogMessageContents>true</EmailDatabaseLogMessageContents>@
   <ThrowEmailFailExceptions>false</ThrowEmailFailExceptions>
   <EmailProvider>GMail</EmailProvider><!--GMail-->
   <GMailSMTPServer>smtp.gmail.com</GMailSMTPServer>
@@ -37,6 +37,8 @@
       <DisplayName>Figlut Team</DisplayName>
     </EmailNotificationRecipient>
   </DefaultEmailRecipients>
+  <DailyScheduleEntriesEmailDirectory>C:\Docs\Git\Figlut-Repeat\source\trunk\Figlut.Repeat.Web.Site\Emails\DailyScheduleEntriesEmail</DailyScheduleEntriesEmailDirectory>
+  <DailyScheduleEntriesEmailFilesDirectory>C:\Docs\Git\Figlut-Repeat\source\trunk\Figlut.Repeat.Web.Site\Emails\DailyScheduleEntriesEmail\DailyScheduleEntriesEmail_files</DailyScheduleEntriesEmailFilesDirectory>
   <LogToFile>false</LogToFile>
   <LogToWindowsEventLog>true</LogToWindowsEventLog>
   <LogToConsole>true</LogToConsole>

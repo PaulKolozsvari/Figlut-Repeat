@@ -102,6 +102,10 @@
 
         public List<EmailNotificationRecipient> DefaultEmailRecipients { get; set; }
 
+        public string DailyScheduleEntriesEmailDirectory { get; set; }
+
+        public string DailyScheduleEntriesEmailFilesDirectory { get; set; }
+
         #endregion //Email
 
         #region Logging

@@ -41,6 +41,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HtmlAgilityPack, Version=1.8.5.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.8.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -324,6 +327,11 @@
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
     <Content Include="Content\themes\base\jquery.ui.tooltip.css" />
     <Content Include="Content\WebGrid.css" />
+    <Content Include="Emails\DailyScheduleEntriesEmail\DailyScheduleEntriesEmail.htm" />
+    <Content Include="Emails\DailyScheduleEntriesEmail\DailyScheduleEntriesEmail_files\colorschememapping.xml" />
+    <Content Include="Emails\DailyScheduleEntriesEmail\DailyScheduleEntriesEmail_files\filelist.xml" />
+    <Content Include="Emails\DailyScheduleEntriesEmail\DailyScheduleEntriesEmail_files\image001.png" />
+    <Content Include="Emails\DailyScheduleEntriesEmail\DailyScheduleEntriesEmail_files\image002.png" />
     <Content Include="favicon.ico" />
     <Content Include="Figlut-AppLogo-FINAL-Black.ico" />
     <Content Include="Figlut-AppLogo-FINAL-Blue-Dark-Red.ico" />
@@ -605,6 +613,8 @@
     <Content Include="Images\WhyItWorksGallery\08-WhyItWorks.jpg" />
     <Content Include="Files\Figlut-The-Value-of-Customer-Retention-and-Customer-Loyalty.docx" />
     <Content Include="Files\Figlut-The-Value-of-Customer-Retention-and-Customer-Loyalty.pdf" />
+    <Content Include="Emails\DailyScheduleEntriesEmail\DailyScheduleEntriesEmail.docx" />
+    <Content Include="Emails\DailyScheduleEntriesEmail\DailyScheduleEntriesEmail_files\themedata.thmx" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="READ-ME.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

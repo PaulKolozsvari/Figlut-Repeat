@@ -34,6 +34,8 @@
       <DisplayName>Figlut Team</DisplayName>
     </EmailNotificationRecipient>
   </DefaultEmailRecipients>
+  <DailyScheduleEntriesEmailDirectory>C:\Docs\Git\Figlut-Repeat\source\trunk\Figlut.Repeat.Web.Site\Emails\DailyScheduleEntriesEmail</DailyScheduleEntriesEmailDirectory>
+  <DailyScheduleEntriesEmailFilesDirectory>C:\Docs\Git\Figlut-Repeat\source\trunk\Figlut.Repeat.Web.Site\Emails\DailyScheduleEntriesEmail\DailyScheduleEntriesEmail_files</DailyScheduleEntriesEmailFilesDirectory>
   <LogToFile>false</LogToFile>
   <LogToWindowsEventLog>false</LogToWindowsEventLog>
   <LogToConsole>false</LogToConsole>

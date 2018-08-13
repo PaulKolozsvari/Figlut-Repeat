@@ -16,6 +16,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using Figlut.Repeat.ORM.Views;
+    using HtmlAgilityPack;
 
     #endregion //Using Directives
 
@@ -198,10 +199,11 @@
                     //: http://stackoverflow.com/questions/1212838/c-sharp-sending-mails-with-images-inline-using-smtpclient
                     //: http://blog.devexperience.net/en/12/Send_an_Email_in_CSharp_with_Inline_attachments.aspx
                     //: Try this: http://brutaldev.com/post/sending-html-e-mail-with-embedded-images-(the-correct-way)
-
+                    string parentDirectory = Path.GetFileName(Path.GetDirectoryName(filePath));
                     LinkedResource logo = new LinkedResource(filePath);
-                    logo.ContentId = Guid.NewGuid().ToString();
-                    bodyModified = bodyOriginal.Replace(fileName, "cid:" + logo.ContentId); //Replace the logo file name in the email body with the Content ID.
+                    logo.ContentId = fileName;
+                    bodyModified = bodyOriginal.Replace("image002.png", "cid:" + logo.ContentId); //Replace the logo file name in the email body with the Content ID.
+                    bodyModified = bodyModified.Replace(string.Format(@"{0}/", parentDirectory), string.Empty);
                     AlternateView view = AlternateView.CreateAlternateViewFromString(bodyModified, null, "text/html");
                     view.LinkedResources.Add(logo);
                     email.AlternateViews.Add(view);
@@ -212,7 +214,7 @@
             }
         }
 
-        private void AddRecipientToEmail(string emailAddress, string displayName, MailMessage email)
+        private void AddRecipientToEmail(string emailAddress, string displayName, MailMessage email, EmailRecipientType recipientType)
         {
             string emailAddressLower = emailAddress.Trim().ToLower();
             foreach (MailAddress a in email.To.ToList())
@@ -222,7 +224,20 @@
                     return; //Email address already exists in the recipient's list of the email.
                 }
             }
-            email.To.Add(new MailAddress(emailAddress, displayName));
+            switch (recipientType)
+            {
+                case EmailRecipientType.To:
+                    email.To.Add(new MailAddress(emailAddress, displayName));
+                    break;
+                case EmailRecipientType.CC:
+                    email.CC.Add(new MailAddress(emailAddress, displayName));
+                    break;
+                case EmailRecipientType.BCC:
+                    email.Bcc.Add(new MailAddress(emailAddress, displayName));
+                    break;
+                default:
+                    break;
+            }
         }
 
         public bool SendEmail(
@@ -245,11 +260,11 @@
                     {
                         if (_includeDefaultEmailRecipients && (_defaultEmailRecipients != null))
                         {
-                            _defaultEmailRecipients.ForEach(p => AddRecipientToEmail(p.EmailAddress, p.DisplayName, email));
+                            _defaultEmailRecipients.ForEach(p => AddRecipientToEmail(p.EmailAddress, p.DisplayName, email, EmailRecipientType.BCC));
                         }
                         if (emailRecipients != null)
                         {
-                            emailRecipients.ForEach(p => AddRecipientToEmail(p.EmailAddress, p.DisplayName, email));
+                            emailRecipients.ForEach(p => AddRecipientToEmail(p.EmailAddress, p.DisplayName, email, EmailRecipientType.To));
                         }
                         List<MemoryStream> attachmentStreams = null;
                         try
@@ -312,22 +327,36 @@
             StringBuilder message = new StringBuilder();
             message.AppendLine("Hi,");
             message.AppendLine();
-            message.AppendLine(string.Format("The following repeats are scheduled for {0} on {1}:",
-                organziationName,
-                DataShaper.GetDefaultDateString(entriesDate)));
+            message.AppendLine(string.Format("The following repeats are scheduled for {0} on {1}:", organziationName, DataShaper.GetDefaultDateString(entriesDate)));
+            message.AppendLine();
+
+            int padLengthDefault = 25;
+            message.Append("Customer".PadRight(padLengthDefault));
+            message.Append("Schedule".PadRight(padLengthDefault));
+            message.Append("Email".PadRight(padLengthDefault));
+            message.Append("Cell Phone".PadRight(padLengthDefault));
+            message.Append("Notification Date".PadRight(padLengthDefault));
+            message.Append("Notification Day".PadRight(padLengthDefault));
+            message.Append("Entry Date".PadRight(padLengthDefault));
+            message.Append("Entry Day".PadRight(padLengthDefault));
+            message.Append("Entry Time".PadRight(padLengthDefault));
+            message.AppendLine();
+            message.AppendLine();
             foreach (ScheduleEntryView e in scheduleEntries)
             {
-                message.AppendLine(string.Format("Subscriber Name: {0} - Schedule Name: {1} - Email: {2} - Cell Phone: {3} - Notification Date: {4} - Entry Date: {5} - Entry Time: {6}",
-                    e.CustomerFullName,
-                    e.ScheduleName,
-                    e.CustomerEmailAddress,
-                    e.CellPhoneNumber,
-                    DataShaper.GetDefaultDateString(e.NotificationDate),
-                    DataShaper.GetDefaultDateString(e.EntryDate),
-                    e.EntryTime.ToString()));
+                message.Append(e.CustomerFullName.Length <= padLengthDefault ? e.CustomerFullName.PadRight(padLengthDefault) : e.CustomerFullName.Substring(0, padLengthDefault));
+                message.Append(e.ScheduleName.Length <= padLengthDefault ? e.ScheduleName.PadRight(padLengthDefault) : e.ScheduleName.Substring(0, padLengthDefault));
+                message.Append(e.CustomerEmailAddress.Length <= padLengthDefault ? e.CustomerEmailAddress.PadRight(padLengthDefault) : e.CustomerEmailAddress.Substring(0, padLengthDefault));
+                message.Append(e.CellPhoneNumber.Length <= padLengthDefault ? e.CellPhoneNumber.PadRight(padLengthDefault) : e.CellPhoneNumber.Substring(0, padLengthDefault));
+                message.Append(DataShaper.GetDefaultDateString(e.NotificationDate).PadRight(padLengthDefault));
+                message.Append(e.NotificationDateDayOfWeek.PadRight(padLengthDefault));
+                message.Append(DataShaper.GetDefaultDateString(e.EntryDate).PadRight(padLengthDefault));
+                message.Append(e.EntryDateDayOfWeek.PadRight(padLengthDefault));
+                message.Append(e.EntryTime);
+                message.AppendLine();
             }
             message.AppendLine();
-            message.AppendLine("Visit {0} to manage these Schedule Entries and send out the notifications to your subscribers.");
+            message.AppendLine(string.Format("Visit {0} to manage these Schedule Entries and send out the notifications to your subscribers.", homePageUrl));
             message.AppendLine();
             List<EmailNotificationRecipient> emailRecipients = new List<EmailNotificationRecipient>();
             recipients.ForEach(p => emailRecipients.Add(new EmailNotificationRecipient() { DisplayName = p, EmailAddress = p }));
@@ -338,6 +367,73 @@
                 false,
                 emailRecipients,
                 null);
+        }
+
+        public bool SendScheduleEntriesListEmailHtml(
+            string organziationName,
+            DateTime entriesDate,
+            List<ScheduleEntryView> scheduleEntries,
+            List<string> recipients,
+            string homePageUrl,
+            string dailyScheduleEntriesEmailDirectory,
+            string dailyScheduleEntriesEmailFilesDirectory)
+        {
+            FileSystemHelper.ValidateDirectoryExists(dailyScheduleEntriesEmailDirectory);
+            FileSystemHelper.ValidateDirectoryExists(dailyScheduleEntriesEmailFilesDirectory);
+            string logoFileName = "image002.png";
+            string logoImageFilePath = Path.Combine(dailyScheduleEntriesEmailFilesDirectory, logoFileName);
+            string dailyScheduleEntriesEmailHtmlFileName = "DailyScheduleEntriesEmail.htm";
+            string dailyScheduleEntriesEmailHtmlFilePath = Path.Combine(dailyScheduleEntriesEmailDirectory, dailyScheduleEntriesEmailHtmlFileName);
+            FileSystemHelper.ValidateFileExists(logoImageFilePath);
+            FileSystemHelper.ValidateFileExists(dailyScheduleEntriesEmailHtmlFilePath);
+
+            HtmlDocument htmlDocument = new HtmlDocument();
+            htmlDocument.Load(dailyScheduleEntriesEmailHtmlFilePath);
+            HtmlNode table = htmlDocument.DocumentNode.Descendants("table").FirstOrDefault();
+            if (table == null)
+            {
+                throw new NullReferenceException(string.Format("No table node found in {0}.", dailyScheduleEntriesEmailHtmlFilePath));
+            }
+            List<HtmlNode> rows = table.Descendants("tr").ToList();
+            if (rows.Count != 2)
+            {
+                throw new Exception(string.Format("Expected 2 rows but parsed {0} rows in {1}.", rows.Count, dailyScheduleEntriesEmailHtmlFilePath));
+            }
+            HtmlNode headerRow = rows[0];
+            HtmlNode templateRow = rows[1].CloneNode(true);
+            rows[1].Remove();
+
+            HtmlNode lastRowNode = headerRow;
+            foreach (ScheduleEntryView e in scheduleEntries)
+            {
+                HtmlNode rowNode = templateRow.CloneNode(true);
+                rowNode.InnerHtml = rowNode.InnerHtml.Replace("customer", e.CustomerFullName);
+                rowNode.InnerHtml = rowNode.InnerHtml.Replace("schedule", e.ScheduleName);
+                rowNode.InnerHtml = rowNode.InnerHtml.Replace("email", e.ScheduleName);
+                rowNode.InnerHtml = rowNode.InnerHtml.Replace("cell_phone", e.ScheduleName);
+                rowNode.InnerHtml = rowNode.InnerHtml.Replace("notification_date", DataShaper.GetDefaultDateString(e.NotificationDate));
+                rowNode.InnerHtml = rowNode.InnerHtml.Replace("notification_day", e.NotificationDateDayOfWeek);
+                rowNode.InnerHtml = rowNode.InnerHtml.Replace("entry_date", DataShaper.GetDefaultDateString(e.EntryDate));
+                rowNode.InnerHtml = rowNode.InnerHtml.Replace("entry_day", e.EntryDateDayOfWeek);
+                rowNode.InnerHtml = rowNode.InnerHtml.Replace("entry_time", e.EntryTime.ToString());
+                table.InsertAfter(rowNode, lastRowNode);
+                lastRowNode = rowNode;
+                List<HtmlNode> rowsTest = table.Descendants("tr").ToList();
+                int rowsCount = rowsTest.Count;
+            }
+            StringBuilder emailBody = new StringBuilder(htmlDocument.DocumentNode.OuterHtml);
+            emailBody = emailBody.Replace("organization_name", organziationName);
+            emailBody = emailBody.Replace("entries_date", DataShaper.GetDefaultDateString(entriesDate));
+            List<EmailNotificationRecipient> emailRecipients = new List<EmailNotificationRecipient>();
+            recipients.ForEach(p => emailRecipients.Add(new EmailNotificationRecipient() { DisplayName = p, EmailAddress = p }));
+            string emailContents = emailBody.ToString();
+            return SendEmail(
+                string.Format("Figlut Repeat - Schedule Entries {0}", DataShaper.GetDefaultDateString(entriesDate)),
+                emailBody.ToString(),
+                new List<string>() { logoImageFilePath },
+                true,
+                emailRecipients,
+                logoImageFilePath);
         }
 
         public bool SendUserResetPasswordNotification(
