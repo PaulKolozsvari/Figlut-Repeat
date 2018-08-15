@@ -17,6 +17,7 @@
     using System.Threading.Tasks;
     using Figlut.Repeat.ORM.Views;
     using HtmlAgilityPack;
+    using Figlut.Repeat.ORM;
 
     #endregion //Using Directives
 
@@ -86,6 +87,13 @@
         }
 
         #endregion //Constructors
+
+        #region Constants
+
+        public const string DAILY_SCHEDULE_ENTRIES_HTML_EMAIL_FILE_NAME = "DailyScheduleEntriesEmail.htm";
+        public const string HTML_LOGO_FILE_NAME = "image002.png";
+
+        #endregion //Constants
 
         #region Fields
 
@@ -241,12 +249,14 @@
         }
 
         public bool SendEmail(
+            EmailCategory category,
             string subject,
             string body,
             List<string> attachmentFileNames,
             bool isHtml,
             List<EmailNotificationRecipient> emailRecipients,
-            string logoImageFilePath)
+            string logoImageFilePath,
+            Nullable<Guid> organizationId)
         {
             if (!_emailNotificationsEnabled)
             {
@@ -276,7 +286,7 @@
                             }
                             client.Send(email);
                             LogEmailNotification(email, subject);
-                            LogEmailNotificationToDatabase(email, subject);
+                            LogEmailNotificationToDatabase(category.ToString(), email, subject, organizationId);
                         }
                         finally
                         {
@@ -314,20 +324,20 @@
             }
             message.AppendLine(exception.StackTrace);
             string errorMessage = message.ToString();
-            return SendEmail("Figlut - Technical Error Notification", errorMessage, null, false, null, null);
+            return SendEmail(EmailCategory.Error, "Figlut - Technical Error Notification", errorMessage, null, false, null, null, null);
         }
 
         public bool SendScheduleEntriesListEmail(
-            string organziationName,
+            Organization organization,
+            List<User> organizationUserRecipients,
             DateTime entriesDate,
             List<ScheduleEntryView> scheduleEntries,
-            List<string> recipients,
             string homePageUrl)
         {
             StringBuilder message = new StringBuilder();
             message.AppendLine("Hi,");
             message.AppendLine();
-            message.AppendLine(string.Format("The following repeats are scheduled for {0} on {1}:", organziationName, DataShaper.GetDefaultDateString(entriesDate)));
+            message.AppendLine(string.Format("The following repeats are scheduled for {0} on {1}:", organization.Name, DataShaper.GetDefaultDateString(entriesDate)));
             message.AppendLine();
 
             int padLengthDefault = 25;
@@ -359,31 +369,39 @@
             message.AppendLine(string.Format("Visit {0} to manage these Schedule Entries and send out the notifications to your subscribers.", homePageUrl));
             message.AppendLine();
             List<EmailNotificationRecipient> emailRecipients = new List<EmailNotificationRecipient>();
-            recipients.ForEach(p => emailRecipients.Add(new EmailNotificationRecipient() { DisplayName = p, EmailAddress = p }));
+            organizationUserRecipients.ForEach(p => emailRecipients.Add(new EmailNotificationRecipient() { DisplayName = p.UserName, EmailAddress = p.EmailAddress }));
             return SendEmail(
+                EmailCategory.DailyScheduleEntries,
                 string.Format("Figlut Repeat - Schedule Entries {0}", DataShaper.GetDefaultDateString(entriesDate)),
                 message.ToString(),
                 null,
                 false,
                 emailRecipients,
-                null);
+                null,
+                organization.OrganizationId);
         }
 
         public bool SendScheduleEntriesListEmailHtml(
-            string organziationName,
+            Organization organization,
+            List<User> organizationUserRecipients,
             DateTime entriesDate,
             List<ScheduleEntryView> scheduleEntries,
-            List<string> recipients,
             string homePageUrl,
             string dailyScheduleEntriesEmailDirectory,
             string dailyScheduleEntriesEmailFilesDirectory)
         {
+            if (organization == null)
+            {
+                throw new Exception(string.Format("No {0} supplied for sending Schedule Entries email.", typeof(Organization).Name));
+            }
+            if (organizationUserRecipients == null || organizationUserRecipients.Count < 1)
+            {
+                throw new Exception(string.Format("No {0} {1}s supplied for sending Schedule Entries email.", typeof(Organization).Name, typeof(User).Name));
+            }
             FileSystemHelper.ValidateDirectoryExists(dailyScheduleEntriesEmailDirectory);
             FileSystemHelper.ValidateDirectoryExists(dailyScheduleEntriesEmailFilesDirectory);
-            string logoFileName = "image002.png";
-            string logoImageFilePath = Path.Combine(dailyScheduleEntriesEmailFilesDirectory, logoFileName);
-            string dailyScheduleEntriesEmailHtmlFileName = "DailyScheduleEntriesEmail.htm";
-            string dailyScheduleEntriesEmailHtmlFilePath = Path.Combine(dailyScheduleEntriesEmailDirectory, dailyScheduleEntriesEmailHtmlFileName);
+            string logoImageFilePath = Path.Combine(dailyScheduleEntriesEmailFilesDirectory, HTML_LOGO_FILE_NAME);
+            string dailyScheduleEntriesEmailHtmlFilePath = Path.Combine(dailyScheduleEntriesEmailDirectory, DAILY_SCHEDULE_ENTRIES_HTML_EMAIL_FILE_NAME);
             FileSystemHelper.ValidateFileExists(logoImageFilePath);
             FileSystemHelper.ValidateFileExists(dailyScheduleEntriesEmailHtmlFilePath);
 
@@ -409,8 +427,8 @@
                 HtmlNode rowNode = templateRow.CloneNode(true);
                 rowNode.InnerHtml = rowNode.InnerHtml.Replace("customer", e.CustomerFullName);
                 rowNode.InnerHtml = rowNode.InnerHtml.Replace("schedule", e.ScheduleName);
-                rowNode.InnerHtml = rowNode.InnerHtml.Replace("email", e.ScheduleName);
-                rowNode.InnerHtml = rowNode.InnerHtml.Replace("cell_phone", e.ScheduleName);
+                rowNode.InnerHtml = rowNode.InnerHtml.Replace("email", e.CustomerEmailAddress);
+                rowNode.InnerHtml = rowNode.InnerHtml.Replace("cell_phone", e.CellPhoneNumber);
                 rowNode.InnerHtml = rowNode.InnerHtml.Replace("notification_date", DataShaper.GetDefaultDateString(e.NotificationDate));
                 rowNode.InnerHtml = rowNode.InnerHtml.Replace("notification_day", e.NotificationDateDayOfWeek);
                 rowNode.InnerHtml = rowNode.InnerHtml.Replace("entry_date", DataShaper.GetDefaultDateString(e.EntryDate));
@@ -422,18 +440,20 @@
                 int rowsCount = rowsTest.Count;
             }
             StringBuilder emailBody = new StringBuilder(htmlDocument.DocumentNode.OuterHtml);
-            emailBody = emailBody.Replace("organization_name", organziationName);
+            emailBody = emailBody.Replace("organization_name", organization.Name);
             emailBody = emailBody.Replace("entries_date", DataShaper.GetDefaultDateString(entriesDate));
             List<EmailNotificationRecipient> emailRecipients = new List<EmailNotificationRecipient>();
-            recipients.ForEach(p => emailRecipients.Add(new EmailNotificationRecipient() { DisplayName = p, EmailAddress = p }));
+            organizationUserRecipients.ForEach(p => emailRecipients.Add(new EmailNotificationRecipient() { DisplayName = p.UserName, EmailAddress = p.EmailAddress }));
             string emailContents = emailBody.ToString();
             return SendEmail(
+                EmailCategory.DailyScheduleEntries,
                 string.Format("Figlut Repeat - Schedule Entries {0}", DataShaper.GetDefaultDateString(entriesDate)),
                 emailBody.ToString(),
                 new List<string>() { logoImageFilePath },
                 true,
                 emailRecipients,
-                logoImageFilePath);
+                logoImageFilePath,
+                organization.OrganizationId);
         }
 
         public bool SendUserResetPasswordNotification(
@@ -442,12 +462,13 @@
             string cellPhoneNumber, 
             string newPassword,
             string organizationName,
-            string homePageUrl)
+            string homePageUrl,
+            Nullable<Guid> organizationId)
         {
             StringBuilder message = new StringBuilder();
             message.AppendLine(string.Format("Hi {0},", userName));
             message.AppendLine();
-            message.AppendLine("Your new Figlut password is:");
+            message.AppendLine("Your new Figlut Repeat password is:");
             message.AppendLine();
             message.AppendLine(newPassword);
             message.AppendLine();
@@ -458,12 +479,14 @@
             message.AppendLine("Figlut Repeat team");
             List<string> emailRecipients = new List<string>() { emailAddress };
             return SendEmail(
-                "Figlut Repeat - Reset Password Notification", 
-                message.ToString(), 
-                null, 
-                false, 
+                EmailCategory.UserPasswordReset,
+                "Figlut Repeat - Reset Password Notification",
+                message.ToString(),
+                null,
+                false,
                 new List<EmailNotificationRecipient>() { new EmailNotificationRecipient() { DisplayName = userName, EmailAddress = emailAddress } },
-                null);
+                null,
+                organizationId);
         }
 
         public bool SendUserCreatedWelcomeEmail(
@@ -473,7 +496,8 @@
             string cellPhoneNumber,
             string newPassword,
             string organizationName,
-            string homePageUrl)
+            string homePageUrl,
+            Nullable<Guid> organizationId)
         {
             StringBuilder message = new StringBuilder();
             message.AppendLine(string.Format("Hi {0},", userName));
@@ -495,12 +519,14 @@
             message.AppendLine("Figlut Repeat team");
             List<string> emailRecipients = new List<string>() { emailAddress };
             return SendEmail(
+                EmailCategory.NewUserRegistration,
                 "Figlut Repeat - Welcome",
                 message.ToString(),
                 null,
                 false,
                 new List<EmailNotificationRecipient>() { new EmailNotificationRecipient() { DisplayName = userName, EmailAddress = emailAddress } },
-                null);
+                null,
+                organizationId);
         }
 
         private void LogEmailNotification(MailMessage email, string subject)
@@ -527,7 +553,7 @@
             return result.ToString();
         }
 
-        private bool LogEmailNotificationToDatabase(MailMessage email, string subject)
+        private bool LogEmailNotificationToDatabase(string category, MailMessage email, string subject, Nullable<Guid> organizationId)
         {
             if (!_emailDatabaseLoggingEnabled)
             {
@@ -541,12 +567,15 @@
                 context.LogEmailNotification(
                     0,
                     null,
+                    category,
                     a.Address,
+                    subject,
                     emailContents,
                     null,
                     null,
                     emailRecipientsCsv,
-                    (int)_emailProvider);
+                    (int)_emailProvider,
+                    organizationId);
             }
             return true;
         }

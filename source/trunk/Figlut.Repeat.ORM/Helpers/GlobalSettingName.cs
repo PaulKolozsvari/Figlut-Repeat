@@ -55,6 +55,6 @@
         FiglutMarketingEmailAddress,
         FiglutGeneralEmailAddress,
         FiglutAddress,
-        FiglutHomePageUrl
+        HomePageUrl
     }
 }

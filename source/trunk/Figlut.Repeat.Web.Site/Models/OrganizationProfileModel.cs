@@ -24,6 +24,8 @@
 
         public string OrganizationEmailAddress { get; set; }
 
+        public bool OrganizationEnableEmailNotifications { get; set; }
+
         public string OrganizationAddress { get; set; }
 
         public long SmsCreditsBalance { get; set; }
@@ -37,6 +39,10 @@
         public int BillingDayOfTheMonth { get; set; }
 
         public bool AutomaticallySendDailyScheduleEntriesSms { get; set; }
+
+        public bool EnableDailyScheduleEntriesEmailNotifications { get; set; }
+
+        public bool SendDailyScheduleEntriesEmailNotificationOnZeroEntries { get; set; }
 
         [DataType(DataType.Time)]
         public TimeSpan DailyScheduleEntriesEmailNotificationTime { get; set; }
@@ -109,6 +115,7 @@
             this.OrganizationName = organization.Name;
             this.OrganizationIdentifier = organization.Identifier;
             this.OrganizationEmailAddress = organization.EmailAddress;
+            this.OrganizationEnableEmailNotifications = organization.EnableEmailNotifications;
             this.OrganizationAddress = organization.Address;
             this.SmsCreditsBalance = organization.SmsCreditsBalance;
             this.AllowSmsCreditsDebt = organization.AllowSmsCreditsDebt;
@@ -116,6 +123,8 @@
             this.OrganizationSubscriptionEnabled = organization.OrganizationSubscriptionEnabled;
             this.BillingDayOfTheMonth = organization.BillingDayOfTheMonth;
             this.AutomaticallySendDailyScheduleEntriesSms = organization.AutomaticallySendDailyScheduleEntriesSms;
+            this.EnableDailyScheduleEntriesEmailNotifications = organization.EnableDailyScheduleEntriesEmailNotifications;
+            this.SendDailyScheduleEntriesEmailNotificationOnZeroEntries = organization.SendDailyScheduleEntriesEmailNotificationOnZeroEntries;
             this.DailyScheduleEntriesEmailNotificationTime = organization.DailyScheduleEntriesEmailNotificationTime;
             this.IsMondayWorkDay = organization.IsMondayWorkDay;
             this.IsTuesdayWorkDay = organization.IsTuesdayWorkDay;
@@ -134,6 +143,7 @@
             organization.Name = this.OrganizationName;
             organization.Identifier = this.OrganizationIdentifier;
             organization.EmailAddress = this.OrganizationEmailAddress;
+            organization.EnableEmailNotifications = this.OrganizationEnableEmailNotifications;
             organization.Address = this.OrganizationAddress;
             organization.SmsCreditsBalance = this.SmsCreditsBalance;
             organization.AllowSmsCreditsDebt = this.AllowSmsCreditsDebt;
@@ -141,6 +151,8 @@
             organization.OrganizationSubscriptionEnabled = this.OrganizationSubscriptionEnabled;
             organization.BillingDayOfTheMonth = this.BillingDayOfTheMonth;
             organization.AutomaticallySendDailyScheduleEntriesSms = this.AutomaticallySendDailyScheduleEntriesSms;
+            organization.EnableDailyScheduleEntriesEmailNotifications = this.EnableDailyScheduleEntriesEmailNotifications;
+            organization.SendDailyScheduleEntriesEmailNotificationOnZeroEntries = this.SendDailyScheduleEntriesEmailNotificationOnZeroEntries;
             organization.DailyScheduleEntriesEmailNotificationTime = this.DailyScheduleEntriesEmailNotificationTime;
             organization.IsMondayWorkDay = this.IsMondayWorkDay;
             organization.IsTuesdayWorkDay = this.IsTuesdayWorkDay;

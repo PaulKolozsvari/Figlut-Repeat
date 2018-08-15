@@ -87,6 +87,7 @@
                 grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.Name, false), "Name"),
                 grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.Identifier, false), "Identifier"),
                 grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.EmailAddress, false), "Email"),
+                grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.EnableEmailNotifications, false), "Notifications"),
                 //grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.Address, false), "Address"),
                 grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.SmsCreditsBalance, false), "Balance"),
                 grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.AllowSmsCreditsDebt, false), "Allow Debt"),

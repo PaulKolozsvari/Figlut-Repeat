@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EmailCategory.cs" />
     <Compile Include="EmailNotificationRecipient.cs" />
     <Compile Include="EmailProvider.cs" />
     <Compile Include="EmailRecipientType.cs" />

@@ -86,6 +86,7 @@
                 grid.Column("Users", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
                 grid.Column(EntityReader<UserModel>.GetPropertyName(p => p.UserName, false), "User Name"),
                 grid.Column(EntityReader<UserModel>.GetPropertyName(p => p.UserEmailAddress, false), "Email"),
+                grid.Column(EntityReader<UserModel>.GetPropertyName(p => p.UserEnableEmailNotifications, false), "Email Notifications"),
                 grid.Column(EntityReader<UserModel>.GetPropertyName(p => p.OrganizationName, false), "Organization"),
                 grid.Column(EntityReader<UserModel>.GetPropertyName(p => p.Role, false), "Role"),
                 //grid.Column(EntityReader<UserModel>.GetPropertyName(p => p.LastLoginDate, false), "Last Login"),

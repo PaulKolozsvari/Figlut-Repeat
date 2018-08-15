@@ -12,7 +12,9 @@
                 <br />
                 <br />
                 <div class="field-label" id="wait-message" style="font-size:.8em">
-                    @Html.Raw(Model.WaitMessage)
+                    <div class="multiline">
+                        @Html.Raw(Model.WaitMessage)
+                    </div>
                     <br />
                     <br />
                 </div>
@@ -27,7 +29,7 @@
 <script type="text/javascript">
     $(function () {
         var dialogName = '#' + '@Model.DialogDivId';
-        createDialog(dialogName, 'Please wait', undefined, onWaitOpen, undefined, 400, 300);
+        createDialog(dialogName, 'Please wait', undefined, onWaitOpen, undefined, 400, 400);
     });
 
     function onWaitOK() {

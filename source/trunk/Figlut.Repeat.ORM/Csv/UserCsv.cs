@@ -23,6 +23,8 @@
 
         public string UserEmailAddress { get; set; }
 
+        public bool UserEnableEmailNotifications { get; set; }
+
         public string UserPassword { get; set; }
 
         public string Role { get; set; }
@@ -58,6 +60,7 @@
             this.UserId = user.UserId;
             this.UserName = user.UserName;
             this.UserEmailAddress = user.EmailAddress;
+            this.UserEnableEmailNotifications = user.EnableEmailNotifications;
             this.UserPassword = user.Password;
             this.OrganizationId = user.OrganizationId;
             this.Role = ((UserRole)user.RoleId).ToString();
@@ -83,6 +86,7 @@
             user.UserId = this.UserId;
             user.UserName = this.UserName;
             user.EmailAddress = this.UserEmailAddress;
+            user.EnableEmailNotifications = this.UserEnableEmailNotifications;
             user.Password = this.UserPassword;
             user.OrganizationId = this.OrganizationId;
             UserRole userRole;

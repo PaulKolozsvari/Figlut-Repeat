@@ -139,6 +139,7 @@ using System.Threading.Tasks;
                 body.AppendLine(string.Format("{0}: {1}", EntityReader<SmsReceivedLog>.GetPropertyName(p => p.DateReceived, true), smsReceivedLog.DateReceived.Value));
             }
             body.AppendLine(string.Format("{0}: {1}", EntityReader<SmsReceivedLog>.GetPropertyName(p => p.DateCreated, true), smsReceivedLog.DateCreated));
+            Nullable<Guid> organizationId = null;
             if (organization != null)
             {
                 if (!string.IsNullOrEmpty(organization.Name))
@@ -149,6 +150,7 @@ using System.Threading.Tasks;
                 {
                     body.AppendLine(string.Format("{0} {1}: {2}", typeof(Organization).Name, EntityReader<Organization>.GetPropertyName(p => p.EmailAddress, true), organization.EmailAddress));
                 }
+                organizationId = organization.OrganizationId;
             }
             if (subscriber != null)
             {
@@ -161,7 +163,7 @@ using System.Threading.Tasks;
                     body.AppendLine(string.Format("{0} {1}: {2}", typeof(Subscriber).Name, EntityReader<Subscriber>.GetPropertyName(p => p.CellPhoneNumber, true), subscriber.CellPhoneNumber));
                 }
             }
-            base._emailSender.SendEmail(subject, body.ToString(), null, false, recipients, null);
+            base._emailSender.SendEmail(EmailCategory.SmsReceived, subject, body.ToString(), null, false, recipients, null, organizationId);
             context.LogProcesorAction(processorId, processorActionMessage, LogMessageType.SuccessAudit.ToString());
             return true;
         }

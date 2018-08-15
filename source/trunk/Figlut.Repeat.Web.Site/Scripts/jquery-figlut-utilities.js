@@ -65,3 +65,18 @@ function makeGridRowsPostForm() {
     });
 }
 
+function parseStringToBoolean(stringValue) {
+    var bool;
+    bool = (function () {
+        switch (false) {
+            case stringValue.toLowerCase() !== 'true':
+                return true;
+            case stringValue.toLowerCase() !== 'false':
+                return false;
+        }
+    })();
+    if (typeof bool === "boolean") {
+        return bool;
+    }
+    return void 0;
+};

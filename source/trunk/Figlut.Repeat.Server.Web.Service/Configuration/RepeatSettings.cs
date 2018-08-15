@@ -84,6 +84,8 @@
 
         public Guid ScheduleEntriesProcessorId { get; set; }
 
+        public Guid ScheduleEntriesDailyProcessorId { get; set; }
+
         #endregion //Sms Processors
 
         #region Email

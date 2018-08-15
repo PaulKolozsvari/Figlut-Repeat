@@ -24,6 +24,8 @@
 
         public string UserEmailAddress { get; set; }
 
+        public bool UserEnableEmailNotifications { get; set; }
+
         public string UserCellPhoneNumber { get; set; }
 
         public string UserPassword { get; set; }
@@ -100,6 +102,7 @@
             this.UserId = user.UserId;
             this.UserName = user.UserName;
             this.UserEmailAddress = user.EmailAddress;
+            this.UserEnableEmailNotifications = user.EnableEmailNotifications;
             this.UserCellPhoneNumber = user.CellPhoneNumber;
             this.UserPassword = user.Password;
             this.OrganizationId = user.OrganizationId;
@@ -128,6 +131,7 @@
             user.UserId = this.UserId;
             user.UserName = this.UserName;
             user.EmailAddress = this.UserEmailAddress;
+            user.EnableEmailNotifications = this.UserEnableEmailNotifications;
             user.CellPhoneNumber = this.UserCellPhoneNumber;
             user.Password = this.UserPassword;
             user.OrganizationId = this.OrganizationId;

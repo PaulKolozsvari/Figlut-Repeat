@@ -478,14 +478,16 @@
                 }
                 Organization organization = null;
                 string organizationName = null;
+                Nullable<Guid> organizationId = null;
                 if (user.OrganizationId.HasValue)
                 {
                     organization = context.GetOrganization(user.OrganizationId.Value, true);
                     organizationName = organization.Name;
+                    organizationId = organization.OrganizationId;
                 }
                 int generatedPasswordLength = Convert.ToInt32(RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.GeneratedPasswordLength].SettingValue);
                 int generatedPasswordNumberOfNonAlphanumericCharacters = Convert.ToInt32(RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.GeneratedPasswordNumberOfNonAlphanumericCharacters].SettingValue);
-                string figlutHomePageUrl = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.FiglutHomePageUrl].SettingValue;
+                string figlutHomePageUrl = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.HomePageUrl].SettingValue;
                 string newPassword = DataShaper.GeneratePassword(generatedPasswordLength, generatedPasswordNumberOfNonAlphanumericCharacters);
                 if (!RepeatWebApp.Instance.EmailSender.SendUserResetPasswordNotification(
                     user.UserName,
@@ -493,7 +495,8 @@
                     user.CellPhoneNumber,
                     newPassword,
                     organizationName,
-                    figlutHomePageUrl))
+                    figlutHomePageUrl,
+                    organizationId))
                 {
                     return GetJsonResult(false, string.Format(
                         "Could not send email notification with your new password to {0}. Password has not been reset. Please try again later.", user.EmailAddress));
@@ -600,7 +603,7 @@
                 {
                     return GetJsonResult(false, errorMessage);
                 }
-                SendRegistrationEmailNotification(model);
+                SendRegistrationEmailNotification(model, organization.OrganizationId);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -611,24 +614,22 @@
             }
         }
 
-        private void SendRegistrationEmailNotification(RegisterModel registerModel)
+        private void SendRegistrationEmailNotification(RegisterModel registerModel, Nullable<Guid> organizationId)
         {
             List<EmailNotificationRecipient> recipients = new List<EmailNotificationRecipient>();
             recipients.Add(new EmailNotificationRecipient() { EmailAddress = registerModel.OrganizationEmailAddress, DisplayName = registerModel.OrganizationName });
             recipients.Add(new EmailNotificationRecipient() { EmailAddress = registerModel.UserEmailAddress, DisplayName = registerModel.UserName });
             
-            string subject = "Welcome to Figlut";
+            string subject = "Welcome to Figlut Repeat";
             StringBuilder body = new StringBuilder();
             body.AppendLine(string.Format("Hi {0},", registerModel.UserName));
             body.AppendLine();
-            body.AppendLine("Thank you for registering with Figlut. Someone will be in contact with you shortly to help you get started.");
-            body.AppendLine("We look forward to working with you to promote your business through our platform.");
+            body.AppendLine("Thank you for registering with Figlut Repeat. Someone will be in contact with you shortly to help you get started.");
             body.AppendLine();
             body.AppendLine("Regards,");
             body.AppendLine();
-            body.AppendLine("The Figlut Team");
-
-            RepeatWebApp.Instance.EmailSender.SendEmail(subject, body.ToString(), null, false, recipients, null);
+            body.AppendLine("The Figlut Repeat Team");
+            RepeatWebApp.Instance.EmailSender.SendEmail(EmailCategory.NewUserRegistration, subject, body.ToString(), null, false, recipients, null, organizationId);
         }
 
         public ActionResult ChangePassword()
@@ -784,6 +785,7 @@
                 if (organizationId.HasValue)
                 {
                     model.OrganizationId = organizationId.Value;
+                    model.UserEnableEmailNotifications = true;
                 }
                 PartialViewResult result = PartialView(CREATE_USER_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
@@ -851,7 +853,7 @@
                     userOrganization = context.GetOrganization(user.OrganizationId.Value, true);
                 }
                 context.Save<User>(user, false);
-                string figlutHomePageUrl = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.FiglutHomePageUrl].SettingValue;
+                string figlutHomePageUrl = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.HomePageUrl].SettingValue;
                 RepeatWebApp.Instance.EmailSender.SendUserCreatedWelcomeEmail(
                     currentUser.UserName,
                     user.UserName,
@@ -859,7 +861,8 @@
                     user.CellPhoneNumber,
                     user.Password,
                     userOrganization != null ? userOrganization.Name : null,
-                    figlutHomePageUrl);
+                    figlutHomePageUrl,
+                    userOrganization.OrganizationId);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

@@ -42,7 +42,8 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IntervalProcessor.cs" />
-    <Compile Include="Schedule\ScheduleProcessor.cs" />
+    <Compile Include="Schedule\ScheduleEntriesDailyProcessor.cs" />
+    <Compile Include="Schedule\ScheduleEntriesProcessor.cs" />
     <Compile Include="Sms\SmsReceivedQueueProcessor.cs" />
     <Compile Include="Sms\SmsSentQueueProcessor.cs" />
   </ItemGroup>

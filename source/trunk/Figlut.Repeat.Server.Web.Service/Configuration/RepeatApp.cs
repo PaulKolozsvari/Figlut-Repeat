@@ -74,7 +74,8 @@
         #region SMS Processors
 
         private SmsSentQueueProcessor _smsSentQueueProcessor;
-        private ScheduleProcessor _scheduleProcessor;
+        private ScheduleEntriesProcessor _scheduleEntriesProcessor;
+        private ScheduleEntriesDailyProcessor _scheduleEntriesDailyProcessor;
 
         #endregion //SMS Processors
 
@@ -142,6 +143,21 @@
             }
         }
 
+        public SmsSentQueueProcessor SmsSentQueueProcessor
+        {
+            get { return _smsSentQueueProcessor; }
+        }
+
+        public ScheduleEntriesProcessor ScheduleEntriesProcessor
+        {
+            get { return _scheduleEntriesProcessor; }
+        }
+
+        public ScheduleEntriesDailyProcessor ScheduleEntriesDailyProcessor
+        {
+            get { return _scheduleEntriesDailyProcessor; }
+        }
+
         #endregion //Properties
 
         #region Methods
@@ -182,8 +198,17 @@
             }
             if (initializeProcessors)
             {
-                InitializeSmsSentQueueProcessor();
-                InitializeScheduleEntriesProcessor();
+                RepeatEntityContext context = RepeatEntityContext.Create();
+                string homePageUrl = GlobalSettings[GlobalSettingName.HomePageUrl].SettingValue;
+                string organizationIdentifierIndicator = GlobalSettings[GlobalSettingName.OrganizationIdentifierIndicator].SettingValue;
+                string subscriberNameIndicator = GlobalSettings[GlobalSettingName.SubscriberNameIndicator].SettingValue;
+                int maxSmsSendMessageLength = Convert.ToInt32(GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
+                string smsSendMessageSuffix = GlobalSettings[GlobalSettingName.SmsSendMessageSuffix].SettingValue;
+                int organizationIdentifierMaxLength = Convert.ToInt32(GlobalSettings[GlobalSettingName.OrganizationIdentifierMaxLength].SettingValue);
+
+                InitializeSmsSentQueueProcessor(context, organizationIdentifierIndicator, subscriberNameIndicator, maxSmsSendMessageLength, smsSendMessageSuffix, organizationIdentifierMaxLength);
+                InitializeScheduleEntriesProcessor(context, organizationIdentifierIndicator, subscriberNameIndicator, maxSmsSendMessageLength, smsSendMessageSuffix, organizationIdentifierMaxLength);
+                InitializeScheduleEntriesDailyProcessor(context, homePageUrl, organizationIdentifierIndicator, subscriberNameIndicator);
             }
             GOC.Instance.Logger.LogMessage(new LogMessage("Application Initialized.", LogMessageType.SuccessAudit, LoggingLevel.Normal));
         }
@@ -275,14 +300,15 @@
                 settings.DefaultEmailRecipients);
         }
 
-        private void InitializeSmsSentQueueProcessor()
+        private void InitializeSmsSentQueueProcessor(
+            RepeatEntityContext context,
+            string organizationIdentifierIndicator,
+            string subscriberNameIndicator,
+            int maxSmsSendMessageLength,
+            string smsSendMessageSuffix,
+            int organizationIdentifierMaxLength)
         {
-            string organizationIdentifierIndicator = GlobalSettings[GlobalSettingName.OrganizationIdentifierIndicator].SettingValue;
-            string subscriberNameIndicator = GlobalSettings[GlobalSettingName.SubscriberNameIndicator].SettingValue;
-            int maxSmsSendMessageLength = Convert.ToInt32(GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
-            string smsSendMessageSuffix = GlobalSettings[GlobalSettingName.SmsSendMessageSuffix].SettingValue;
-            int organizationIdentifierMaxLength = Convert.ToInt32(GlobalSettings[GlobalSettingName.OrganizationIdentifierMaxLength].SettingValue);
-            Processor processor = RepeatEntityContext.Create().GetProcessor(Settings.SmsSentQueueProcessorId, true);
+            Processor processor = context.GetProcessor(Settings.SmsSentQueueProcessorId, true);
             _smsSentQueueProcessor = new SmsSentQueueProcessor(
                 this.SmsSender,
                 maxSmsSendMessageLength,
@@ -296,19 +322,39 @@
                 this.EmailSender);
         }
 
-        private void InitializeScheduleEntriesProcessor()
+        private void InitializeScheduleEntriesProcessor(
+            RepeatEntityContext context,
+            string organizationIdentifierIndicator,
+            string subscriberNameIndicator,
+            int maxSmsSendMessageLength,
+            string smsSendMessageSuffix,
+            int organizationIdentifierMaxLength)
         {
-            string organizationIdentifierIndicator = GlobalSettings[GlobalSettingName.OrganizationIdentifierIndicator].SettingValue;
-            string subscriberNameIndicator = GlobalSettings[GlobalSettingName.SubscriberNameIndicator].SettingValue;
-            int maxSmsSendMessageLength = Convert.ToInt32(GlobalSettings[GlobalSettingName.MaxSmsSendMessageLength].SettingValue);
-            string smsSendMessageSuffix = GlobalSettings[GlobalSettingName.SmsSendMessageSuffix].SettingValue;
-            int organizationIdentifierMaxLength = Convert.ToInt32(GlobalSettings[GlobalSettingName.OrganizationIdentifierMaxLength].SettingValue);
-            Processor processor = RepeatEntityContext.Create().GetProcessor(Settings.ScheduleEntriesProcessorId, true);
-            _scheduleProcessor = new ScheduleProcessor(
+            Processor processor = context.GetProcessor(Settings.ScheduleEntriesProcessorId, true);
+            _scheduleEntriesProcessor = new ScheduleEntriesProcessor(
                 this.SmsSender,
                 maxSmsSendMessageLength,
                 smsSendMessageSuffix,
                 organizationIdentifierMaxLength,
+                processor.ProcessorId,
+                processor.ExecutionInterval,
+                processor.Enabled,
+                organizationIdentifierIndicator,
+                subscriberNameIndicator,
+                this.EmailSender);
+        }
+
+        private void InitializeScheduleEntriesDailyProcessor(
+            RepeatEntityContext context, 
+            string homePageUrl, 
+            string organizationIdentifierIndicator,
+            string subscriberNameIndicator)
+        {
+            Processor processor = context.GetProcessor(Settings.ScheduleEntriesDailyProcessorId, true);
+            _scheduleEntriesDailyProcessor = new ScheduleEntriesDailyProcessor(
+                Settings.DailyScheduleEntriesEmailDirectory,
+                Settings.DailyScheduleEntriesEmailFilesDirectory,
+                homePageUrl,
                 processor.ProcessorId,
                 processor.ExecutionInterval,
                 processor.Enabled,

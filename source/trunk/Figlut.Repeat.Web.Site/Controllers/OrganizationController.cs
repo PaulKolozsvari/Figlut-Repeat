@@ -380,9 +380,12 @@
                 int organizationIdentifierMaxLength = Convert.ToInt32(RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.OrganizationIdentifierMaxLength].SettingValue);
                 return PartialView(CREATE_ORGANIZATION_DIALOG_PARTIAL_VIEW_NAME, new OrganizationModel()
                 {
+                    EnableEmailNotifications = true,
                     OrganizationSubscriptionEnabled = true,
                     BillingDayOfTheMonth = 1,
                     AutomaticallySendDailyScheduleEntriesSms = false,
+                    EnableDailyScheduleEntriesEmailNotifications = true,
+                    SendDailyScheduleEntriesEmailNotificationOnZeroEntries = true,
                     DailyScheduleEntriesEmailNotificationTime = new TimeSpan(8, 0, 0),
                     OrganizationIdentifierMaxLength = organizationIdentifierMaxLength,
                     IsMondayWorkDay = true,

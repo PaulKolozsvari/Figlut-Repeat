@@ -150,10 +150,45 @@
 
         public List<User> GetUsersOfRole(UserRole role)
         {
+            return GetUsersOfRole(role, null);
+        }
+
+        public List<User> GetUsersOfRole(UserRole role, Nullable<Guid> organizationId)
+        {
             int roleId = (int)role;
-            return (from u in DB.GetTable<User>()
-                    where (u.RoleId & roleId) == roleId
-                    select u).ToList();
+            if (organizationId.HasValue)
+            {
+                return (from u in DB.GetTable<User>()
+                        where (u.RoleId & roleId) == roleId &&
+                        u.OrganizationId.HasValue && u.OrganizationId.Value == organizationId.Value
+                        select u).ToList();
+            }
+            else
+            {
+                return (from u in DB.GetTable<User>()
+                        where (u.RoleId & roleId) == roleId
+                        select u).ToList();
+            }
+        }
+
+        public List<User> GetUsersOfRole(UserRole role, Nullable<Guid> organizationId, bool userEmailNotificationsEnabled)
+        {
+            int roleId = (int)role;
+            if (organizationId.HasValue)
+            {
+                return (from u in DB.GetTable<User>()
+                        where u.EnableEmailNotifications == userEmailNotificationsEnabled &&
+                        (u.RoleId & roleId) == roleId &&
+                        u.OrganizationId.HasValue && u.OrganizationId.Value == organizationId.Value
+                        select u).ToList();
+            }
+            else
+            {
+                return (from u in DB.GetTable<User>()
+                        where u.EnableEmailNotifications == userEmailNotificationsEnabled &&
+                        (u.RoleId & roleId) == roleId
+                        select u).ToList();
+            }
         }
 
         public List<User> GetUsersByFilter(string searchFilter, Nullable<Guid> organizationId)

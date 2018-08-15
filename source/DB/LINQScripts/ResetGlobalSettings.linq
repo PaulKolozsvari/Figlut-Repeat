@@ -61,16 +61,16 @@ GlobalSetting figlutAddress = new GlobalSetting()
 	DateCreated = DateTime.Now
 };
 GlobalSettings.InsertOnSubmit(figlutAddress);
-GlobalSetting figlutHomePageUrl = new GlobalSetting()
+GlobalSetting homePageUrl = new GlobalSetting()
 {
 	GlobalSettingId = Guid.NewGuid(),
 	Category = "Contact",
-	SettingName = "FiglutHomePageUrl",
-	SettingValue = "http://www.figlut.com",
-	Description = "The home page URL of the Figlut website.",
+	SettingName = "HomePageUrl",
+	SettingValue = "http://repeat.figlut.com",
+	Description = "The home page URL of the Figlut Repeat website.",
 	DateCreated = DateTime.Now
 };
-GlobalSettings.InsertOnSubmit(figlutHomePageUrl);
+GlobalSettings.InsertOnSubmit(homePageUrl);
 GlobalSetting smsDaysToList = new GlobalSetting()
 {
 	GlobalSettingId = Guid.NewGuid(),

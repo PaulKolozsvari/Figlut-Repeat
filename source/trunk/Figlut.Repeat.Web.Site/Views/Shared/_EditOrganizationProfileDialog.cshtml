@@ -47,6 +47,23 @@
                 </div>
                 <hr />
                 <div class="field-label">
+                    @Html.Raw("Enable Email Notifications")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.OrganizationEnableEmailNotifications, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.OrganizationEnableEmailNotifications, "Enable Email Notifications.")
+                </div>
+                <div class="field-label">
                     @Html.Raw("Automatically Send Schedule Entries SMS")
                 </div>
                 <div class="editor-field">
@@ -61,7 +78,41 @@
                         Model
                     ),
                     new { @class = "drop-down-field" })
-                    @Html.ValidationMessageFor(m => m.IsMondayWorkDay, "Automatically Send Daily Schedule Entries Sms.")
+                    @Html.ValidationMessageFor(m => m.AutomaticallySendDailyScheduleEntriesSms, "Automatically Send Daily Schedule Entries Sms.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Enable Daily Schedule Entries Email Notifications")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.EnableDailyScheduleEntriesEmailNotifications, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.EnableDailyScheduleEntriesEmailNotifications, "Enable Daily Schedule Entries Email Notifications.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Send Daily Schedule Entries Email Notification On Zero Entries")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.SendDailyScheduleEntriesEmailNotificationOnZeroEntries, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.SendDailyScheduleEntriesEmailNotificationOnZeroEntries, "Send Daily Schedule Entries Email Notification On Zero Entries.")
                 </div>
                 <div class="field-label">
                     @Html.Raw("Daily Schedule Entries Email Notification Time")

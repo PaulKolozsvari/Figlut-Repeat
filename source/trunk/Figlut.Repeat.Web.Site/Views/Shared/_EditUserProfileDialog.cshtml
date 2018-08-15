@@ -33,6 +33,23 @@
                     @Html.EditorFor(m => m.UserCellPhoneNumber)
                     @Html.ValidationMessageFor(m => m.UserCellPhoneNumber)
                 </div>
+                <div class="field-label">
+                    @Html.Raw("Enable Email Notifications")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.UserEnableEmailNotifications, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.UserEnableEmailNotifications, "Enable Email Notifications.")
+                </div>
                 <br />
                 <div id="EditUserProfileErrorField" style="color:#8A0808"></div>
             </fieldset>
@@ -43,7 +60,7 @@
 <script type="text/javascript">
     $(function () {
         var dialogName = '#dlgEditUserProfile';
-        createDialog(dialogName, 'Edit User Profile', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
+        createDialog(dialogName, 'Edit User Profile', onConfirmOK, onConfirmOpen, onConfirmCancel, 500, 450);
     });
 
     function onConfirmOK() {

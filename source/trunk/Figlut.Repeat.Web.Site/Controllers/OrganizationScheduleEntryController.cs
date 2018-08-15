@@ -415,15 +415,21 @@
                         EntityReader<ScheduleEntry>.GetPropertyName(p => p.EntryDate, false)));
                 }
                 Organization organization = context.GetOrganization(organizationId, true);
+                List<User> organizationUsers = context.GetUsersOfRole(UserRole.OrganizationAdmin, organization.OrganizationId);
+                StringBuilder confirmationMessage = new StringBuilder();
+                confirmationMessage.AppendLine(string.Format("Email schedule entries list for {0} to the following {1} users?", DataShaper.GetDefaultDateString(startDate.Value), organization.Name));
+                confirmationMessage.AppendLine();
+                organizationUsers.ForEach(p => confirmationMessage.AppendLine(string.Format("{0} ({1})", p.UserName, p.EmailAddress)));
+
                 model.ParentId = organization.OrganizationId;
                 model.ParentCaption = string.Format("{0}", organization.Name);
                 model.SearchText = searchText;
                 model.StartDate = startDate;
                 model.EndDate = endDate;
-                model.ConfirmationMessage = string.Format("Email schedule entries list for {0} to {1}?", DataShaper.GetDefaultDateString(model.StartDate.Value), organization.EmailAddress);
+                model.ConfirmationMessage = confirmationMessage.ToString();
                 model.ShowWaitDialog = true;
-                model.WaitMessage = string.Format("Emailing schedule entries list for {0} to {1} ...", DataShaper.GetDefaultDateString(model.StartDate.Value), organization.EmailAddress);
-                model.WaitDialogSuccessMessage = string.Format("Schedule entries list for {0} successfully sent to {1}.", DataShaper.GetDefaultDateString(model.StartDate.Value), organization.EmailAddress);
+                model.WaitMessage = string.Format("Emailing schedule entries list for {0} ...", DataShaper.GetDefaultDateString(model.StartDate.Value));
+                model.WaitDialogSuccessMessage = string.Format("Schedule entries list for {0} successfully sent.", DataShaper.GetDefaultDateString(model.StartDate.Value));
                 PartialViewResult result = PartialView(CONFIRMATION_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
             }
@@ -455,13 +461,15 @@
                 {
                     return RedirectToHome();
                 }
-                string figlutHomePageUrl = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.FiglutHomePageUrl].SettingValue;
-                Organization organizationView = context.GetOrganization(model.ParentId, true);
+                string figlutHomePageUrl = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.HomePageUrl].SettingValue;
+                Organization organization = context.GetOrganization(model.ParentId, true);
+                List<User> organizationUsers = context.GetUsersOfRole(UserRole.OrganizationAdmin, organization.OrganizationId);
                 List<ScheduleEntryView> entries = context.GetScheduleEntryViewsForOrganizationByFilter(model.SearchText, model.ParentId, model.StartDate.Value);
                 RepeatWebApp.Instance.EmailSender.SendScheduleEntriesListEmailHtml(
-                    organizationView.Name,
+                    organization,
+                    organizationUsers,
                     model.StartDate.Value,
-                    entries, new List<string>() { organizationView.EmailAddress },
+                    entries,
                     figlutHomePageUrl,
                     RepeatWebApp.Instance.Settings.DailyScheduleEntriesEmailDirectory,
                     RepeatWebApp.Instance.Settings.DailyScheduleEntriesEmailFilesDirectory);

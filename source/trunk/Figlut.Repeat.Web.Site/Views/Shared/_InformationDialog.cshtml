@@ -8,7 +8,9 @@
                 <legend>Information Form</legend>
                 @Html.HiddenFor(m => m.Identifier)
                 <div class="field-label" id="information-message" style="font-size:.8em">
-                    @Html.Raw(Model.InformationMessage)
+                    <div class="multiline">
+                        @Html.Raw(Model.InformationMessage)
+                    </div>
                     <br />
                     <br />
                 </div>
@@ -23,7 +25,7 @@
 <script type="text/javascript">
     $(function () {
         var dialogName = '#' + '@Model.DialogDivId';
-        createDialog(dialogName, 'Information', onInformationOK, onInformationOpen, undefined, 300, 400);
+        createDialog(dialogName, 'Information', onInformationOK, onInformationOpen, undefined, 400, 400);
     });
 
     function onInformationOK() {

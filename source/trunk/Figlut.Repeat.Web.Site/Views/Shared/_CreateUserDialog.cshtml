@@ -58,6 +58,23 @@
                         @Html.DropDownList("Role", ViewBag.UserRolesList as List<SelectListItem>, new { @class = "drop-down-field" })
                     </div>
                 }
+                <div class="field-label">
+                    @Html.Raw("Enable Email Notifications")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.UserEnableEmailNotifications, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.UserEnableEmailNotifications, "Enable Email Notifications.")
+                </div>
                 <br />
                 <div class="field-label">
                     @Html.Raw("N.B. The user's password will be system generated and sent to the user at the specified email address.")
@@ -72,7 +89,7 @@
 <script type="text/javascript">
     $(function () {
         var dialogName = '#dlgCreateUser';
-        createDialog(dialogName, 'Create User', onConfirmOK, onConfirmOpen, onConfirmCancel, 500, 450);
+        createDialog(dialogName, 'Create User', onConfirmOK, onConfirmOpen, onConfirmCancel, 550, 450);
     });
 
     function onConfirmOK() {
