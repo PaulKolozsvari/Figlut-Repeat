@@ -1,0 +1,14 @@
+Added extra fields on the following tables:
+
+*	EmailLog: to track for which organization the emails were sent from as well as a category which defines the type of email.
+	-	OrganizationId
+	-	Category
+*	User: to enable or disbale email notifications.
+	-	EnableEmailNotifications: 
+*	Organization:to enable or disable email notifications as ell as a few profile settings related to daily schedule entris notifications.
+
+	-	EnableEmailNotifications
+	-	AutomaticallySendDailyScheduleEntriesSms
+	-	EnableDailyScheduleEntriesEmailNotifications
+	-	SendDailyScheduleEntriesEmailNotificationOnZeroEntries
+	-	DailyScheduleEntriesEmailNotificationTime

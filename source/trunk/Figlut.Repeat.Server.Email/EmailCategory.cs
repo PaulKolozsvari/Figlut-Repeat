@@ -6,6 +6,7 @@
         Error,
         Warning,
         UserPasswordReset,
+        NewUserCreated,
         NewUserRegistration,
         DailyScheduleEntries,
         SmsReceived

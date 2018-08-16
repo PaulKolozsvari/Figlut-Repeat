@@ -106,6 +106,18 @@
 
         public string DailyScheduleEntriesEmailFilesDirectory { get; set; }
 
+        public string NewUserCreatedEmailDirectory { get; set; }
+
+        public string NewUserCreatedEmailFilesDirectory { get; set; }
+
+        public string NewUserRegistrationEmailDirectory { get; set; }
+
+        public string NewUserRegistrationEmailFilesDirectory { get; set; }
+
+        public string UserPasswordResetEmailDirectory { get; set; }
+
+        public string UserPasswordResetEmailFilesDirectory { get; set; }
+
         #endregion //Email
 
         #region Logging

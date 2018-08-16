@@ -40,6 +40,12 @@
   </DefaultEmailRecipients>
   <DailyScheduleEntriesEmailDirectory>C:\Docs\Git\Figlut-Repeat\source\trunk\Figlut.Repeat.Web.Site\Emails\DailyScheduleEntriesEmail</DailyScheduleEntriesEmailDirectory>
   <DailyScheduleEntriesEmailFilesDirectory>C:\Docs\Git\Figlut-Repeat\source\trunk\Figlut.Repeat.Web.Site\Emails\DailyScheduleEntriesEmail\DailyScheduleEntriesEmail_files</DailyScheduleEntriesEmailFilesDirectory>
+  <NewUserCreatedEmailDirectory>C:\Docs\Git\Figlut-Repeat\source\trunk\Figlut.Repeat.Web.Site\Emails\NewUserCreated</NewUserCreatedEmailDirectory>
+  <NewUserCreatedEmailFilesDirectory>C:\Docs\Git\Figlut-Repeat\source\trunk\Figlut.Repeat.Web.Site\Emails\NewUserCreated\NewUserCreated_files</NewUserCreatedEmailFilesDirectory>
+  <NewUserRegistrationEmailDirectory>C:\Docs\Git\Figlut-Repeat\source\trunk\Figlut.Repeat.Web.Site\Emails\NewUserRegistration</NewUserRegistrationEmailDirectory>
+  <NewUserRegistrationEmailFilesDirectory>C:\Docs\Git\Figlut-Repeat\source\trunk\Figlut.Repeat.Web.Site\Emails\NewUserRegistration\NewUserRegistration_files</NewUserRegistrationEmailFilesDirectory>
+  <UserPasswordResetEmailDirectory>C:\Docs\Git\Figlut-Repeat\source\trunk\Figlut.Repeat.Web.Site\Emails\UserPasswordResetEmail</UserPasswordResetEmailDirectory>
+  <UserPasswordResetEmailFilesDirectory>C:\Docs\Git\Figlut-Repeat\source\trunk\Figlut.Repeat.Web.Site\Emails\UserPasswordResetEmail\UserPasswordResetEmail_files</UserPasswordResetEmailFilesDirectory>
   <LogToFile>false</LogToFile>
   <LogToWindowsEventLog>true</LogToWindowsEventLog>
   <LogToConsole>true</LogToConsole>

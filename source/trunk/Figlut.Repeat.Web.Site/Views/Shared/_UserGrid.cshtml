@@ -6,6 +6,8 @@
 @using Figlut.Repeat.Web.Site.Models;
 @using Figlut.Repeat.Web.Site.Extensions;
 @using Figlut.Repeat.ORM.Helpers;
+@using Figlut.Repeat.Data;
+@using Figlut.Repeat.ORM;
 
 @{
     Figlut.Repeat.Web.Site.Models.UserModel user = new UserModel();
@@ -14,6 +16,8 @@
     int usersPerPageToDisplay = Convert.ToInt32(RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.UsersPerPageToDisplay].SettingValue);
     var grid = new WebGrid(Model.DataModel, canPage: true, rowsPerPage: usersPerPageToDisplay, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
     grid.Pager(WebGridPagerModes.All);
+    RepeatEntityContext context = RepeatEntityContext.Create();
+    UserRole currentUserRole = (UserRole)context.GetUserByIdentifier(User.Identity.Name, false).RoleId;
 }
 
 <div id="gridContent" class="data-grid">
@@ -52,13 +56,19 @@
                         {
                             @Html.LinkButtonForSubmit("Create", "onCreateUserClick()", "btnCreateUser", "red-document-plus-icon32.png")
                         }
-                        @Html.LinkButtonForCancel("Delete All", "onDeleteAllUsersClick()", "btnDeleteAllUsers")
+                        if (currentUserRole == UserRole.Administrator)
+                        {
+                            @Html.LinkButtonForCancel("Delete All", "onDeleteAllUsersClick()", "btnDeleteAllUsers")
+                        }
                         if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
                         {
                             user = (UserModel)grid.Rows[grid.SelectedIndex].Value;
-                            @Html.LinkButtonForCancel("Delete", "onDeleteUserClick()", "btnDeleteUser")
-                            @Html.LinkButtonForSubmit("Edit", "onEditUserClick()", "btnEditUser", "red-edit.png")
-                            @Html.LinkButtonForSubmit("Password", "onEditUserPasswordClick()", "btnEditUserPassword", "red-unlock-icon32.png")
+                            if ((int)user.Role <= (int)currentUserRole)
+                            {
+                                @Html.LinkButtonForCancel("Delete", "onDeleteUserClick()", "btnDeleteUser")
+                                @Html.LinkButtonForSubmit("Edit", "onEditUserClick()", "btnEditUser", "red-edit.png")
+                                @Html.LinkButtonForSubmit("Password", "onEditUserPasswordClick()", "btnEditUserPassword", "red-unlock-icon32.png")
+                            }
                         }
                     }
                 </div>

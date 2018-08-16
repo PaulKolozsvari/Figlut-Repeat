@@ -489,14 +489,16 @@
                 int generatedPasswordNumberOfNonAlphanumericCharacters = Convert.ToInt32(RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.GeneratedPasswordNumberOfNonAlphanumericCharacters].SettingValue);
                 string figlutHomePageUrl = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.HomePageUrl].SettingValue;
                 string newPassword = DataShaper.GeneratePassword(generatedPasswordLength, generatedPasswordNumberOfNonAlphanumericCharacters);
-                if (!RepeatWebApp.Instance.EmailSender.SendUserResetPasswordNotification(
+                if (!RepeatWebApp.Instance.EmailSender.SendUserResetPasswordNotificationHtml(
                     user.UserName,
                     user.EmailAddress,
                     user.CellPhoneNumber,
                     newPassword,
                     organizationName,
                     figlutHomePageUrl,
-                    organizationId))
+                    organizationId,
+                    RepeatWebApp.Instance.Settings.UserPasswordResetEmailDirectory,
+                    RepeatWebApp.Instance.Settings.UserPasswordResetEmailFilesDirectory))
                 {
                     return GetJsonResult(false, string.Format(
                         "Could not send email notification with your new password to {0}. Password has not been reset. Please try again later.", user.EmailAddress));
@@ -590,7 +592,10 @@
             {
                 ////TODO: allow users to register at a later stage when SMS credits has been implemented.
                 //return RedirectToHome();
+                return RedirectToHome();
+
                 int organizationIdentifierMaxLength = Convert.ToInt32(RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.OrganizationIdentifierMaxLength].SettingValue);
+                string homePageUrl = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.HomePageUrl].SettingValue;
                 string errorMessage = null;
                 if (!model.IsValid(out errorMessage, organizationIdentifierMaxLength))
                 {
@@ -603,7 +608,15 @@
                 {
                     return GetJsonResult(false, errorMessage);
                 }
-                SendRegistrationEmailNotification(model, organization.OrganizationId);
+                RepeatWebApp.Instance.EmailSender.SendUserRegistrationEmailNotificationHtml(
+                    model.OrganizationEmailAddress,
+                    model.OrganizationName,
+                    model.UserEmailAddress,
+                    model.UserName,
+                    homePageUrl,
+                    organization.OrganizationId,
+                    RepeatWebApp.Instance.Settings.NewUserRegistrationEmailDirectory,
+                    RepeatWebApp.Instance.Settings.NewUserRegistrationEmailFilesDirectory);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -612,24 +625,6 @@
                 RepeatWebApp.Instance.EmailSender.SendExceptionEmailNotification(ex);
                 return GetJsonResult(false, ex.Message);
             }
-        }
-
-        private void SendRegistrationEmailNotification(RegisterModel registerModel, Nullable<Guid> organizationId)
-        {
-            List<EmailNotificationRecipient> recipients = new List<EmailNotificationRecipient>();
-            recipients.Add(new EmailNotificationRecipient() { EmailAddress = registerModel.OrganizationEmailAddress, DisplayName = registerModel.OrganizationName });
-            recipients.Add(new EmailNotificationRecipient() { EmailAddress = registerModel.UserEmailAddress, DisplayName = registerModel.UserName });
-            
-            string subject = "Welcome to Figlut Repeat";
-            StringBuilder body = new StringBuilder();
-            body.AppendLine(string.Format("Hi {0},", registerModel.UserName));
-            body.AppendLine();
-            body.AppendLine("Thank you for registering with Figlut Repeat. Someone will be in contact with you shortly to help you get started.");
-            body.AppendLine();
-            body.AppendLine("Regards,");
-            body.AppendLine();
-            body.AppendLine("The Figlut Repeat Team");
-            RepeatWebApp.Instance.EmailSender.SendEmail(EmailCategory.NewUserRegistration, subject, body.ToString(), null, false, recipients, null, organizationId);
         }
 
         public ActionResult ChangePassword()
@@ -854,7 +849,7 @@
                 }
                 context.Save<User>(user, false);
                 string figlutHomePageUrl = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.HomePageUrl].SettingValue;
-                RepeatWebApp.Instance.EmailSender.SendUserCreatedWelcomeEmail(
+                RepeatWebApp.Instance.EmailSender.SendUserCreatedEmailHtml(
                     currentUser.UserName,
                     user.UserName,
                     user.EmailAddress,
@@ -862,7 +857,9 @@
                     user.Password,
                     userOrganization != null ? userOrganization.Name : null,
                     figlutHomePageUrl,
-                    userOrganization.OrganizationId);
+                    userOrganization.OrganizationId,
+                    RepeatWebApp.Instance.Settings.NewUserCreatedEmailDirectory,
+                    RepeatWebApp.Instance.Settings.NewUserCreatedEmailFilesDirectory);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -927,6 +924,10 @@
                     return GetJsonResult(false, errorMessage);
                 }
                 User user = context.GetUser(model.UserId, true);
+                if (currentUser.RoleId < user.RoleId)
+                {
+                    return GetJsonResult(false, string.Format("You may not edit a user that has a higher role than your own role."));
+                }
                 if (currentUser.UserId == user.UserId && ((int)model.Role) < user.RoleId) //Current user is editing their own user profile and assigning a lower role.
                 {
                     return GetJsonResult(false, string.Format("You may not assign a lower role to the user profile that you are currently logged in as."));

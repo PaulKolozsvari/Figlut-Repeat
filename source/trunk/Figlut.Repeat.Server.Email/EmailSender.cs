@@ -91,6 +91,9 @@
         #region Constants
 
         public const string DAILY_SCHEDULE_ENTRIES_HTML_EMAIL_FILE_NAME = "DailyScheduleEntriesEmail.htm";
+        public const string USER_PASSWORD_RESET_EMAIL_FILE_NAME = "UserPasswordResetEmail.htm";
+        public const string NEW_USER_CREATED_EMAIL_FILE_NAME = "NewUserCreated.htm";
+        public const string NEW_USER_REGISTRATION_EMAIL_FILE_NAME = "NewUserRegistration.htm";
         public const string HTML_LOGO_FILE_NAME = "image002.png";
 
         #endregion //Constants
@@ -401,21 +404,21 @@
             FileSystemHelper.ValidateDirectoryExists(dailyScheduleEntriesEmailDirectory);
             FileSystemHelper.ValidateDirectoryExists(dailyScheduleEntriesEmailFilesDirectory);
             string logoImageFilePath = Path.Combine(dailyScheduleEntriesEmailFilesDirectory, HTML_LOGO_FILE_NAME);
-            string dailyScheduleEntriesEmailHtmlFilePath = Path.Combine(dailyScheduleEntriesEmailDirectory, DAILY_SCHEDULE_ENTRIES_HTML_EMAIL_FILE_NAME);
+            string emailHtmlFilePath = Path.Combine(dailyScheduleEntriesEmailDirectory, DAILY_SCHEDULE_ENTRIES_HTML_EMAIL_FILE_NAME);
             FileSystemHelper.ValidateFileExists(logoImageFilePath);
-            FileSystemHelper.ValidateFileExists(dailyScheduleEntriesEmailHtmlFilePath);
+            FileSystemHelper.ValidateFileExists(emailHtmlFilePath);
 
             HtmlDocument htmlDocument = new HtmlDocument();
-            htmlDocument.Load(dailyScheduleEntriesEmailHtmlFilePath);
+            htmlDocument.Load(emailHtmlFilePath);
             HtmlNode table = htmlDocument.DocumentNode.Descendants("table").FirstOrDefault();
             if (table == null)
             {
-                throw new NullReferenceException(string.Format("No table node found in {0}.", dailyScheduleEntriesEmailHtmlFilePath));
+                throw new NullReferenceException(string.Format("No table node found in {0}.", emailHtmlFilePath));
             }
             List<HtmlNode> rows = table.Descendants("tr").ToList();
             if (rows.Count != 2)
             {
-                throw new Exception(string.Format("Expected 2 rows but parsed {0} rows in {1}.", rows.Count, dailyScheduleEntriesEmailHtmlFilePath));
+                throw new Exception(string.Format("Expected 2 rows but parsed {0} rows in {1}.", rows.Count, emailHtmlFilePath));
             }
             HtmlNode headerRow = rows[0];
             HtmlNode templateRow = rows[1].CloneNode(true);
@@ -489,8 +492,116 @@
                 organizationId);
         }
 
-        public bool SendUserCreatedWelcomeEmail(
-            string currentUserName,
+        public bool SendUserResetPasswordNotificationHtml(
+            string userName,
+            string emailAddress,
+            string cellPhoneNumber,
+            string newPassword,
+            string organizationName,
+            string homePageUrl,
+            Nullable<Guid> organizationId,
+            string userPasswordResetEmailDirectory,
+            string userPasswordResetEmailFilesDirectory)
+        {
+            FileSystemHelper.ValidateDirectoryExists(userPasswordResetEmailDirectory);
+            FileSystemHelper.ValidateDirectoryExists(userPasswordResetEmailFilesDirectory);
+            string logoImageFilePath = Path.Combine(userPasswordResetEmailFilesDirectory, HTML_LOGO_FILE_NAME);
+            string emailHtmlFilePath = Path.Combine(userPasswordResetEmailDirectory, USER_PASSWORD_RESET_EMAIL_FILE_NAME);
+            FileSystemHelper.ValidateFileExists(logoImageFilePath);
+            FileSystemHelper.ValidateFileExists(emailHtmlFilePath);
+
+            HtmlDocument htmlDocument = new HtmlDocument();
+            htmlDocument.Load(emailHtmlFilePath);
+            StringBuilder emailBody = new StringBuilder(htmlDocument.DocumentNode.OuterHtml);
+
+            emailBody = emailBody.Replace("user_name", userName);
+            emailBody = emailBody.Replace("password_value", newPassword);
+            emailBody = emailBody.Replace("home_page", homePageUrl);
+            string emailContents = emailBody.ToString();
+            List<string> emailRecipients = new List<string>() { emailAddress };
+            return SendEmail(
+                EmailCategory.UserPasswordReset,
+                "Figlut Repeat - Reset Password Notification",
+                emailBody.ToString(),
+                new List<string>() { logoImageFilePath },
+                true,
+                new List<EmailNotificationRecipient>() { new EmailNotificationRecipient() { DisplayName = userName, EmailAddress = emailAddress } },
+                logoImageFilePath,
+                organizationId);
+        }
+
+        public bool SendUserRegistrationEmailNotification(
+            string organizationEmailAddress, 
+            string organizationName,
+            string userEmailAddress,
+            string userName,
+            Nullable<Guid> organizationId,
+            string homePageUrl)
+        {
+            List<EmailNotificationRecipient> recipients = new List<EmailNotificationRecipient>()
+            {
+                new EmailNotificationRecipient() { EmailAddress = organizationEmailAddress, DisplayName = organizationName },
+                new EmailNotificationRecipient() { EmailAddress = userEmailAddress, DisplayName = userName }
+            };
+            string subject = "Welcome to Figlut Repeat";
+            StringBuilder body = new StringBuilder();
+            body.AppendLine(string.Format("Hi {0},", userName));
+            body.AppendLine();
+            body.AppendLine("Welcome to Figlut Repeat!");
+            body.AppendLine("Someone will be in contact with you shortly to help you get started.");    
+            body.AppendLine();
+            body.AppendLine(string.Format("To access your account visit {0}.", homePageUrl));
+            body.AppendLine("Regards,");
+            body.AppendLine();
+            body.AppendLine("The Figlut Repeat Team");
+            return SendEmail(
+                EmailCategory.NewUserRegistration, 
+                subject, 
+                body.ToString(), 
+                null, 
+                false, 
+                recipients, 
+                null, organizationId);
+        }
+
+        public bool SendUserRegistrationEmailNotificationHtml(
+            string organizationEmailAddress,
+            string organizationName,
+            string userEmailAddress,
+            string userName,
+            string homePageUrl,
+            Nullable<Guid> organizationId,
+            string newUserRegistrationEmailDirectory,
+            string newUserRegistrationEmailFilesDirectory)
+        {
+            FileSystemHelper.ValidateDirectoryExists(newUserRegistrationEmailDirectory);
+            FileSystemHelper.ValidateDirectoryExists(newUserRegistrationEmailFilesDirectory);
+            string logoImageFilePath = Path.Combine(newUserRegistrationEmailFilesDirectory, HTML_LOGO_FILE_NAME);
+            string emailHtmlFilePath = Path.Combine(newUserRegistrationEmailDirectory, NEW_USER_REGISTRATION_EMAIL_FILE_NAME);
+            FileSystemHelper.ValidateFileExists(logoImageFilePath);
+            FileSystemHelper.ValidateFileExists(emailHtmlFilePath);
+
+            HtmlDocument htmlDocument = new HtmlDocument();
+            htmlDocument.Load(emailHtmlFilePath);
+            StringBuilder emailBody = new StringBuilder(htmlDocument.DocumentNode.OuterHtml);
+
+            emailBody = emailBody.Replace("user_name", userName);
+            emailBody = emailBody.Replace("home_page", homePageUrl);
+            string emailContents = emailBody.ToString();
+            List<string> emailRecipients = new List<string>() { userEmailAddress };
+            return SendEmail(
+                EmailCategory.NewUserRegistration,
+                "Figlut Repeat - Welcome",
+                emailBody.ToString(),
+                new List<string>() { logoImageFilePath },
+                true,
+                new List<EmailNotificationRecipient>() { new EmailNotificationRecipient() { DisplayName = userName, EmailAddress = userEmailAddress } },
+                logoImageFilePath,
+                organizationId);
+        }
+
+        public bool SendUserCreatedEmail(
+            string createdByUserName,
             string userName,
             string emailAddress,
             string cellPhoneNumber,
@@ -505,7 +616,7 @@
             message.AppendLine("Welcome to Figlut Repeat!");
             if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(organizationName))
             {
-                message.AppendLine(string.Format("{0} has added you as a user to the organization {1}.", currentUserName, organizationName));
+                message.AppendLine(string.Format("{0} has added you as a user to the organization {1}.", createdByUserName, organizationName));
             }
             message.AppendLine(string.Format("To access your account visit {0} and login with the following username and password:", homePageUrl));
             message.AppendLine();
@@ -517,15 +628,55 @@
             message.AppendLine("Regards,");
             message.AppendLine();
             message.AppendLine("Figlut Repeat team");
-            List<string> emailRecipients = new List<string>() { emailAddress };
             return SendEmail(
-                EmailCategory.NewUserRegistration,
+                EmailCategory.NewUserCreated,
                 "Figlut Repeat - Welcome",
                 message.ToString(),
                 null,
                 false,
                 new List<EmailNotificationRecipient>() { new EmailNotificationRecipient() { DisplayName = userName, EmailAddress = emailAddress } },
                 null,
+                organizationId);
+        }
+
+        public bool SendUserCreatedEmailHtml(
+            string createdByUserName,
+            string userName,
+            string emailAddress,
+            string cellPhoneNumber,
+            string newPassword,
+            string organizationName,
+            string homePageUrl,
+            Nullable<Guid> organizationId,
+            string newUserCreatedEmailDirectory,
+            string newUserCreatedEmailFilesDirectory)
+        {
+            FileSystemHelper.ValidateDirectoryExists(newUserCreatedEmailDirectory);
+            FileSystemHelper.ValidateDirectoryExists(newUserCreatedEmailFilesDirectory);
+            string logoImageFilePath = Path.Combine(newUserCreatedEmailFilesDirectory, HTML_LOGO_FILE_NAME);
+            string emailHtmlFilePath = Path.Combine(newUserCreatedEmailDirectory, NEW_USER_CREATED_EMAIL_FILE_NAME);
+            FileSystemHelper.ValidateFileExists(logoImageFilePath);
+            FileSystemHelper.ValidateFileExists(emailHtmlFilePath);
+
+            HtmlDocument htmlDocument = new HtmlDocument();
+            htmlDocument.Load(emailHtmlFilePath);
+            StringBuilder emailBody = new StringBuilder(htmlDocument.DocumentNode.OuterHtml);
+            
+            emailBody = emailBody.Replace("organization_admin_user_name", createdByUserName);
+            emailBody = emailBody.Replace("organization_name", organizationName);
+            emailBody = emailBody.Replace("home_page", homePageUrl);
+            emailBody = emailBody.Replace("user_name", userName);
+            emailBody = emailBody.Replace("password_value", newPassword);
+            string emailContents = emailBody.ToString();
+            List<string> emailRecipients = new List<string>() { emailAddress };
+            return SendEmail(
+                EmailCategory.NewUserCreated,
+                "Figlut Repeat - Welcome",
+                emailBody.ToString(),
+                new List<string>() { logoImageFilePath },
+                true,
+                new List<EmailNotificationRecipient>() { new EmailNotificationRecipient() { DisplayName = userName, EmailAddress = emailAddress } },
+                logoImageFilePath,
                 organizationId);
         }
 
