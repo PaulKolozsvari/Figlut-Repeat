@@ -20,7 +20,11 @@
 
         public string Identifier { get; set; }
 
-        public string EmailAddress { get; set; }
+        public string PrimaryContactEmailAddress { get; set; }
+
+        public string PrimaryContactName { get; set; }
+
+        public string PrimaryContactPhoneNumber { get; set; }
 
         public bool EnableEmailNotifications { get; set; }
 
@@ -35,6 +39,8 @@
         public bool OrganizationSubscriptionEnabled { get; set; }
 
         public int BillingDayOfTheMonth { get; set; }
+
+        public decimal OutstandingBalance { get; set;}
 
         public bool AutomaticallySendDailyScheduleEntriesSms { get; set; }
 
@@ -71,7 +77,9 @@
             this.OrganizationId = organization.OrganizationId;
             this.Name = organization.Name;
             this.Identifier = organization.Identifier;
-            this.EmailAddress = organization.EmailAddress;
+            this.PrimaryContactEmailAddress = organization.PrimaryContactEmailAddress;
+            this.PrimaryContactName = organization.PrimaryContactName;
+            this.PrimaryContactPhoneNumber = organization.PrimaryContactPhoneNumber;
             this.EnableEmailNotifications = organization.EnableEmailNotifications;
             this.Address = organization.Address;
             this.SmsCreditsBalance = organization.SmsCreditsBalance;
@@ -79,6 +87,7 @@
             this.OrganizationSubscriptionTypeId = organization.OrganizationSubscriptionTypeId;
             this.OrganizationSubscriptionEnabled = organization.OrganizationSubscriptionEnabled;
             this.BillingDayOfTheMonth = organization.BillingDayOfTheMonth;
+            this.OutstandingBalance = organization.OutstandingBalance;
             this.AutomaticallySendDailyScheduleEntriesSms = organization.AutomaticallySendDailyScheduleEntriesSms;
             this.EnableDailyScheduleEntriesEmailNotifications = organization.EnableDailyScheduleEntriesEmailNotifications;
             this.SendDailyScheduleEntriesEmailNotificationOnZeroEntries = organization.SendDailyScheduleEntriesEmailNotificationOnZeroEntries;
@@ -99,7 +108,9 @@
             organization.OrganizationId = this.OrganizationId;
             organization.Name = this.Name;
             organization.Identifier = this.Identifier;
-            organization.EmailAddress = this.EmailAddress;
+            organization.PrimaryContactEmailAddress = this.PrimaryContactEmailAddress;
+            organization.PrimaryContactName = this.PrimaryContactName;
+            organization.PrimaryContactPhoneNumber = this.PrimaryContactPhoneNumber;
             organization.EnableEmailNotifications = this.EnableEmailNotifications;
             organization.Address = this.Address;
             organization.SmsCreditsBalance = this.SmsCreditsBalance;
@@ -107,6 +118,7 @@
             organization.OrganizationSubscriptionTypeId = this.OrganizationSubscriptionTypeId;
             organization.OrganizationSubscriptionEnabled = this.OrganizationSubscriptionEnabled;
             organization.BillingDayOfTheMonth = this.BillingDayOfTheMonth;
+            organization.OutstandingBalance = this.OutstandingBalance;
             organization.AutomaticallySendDailyScheduleEntriesSms = this.AutomaticallySendDailyScheduleEntriesSms;
             organization.EnableDailyScheduleEntriesEmailNotifications = this.EnableDailyScheduleEntriesEmailNotifications;
             organization.SendDailyScheduleEntriesEmailNotificationOnZeroEntries = this.SendDailyScheduleEntriesEmailNotificationOnZeroEntries;

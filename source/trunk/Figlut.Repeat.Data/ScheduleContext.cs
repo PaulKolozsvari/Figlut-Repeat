@@ -68,7 +68,7 @@
                                                    //Organization
                                                    OrganizationName = organizationView.Name,
                                                    OrganizationIdentifier = organizationView.Identifier,
-                                                   OrganizationEmailAddress = organizationView.EmailAddress,
+                                                   OrganizationPrimaryContactEmailAddress = organizationView.PrimaryContactEmailAddress,
                                                    OrganizationAddress = organizationView.Address,
                                                    OrganizationSmsCreditsBalance = organizationView.SmsCreditsBalance,
                                                    OrganizationAllowSmsCreditsDebt = organizationView.AllowSmsCreditsDebt,

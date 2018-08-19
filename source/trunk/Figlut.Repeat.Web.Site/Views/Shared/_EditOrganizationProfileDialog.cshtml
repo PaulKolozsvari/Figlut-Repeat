@@ -32,11 +32,25 @@
                     @Html.ValidationMessageFor(m => m.OrganizationIdentifier)
                 </div>
                 <div class="field-label">
-                    @Html.Raw("Organization Email Address")
+                    @Html.Raw("Primary Contact Email Address")
                 </div>
                 <div class="editor-field">
-                    @Html.EditorFor(m => m.OrganizationEmailAddress)
-                    @Html.ValidationMessageFor(m => m.OrganizationEmailAddress)
+                    @Html.EditorFor(m => m.OrganizationPrimaryContactEmailAddress)
+                    @Html.ValidationMessageFor(m => m.OrganizationPrimaryContactEmailAddress)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Primary Contact Name *")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.OrganizationPrimaryContactName)
+                    @Html.ValidationMessageFor(m => m.OrganizationPrimaryContactName)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Primary Contact Phone Number")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.OrganizationPrimaryContactPhoneNumber)
+                    @Html.ValidationMessageFor(m => m.OrganizationPrimaryContactPhoneNumber)
                 </div>
                 <div class="field-label">
                     @Html.Raw("Address")
@@ -248,6 +262,13 @@
                 <div class="editor-field">
                     @Html.TextBoxFor(m => m.BillingDayOfTheMonth, new { disabled = "disabled", @readonly = "readonly" })
                     @Html.ValidationMessageFor(m => m.BillingDayOfTheMonth)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Outstanding Balance")
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(m => m.OutstandingBalance, new { disabled = "disabled", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.OutstandingBalance)
                 </div>
                 <div class="field-label">
                     @Html.Raw("Account Manager User")

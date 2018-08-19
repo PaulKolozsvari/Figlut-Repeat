@@ -22,7 +22,11 @@
 
         public string OrganizationIdentifier { get; set; }
 
-        public string OrganizationEmailAddress { get; set; }
+        public string OrganizationPrimaryContactEmailAddress { get; set; }
+
+        public string OrganizationPrimaryContactName { get; set; }
+
+        public string OrganizationPrimaryContactPhoneNumber { get; set; }
 
         public bool OrganizationEnableEmailNotifications { get; set; }
 
@@ -37,6 +41,8 @@
         public bool OrganizationSubscriptionEnabled { get;set;}
 
         public int BillingDayOfTheMonth { get; set; }
+
+        public decimal OutstandingBalance { get; set; }
 
         public bool AutomaticallySendDailyScheduleEntriesSms { get; set; }
 
@@ -94,13 +100,21 @@
             {
                 errorMessage = string.Format("{0} must not contain spaces.", EntityReader<OrganizationProfileModel>.GetPropertyName(p => p.OrganizationIdentifier, true));
             }
-            else if (string.IsNullOrEmpty(this.OrganizationEmailAddress))
+            else if (string.IsNullOrEmpty(this.OrganizationPrimaryContactEmailAddress))
             {
-                errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationProfileModel>.GetPropertyName(p => p.OrganizationEmailAddress, true));
+                errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationProfileModel>.GetPropertyName(p => p.OrganizationPrimaryContactEmailAddress, true));
             }
-            else if (!DataShaper.IsValidEmail(this.OrganizationEmailAddress))
+            else if (!DataShaper.IsValidEmail(this.OrganizationPrimaryContactEmailAddress))
             {
-                errorMessage = string.Format("{0} is not a  valid email address.", EntityReader<OrganizationProfileModel>.GetPropertyName(p => p.OrganizationEmailAddress, true));
+                errorMessage = string.Format("{0} is not a  valid email address.", EntityReader<OrganizationProfileModel>.GetPropertyName(p => p.OrganizationPrimaryContactEmailAddress, true));
+            }
+            else if (string.IsNullOrEmpty(this.OrganizationPrimaryContactName))
+            {
+                errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationProfileModel>.GetPropertyName(p => p.OrganizationPrimaryContactName, true));
+            }
+            else if (!string.IsNullOrEmpty(this.OrganizationPrimaryContactPhoneNumber) && !DataShaper.IsValidPhoneNumber(this.OrganizationPrimaryContactPhoneNumber, out string formattedPhoneNumber))
+            {
+                errorMessage = string.Format("{0} is not a  valid phone number.", EntityReader<OrganizationProfileModel>.GetPropertyName(p => p.OrganizationPrimaryContactPhoneNumber, true));
             }
             else if (string.IsNullOrEmpty(this.OrganizationAddress))
             {
@@ -114,7 +128,9 @@
             this.OrganizationId = organization.OrganizationId;
             this.OrganizationName = organization.Name;
             this.OrganizationIdentifier = organization.Identifier;
-            this.OrganizationEmailAddress = organization.EmailAddress;
+            this.OrganizationPrimaryContactEmailAddress = organization.PrimaryContactEmailAddress;
+            this.OrganizationPrimaryContactName = organization.PrimaryContactName;
+            this.OrganizationPrimaryContactPhoneNumber = organization.PrimaryContactPhoneNumber;
             this.OrganizationEnableEmailNotifications = organization.EnableEmailNotifications;
             this.OrganizationAddress = organization.Address;
             this.SmsCreditsBalance = organization.SmsCreditsBalance;
@@ -122,6 +138,7 @@
             this.OrganizationSubscriptionTypeId = organization.OrganizationSubscriptionTypeId;
             this.OrganizationSubscriptionEnabled = organization.OrganizationSubscriptionEnabled;
             this.BillingDayOfTheMonth = organization.BillingDayOfTheMonth;
+            this.OutstandingBalance = organization.OutstandingBalance;
             this.AutomaticallySendDailyScheduleEntriesSms = organization.AutomaticallySendDailyScheduleEntriesSms;
             this.EnableDailyScheduleEntriesEmailNotifications = organization.EnableDailyScheduleEntriesEmailNotifications;
             this.SendDailyScheduleEntriesEmailNotificationOnZeroEntries = organization.SendDailyScheduleEntriesEmailNotificationOnZeroEntries;
@@ -142,7 +159,9 @@
             organization.OrganizationId = this.OrganizationId;
             organization.Name = this.OrganizationName;
             organization.Identifier = this.OrganizationIdentifier;
-            organization.EmailAddress = this.OrganizationEmailAddress;
+            organization.PrimaryContactEmailAddress = this.OrganizationPrimaryContactEmailAddress;
+            organization.PrimaryContactName = this.OrganizationPrimaryContactName;
+            organization.PrimaryContactPhoneNumber = this.OrganizationPrimaryContactPhoneNumber;
             organization.EnableEmailNotifications = this.OrganizationEnableEmailNotifications;
             organization.Address = this.OrganizationAddress;
             organization.SmsCreditsBalance = this.SmsCreditsBalance;
@@ -150,6 +169,7 @@
             organization.OrganizationSubscriptionTypeId = this.OrganizationSubscriptionTypeId;
             organization.OrganizationSubscriptionEnabled = this.OrganizationSubscriptionEnabled;
             organization.BillingDayOfTheMonth = this.BillingDayOfTheMonth;
+            organization.OutstandingBalance = this.OutstandingBalance;
             organization.AutomaticallySendDailyScheduleEntriesSms = this.AutomaticallySendDailyScheduleEntriesSms;
             organization.EnableDailyScheduleEntriesEmailNotifications = this.EnableDailyScheduleEntriesEmailNotifications;
             organization.SendDailyScheduleEntriesEmailNotificationOnZeroEntries = this.SendDailyScheduleEntriesEmailNotificationOnZeroEntries;

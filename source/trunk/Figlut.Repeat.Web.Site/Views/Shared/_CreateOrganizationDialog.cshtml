@@ -26,11 +26,25 @@
                     @Html.ValidationMessageFor(m => m.Identifier)
                 </div>
                 <div class="field-label">
-                    @Html.Raw("Email Address *")
+                    @Html.Raw("Primary Contact Email Address *")
                 </div>
                 <div class="editor-field-dialog">
-                    @Html.EditorFor(m => m.EmailAddress)
-                    @Html.ValidationMessageFor(m => m.EmailAddress)
+                    @Html.EditorFor(m => m.PrimaryContactEmailAddress)
+                    @Html.ValidationMessageFor(m => m.PrimaryContactEmailAddress)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Primary Contact Name *")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.PrimaryContactName)
+                    @Html.ValidationMessageFor(m => m.PrimaryContactName)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Primary Contact Phone Number")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.PrimaryContactPhoneNumber)
+                    @Html.ValidationMessageFor(m => m.PrimaryContactPhoneNumber)
                 </div>
                 <div class="field-label">
                     @Html.Raw("Address *")
@@ -284,6 +298,13 @@
                 <div class="editor-field-dialog">
                     @Html.EditorFor(m => m.BillingDayOfTheMonth)
                     @Html.ValidationMessageFor(m => m.BillingDayOfTheMonth)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Outstanding Balance")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.OutstandingBalance)
+                    @Html.ValidationMessageFor(m => m.OutstandingBalance)
                 </div>
                 @if (ViewBag.AccountManagersList != null)
                 {

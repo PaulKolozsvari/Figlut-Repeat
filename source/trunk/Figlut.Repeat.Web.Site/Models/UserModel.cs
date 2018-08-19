@@ -50,7 +50,7 @@
 
         public string OrganizationIdentifier { get; set; }
 
-        public string OrganizationEmailAddress { get; set; }
+        public string OrganizationPrimaryContactEmailAddress { get; set; }
 
         public string OrganizationAddress { get; set; }
 
@@ -121,7 +121,7 @@
             this.OrganizationId = organization.OrganizationId;
             this.OrganizationName = organization.Name;
             this.OrganizationIdentifier = organization.Identifier;
-            this.OrganizationEmailAddress = organization.EmailAddress;
+            this.OrganizationPrimaryContactEmailAddress = organization.PrimaryContactEmailAddress;
             this.OrganizationAddress = organization.Address;
             this.OrganizationDateCreated = organization.DateCreated;
         }

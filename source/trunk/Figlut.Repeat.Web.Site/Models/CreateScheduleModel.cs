@@ -241,7 +241,7 @@
             //Organization
             this.OrganizationName = view.OrganizationName;
             this.OrganizationIdentifier = view.OrganizationIdentifier;
-            this.OrganizationEmailAddress = view.OrganizationEmailAddress;
+            this.OrganizationEmailAddress = view.OrganizationPrimaryContactEmailAddress;
             this.OrganizationAddress = view.OrganizationAddress;
             this.OrganizationSmsCreditsBalance = view.OrganizationSmsCreditsBalance;
             this.OrganizationAllowSmsCreditsDebt = view.OrganizationAllowSmsCreditsDebt;
@@ -296,7 +296,7 @@
             //Organization
             view.OrganizationName = this.OrganizationName;
             view.OrganizationIdentifier = this.OrganizationIdentifier;
-            view.OrganizationEmailAddress = this.OrganizationEmailAddress;
+            view.OrganizationPrimaryContactEmailAddress = this.OrganizationEmailAddress;
             view.OrganizationAddress = this.OrganizationAddress;
             view.OrganizationSmsCreditsBalance = this.OrganizationSmsCreditsBalance;
             view.OrganizationAllowSmsCreditsDebt = this.OrganizationAllowSmsCreditsDebt;

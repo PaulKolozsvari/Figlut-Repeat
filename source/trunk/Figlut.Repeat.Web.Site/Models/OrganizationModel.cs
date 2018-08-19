@@ -22,7 +22,11 @@
 
         public string Identifier { get; set; }
 
-        public string EmailAddress { get; set; }
+        public string PrimaryContactEmailAddress { get; set; }
+
+        public string PrimaryContactName { get; set; }
+
+        public string PrimaryContactPhoneNumber { get; set; }
 
         public bool EnableEmailNotifications { get; set; }
 
@@ -37,6 +41,8 @@
         public bool OrganizationSubscriptionEnabled { get; set; }
 
         public int BillingDayOfTheMonth { get; set; }
+
+        public decimal OutstandingBalance { get; set; }
 
         public bool AutomaticallySendDailyScheduleEntriesSms { get; set; }
 
@@ -104,13 +110,21 @@
             {
                 errorMessage = string.Format("{0} must not contain spaces.", EntityReader<OrganizationModel>.GetPropertyName(p => p.Identifier, true));
             }
-            else if (string.IsNullOrEmpty(this.EmailAddress))
+            else if (string.IsNullOrEmpty(this.PrimaryContactEmailAddress))
             {
-                errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationModel>.GetPropertyName(p => p.EmailAddress, true));
+                errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationModel>.GetPropertyName(p => p.PrimaryContactEmailAddress, true));
             }
-            else if (!DataShaper.IsValidEmail(this.EmailAddress))
+            else if (!DataShaper.IsValidEmail(this.PrimaryContactEmailAddress))
             {
-                errorMessage = string.Format("{0} is not a  valid email address.", EntityReader<OrganizationModel>.GetPropertyName(p => p.EmailAddress, true));
+                errorMessage = string.Format("{0} is not a  valid email address.", EntityReader<OrganizationModel>.GetPropertyName(p => p.PrimaryContactEmailAddress, true));
+            }
+            else if (string.IsNullOrEmpty(this.PrimaryContactName))
+            {
+                errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationModel>.GetPropertyName(p => p.PrimaryContactName, true));
+            }
+            else if (!string.IsNullOrEmpty(this.PrimaryContactPhoneNumber) && !DataShaper.IsValidPhoneNumber(this.PrimaryContactPhoneNumber, out string formattedPhoneNumber))
+            {
+                errorMessage = string.Format("{0} is not a  valid phone number.", EntityReader<OrganizationModel>.GetPropertyName(p => p.PrimaryContactPhoneNumber, true));
             }
             else if (string.IsNullOrEmpty(this.Address))
             {
@@ -120,7 +134,6 @@
             {
                 errorMessage = string.Format("SMS Credits Balance may not be a negative number if SMS Credits Debt is not allowed.");
             }
-
             return string.IsNullOrEmpty(errorMessage);
         }
 
@@ -129,7 +142,9 @@
             this.OrganizationId = organization.OrganizationId;
             this.Name = organization.Name;
             this.Identifier = organization.Identifier;
-            this.EmailAddress = organization.EmailAddress;
+            this.PrimaryContactEmailAddress = organization.PrimaryContactEmailAddress;
+            this.PrimaryContactName = organization.PrimaryContactName;
+            this.PrimaryContactPhoneNumber = organization.PrimaryContactPhoneNumber;
             this.EnableEmailNotifications = organization.EnableEmailNotifications;
             this.Address = organization.Address;
             this.SmsCreditsBalance = organization.SmsCreditsBalance;
@@ -141,6 +156,7 @@
             this.SendDailyScheduleEntriesEmailNotificationOnZeroEntries = organization.SendDailyScheduleEntriesEmailNotificationOnZeroEntries;
             this.DailyScheduleEntriesEmailNotificationTime = organization.DailyScheduleEntriesEmailNotificationTime;
             this.BillingDayOfTheMonth = organization.BillingDayOfTheMonth;
+            this.OutstandingBalance = organization.OutstandingBalance;
             this.IsMondayWorkDay = organization.IsMondayWorkDay;
             this.IsTuesdayWorkDay = organization.IsTuesdayWorkDay;
             this.IsWednesdayWorkDay = organization.IsWednesdayWorkDay;
@@ -157,7 +173,9 @@
             organization.OrganizationId = this.OrganizationId;
             organization.Name = this.Name;
             organization.Identifier = this.Identifier;
-            organization.EmailAddress = this.EmailAddress;
+            organization.PrimaryContactEmailAddress = this.PrimaryContactEmailAddress;
+            organization.PrimaryContactName = this.PrimaryContactName;
+            organization.PrimaryContactPhoneNumber = this.PrimaryContactPhoneNumber;
             organization.EnableEmailNotifications = this.EnableEmailNotifications;
             organization.Address = this.Address;
             organization.SmsCreditsBalance = this.SmsCreditsBalance;
@@ -165,6 +183,7 @@
             organization.OrganizationSubscriptionTypeId = this.OrganizationSubscriptionTypeId;
             organization.OrganizationSubscriptionEnabled = this.OrganizationSubscriptionEnabled;
             organization.BillingDayOfTheMonth = this.BillingDayOfTheMonth;
+            organization.OutstandingBalance = this.OutstandingBalance;
             organization.AutomaticallySendDailyScheduleEntriesSms = this.AutomaticallySendDailyScheduleEntriesSms;
             organization.EnableDailyScheduleEntriesEmailNotifications = this.EnableDailyScheduleEntriesEmailNotifications;
             organization.SendDailyScheduleEntriesEmailNotificationOnZeroEntries = this.SendDailyScheduleEntriesEmailNotificationOnZeroEntries;

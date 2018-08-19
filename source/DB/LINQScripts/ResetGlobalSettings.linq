@@ -11,33 +11,33 @@
 GlobalSettings.DeleteAllOnSubmit(GlobalSettings);
 SubmitChanges();
 
-GlobalSetting figlutPhone = new GlobalSetting()
+GlobalSetting companyPhoneNumber = new GlobalSetting()
 {
 	GlobalSettingId = Guid.NewGuid(),
 	Category = "Contact",
-	SettingName = "FiglutPhoneNumber",
+	SettingName = "CompanyPhoneNumber",
 	SettingValue = "+27 (87) 240 5099",
 	Description = "Main contact number for this company.",
 	DateCreated = DateTime.Now
 };
-GlobalSettings.InsertOnSubmit(figlutPhone);
-GlobalSetting supportEmail = new GlobalSetting()
+GlobalSettings.InsertOnSubmit(companyPhoneNumber);
+GlobalSetting companySupportEmailAddress = new GlobalSetting()
 {
 	GlobalSettingId = Guid.NewGuid(),
 	Category = "Contact",
-	SettingName = "FiglutSupportEmailAddress",
+	SettingName = "CompanySupportEmailAddress",
 	SettingValue = "team@figlut.com",
 	Description = "Support email address for this company.",
 	DateCreated = DateTime.Now
 };
-GlobalSettings.InsertOnSubmit(supportEmail);
+GlobalSettings.InsertOnSubmit(companySupportEmailAddress);
 GlobalSetting marketingEmail = new GlobalSetting()
 {
 	GlobalSettingId = Guid.NewGuid(),
 	Category = "Contact",
-	SettingName = "FiglutMarketingEmailAddress",
+	SettingName = "CompanyMarketingEmailAddress",
 	SettingValue = "team@figlut.com",
-	Description = "Marketting email address for company.",
+	Description = "Marketing email address for this company.",
 	DateCreated = DateTime.Now
 };
 GlobalSettings.InsertOnSubmit(marketingEmail);
@@ -45,7 +45,7 @@ GlobalSetting generalEmail = new GlobalSetting()
 {
 	GlobalSettingId = Guid.NewGuid(),
 	Category = "Contact",
-	SettingName = "FiglutGeneralEmailAddress",
+	SettingName = "CompanyGeneralEmailAddress",
 	SettingValue = "team@figlut.com",
 	Description = "Main email address for this company.",
 	DateCreated = DateTime.Now
@@ -55,7 +55,7 @@ GlobalSetting figlutAddress = new GlobalSetting()
 {
 	GlobalSettingId = Guid.NewGuid(),
 	Category = "Contact",
-	SettingName = "FiglutAddress",
+	SettingName = "CompanyPostalAddress",
 	SettingValue = "P.O. Box 9508, Kempton Gate, Edleen, Kempton Park",
 	Description = "Address of this company.",
 	DateCreated = DateTime.Now
@@ -589,6 +589,58 @@ GlobalSetting defaultDaysRepeatInterval = new GlobalSetting()
 	Description = "The default number of days displayed when creating a repeat Schedule."
 };
 GlobalSettings.InsertOnSubmit(defaultDaysRepeatInterval);
+
+//Bank Deails for receiving payments by customers
+GlobalSetting bankName = new GlobalSetting()
+{
+	GlobalSettingId = Guid.NewGuid(),
+	Category = "Bank",
+	SettingName = "BankName",
+	SettingValue = "Standard Bank",
+	DateCreated = DateTime.Now,
+	Description = "The name of the bank where deposits need to be made by customers."
+};
+GlobalSettings.InsertOnSubmit(bankName);
+GlobalSetting bankAccountType = new GlobalSetting()
+{
+	GlobalSettingId = Guid.NewGuid(),
+	Category = "Bank",
+	SettingName = "BankAccountType",
+	SettingValue = "Cheque Acccount",
+	DateCreated = DateTime.Now,
+	Description = "The type of bank account where deposits need to be made to by customers."
+};
+GlobalSettings.InsertOnSubmit(bankAccountType);
+GlobalSetting bankAccountNumber = new GlobalSetting()
+{
+	GlobalSettingId = Guid.NewGuid(),
+	Category = "Bank",
+	SettingName = "BankAccountNumber",
+	SettingValue = "02-280-185-5",
+	DateCreated = DateTime.Now,
+	Description = "The bank account number of the account where deposits need to be made to by customers."
+};
+GlobalSettings.InsertOnSubmit(bankAccountNumber);
+GlobalSetting bankBranchCode = new GlobalSetting()
+{
+	GlobalSettingId = Guid.NewGuid(),
+	Category = "Bank",
+	SettingName = "BankAccountBranchCode",
+	SettingValue = "051001",
+	DateCreated = DateTime.Now,
+	Description = "The bank branch code of the account where deposits need to be made to by customers."
+};
+GlobalSettings.InsertOnSubmit(bankBranchCode);
+GlobalSetting bankBranchName = new GlobalSetting()
+{
+	GlobalSettingId = Guid.NewGuid(),
+	Category = "Bank",
+	SettingName = "BankAccountBranchName",
+	SettingValue = "Standard Bank Universal Branch Code",
+	DateCreated = DateTime.Now,
+	Description = "The branch name of the bank account where deposits need to be made to by customers."
+};
+GlobalSettings.InsertOnSubmit(bankBranchName);
 
 SubmitChanges();
 GlobalSettings.OrderBy (gs => gs.SettingName).Dump();

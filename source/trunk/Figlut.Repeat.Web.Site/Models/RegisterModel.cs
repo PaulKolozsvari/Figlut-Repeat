@@ -116,7 +116,7 @@
             //this.OrganizationId = organization.OrganizationId;
             this.OrganizationName = organization.Name;
             this.OrganizationIdentifier = organization.Identifier;
-            this.OrganizationEmailAddress = organization.EmailAddress;
+            this.OrganizationEmailAddress = organization.PrimaryContactEmailAddress;
             this.OrganizationAddress = organization.Address;
             //this.DateCreated = organization.DateCreated;
         }
@@ -128,7 +128,7 @@
                 OrganizationId = Guid.NewGuid(),
                 Name = this.OrganizationName,
                 Identifier = this.OrganizationIdentifier,
-                EmailAddress = this.OrganizationEmailAddress,
+                PrimaryContactEmailAddress = this.OrganizationEmailAddress,
                 Address = this.OrganizationAddress,
                 DateCreated = DateTime.Now
             };

@@ -104,13 +104,13 @@ using System.Threading.Tasks;
         {
             string processorActionMessage = null;
             List<EmailNotificationRecipient> recipients = new List<EmailNotificationRecipient>();
-            if ((organization != null) && (!string.IsNullOrEmpty(organization.EmailAddress)))
+            if ((organization != null) && (!string.IsNullOrEmpty(organization.PrimaryContactEmailAddress)))
             {
-                recipients.Add(new EmailNotificationRecipient() { DisplayName = organization.Name, EmailAddress = organization.EmailAddress });
+                recipients.Add(new EmailNotificationRecipient() { DisplayName = organization.Name, EmailAddress = organization.PrimaryContactEmailAddress });
                 processorActionMessage = string.Format("Sent Email Notification for SMS received for {0} '{1}' ({2}), from '{3}'.",
                     typeof(Organization).Name,
                     organization.Name,
-                    organization.EmailAddress,
+                    organization.PrimaryContactEmailAddress,
                     smsReceivedLog.CellPhoneNumber);
             }
             else
@@ -146,9 +146,9 @@ using System.Threading.Tasks;
                 {
                     body.AppendLine(string.Format("{0} {1}: {2}", typeof(Organization).Name, EntityReader<Organization>.GetPropertyName(p => p.Name, true), organization.Name));
                 }
-                if (!string.IsNullOrEmpty(organization.EmailAddress))
+                if (!string.IsNullOrEmpty(organization.PrimaryContactEmailAddress))
                 {
-                    body.AppendLine(string.Format("{0} {1}: {2}", typeof(Organization).Name, EntityReader<Organization>.GetPropertyName(p => p.EmailAddress, true), organization.EmailAddress));
+                    body.AppendLine(string.Format("{0} {1}: {2}", typeof(Organization).Name, EntityReader<Organization>.GetPropertyName(p => p.PrimaryContactEmailAddress, true), organization.PrimaryContactEmailAddress));
                 }
                 organizationId = organization.OrganizationId;
             }

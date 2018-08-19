@@ -86,13 +86,13 @@
                 grid.Column("Organizations", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
                 grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.Name, false), "Name"),
                 grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.Identifier, false), "Identifier"),
-                grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.EmailAddress, false), "Email"),
+                //grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.PrimaryContactEmailAddress, false), "Email"),
                 grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.EnableEmailNotifications, false), "Notifications"),
                 //grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.Address, false), "Address"),
-                grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.SmsCreditsBalance, false), "Balance"),
+                grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.SmsCreditsBalance, false), "SMS Credits"),
                 grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.AllowSmsCreditsDebt, false), "Allow Debt"),
                 grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.OrganizationSubscriptionEnabled, false), "Enabled"),
-                grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.BillingDayOfTheMonth, false), "Billing Day"),
+                grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.OutstandingBalance, false), "Outstanding Balance"),
                 grid.Column(EntityReader<OrganizationModel>.GetPropertyName(p => p.AccountManagerUserName, false), "Account Manager")
             ))
         </div>

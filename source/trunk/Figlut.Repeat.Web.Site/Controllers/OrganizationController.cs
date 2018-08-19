@@ -347,7 +347,7 @@
                 }
                 RepeatEntityContext context = RepeatEntityContext.Create();
                 Organization organization = context.GetOrganization(model.OrganizationId, true);
-                bool organizationIdentifierHasChanged = organization.Identifier != model.OrganizationIdentifier;
+                bool organizationIdentifierHasChanged = organization.Identifier.ToLower() != model.OrganizationIdentifier.ToLower();
                 if (organizationIdentifierHasChanged)
                 {
                     Organization original = context.GetOrganizationByIdentifier(model.OrganizationIdentifier, false);
@@ -499,7 +499,7 @@
                     return GetJsonResult(false, errorMessage);
                 }
                 Organization organization = context.GetOrganization(model.OrganizationId, true);
-                bool organizationIdentifierHasChanged = organization.Identifier != model.Identifier;
+                bool organizationIdentifierHasChanged = organization.Identifier.ToLower() != model.Identifier.ToLower();
                 if (organizationIdentifierHasChanged)
                 {
                     Organization original = context.GetOrganizationByIdentifier(model.Identifier, false);

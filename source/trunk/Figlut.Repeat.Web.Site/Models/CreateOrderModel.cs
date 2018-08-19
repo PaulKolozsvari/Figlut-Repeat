@@ -22,7 +22,7 @@
 
         public string OrganizationIdentifier { get; set; }
 
-        public string OrganizationEmailAddress { get; set; }
+        public string OrganizationPrimaryContactEmailAddress { get; set; }
 
         public string OrganizationAddress { get; set; }
 
@@ -69,7 +69,7 @@
             this.OrganizationId = organization.OrganizationId;
             this.OrganizationName = organization.Name;
             this.OrganizationIdentifier = organization.Identifier;
-            this.OrganizationEmailAddress = organization.EmailAddress;
+            this.OrganizationPrimaryContactEmailAddress = organization.PrimaryContactEmailAddress;
             this.OrganizationSmsCreditsBalance = organization.SmsCreditsBalance;
             this.OrganizationAllowSmsCreditsDebt = organization.AllowSmsCreditsDebt;
             this.OrganizationSubscriptionTypeId = organization.OrganizationSubscriptionTypeId;

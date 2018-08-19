@@ -1,0 +1,28 @@
+Added fields on Invoice, Invoice Item and Organization tables to handle necessary fields for creating and sending invoices.
+
+*	Organization:
+	-	PrimaryContactEmailAddress (changed from EmailAddress)
+	-	PrimaryContactName
+	-	PrimaryContactPhoneNumber
+
+*	Invoice:
+	-	TotalExcludingVat
+	-	TotalVat
+	-	TotalIncludingVat
+	-	OrganizationAttention
+	-	OrganizationAddress
+	-	PaymentDetailsBankName
+	-	PaymentDetailsAccountType
+	-	PaymentDetailsAccountNumber
+	-	PaymentDetailsBranchCode
+	-	PaymentDetailsBranchName
+	-	OrganizationOutstandingBalance
+
+*	InvoiceItem:
+
+	-	UnitPriceExcludingVat
+	-	UnitPriceVat
+	-	UnitPriceIncludingVat
+	-	TotalLineItemPriceExcludingVat
+	-	TotalLineItemPriceVat
+	-	TotalLineItemPriceIncludingVat

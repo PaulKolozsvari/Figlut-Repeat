@@ -54,7 +54,7 @@
 
         public string OrganizationIdentifier { get; set; }
 
-        public string OrganizationEmailAddress { get; set; }
+        public string OrganizationPrimaryContactEmailAddress { get; set; }
 
         public string OrganizationAddress { get; set; }
 

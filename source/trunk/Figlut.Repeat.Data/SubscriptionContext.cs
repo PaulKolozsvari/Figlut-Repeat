@@ -106,7 +106,7 @@
                                                      DateCreated = subscription.DateCreated,
                                                      OrganizationName = sub.Name,
                                                      OrganizationIdentifier = sub.Identifier,
-                                                     OrganizationEmailAddress = sub.EmailAddress,
+                                                     OrganizationEmailAddress = sub.PrimaryContactEmailAddress,
                                                      OrganizationAddress = sub.Address,
                                                      OrganizationDateCreated = sub.DateCreated
                                                  }).FirstOrDefault();
@@ -183,8 +183,8 @@
                           where subscription.SubscriberId == subscriberId.Value &&
                           (sub.Name.ToLower().Contains(searchFilterLower) ||
                           sub.Identifier.ToLower().Contains(searchFilterLower) ||
-                          sub.EmailAddress.ToLower().Contains(searchFilterLower))
-                          orderby sub.DateCreated descending, sub.Name, sub.Identifier, sub.EmailAddress
+                          sub.PrimaryContactEmailAddress.ToLower().Contains(searchFilterLower))
+                          orderby sub.DateCreated descending, sub.Name, sub.Identifier, sub.PrimaryContactEmailAddress
                           select subscription).ToList();
             }
             else
@@ -194,8 +194,8 @@
                           from sub in set.DefaultIfEmpty()
                           where (sub.Name.ToLower().Contains(searchFilterLower) ||
                           sub.Identifier.ToLower().Contains(searchFilterLower) ||
-                          sub.EmailAddress.ToLower().Contains(searchFilterLower))
-                          orderby sub.DateCreated descending, sub.Name, sub.Identifier, sub.EmailAddress
+                          sub.PrimaryContactEmailAddress.ToLower().Contains(searchFilterLower))
+                          orderby sub.DateCreated descending, sub.Name, sub.Identifier, sub.PrimaryContactEmailAddress
                           select subscription).ToList();
             }
             return result;
@@ -388,8 +388,8 @@
                           subscription.CustomerIdentifier.ToLower().Contains(searchFilterLower) ||
                           sub.Name.ToLower().Contains(searchFilterLower) ||
                           sub.Identifier.ToLower().Contains(searchFilterLower) ||
-                          sub.EmailAddress.ToLower().Contains(searchFilterLower))
-                          orderby sub.DateCreated descending, sub.Name, sub.Identifier, sub.EmailAddress
+                          sub.PrimaryContactEmailAddress.ToLower().Contains(searchFilterLower))
+                          orderby sub.DateCreated descending, sub.Name, sub.Identifier, sub.PrimaryContactEmailAddress
                           select new SubscriberSubscriptionView()
                           {
                               SubscriptionId = subscription.SubscriptionId,
@@ -404,7 +404,7 @@
                               DateCreated = subscription.DateCreated,
                               OrganizationName = sub.Name,
                               OrganizationIdentifier = sub.Identifier,
-                              OrganizationEmailAddress = sub.EmailAddress,
+                              OrganizationEmailAddress = sub.PrimaryContactEmailAddress,
                               OrganizationAddress = sub.Address,
                               OrganizationDateCreated = sub.DateCreated
                           }).ToList();
@@ -419,8 +419,8 @@
                           subscription.CustomerIdentifier.ToLower().Contains(searchFilterLower) ||
                           sub.Name.ToLower().Contains(searchFilterLower) ||
                           sub.Identifier.ToLower().Contains(searchFilterLower) ||
-                          sub.EmailAddress.ToLower().Contains(searchFilterLower))
-                          orderby sub.DateCreated descending, sub.Name, sub.Identifier, sub.EmailAddress
+                          sub.PrimaryContactEmailAddress.ToLower().Contains(searchFilterLower))
+                          orderby sub.DateCreated descending, sub.Name, sub.Identifier, sub.PrimaryContactEmailAddress
                           select new SubscriberSubscriptionView()
                           {
                               SubscriptionId = subscription.SubscriptionId,
@@ -435,7 +435,7 @@
                               DateCreated = subscription.DateCreated,
                               OrganizationName = sub.Name,
                               OrganizationIdentifier = sub.Identifier,
-                              OrganizationEmailAddress = sub.EmailAddress,
+                              OrganizationEmailAddress = sub.PrimaryContactEmailAddress,
                               OrganizationAddress = sub.Address,
                               OrganizationDateCreated = sub.DateCreated
                           }).ToList();

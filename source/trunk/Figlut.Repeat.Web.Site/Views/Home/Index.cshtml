@@ -64,11 +64,11 @@
     http://www.istockphoto.com/vector/abstract-background-gm480416462-68972627
 *@
 @{
-    string figlutPhoneNumber = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.FiglutPhoneNumber].SettingValue;
-    string figlutSupportEmailAddress = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.FiglutSupportEmailAddress].SettingValue;
-    string figlutMarketingEmailAddress = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.FiglutMarketingEmailAddress].SettingValue;
-    string figlutGeneralEmailAddress = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.FiglutGeneralEmailAddress].SettingValue;
-    string figlutAddress = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.FiglutAddress].SettingValue;
+    string companyPhoneNumber = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.CompanyPhoneNumber].SettingValue;
+    string companySupportEmailAddress = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.CompanySupportEmailAddress].SettingValue;
+    string companyMarketingEmailAddress = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.CompanyMarketingEmailAddress].SettingValue;
+    string companyGeneralEmailAddress = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.CompanyGeneralEmailAddress].SettingValue;
+    string companyPostalAddress = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.CompanyPostalAddress].SettingValue;
 }
 @*<hr />
 <br />
@@ -632,7 +632,7 @@
                     We offer services to create posters and pamphlets with your company logo describing how to subscribe to notifications from your company.
                     <br />
                     <br />
-                    e.g. Blue Coffee occasionaly sends out notifications about specials, events and promotions. To subscriber SMS <b>#BLUECOFFEE</b> to <b>@figlutPhoneNumber</b>
+                    e.g. Blue Coffee occasionaly sends out notifications about specials, events and promotions. To subscriber SMS <b>#BLUECOFFEE</b> to <b>@companyPhoneNumber</b>
                 </p>
             </div>
         </td>
@@ -725,7 +725,7 @@
         <td>            
             <div class="description">
                 <br />
-                SMS <b>#repeat</b> and your message to <b>@figlutPhoneNumber</b>
+                SMS <b>#repeat</b> and your message to <b>@companyPhoneNumber</b>
                 <p style="font-size:12px">
                     e.g. Hi <b>#repeat</b> team. How do I get started with marketing my business?
                 </p>
@@ -735,7 +735,7 @@
             <div class="description">
                 <b>Drop us an email</b>
                 <p style="font-size:12px">
-                    Send an email to the Figlut Repeat team: <a href="mailto:@Html.Raw(figlutGeneralEmailAddress)">@Html.Raw(figlutGeneralEmailAddress)</a>
+                    Send an email to the Figlut Repeat team: <a href="mailto:@Html.Raw(companyGeneralEmailAddress)">@Html.Raw(companyGeneralEmailAddress)</a>
                 </p>
             </div>
         </td>

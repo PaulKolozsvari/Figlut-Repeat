@@ -50,11 +50,16 @@
         ProcessorMessageTrimOnGrid,
         ProcessorMessageTrimLengthOnGrid,
         DefaultRepeatDaysInterval,
-        FiglutPhoneNumber,
-        FiglutSupportEmailAddress,
-        FiglutMarketingEmailAddress,
-        FiglutGeneralEmailAddress,
-        FiglutAddress,
+        CompanyPhoneNumber,
+        CompanySupportEmailAddress,
+        CompanyMarketingEmailAddress,
+        CompanyGeneralEmailAddress,
+        CompanyPostalAddress,
+        BankName,
+        BankAccountType,
+        BankAccountNumber,
+        BankAccountBranchCode,
+        BankAccountBranchName,
         HomePageUrl
     }
 }

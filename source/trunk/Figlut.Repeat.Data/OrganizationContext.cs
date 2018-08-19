@@ -106,8 +106,8 @@
             List<Organization> result = (from o in DB.GetTable<Organization>()
                                          where o.Identifier.ToLower().Contains(searchFilterLower) ||
                                          o.Name.ToLower().Contains(searchFilterLower) ||
-                                         o.EmailAddress.ToLower().Contains(searchFilterLower)
-                                         orderby o.Name, o.Identifier, o.EmailAddress, o.DateCreated
+                                         o.PrimaryContactEmailAddress.ToLower().Contains(searchFilterLower)
+                                         orderby o.Name, o.Identifier, o.PrimaryContactEmailAddress, o.DateCreated
                                          select o).ToList();
             return result;
         }
