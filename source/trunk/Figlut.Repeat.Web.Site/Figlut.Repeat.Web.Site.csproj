@@ -202,6 +202,7 @@
     <Compile Include="Controllers\GlobalSettingController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InformationController.cs" />
+    <Compile Include="Controllers\InvoiceController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\OrganizationController.cs" />
     <Compile Include="Controllers\OrganizationScheduleEntryController.cs" />
@@ -240,6 +241,7 @@
     <Compile Include="Models\GlobalSettingModel.cs" />
     <Compile Include="Models\HomePageImageGalleryModel.cs" />
     <Compile Include="Models\InformationModel.cs" />
+    <Compile Include="Models\InvoiceModel.cs" />
     <Compile Include="Models\OrganizationModel.cs" />
     <Compile Include="Models\OrganizationProfileModel.cs" />
     <Compile Include="Models\OrganizationSubscriptionModel.cs" />
