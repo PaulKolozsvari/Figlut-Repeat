@@ -28,7 +28,7 @@
 
         #region Constants
 
-        private const string DEFAULT_EVENT_SOURCE_NAME = "FRepeat.Source";
+        private const string DEFAULT_EVENT_SOURCE_NAME = "Fixers.Service.Source";
         private const string DEFAULT_EVENT_LOG_NAME = "FRepeat.Log";
 
         #endregion //Constants
