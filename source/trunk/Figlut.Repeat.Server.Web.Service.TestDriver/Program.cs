@@ -47,7 +47,8 @@
                     30000,
                     out httpStatusCode,
                     out httpStatusDescription,
-                    true);
+                    true,
+                    null);
                 Console.WriteLine("SMS Sending Success: {0}", smsResult.Success);
                 Console.ReadLine();
             }

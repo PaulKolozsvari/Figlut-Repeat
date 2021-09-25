@@ -115,7 +115,7 @@
                     return RedirectToHome();
                 }
                 Processor processor = context.GetProcessor(processorId, true);
-                context.Delete<Processor>(processor);
+                context.Delete<Processor>(processor, processor.Name);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -167,7 +167,7 @@
                     return RedirectToHome();
                 }
                 Processor processor = context.GetProcessor(model.Identifier, true);
-                context.Delete<Processor>(processor);
+                context.Delete<Processor>(processor, processor.Name);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -299,7 +299,7 @@
                 RepeatEntityContext context = RepeatEntityContext.Create();
                 Processor processor = context.GetProcessor(model.ProcessorId, true);
                 model.CopyPropertiesToProcessor(processor);
-                context.Save<Processor>(processor, false);
+                context.Save<Processor>(processor, processor.Name, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

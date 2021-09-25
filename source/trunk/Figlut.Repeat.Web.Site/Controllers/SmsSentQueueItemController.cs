@@ -134,7 +134,7 @@
                 {
                     return RedirectToHome();
                 }
-                context.Delete<SmsSentQueueItem>(smsSentQueueItem);
+                context.Delete<SmsSentQueueItem>(smsSentQueueItem, smsSentQueueItem.SmsSentQueueItemId);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -196,7 +196,7 @@
                 {
                     return RedirectToHome();
                 }
-                context.Delete<SmsSentQueueItem>(smsSentQueueItem);
+                context.Delete<SmsSentQueueItem>(smsSentQueueItem, smsSentQueueItem.SmsSentQueueItemId);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -390,7 +390,7 @@
                     return RedirectToHome();
                 }
                 model.CopyPropertiesToSmsSentQueueItem(smsSentQueueItem);
-                context.Save<SmsSentQueueItem>(smsSentQueueItem, false);
+                context.Save<SmsSentQueueItem>(smsSentQueueItem, smsSentQueueItem.SmsSentQueueItemId, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -417,7 +417,7 @@
                 }
                 smsSentQueueItem.FailedToSend = false;
                 smsSentQueueItem.FailedToSendErrorMessage = null;
-                context.Save<SmsSentQueueItem>(smsSentQueueItem, false);
+                context.Save<SmsSentQueueItem>(smsSentQueueItem, smsSentQueueItem.SmsSentQueueItemId, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -462,7 +462,7 @@
                         SmsSentQueueItem smsSentQueueItem = context.GetSmsSentQueueItem(s.SmsSentQueueItemId, true);
                         smsSentQueueItem.FailedToSend = false;
                         smsSentQueueItem.FailedToSendErrorMessage = null;
-                        context.Save<SmsSentQueueItem>(smsSentQueueItem, false);
+                        context.Save<SmsSentQueueItem>(smsSentQueueItem, smsSentQueueItem.SmsSentQueueItemId, false);
                     }
                 }
                 return GetJsonResult(true);

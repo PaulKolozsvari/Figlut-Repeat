@@ -406,7 +406,7 @@
                     return RedirectToHome();
                 }
                 SmsSentLog smsSent = context.GetSmsSentLog(smsSentLogId, true);
-                context.Delete<SmsSentLog>(smsSent);
+                context.Delete<SmsSentLog>(smsSent, smsSent.SmsSentLogId);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -458,7 +458,7 @@
                     return RedirectToHome();
                 }
                 SmsSentLog smsSent = context.GetSmsSentLog(model.Identifier, true);
-                context.Delete<SmsSentLog>(smsSent);
+                context.Delete<SmsSentLog>(smsSent, smsSent.SmsSentLogId);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

@@ -131,7 +131,7 @@
                 {
                     return RedirectToHome();
                 }
-                context.Delete<PublicHoliday>(publicHoliday);
+                context.Delete<PublicHoliday>(publicHoliday, publicHoliday.DateIdentifier);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -184,7 +184,7 @@
                     return RedirectToHome();
                 }
                 PublicHoliday publicHoliday = context.GetPublicHoliday(model.Identifier, true);
-                context.Delete<PublicHoliday>(publicHoliday);
+                context.Delete<PublicHoliday>(publicHoliday, publicHoliday.DateIdentifier);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -346,7 +346,7 @@
                 }
                 PublicHoliday publicHoliday = context.GetPublicHoliday(model.PublicHolidayId, true);
                 model.CopyPropertiesToPublicHoliday(publicHoliday);
-                context.Save<PublicHoliday>(publicHoliday, false);
+                context.Save<PublicHoliday>(publicHoliday, publicHoliday.DateIdentifier, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -403,7 +403,7 @@
                 }
                 PublicHoliday publicHoliday = new PublicHoliday();
                 model.CopyPropertiesToPublicHoliday(publicHoliday);
-                context.Save<PublicHoliday>(publicHoliday, false);
+                context.Save<PublicHoliday>(publicHoliday, publicHoliday.DateIdentifier, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

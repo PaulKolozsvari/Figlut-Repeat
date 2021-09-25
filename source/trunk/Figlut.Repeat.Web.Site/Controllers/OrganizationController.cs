@@ -158,7 +158,7 @@
                     return RedirectToHome();
                 }
                 Organization organization = context.GetOrganization(organizationId, true);
-                context.Delete<Organization>(organization);
+                context.Delete<Organization>(organization, organization.Name);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -212,7 +212,7 @@
                     return RedirectToHome();
                 }
                 Organization organization = context.GetOrganization(model.Identifier, true);
-                context.Delete<Organization>(organization);
+                context.Delete<Organization>(organization, organization.Name);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -360,7 +360,7 @@
                     }
                 }
                 model.CopyPropertiesToOrganization(organization);
-                context.Save<Organization>(organization, false);
+                context.Save<Organization>(organization, organization.Name, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -426,7 +426,7 @@
                 }
                 Organization organization = new Organization();
                 model.CopyPropertiesToOrganization(organization);
-                context.Save<Organization>(organization, false);
+                context.Save<Organization>(organization, organization.Name, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -512,7 +512,7 @@
                     }
                 }
                 model.CopyPropertiesToOrganization(organization);
-                context.Save<Organization>(organization, false);
+                context.Save<Organization>(organization, organization.Name, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

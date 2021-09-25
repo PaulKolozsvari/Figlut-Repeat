@@ -191,7 +191,7 @@
                     {
                         scheduleEntry.SmsSentLogId = smsSentLog.SmsSentLogId;
                     }
-                    context.Save<ScheduleEntry>(scheduleEntry, false);
+                    context.Save<ScheduleEntry>(scheduleEntry, scheduleEntry.EntryDate, false);
                 }
                 else //Got a response from the provider, but sending the sms failed.
                 {
@@ -232,7 +232,7 @@
                 {
                     return RedirectToHome();
                 }
-                context.Delete<ScheduleEntry>(scheduleEntry);
+                context.Delete<ScheduleEntry>(scheduleEntry, scheduleEntry.EntryDate.ToString());
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -290,7 +290,7 @@
                     return RedirectToHome();
                 }
                 ScheduleEntry scheduleEntry = context.GetScheduleEntry(model.Identifier, true);
-                context.Delete<ScheduleEntry>(scheduleEntry);
+                context.Delete<ScheduleEntry>(scheduleEntry, scheduleEntry.EntryDate);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

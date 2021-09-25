@@ -173,7 +173,7 @@
                     return RedirectToHome();
                 }
                 GlobalSetting globalSetting = context.GetGlobalSetting(globalSettingId, true);
-                context.Delete<GlobalSetting>(globalSetting);
+                context.Delete<GlobalSetting>(globalSetting, globalSetting.SettingName);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -225,7 +225,7 @@
                     return RedirectToHome();
                 }
                 GlobalSetting globalSetting = context.GetGlobalSetting(model.Identifier, true);
-                context.Delete<GlobalSetting>(globalSetting);
+                context.Delete<GlobalSetting>(globalSetting, globalSetting.SettingName);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

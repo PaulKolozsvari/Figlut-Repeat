@@ -111,3 +111,10 @@ Sample Repeat Messages:
 	Hi Marry. It's Sarah here, your personal trainer. Don't forget it's training day today! See you at the gym at 6pm.
 	You're only as good as your last haircut! It's time to get back to the Barber Boys for your regular haircut and beard trim!
 	Thank you for purchasing the Areca Palm tree from the Green Nursery! Just a friendly reminder that it's time to water it again today.
+
+Upgrading to MVC 5.0:
+
+	-	https://docs.microsoft.com/en-us/aspnet/mvc/overview/releases/how-to-upgrade-an-aspnet-mvc-4-and-web-api-project-to-aspnet-mvc-5-and-web-api-2
+	-	https://www.codingdefined.com/2015/04/how-to-fix-systemmethodaccessexception.html
+	-	https://stackoverflow.com/questions/17926552/attempt-by-security-transparent-method-webmatrix-webdata-preapplicationstartcod
+	-	https://world.optimizely.com/blogs/Eric-Pettersson/Dates/2014/10/problem-with-web-config-after-upgrade-between-mvc-4-and-mvc-5-5-2-0-0-and-3-0-0-0-and-missing-intellisense-in-visual-studio/

@@ -135,7 +135,7 @@
                 {
                     return RedirectToHome();
                 }
-                context.Delete<SmsCampaign>(smsCampaign);
+                context.Delete<SmsCampaign>(smsCampaign, smsCampaign.Name);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -192,7 +192,7 @@
                 {
                     return RedirectToHome();
                 }
-                context.Delete<SmsCampaign>(smsCampaign);
+                context.Delete<SmsCampaign>(smsCampaign, smsCampaign);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -347,7 +347,7 @@
                 RepeatEntityContext context = RepeatEntityContext.Create();
                 SmsCampaign smsCampaign = context.GetSmsCampaign(model.SmsCampaignId, true);
                 model.CopyPropertiesToSmsCampaign(smsCampaign);
-                context.Save<SmsCampaign>(smsCampaign, false);
+                context.Save<SmsCampaign>(smsCampaign, smsCampaign.Name, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

@@ -129,7 +129,7 @@
                 {
                     return RedirectToHome();
                 }
-                context.Delete<Schedule>(schedule);
+                context.Delete<Schedule>(schedule, schedule.ScheduleName);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -404,7 +404,7 @@
                 RefreshSmsMessageTemplatesList(context);
                 Schedule schedule = context.GetSchedule(model.ScheduleId, true);
                 model.CopyPropertiesToSchedule(schedule);
-                context.Save<Schedule>(schedule, false);
+                context.Save<Schedule>(schedule, schedule.ScheduleName, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

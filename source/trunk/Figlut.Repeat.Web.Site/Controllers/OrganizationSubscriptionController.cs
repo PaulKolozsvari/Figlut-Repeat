@@ -135,7 +135,7 @@
                 {
                     return RedirectToHome();
                 }
-                context.Delete<Subscription>(subscription);
+                context.Delete<Subscription>(subscription, subscription.SubscriptionId);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -192,7 +192,7 @@
                 {
                     return RedirectToHome();
                 }
-                context.Delete<Subscription>(subscription);
+                context.Delete<Subscription>(subscription, subscription.SubscriptionId);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -368,7 +368,7 @@
                             Enabled = true,
                             DateCreated = DateTime.Now
                         };
-                        context.Save<Subscriber>(subscriber, false);
+                        context.Save<Subscriber>(subscriber, subscriber.Name, false);
                     }
                     else if (context.IsSubscriberSubscribedToOrganization(organization.OrganizationId, subscriber.SubscriberId)) //There's another subscriber with this phone number. Hence check if that subsccriber is already linked to this organization i.e. a subscription exists for this other subscriber. 
                     {
@@ -380,7 +380,7 @@
                     model.SubscriberId = subscriber.SubscriberId; //Link the new subscriber or existing subsriber (with this phone number) to this subscription.
                 }
                 model.CopyPropertiesToSubscription(subscription);
-                context.Save<Subscription>(subscription, false);
+                context.Save<Subscription>(subscription, subscription.SubscriptionId, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -435,7 +435,7 @@
                         Enabled = true,
                         DateCreated = DateTime.Now
                     };
-                    context.Save<Subscriber>(subscriber, false);
+                    context.Save<Subscriber>(subscriber, subscriber.Name, false);
                 }
                 if (model.OrganizationId == Guid.Empty)
                 {
@@ -459,7 +459,7 @@
                 }
                 Subscription subscription = new Subscription();
                 model.CopyPropertiesToSubscription(subscription);
-                context.Save<Subscription>(subscription, false);
+                context.Save<Subscription>(subscription, subscription.SubscriptionId, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

@@ -153,7 +153,7 @@
                     return RedirectToHome();
                 }
                 ProcessorLog processorLog = context.GetProcessorLog(processorId, true);
-                context.Delete<ProcessorLog>(processorLog);
+                context.Delete<ProcessorLog>(processorLog, processorLog.Message);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -205,7 +205,7 @@
                     return RedirectToHome();
                 }
                 ProcessorLog processorLog = context.GetProcessorLog(model.Identifier, true);
-                context.Delete<ProcessorLog>(processorLog);
+                context.Delete<ProcessorLog>(processorLog, processorLog.ProcessorLogId);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

@@ -147,7 +147,7 @@
                     return RedirectToHome();
                 }
                 WebRequestActivity webRequestActivity = context.GetWebRequestActivity(webRequestActivityId, true);
-                context.Delete<WebRequestActivity>(webRequestActivity);
+                context.Delete<WebRequestActivity>(webRequestActivity, webRequestActivity.DateCreated);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -199,7 +199,7 @@
                     return RedirectToHome();
                 }
                 WebRequestActivity webRequestActivity = context.GetWebRequestActivity(model.Identifier, true);
-                context.Delete<WebRequestActivity>(webRequestActivity);
+                context.Delete<WebRequestActivity>(webRequestActivity, webRequestActivity.WebRequestActivityId);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -321,7 +321,7 @@
                 }
                 WebRequestActivity webRequestActivity = context.GetWebRequestActivity(model.WebRequestActivityId, true);
                 model.CopyPropertiesToWebRequestActivity(webRequestActivity);
-                context.Save<WebRequestActivity>(webRequestActivity, false);
+                context.Save<WebRequestActivity>(webRequestActivity, webRequestActivity.WebRequestActivityId, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

@@ -117,7 +117,7 @@
                 {
                     return RedirectToHome();
                 }
-                context.Delete<Country>(country);
+                context.Delete<Country>(country, country.CountryName);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -169,7 +169,7 @@
                     return RedirectToHome();
                 }
                 Country country = context.GetCountry(model.Identifier, true);
-                context.Delete<Country>(country);
+                context.Delete<Country>(country, country.CountryName);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -306,7 +306,7 @@
                 }
                 Country country = context.GetCountry(model.CountryId, true);
                 model.CopyPropertiesToCountry(country);
-                context.Save<Country>(country, false);
+                context.Save<Country>(country, country.CountryName, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -350,7 +350,7 @@
                 model.DateCreated = DateTime.Now;
                 Country country = new Country();
                 model.CopyPropertiesToCountry(country);
-                context.Save<Country>(country, false);
+                context.Save<Country>(country, country.CountryName, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

@@ -168,7 +168,7 @@
                     return RedirectToHome();
                 }
                 SmsReceivedLog smsReceived = context.GetSmsReceivedLog(smsReceivedLogId, true);
-                context.Delete<SmsReceivedLog>(smsReceived);
+                context.Delete<SmsReceivedLog>(smsReceived, smsReceived.SmsReceivedLogId);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -220,7 +220,7 @@
                     return RedirectToHome();
                 }
                 SmsReceivedLog smsReceived = context.GetSmsReceivedLog(model.Identifier, true);
-                context.Delete<SmsReceivedLog>(smsReceived);
+                context.Delete<SmsReceivedLog>(smsReceived, smsReceived.SmsReceivedLogId);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

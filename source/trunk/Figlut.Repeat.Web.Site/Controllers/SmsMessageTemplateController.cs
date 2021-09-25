@@ -154,7 +154,7 @@
                 {
                     return RedirectToHome();
                 }
-                context.Delete<SmsMessageTemplate>(smsMessageTemplate);
+                context.Delete<SmsMessageTemplate>(smsMessageTemplate, smsMessageTemplate.Message);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -211,7 +211,7 @@
                 {
                     return RedirectToHome();
                 }
-                context.Delete<SmsMessageTemplate>(smsMessageTemplate);
+                context.Delete<SmsMessageTemplate>(smsMessageTemplate, smsMessageTemplate.Message);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -408,7 +408,7 @@
                 }
                 SmsMessageTemplate smsMessageTemplate = context.GetSmsMessageTemplate(model.SmsMessageTemplateId, true);
                 model.CopyPropertiesToSmsMessageTemplate(smsMessageTemplate);
-                context.Save<SmsMessageTemplate>(smsMessageTemplate, false);
+                context.Save<SmsMessageTemplate>(smsMessageTemplate, smsMessageTemplate.Message, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -483,7 +483,7 @@
                 model.DateCreated = DateTime.Now;
                 SmsMessageTemplate smsMessageTemplate = new SmsMessageTemplate();
                 model.CopyPropertiesToSmsMessageTemplate(smsMessageTemplate);
-                context.Save<SmsMessageTemplate>(smsMessageTemplate, false);
+                context.Save<SmsMessageTemplate>(smsMessageTemplate, smsMessageTemplate.Message, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

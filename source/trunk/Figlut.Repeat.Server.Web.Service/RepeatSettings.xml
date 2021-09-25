@@ -22,7 +22,7 @@
   <ScheduleEntriesDailyProcessorId>D48C6BDE-7424-4C05-928A-7D04E91B02BD</ScheduleEntriesDailyProcessorId>
   <EmailNotificationsEnabled>true</EmailNotificationsEnabled>
   <EmailDatabaseLoggingEnabled>true</EmailDatabaseLoggingEnabled>
-  <EmailDatabaseLogMessageContents>true</EmailDatabaseLogMessageContents>@
+  <EmailDatabaseLogMessageContents>true</EmailDatabaseLogMessageContents>
   <ThrowEmailFailExceptions>false</ThrowEmailFailExceptions>
   <EmailProvider>GMail</EmailProvider><!--GMail-->
   <GMailSMTPServer>smtp.gmail.com</GMailSMTPServer>
@@ -53,7 +53,7 @@
   <EventSourceName>FRepeat.Source</EventSourceName>
   <EventLogName>FRepeat.Log</EventLogName>
   <LoggingLevel>Maximum</LoggingLevel>
-  <DatabaseConnectionString>Data Source=PAULKOLOZSV38D1\MSSQLSERVER2012;Initial Catalog=FiglutRepeat;Persist Security Info=True;User ID=sa;Password=27830529</DatabaseConnectionString>
+  <DatabaseConnectionString>Data Source=PAULKOLOZSV38D1\SQLEXPRESS2012;Initial Catalog=FiglutRepeat;Persist Security Info=True;User ID=sa;Password=27830529</DatabaseConnectionString>
   <DatabaseCommandTimeout>30000</DatabaseCommandTimeout>
   <LinqToSQLClassesAssemblyFileName>Figlut.Repeat.ORM.dll</LinqToSQLClassesAssemblyFileName>
   <LinqToSQLClassesNamespace>Figlut.Repeat.ORM</LinqToSQLClassesNamespace>

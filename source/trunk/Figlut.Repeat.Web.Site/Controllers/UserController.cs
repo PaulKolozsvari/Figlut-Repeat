@@ -183,7 +183,7 @@
                     return RedirectToHome();
                 }
                 User user = context.GetUser(userId, true);
-                context.Delete<User>(user);
+                context.Delete<User>(user, user.UserName);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -245,7 +245,7 @@
                 {
                     return GetJsonResult(false, string.Format("Cannot delete the currently logged in user '{0}'.", user.UserName));
                 }
-                context.Delete<User>(user);
+                context.Delete<User>(user, user.UserName);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -504,7 +504,7 @@
                         "Could not send email notification with your new password to {0}. Password has not been reset. Please try again later.", user.EmailAddress));
                 }
                 user.Password = newPassword;
-                context.Save<User>(user, false);
+                context.Save<User>(user, user.UserName, false);
                 return GetJsonResult(true, 
                     string.Format("Password reset successfully. Please check your email, your new password has been emailed to {0}. You should receive it within the next few minutes. Check your Spam folder if you do not see the email in your Inbox.", 
                     user.EmailAddress));
@@ -654,7 +654,7 @@
                     return GetJsonResult(false, errorMessage);
                 }
                 currentUser.Password = model.NewPassword;
-                context.Save<User>(currentUser, false);
+                context.Save<User>(currentUser, currentUser.UserName, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -749,7 +749,7 @@
                     }
                 }
                 model.CopyPropertiesToUser(user);
-                context.Save<User>(user, false);
+                context.Save<User>(user, user.UserName, false);
                 FormsAuthentication.SignOut();
                 FormsAuthentication.SetAuthCookie(
                     user.UserName,
@@ -847,7 +847,7 @@
                 {
                     userOrganization = context.GetOrganization(user.OrganizationId.Value, true);
                 }
-                context.Save<User>(user, false);
+                context.Save<User>(user, user.UserName, false);
                 string figlutHomePageUrl = RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.HomePageUrl].SettingValue;
                 RepeatWebApp.Instance.EmailSender.SendUserCreatedEmailHtml(
                     currentUser.UserName,
@@ -949,7 +949,7 @@
                         user.EmailAddress));
                 }
                 model.CopyPropertiesToUser(user);
-                context.Save<User>(user, false);
+                context.Save<User>(user, user.UserName, false);
                  if (currentUser.UserId == user.UserId && userNameHasChanged) //The current user is editing their own username.
                 {
                     FormsAuthentication.SignOut();
@@ -1017,7 +1017,7 @@
                 }
                 User user = context.GetUser(model.UserId, true);
                 user.Password = model.NewPassword;
-                context.Save<User>(user, false);
+                context.Save<User>(user, user.UserName, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

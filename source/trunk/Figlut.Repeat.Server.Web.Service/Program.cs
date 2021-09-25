@@ -1,6 +1,5 @@
 ﻿namespace Figlut.Repeat.Web.Service
 {
-    using Figlut.Server.Toolkit.Data.iCalendar;
     #region Using Directives
 
     using Figlut.Server.Toolkit.Utilities;
@@ -16,6 +15,7 @@
     using System.ServiceProcess;
     using System.Text;
     using System.Threading.Tasks;
+    using Figlut.Server.Toolkit.Data.iCalendar;
 
     #endregion //Using Directives
 

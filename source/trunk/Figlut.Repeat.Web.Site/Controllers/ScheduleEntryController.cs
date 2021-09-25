@@ -186,7 +186,7 @@
                     {
                         scheduleEntry.SmsSentLogId = smsSentLog.SmsSentLogId;
                     }
-                    context.Save<ScheduleEntry>(scheduleEntry, false);
+                    context.Save<ScheduleEntry>(scheduleEntry, scheduleEntry.EntryDate, false);
                 }
                 else //Got a response from the provider, but sending the sms failed.
                 {
@@ -227,7 +227,7 @@
                 {
                     return RedirectToHome();
                 }
-                context.Delete<ScheduleEntry>(scheduleEntry);
+                context.Delete<ScheduleEntry>(scheduleEntry, scheduleEntry.EntryDate);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -285,7 +285,7 @@
                     return RedirectToHome();
                 }
                 ScheduleEntry scheduleEntry = context.GetScheduleEntry(model.Identifier, true);
-                context.Delete<ScheduleEntry>(scheduleEntry);
+                context.Delete<ScheduleEntry>(scheduleEntry, scheduleEntry.EntryDate);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -448,7 +448,7 @@
                 RepeatEntityContext context = RepeatEntityContext.Create();
                 ScheduleEntry scheduleEntry = context.GetScheduleEntry(model.ScheduleEntryId, true);
                 model.CopyPropertiesToScheduleEntry(scheduleEntry);
-                context.Save<ScheduleEntry>(scheduleEntry, false);
+                context.Save<ScheduleEntry>(scheduleEntry, scheduleEntry.EntryDate, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -506,7 +506,7 @@
                     scheduleEntry.SMSDateSent = null;
                     scheduleEntry.SmsSentLogId = null;
                 }
-                context.Save<ScheduleEntry>(scheduleEntry, false);
+                context.Save<ScheduleEntry>(scheduleEntry, scheduleEntry.EntryDate, false);
                 context.ShiftScheduleEntry(model.ScheduleEntryId, model.EntryDateShift, "zaf", 0); //Update the Entry and Notification dates.
                 return GetJsonResult(true);
             }
@@ -568,7 +568,7 @@
                 RepeatEntityContext context = RepeatEntityContext.Create();
                 ScheduleEntry scheduleEntry = new ScheduleEntry();
                 model.CopyPropertiesToScheduleEntry(scheduleEntry);
-                context.Save<ScheduleEntry>(scheduleEntry, false);
+                context.Save<ScheduleEntry>(scheduleEntry, scheduleEntry.EntryDate, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

@@ -72,7 +72,8 @@
                 30000,
                 out httpStatusCode,
                 out httpStatusDescription,
-                false);
+                false,
+                null);
             return result;
         }
 
@@ -95,7 +96,8 @@
                 30000,
                 out httpStatusCode,
                 out httpStatusDescription,
-                false).FirstOrDefault();
+                false,
+                null).FirstOrDefault();
             return result;
         }
 
@@ -163,7 +165,8 @@
                 30000,
                 out httpStatusCode,
                 out httpStatusDescription,
-                false);
+                false,
+                null);
             return resultMessage;
         }
 
@@ -184,7 +187,8 @@
                 30000,
                 out httpStatusCode,
                 out httpStatusDescription,
-                false);
+                false,
+                null);
             return resultMessage;
         }
 

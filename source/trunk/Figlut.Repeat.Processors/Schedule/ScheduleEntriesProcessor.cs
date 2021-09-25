@@ -189,7 +189,7 @@
                 {
                     scheduleEntry.SmsSentLogId = result.SmsSentLogId;
                 }
-                context.Save<ScheduleEntry>(scheduleEntry, false);
+                context.Save<ScheduleEntry>(scheduleEntry, scheduleEntry.EntryDate, false);
             }
             else //Got a response from the provider, but sending the SMS failed.
             {

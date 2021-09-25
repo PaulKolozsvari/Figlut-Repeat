@@ -121,7 +121,7 @@
                     return RedirectToHome();
                 }
                 Subscriber subscriber = context.GetSubscriber(subscriberId, true);
-                context.Delete<Subscriber>(subscriber);
+                context.Delete<Subscriber>(subscriber, subscriber.Name);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -176,7 +176,7 @@
                     return RedirectToHome();
                 }
                 Subscriber subscriber = context.GetSubscriber(model.Identifier, true);
-                context.Delete<Subscriber>(subscriber);
+                context.Delete<Subscriber>(subscriber, subscriber.Name);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -432,7 +432,7 @@
                     }
                 }
                 model.CopyPropertiesToSubsriber(subscriber);
-                context.Save<Subscriber>(subscriber, false);
+                context.Save<Subscriber>(subscriber, subscriber.Name, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -489,7 +489,7 @@
                 model.DateCreated = DateTime.Now;
                 Subscriber subscriber = new Subscriber();
                 model.CopyPropertiesToSubsriber(subscriber);
-                context.Save<Subscriber>(subscriber, false);
+                context.Save<Subscriber>(subscriber, subscriber.Name, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

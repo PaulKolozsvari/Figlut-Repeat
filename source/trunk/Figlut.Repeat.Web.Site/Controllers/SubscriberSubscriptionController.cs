@@ -123,7 +123,7 @@
                     return RedirectToHome();
                 }
                 Subscription subscription = context.GetSubscription(subscriptionId, true);
-                context.Delete<Subscription>(subscription);
+                context.Delete<Subscription>(subscription, subscription.SubscriptionId);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -172,7 +172,7 @@
                     return RedirectToHome();
                 }
                 Subscription subscription = context.GetSubscription(model.Identifier, true);
-                context.Delete<Subscription>(subscription);
+                context.Delete<Subscription>(subscription, subscription.SubscriptionId);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -318,7 +318,7 @@
                 RepeatEntityContext context = RepeatEntityContext.Create();
                 Subscription subscription = context.GetSubscription(model.SubscriptionId, true);
                 model.CopyPropertiesToSubscription(subscription);
-                context.Save<Subscription>(subscription, false);
+                context.Save<Subscription>(subscription, subscription.SubscriptionId, false);
                 return GetJsonResult(true);
             }
             catch (Exception ex)

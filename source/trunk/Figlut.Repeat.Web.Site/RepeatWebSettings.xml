@@ -49,7 +49,7 @@
   <EventSourceName>FRepeat.Source</EventSourceName>
   <EventLogName>FRepeat.Log</EventLogName>
   <LoggingLevel>Maximum</LoggingLevel>
-  <DatabaseConnectionString>Data Source=PAULKOLOZSV38D1\MSSQLSERVER2012;Initial Catalog=FiglutRepeat;Persist Security Info=True;User ID=sa;Password=27830529</DatabaseConnectionString>
+  <DatabaseConnectionString>Data Source=PAULKOLOZSV38D1\SQLEXPRESS2012;Initial Catalog=FiglutRepeat;Persist Security Info=True;User ID=sa;Password=27830529</DatabaseConnectionString>
   <DatabaseCommandTimeout>30000</DatabaseCommandTimeout>
   <LinqToSQLClassesAssemblyFileName>Figlut.Repeat.ORM.dll</LinqToSQLClassesAssemblyFileName>
   <LinqToSQLClassesNamespace>Figlut.Repeat.ORM</LinqToSQLClassesNamespace>
