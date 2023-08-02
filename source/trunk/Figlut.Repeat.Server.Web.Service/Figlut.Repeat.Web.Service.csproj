@@ -96,6 +96,10 @@
       <Project>{a7c9a24d-e19b-42f5-a298-805a489334ef}</Project>
       <Name>Figlut.Server.Toolkit.45</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Figlut.Google.Places\Figlut.Google.Places.csproj">
+      <Project>{f9b2123d-3047-4a21-9e5f-00d86127f44c}</Project>
+      <Name>Figlut.Google.Places</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Figlut.Repeat.Data\Figlut.Repeat.Data.csproj">
       <Project>{88c47948-f4b3-4912-ac0b-e98a2b6be147}</Project>
       <Name>Figlut.Repeat.Data</Name>

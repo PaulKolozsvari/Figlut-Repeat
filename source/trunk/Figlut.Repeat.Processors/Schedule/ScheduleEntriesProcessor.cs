@@ -110,6 +110,12 @@
                 {
                     throw new Exception(string.Format("{0} '{1}' has insufficient SMS credits to send an SMS.", typeof(Organization).Name, organization.Name));
                 }
+                if (string.IsNullOrEmpty(e.NotificationMessage))
+                {
+                    context.Delete<ScheduleEntry>(e, e.ScheduleEntryId);
+                    context.LogProcesorAction(processorId, $"{nameof(ScheduleEntry)} does not have a message contents. Deleted from queue.", LogMessageType.SuccessAudit.ToString());
+                    continue;
+                }
                 SmsSentLog smsSentLog = ProcessScheduleEntryQueueItem(scheduleView, e, context);
                 if (smsSentLog != null)
                 {

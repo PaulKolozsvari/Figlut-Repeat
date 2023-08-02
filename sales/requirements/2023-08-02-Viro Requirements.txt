@@ -1,0 +1,10 @@
+Ordering Co.
+
+
+*   Integrate with Clickatell for Whatsapp.
+*   Provide mobile page for capturing orders on mobile that they can open from Whatsapp.
+    -   Import and manage product catalog.
+    -   Mark items and frequently used for each customer.
+*   Integrate incoming order with Unleashed.
+*   Import leads from Google locations: search for nearby.
+    -   Send mass SMS' to those leads for promoptions.

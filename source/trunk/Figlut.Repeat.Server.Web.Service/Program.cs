@@ -16,6 +16,12 @@
     using System.Text;
     using System.Threading.Tasks;
     using Figlut.Server.Toolkit.Data.iCalendar;
+    using Figlut.Google.Places;
+    using Figlut.Google.Places.Responses.List;
+    using Figlut.Google.Places.Requests;
+    using Figlut.Google.Places.Responses;
+    using Figlut.Server.Toolkit.Data;
+    using System.IO;
 
     #endregion //Using Directives
 
@@ -30,6 +36,7 @@
         private const string SEND_SMS = "/send_sms";
         private const string DOWNLOAD_COUNTRY_PUBLIC_HOLIDAYS = "/download_country_public_holidays";
         private const string DOWNLOAD_ALL_COUNTRIES_PUBLIC_HOLIDAYS = "/download_all_countries_public_holidays";
+        private const string IMPORT_GOOGLE_PLACES_LEADS = "/import_google_places_leads";
 
         #endregion //Constants
 
@@ -106,6 +113,9 @@
                         }
                         DownloadAllCountriesPublicHolidays(true, year);
                         return false;
+                    case IMPORT_GOOGLE_PLACES_LEADS:
+                        ImportGooglePlacesLeads(true);
+                        return false;
                     default:
                         throw new ArgumentException(string.Format("Invalid argument '{0}'.", a));
                 }
@@ -123,6 +133,7 @@
             Console.WriteLine("{0} : Sends an sms to the specified number with the specified message e.g. {0} 0821235432 \"Hello world.\"", SEND_SMS);
             Console.WriteLine("{0} : Downloads a .ics iCalendar file for a specific country and year e.g. {0} zaf South Africa 2018", DOWNLOAD_COUNTRY_PUBLIC_HOLIDAYS);
             Console.WriteLine("{0} : Downloads a .ics iCalendar file for all countries in the database for a specific year e.g. {0} 2018", DOWNLOAD_ALL_COUNTRIES_PUBLIC_HOLIDAYS);
+            Console.WriteLine("{0} : Imports leads from Google Places e.g. {0} 2018", DOWNLOAD_ALL_COUNTRIES_PUBLIC_HOLIDAYS);
             Console.WriteLine();
             Console.WriteLine("N.B. Executing without any parameters runs the server as a windows service.");
         }
@@ -247,6 +258,106 @@
             context.SavePublicHolidaysFromICalCalendar(calendar);
 
             GOC.Instance.Logger.LogMessage(new LogMessage(string.Format("Downloaded and saved {0} public holidays calendar successfully for {1}.", year, countryName), LogMessageType.SuccessAudit, LoggingLevel.Normal));
+        }
+
+        private static void ImportGooglePlacesLeads(bool initializeService)
+        {
+            if (initializeService)
+            {
+                RepeatService.Start(false);
+            }
+            int radius = 50000;
+            List<GooglePlaceCentre> centres = new List<GooglePlaceCentre>()
+            {
+                new GooglePlaceCentre("Viro Solutions Cape Town", -33.9652741174112, 18.59194739700472, radius),
+                new GooglePlaceCentre("Waterfront Cape Town", -33.90674584713001, 18.42266177001582, radius),
+                new GooglePlaceCentre("Glen Marais", -26.079597, 28.247506, radius),
+                new GooglePlaceCentre("Victory Park", -26.13724554839237, 28.009024645981018, radius),
+                new GooglePlaceCentre("Sandton City", -26.10863472758328, 28.052730525562627, radius),
+                new GooglePlaceCentre("Clearwater Mall Roodeport", -26.122994582651142, 27.903901241533937, radius),
+                new GooglePlaceCentre("Melville", -26.17669497260382, 27.997583069815622, radius),
+                new GooglePlaceCentre("East Rand Mall Boksburg", -26.181537847699772, 28.240395212071544, radius),
+                new GooglePlaceCentre("Bedfordview", -26.176624536574266, 28.13697606229055, radius),
+                new GooglePlaceCentre("Bryanston", -26.075343008367188, 28.027774135582316, radius),
+                new GooglePlaceCentre("Greenstone", -26.118463112657444, 28.141951140905014, radius),
+            };
+
+            EntityCache<Guid, GooglePlaceInfo> cache = new EntityCache<Guid, GooglePlaceInfo>();
+            GooglePlacesClient client = new GooglePlacesClient("https://maps.googleapis.com/maps/api/place", 30000, key: "AIzaSyD-PwB2sxuK31DnRYXEJO0l58xrzScZzkc");
+            foreach (var centre in centres)
+            {
+                GOC.Instance.Logger.LogMessage(new LogMessage($"Getting places in {centre.Name} in {radius} radius ...", LogMessageType.Information, LoggingLevel.Normal));
+                GooglePlacesResponse placesResponse = client.GetPlaces(new GoogleGetPlacesRequest(centre.Latitude, centre.Longitude, type: "restaurant", null, radius));
+                GOC.Instance.Logger.LogMessage(new LogMessage($"Downloaded {placesResponse.results.Length} places ...", LogMessageType.SuccessAudit, LoggingLevel.Normal));
+                foreach (var place in placesResponse.results)
+                {
+                    GooglePlaceInfo placeInfo = new GooglePlaceInfo(centre);
+                    ParseGooglePlacesResult(client, place, placeInfo);
+                    cache.Add(Guid.NewGuid(), placeInfo);
+                }
+                int pageIndex = 2;
+                while (!string.IsNullOrEmpty(placesResponse.next_page_token))
+                {
+                    GOC.Instance.Logger.LogMessage(new LogMessage($"Getting places in page {pageIndex} of {centre.Name}  in {radius} radius ...", LogMessageType.Information, LoggingLevel.Normal));
+                    placesResponse = client.GetPlacesNextPage(new GoogleGetPlacesNextPageRequest(pageToken: placesResponse.next_page_token));
+                    GOC.Instance.Logger.LogMessage(new LogMessage($"Downloaded {placesResponse.results.Length} places in page {pageIndex} ...", LogMessageType.SuccessAudit, LoggingLevel.Normal));
+                    foreach (var place in placesResponse.results)
+                    {
+                        GooglePlaceInfo placeInfo = new GooglePlaceInfo(centre);
+                        ParseGooglePlacesResult(client, place, placeInfo);
+                        cache.Add(Guid.NewGuid(), placeInfo);
+                    }
+                }
+            }
+            string filePath = @"C:\Docs\temp\Restaurants.csv";
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+            cache.ExportToCsv(filePath, null, false, false);
+        }
+
+        private static void ParseGooglePlacesResult(
+            GooglePlacesClient client,
+            Figlut.Google.Places.Responses.List.Result place,
+            GooglePlaceInfo placeInfo)
+        {
+            placeInfo.PlaceId = place.place_id;
+            placeInfo.Name = place.name;
+            placeInfo.Latitude = place.geometry.location.lat;
+            placeInfo.Longitude = place.geometry.location.lng;
+            place.vicinity = place.vicinity;
+            GooglePlaceDetailResponse detailResponse = GetGooglePlaceDetails(client, placeInfo.PlaceId, placeInfo);
+        }
+
+        private static GooglePlaceDetailResponse GetGooglePlaceDetails(GooglePlacesClient client, string placeId, GooglePlaceInfo placeInfo)
+        {
+            GOC.Instance.Logger.LogMessage(new LogMessage($"Getting details place {placeInfo.Name} ...", LogMessageType.Information, LoggingLevel.Normal));
+            GooglePlaceDetailResponse detailResponse = client.GetPlaceDetail(new GoogleGetPlaceDetailsRequest(placeId));
+            if (detailResponse.result == null)
+            {
+                return null;
+            }
+            placeInfo.PhoneNumber = detailResponse.result.formatted_phone_number;
+            placeInfo.InternationalPhoneNumber = detailResponse.result.international_phone_number;
+            placeInfo.IsMobilePhoneNumber = !IsInternationPhoneNumberLandline(placeInfo.InternationalPhoneNumber);
+            placeInfo.Website = detailResponse.result.website;
+            return detailResponse;
+        }
+
+        public static bool IsInternationPhoneNumberLandline(string phoneNumber)
+        {
+            if (string.IsNullOrEmpty(phoneNumber))
+            {
+                return false;
+            }
+            phoneNumber = phoneNumber.Trim().Replace(" ", string.Empty);
+            if (phoneNumber.Contains("+2721") ||
+                phoneNumber.Contains("+2711"))
+            {
+                return true;
+            }
+            return false;
         }
 
         /// <summary>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.33913.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Figlut.Repeat.Web.Service.TestDriver", "Figlut.Repeat.Server.Web.Service.TestDriver\Figlut.Repeat.Web.Service.TestDriver.csproj", "{60FA100F-F1AB-4EB5-9632-F2D1370998BB}"
 EndProject
@@ -34,6 +34,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Figlut.Repeat.Desktop.UI", "Figlut.Repeat.Desktop.UI\Figlut.Repeat.Desktop.UI.csproj", "{A9EEABC3-7D15-45EF-8687-7AE1A00CF541}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Figlut.Repeat.Processors", "Figlut.Repeat.Processors\Figlut.Repeat.Processors.csproj", "{C04F3302-E4A7-4E1E-98EA-7623845231AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Figlut.Google.Places", "Figlut.Google.Places\Figlut.Google.Places.csproj", "{F9B2123D-3047-4A21-9E5F-00D86127F44C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -194,6 +196,16 @@ Global
 		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
 		{C04F3302-E4A7-4E1E-98EA-7623845231AF}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{F9B2123D-3047-4A21-9E5F-00D86127F44C}.CD_ROM|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9B2123D-3047-4A21-9E5F-00D86127F44C}.CD_ROM|Any CPU.Build.0 = Debug|Any CPU
+		{F9B2123D-3047-4A21-9E5F-00D86127F44C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9B2123D-3047-4A21-9E5F-00D86127F44C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9B2123D-3047-4A21-9E5F-00D86127F44C}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9B2123D-3047-4A21-9E5F-00D86127F44C}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{F9B2123D-3047-4A21-9E5F-00D86127F44C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9B2123D-3047-4A21-9E5F-00D86127F44C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9B2123D-3047-4A21-9E5F-00D86127F44C}.SingleImage|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9B2123D-3047-4A21-9E5F-00D86127F44C}.SingleImage|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

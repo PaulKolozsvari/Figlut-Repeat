@@ -21,6 +21,7 @@
 
         static void Main(string[] args)
         {
+            int length = "Hi J this is your Viro sales oke G. Our bagasse products are currently on promotion for free. Contact me for more free stuff.".Length;
             HttpStatusCode httpStatusCode = HttpStatusCode.OK;
             string httpStatusDescription = null;
             string rawOutput = null;

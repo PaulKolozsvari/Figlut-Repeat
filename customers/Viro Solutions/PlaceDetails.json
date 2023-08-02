@@ -1,0 +1,447 @@
+{
+    "html_attributions": [],
+    "result": {
+        "address_components": [
+            {
+                "long_name": "48",
+                "short_name": "48",
+                "types": [
+                    "street_number"
+                ]
+            },
+            {
+                "long_name": "De Villiers Avenue",
+                "short_name": "De Villiers Ave",
+                "types": [
+                    "route"
+                ]
+            },
+            {
+                "long_name": "Van Riebeeck Park",
+                "short_name": "Van Riebeeck Park",
+                "types": [
+                    "sublocality_level_1",
+                    "sublocality",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "Kempton Park",
+                "short_name": "Kempton Park",
+                "types": [
+                    "locality",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "Ekurhuleni Metropolitan Municipality",
+                "short_name": "Ekurhuleni Metropolitan Municipality",
+                "types": [
+                    "administrative_area_level_2",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "Gauteng",
+                "short_name": "GP",
+                "types": [
+                    "administrative_area_level_1",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "South Africa",
+                "short_name": "ZA",
+                "types": [
+                    "country",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "1619",
+                "short_name": "1619",
+                "types": [
+                    "postal_code"
+                ]
+            }
+        ],
+        "adr_address": "<span class=\"street-address\">48 De Villiers Ave</span>, <span class=\"extended-address\">Van Riebeeck Park</span>, <span class=\"locality\">Kempton Park</span>, <span class=\"postal-code\">1619</span>, <span class=\"country-name\">South Africa</span>",
+        "business_status": "OPERATIONAL",
+        "current_opening_hours": {
+            "open_now": true,
+            "periods": [
+                {
+                    "close": {
+                        "date": "2023-08-07",
+                        "day": 1,
+                        "time": "0000"
+                    },
+                    "open": {
+                        "date": "2023-08-06",
+                        "day": 0,
+                        "time": "0600"
+                    }
+                },
+                {
+                    "close": {
+                        "date": "2023-08-08",
+                        "day": 2,
+                        "time": "0000"
+                    },
+                    "open": {
+                        "date": "2023-08-07",
+                        "day": 1,
+                        "time": "0600"
+                    }
+                },
+                {
+                    "close": {
+                        "date": "2023-08-08",
+                        "day": 2,
+                        "time": "2359",
+                        "truncated": true
+                    },
+                    "open": {
+                        "date": "2023-08-08",
+                        "day": 2,
+                        "time": "0600"
+                    }
+                },
+                {
+                    "close": {
+                        "date": "2023-08-03",
+                        "day": 4,
+                        "time": "0000"
+                    },
+                    "open": {
+                        "date": "2023-08-02",
+                        "day": 3,
+                        "time": "0600"
+                    }
+                },
+                {
+                    "close": {
+                        "date": "2023-08-04",
+                        "day": 5,
+                        "time": "0000"
+                    },
+                    "open": {
+                        "date": "2023-08-03",
+                        "day": 4,
+                        "time": "0600"
+                    }
+                },
+                {
+                    "close": {
+                        "date": "2023-08-05",
+                        "day": 6,
+                        "time": "0000"
+                    },
+                    "open": {
+                        "date": "2023-08-04",
+                        "day": 5,
+                        "time": "0600"
+                    }
+                },
+                {
+                    "close": {
+                        "date": "2023-08-06",
+                        "day": 0,
+                        "time": "0000"
+                    },
+                    "open": {
+                        "date": "2023-08-05",
+                        "day": 6,
+                        "time": "0600"
+                    }
+                }
+            ],
+            "weekday_text": [
+                "Monday: 6:00 AM – 12:00 AM",
+                "Tuesday: 6:00 AM – 12:00 AM",
+                "Wednesday: 6:00 AM – 12:00 AM",
+                "Thursday: 6:00 AM – 12:00 AM",
+                "Friday: 6:00 AM – 12:00 AM",
+                "Saturday: 6:00 AM – 12:00 AM",
+                "Sunday: 6:00 AM – 12:00 AM"
+            ]
+        },
+        "editorial_summary": {
+            "language": "en",
+            "overview": "Modern hotel with warm rooms, plus breakfast, an airport shuttle, parking & a pool."
+        },
+        "formatted_address": "48 De Villiers Ave, Van Riebeeck Park, Kempton Park, 1619, South Africa",
+        "formatted_phone_number": "011 976 3486",
+        "geometry": {
+            "location": {
+                "lat": -26.0765435,
+                "lng": 28.2045092
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": -26.07522956970849,
+                    "lng": 28.2057188802915
+                },
+                "southwest": {
+                    "lat": -26.0779275302915,
+                    "lng": 28.20302091970849
+                }
+            }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
+        "icon_background_color": "#909CE1",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/hotel_pinlet",
+        "international_phone_number": "+27 11 976 3486",
+        "name": "African Rock Hotel & Spa",
+        "opening_hours": {
+            "open_now": true,
+            "periods": [
+                {
+                    "close": {
+                        "day": 1,
+                        "time": "0000"
+                    },
+                    "open": {
+                        "day": 0,
+                        "time": "0600"
+                    }
+                },
+                {
+                    "close": {
+                        "day": 2,
+                        "time": "0000"
+                    },
+                    "open": {
+                        "day": 1,
+                        "time": "0600"
+                    }
+                },
+                {
+                    "close": {
+                        "day": 3,
+                        "time": "0000"
+                    },
+                    "open": {
+                        "day": 2,
+                        "time": "0600"
+                    }
+                },
+                {
+                    "close": {
+                        "day": 4,
+                        "time": "0000"
+                    },
+                    "open": {
+                        "day": 3,
+                        "time": "0600"
+                    }
+                },
+                {
+                    "close": {
+                        "day": 5,
+                        "time": "0000"
+                    },
+                    "open": {
+                        "day": 4,
+                        "time": "0600"
+                    }
+                },
+                {
+                    "close": {
+                        "day": 6,
+                        "time": "0000"
+                    },
+                    "open": {
+                        "day": 5,
+                        "time": "0600"
+                    }
+                },
+                {
+                    "close": {
+                        "day": 0,
+                        "time": "0000"
+                    },
+                    "open": {
+                        "day": 6,
+                        "time": "0600"
+                    }
+                }
+            ],
+            "weekday_text": [
+                "Monday: 6:00 AM – 12:00 AM",
+                "Tuesday: 6:00 AM – 12:00 AM",
+                "Wednesday: 6:00 AM – 12:00 AM",
+                "Thursday: 6:00 AM – 12:00 AM",
+                "Friday: 6:00 AM – 12:00 AM",
+                "Saturday: 6:00 AM – 12:00 AM",
+                "Sunday: 6:00 AM – 12:00 AM"
+            ]
+        },
+        "photos": [
+            {
+                "height": 1168,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/114799673017840553051\">African Rock Hotel &amp; Spa</a>"
+                ],
+                "photo_reference": "AUacShierdkfAqU7kzbs9v3YLFrX-ODFpQr4X5S7QAqY3iPjrG7haPRpJAbPvPrsUxn9fuA2GwMX63Qhno0F-7oQWvKOu5XUw2iHDU1qqAqauCHcD_vDFzaV0HOCPbVWlh1l1MAxiEfetfoAADn4LuNCZPGSwyOOl7W_akmtvhuD8GU9muXz",
+                "width": 1752
+            },
+            {
+                "height": 530,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/114799673017840553051\">African Rock Hotel &amp; Spa</a>"
+                ],
+                "photo_reference": "AUacShiha0ME2AesQ54cEQLnY9H1b2AD5YkUh7iaeeYc5bI4jMWRLh7IdgnlKr1jwbsn0gAIkjBIUnl-PD9M46e9BF5FnA9jXUk1sZgw_iC481cfvXLCIftT2rtaWKAvbpoB3_zZiAZpXObA1qnd-p4U6LtzDu-FrC1Vt05leUk2Y1nBehwf",
+                "width": 800
+            },
+            {
+                "height": 8000,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/106422093641387415240\">Matshidiso Maja</a>"
+                ],
+                "photo_reference": "AUacShiFOFtazWnZTlffl_RBKVpHJ6Bt2JSHRIo8k8mnzh2pEozs4EwFoGG1cHHtp21_qlS1MR6JnGqycKajR1xJy1nuHG65MjN_5xxAfuad9LGhrMSaXUcM3h9bv7VSDufsVG9ZPZPHgXQXlQMGOIriEEnv7i8Zw-Ye4_k3lGsOojgoPP5C",
+                "width": 6000
+            },
+            {
+                "height": 600,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/114799673017840553051\">African Rock Hotel &amp; Spa</a>"
+                ],
+                "photo_reference": "AUacShjZB_htxHEku4eJ80SBptDeMpuy-xeV-X75Lo13rod5r8r3zu-TNA2PqvtinC6eSsk7djqYXP0xrIKnGhBIleQ_dfBjwI8DR8SO3y06uJYk4thKw4yV2Y_FNXRKS7jpxrpc-n3pdpxuElh-qkd7Q2WIKeuBnvTWWf0KtTVJA5V3DzN4",
+                "width": 400
+            },
+            {
+                "height": 533,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/114799673017840553051\">African Rock Hotel &amp; Spa</a>"
+                ],
+                "photo_reference": "AUacShhRAlq60vkP7ps0l-hocRVbRVnifcUolKUFknqiALzIiibEwQFU1dP5L1n6guyldh_Arlp2GMH4hb0cwdIOpy6nehxULDR_zWtGrFk76wGQmFReSNTRus5NdufIO3zyjS3uBTfH2amqouANs5M11-1-DbOLKR2i5GtATFbgGG-Mo3Gh",
+                "width": 800
+            },
+            {
+                "height": 3024,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/100400129492338179447\">Don Essig</a>"
+                ],
+                "photo_reference": "AUacShiZvEhhWntUuvi584opYn2A24HLk9WUYUG7oYzyN--Yysk_rY-NF3kucUzYB_zWv39mmDogxT7p7P_ugOFaYnvBJ2ho_2BlInFtDQ1cAHdHn4fpi21K8h3Y0gRpsYxDTR1vUUgC4nH3kxL-y58QivGgWmiD_0_i2Cz6pW_gGg0MiE-8",
+                "width": 4032
+            },
+            {
+                "height": 2400,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/100349228705532703681\">African Rock Hotel &amp; Spa</a>"
+                ],
+                "photo_reference": "AUacShj7fJ00Z_BY2XOKjyLOMHYdGduhVRSFv1cteVRSvqvqps2kLb-Gb141_i1u7vlYvTh6GS-CdTKdj-Q6KxKJ7xXexu3zYOwsbPmRqBusNkaiBydq36yLQuiEZupJx6lDm3x9uzX2YKVgo5eIhs_fX2Ug2am2yxFIhO4dk9VA4Ialth0O",
+                "width": 3600
+            },
+            {
+                "height": 1280,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/108617061946281876623\">Nicole K</a>"
+                ],
+                "photo_reference": "AUacShikvsh21_tL7mx9chSkTkIsOTHVFFRX7295XpC6lUjm33iYIws5nSRQXmpf7YPznoe_HjXez0jqnFOXnN2Pxnbp8dOPTaU_u_jxQM6CFbNIWk_o8Ucxq3U1GAqAX-Cs4a5elxzJsBiU6tMj32aDyxNYV_uGHxea4qi03uJ6jkKwpSep",
+                "width": 1920
+            },
+            {
+                "height": 1296,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/100349228705532703681\">African Rock Hotel &amp; Spa</a>"
+                ],
+                "photo_reference": "AUacShhT_MfINV-khi8GCaDMgwgaUceJ0gYuzJa-4acSzigfQ0ye5Pi9G87UVRbrdZUWuqiTqpZ3jy6aCg1jTIdUahF7WsGkStmG9JUOEkUWwZewMr7gCzI4JoZcWW4mUYRCPFwuvfz-o5UWPmRd5NVyA76l6E_LOfEGBl260cNUPuEqWOtc",
+                "width": 1944
+            },
+            {
+                "height": 4608,
+                "html_attributions": [
+                    "<a href=\"https://maps.google.com/maps/contrib/104443291795817190031\">Evi Moller</a>"
+                ],
+                "photo_reference": "AUacShh16xUGOyOEmg6jXu3CI--3aRkdEEOZ0AZuu32odbB6XRqnztpzaVFr_qIlD0l3RT2tbQAjeo9edXeSk5MInO-JbuoBmuWwmUAs4yGjr9DouAlmIHxR-vigCV9PaA-rhQLuitMgLowh55MZHtEYX-SWMJ-a8oFSn6IT-aCKDe375QAV",
+                "width": 2592
+            }
+        ],
+        "place_id": "ChIJp9YblapslR4Rvl5lxYSRLDk",
+        "plus_code": {
+            "compound_code": "W6F3+9R Kempton Park, South Africa",
+            "global_code": "5G5CW6F3+9R"
+        },
+        "rating": 4.6,
+        "reference": "ChIJp9YblapslR4Rvl5lxYSRLDk",
+        "reviews": [
+            {
+                "author_name": "Sydney Melusi Mdhliwa",
+                "author_url": "https://www.google.com/maps/contrib/103263337593998374817/reviews",
+                "language": "en",
+                "original_language": "en",
+                "profile_photo_url": "https://lh3.googleusercontent.com/a-/AD_cMMTdxsjlPJo1Mg7wTg84kDQQUophsVsDLHqiUmZ_80lHiRs=s128-c0x00000000-cc-rp-mo-ba2",
+                "rating": 5,
+                "relative_time_description": "3 months ago",
+                "text": "Top service here! Fantastic bunch of employees...I've been there on 2 occasions already.",
+                "time": 1681668623,
+                "translated": false
+            },
+            {
+                "author_name": "Thomas Janse van Rensburg",
+                "author_url": "https://www.google.com/maps/contrib/104213444402433702747/reviews",
+                "language": "en",
+                "original_language": "en",
+                "profile_photo_url": "https://lh3.googleusercontent.com/a-/AD_cMMSjerljgnqxtcUt_4FUFturqdtWMXTTkDCW_UrAnvAn_nc=s128-c0x00000000-cc-rp-mo-ba4",
+                "rating": 5,
+                "relative_time_description": "3 months ago",
+                "text": "Great food friendly staff but to the owner, respect goes both ways between you and your staff.",
+                "time": 1681462420,
+                "translated": false
+            },
+            {
+                "author_name": "Bianca Gautier",
+                "author_url": "https://www.google.com/maps/contrib/104149052685489940560/reviews",
+                "language": "en",
+                "original_language": "en",
+                "profile_photo_url": "https://lh3.googleusercontent.com/a-/AD_cMMSZhZ9WPRshlyRz3c2qTuRZLkK7r3oPdFLVeKlf21kFIYs=s128-c0x00000000-cc-rp-mo",
+                "rating": 5,
+                "relative_time_description": "2 years ago",
+                "text": "We booked for a Valentines Day massage and were so pleased to find such a little gem like this in the city! Staff were so welcoming, friendly and professional. The hotel is beautiful and the attention to detail in the decor and overall is incredible.",
+                "time": 1613332050,
+                "translated": false
+            },
+            {
+                "author_name": "Benevolence Mbano",
+                "author_url": "https://www.google.com/maps/contrib/117788189346368922072/reviews",
+                "language": "en",
+                "original_language": "en",
+                "profile_photo_url": "https://lh3.googleusercontent.com/a-/AD_cMMT8rayx2eEcIUjRna0W9DVEmRJe8VvukQ-yxJImEfIpke7D=s128-c0x00000000-cc-rp-mo",
+                "rating": 5,
+                "relative_time_description": "a year ago",
+                "text": "The service was great! The food was amazing. It's definitely my new favorite spot to eat at.",
+                "time": 1657087935,
+                "translated": false
+            },
+            {
+                "author_name": "Don Essig",
+                "author_url": "https://www.google.com/maps/contrib/100400129492338179447/reviews",
+                "language": "en",
+                "original_language": "en",
+                "profile_photo_url": "https://lh3.googleusercontent.com/a-/AD_cMMTYeffDZ7hmbkDvd9xmmqDb6819JHgZrttjESMdcwdyCg=s128-c0x00000000-cc-rp-mo",
+                "rating": 5,
+                "relative_time_description": "11 months ago",
+                "text": "We were not here long, due to flight delays, but thoroughly enjoyed our brief stay. Would like to return.",
+                "time": 1660385974,
+                "translated": false
+            }
+        ],
+        "types": [
+            "spa",
+            "lodging",
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+        ],
+        "url": "https://maps.google.com/?cid=4119827758570626750",
+        "user_ratings_total": 187,
+        "utc_offset": 120,
+        "vicinity": "48 De Villiers Avenue, Kempton Park",
+        "website": "http://www.africanrockhotels.com/",
+        "wheelchair_accessible_entrance": true
+    },
+    "status": "OK"
+}

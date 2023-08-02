@@ -1,0 +1,1081 @@
+    {
+    "html_attributions": [],
+    "next_page_token": "Aaw_FcJDjrVtpGcjRf1nClR6yL7HUoV43R3oUZhRzmFjjPWx2FTxcCMO5WYghlKHmlMNN9AvTllcDp8pHA6VYeaabbCTrRbXm6jq8f28RR9ye4Zveubw-9aEZGCFjt66nhLHclIkSBrlpR9CtPlP8EykgF-vXoWMywy3m1z5XWblwVkzq4mbVXBe0HWxjq7XbHY7tYkcY6G_Iw5qp06Nb9qMourojUkmC8lXmov4bBdG6-btRLeHFmT8WQ9D_pyi93bf8VTXw6akwZSkZqTTyOLwcmzDpALMzCbCb7HN1Mvfas8fZCF2LGUqQyte5KD-LpA4Hvs_g1WR4tb_Bir2JBM_BegBQnzM2Qz7SU3ZcaOwy8X_9x8YGKWCck_Sx6q3Bmh-bPVgARByQFqb7sKA6tN-ZpSi5vqmJs4D8IDtndmEybLPgla__gq2n853fPtz",
+    "results": [
+        {
+            "business_status": "OPERATIONAL",
+            "geometry": {
+                "location": {
+                    "lat": -26.0765435,
+                    "lng": 28.2045092
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": -26.07522956970849,
+                        "lng": 28.2057188802915
+                    },
+                    "southwest": {
+                        "lat": -26.0779275302915,
+                        "lng": 28.20302091970849
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
+            "icon_background_color": "#909CE1",
+            "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/hotel_pinlet",
+            "name": "African Rock Hotel & Spa",
+            "opening_hours": {
+                "open_now": true
+            },
+            "photos": [
+                {
+                    "height": 1168,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/114799673017840553051\">African Rock Hotel &amp; Spa</a>"
+                    ],
+                    "photo_reference": "Aaw_FcJ_2peJGQ-teXDXOZo48pi4MS5xYRtvmff0ENg6Hd9puvPwQsE1wLOdLJ8PuWrVUevUE1SRNomHYct_ABX1CX7fDfLnjzi_FMVs7NFDYBnCJPrVFxaqk-Nc29OpqfAlat9qRbIVisoLSaugPIVIXWLmAhJN4VRNZXJZWAyJNRxY64Nm",
+                    "width": 1752
+                }
+            ],
+            "place_id": "ChIJp9YblapslR4Rvl5lxYSRLDk",
+            "plus_code": {
+                "compound_code": "W6F3+9R Kempton Park, South Africa",
+                "global_code": "5G5CW6F3+9R"
+            },
+            "rating": 4.6,
+            "reference": "ChIJp9YblapslR4Rvl5lxYSRLDk",
+            "scope": "GOOGLE",
+            "types": [
+                "spa",
+                "lodging",
+                "restaurant",
+                "food",
+                "point_of_interest",
+                "establishment"
+            ],
+            "user_ratings_total": 187,
+            "vicinity": "48 De Villiers Avenue, Kempton Park"
+        },
+        {
+            "business_status": "OPERATIONAL",
+            "geometry": {
+                "location": {
+                    "lat": -26.0989707,
+                    "lng": 28.2816938
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": -26.09763451970849,
+                        "lng": 28.2829801802915
+                    },
+                    "southwest": {
+                        "lat": -26.1003324802915,
+                        "lng": 28.2802822197085
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
+            "icon_background_color": "#909CE1",
+            "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/hotel_pinlet",
+            "name": "Avant Garde Lodge",
+            "opening_hours": {
+                "open_now": true
+            },
+            "photos": [
+                {
+                    "height": 1536,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/103966654920016958170\">Avant Garde Lodge</a>"
+                    ],
+                    "photo_reference": "Aaw_FcKjL5tPK3Wqi8VXp6BBiCLBP5D1ZzQTRn1SDq_w5Zrxf6Y_iu2iT7nohEu6P9q92S7AlzSyM1ToUmCXnTCNIU5_-nLSTh_ybT9FkBH9_hhMbuwHh0EMt711NrFm57xiu5FMc6sUI2rq1My10QaKC_G5O0qAKh4UZTjp6gwzvBf6BBgr",
+                    "width": 2048
+                }
+            ],
+            "place_id": "ChIJv9QQ-nMVlR4RJesDBnzKGe4",
+            "plus_code": {
+                "compound_code": "W72J+CM Kempton Park, South Africa",
+                "global_code": "5G5CW72J+CM"
+            },
+            "rating": 4.5,
+            "reference": "ChIJv9QQ-nMVlR4RJesDBnzKGe4",
+            "scope": "GOOGLE",
+            "types": [
+                "lodging",
+                "restaurant",
+                "food",
+                "point_of_interest",
+                "establishment"
+            ],
+            "user_ratings_total": 134,
+            "vicinity": "182 Outeniqua Street, Pomona, Kempton Park"
+        },
+        {
+            "business_status": "OPERATIONAL",
+            "geometry": {
+                "location": {
+                    "lat": -26.079473,
+                    "lng": 28.24772
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": -26.0781147197085,
+                        "lng": 28.2491600802915
+                    },
+                    "southwest": {
+                        "lat": -26.0808126802915,
+                        "lng": 28.2464621197085
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+            "icon_background_color": "#FF9E67",
+            "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+            "name": "Mugg & Bean",
+            "opening_hours": {
+                "open_now": true
+            },
+            "photos": [
+                {
+                    "height": 1000,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/117559980861749154554\">Mugg &amp; Bean</a>"
+                    ],
+                    "photo_reference": "Aaw_FcJNm7462TD_zt-3x4Qd0yMSu9l0DMcADpkOeV_pm-9ve3PgITxVOIHiPxnChGWrO9r5KQZ8Emohfe2kQpefWnIUlcNZKV6ZlF8qXF3XeHV8P0As-Di_w4a245q9cpgSTRuD6pMBosh3ebmvxBcz1CBRn2lQS5VucHCZlRj6pDu8RPkr",
+                    "width": 1000
+                }
+            ],
+            "place_id": "ChIJ_ZFrV9cUlR4RkDJLvUPL8cc",
+            "plus_code": {
+                "compound_code": "W6CX+63 Kempton Park, South Africa",
+                "global_code": "5G5CW6CX+63"
+            },
+            "price_level": 2,
+            "rating": 4.3,
+            "reference": "ChIJ_ZFrV9cUlR4RkDJLvUPL8cc",
+            "scope": "GOOGLE",
+            "types": [
+                "restaurant",
+                "cafe",
+                "store",
+                "food",
+                "point_of_interest",
+                "establishment"
+            ],
+            "user_ratings_total": 1319,
+            "vicinity": "Shop 11, Corner Monument &, Woodbridge Square, Dann Road, Glen marais, Kempton Park"
+        },
+        {
+            "business_status": "OPERATIONAL",
+            "geometry": {
+                "location": {
+                    "lat": -26.0648241,
+                    "lng": 28.2490407
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": -26.0633426697085,
+                        "lng": 28.2503248302915
+                    },
+                    "southwest": {
+                        "lat": -26.0660406302915,
+                        "lng": 28.24762686970849
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+            "icon_background_color": "#FF9E67",
+            "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+            "name": "Blue Gill Clubhouse",
+            "opening_hours": {
+                "open_now": true
+            },
+            "photos": [
+                {
+                    "height": 1944,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/103520239023892503258\">Mahlahla Steve</a>"
+                    ],
+                    "photo_reference": "Aaw_FcJ1Zo653Wg0Q5Fzxhvl702ahRMiJ0-yELpRmIi5-txhfxhzdfSxz9nGvdzTsKGbZykAwvKXyyEFBLlcyjmxwjpDrg-ACA0TRDrBCGQtQW4yXfgsh1got-Qznvh_-6LDPhpeJ0WnN27K9LMenCgE86Ey9CxTLrCTslWv3g9h74jaxRcU",
+                    "width": 2592
+                }
+            ],
+            "place_id": "ChIJNRsDNyprlR4Rxg9h_9GJwlA",
+            "plus_code": {
+                "compound_code": "W6PX+3J Kempton Park, South Africa",
+                "global_code": "5G5CW6PX+3J"
+            },
+            "rating": 4.2,
+            "reference": "ChIJNRsDNyprlR4Rxg9h_9GJwlA",
+            "scope": "GOOGLE",
+            "types": [
+                "restaurant",
+                "food",
+                "point_of_interest",
+                "establishment"
+            ],
+            "user_ratings_total": 72,
+            "vicinity": "28 Flycatcher Crescent, Glen marais, Kempton Park"
+        },
+        {
+            "business_status": "OPERATIONAL",
+            "geometry": {
+                "location": {
+                    "lat": -26.1049977,
+                    "lng": 28.223659
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": -26.1038855697085,
+                        "lng": 28.2248830302915
+                    },
+                    "southwest": {
+                        "lat": -26.1065835302915,
+                        "lng": 28.2221850697085
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+            "icon_background_color": "#FF9E67",
+            "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+            "name": "Nando's Festival Mall",
+            "opening_hours": {
+                "open_now": true
+            },
+            "photos": [
+                {
+                    "height": 1684,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/104933224219878028397\">Naz Alexander</a>"
+                    ],
+                    "photo_reference": "Aaw_FcKmrE5AjXApU31NQAWxaRUXfAAsQPuy2sLaqAxG879B4HW9NDWii95cxMOgjFZ5cGO4O3r3kPRzWpaLWiYv6a6DACRgSQVKBkkzCo0ZrSAYfUa74YK4Zx1FBqtgmJf8pG3hYxUkGkXRAQTovMrLx-PSp-UKiew_xrx8UfDcJDgTzmzQ",
+                    "width": 1284
+                }
+            ],
+            "place_id": "ChIJb43u3oQUlR4RW6zsyxdP5Mo",
+            "plus_code": {
+                "compound_code": "V6WF+2F Kempton Park, South Africa",
+                "global_code": "5G5CV6WF+2F"
+            },
+            "price_level": 2,
+            "rating": 4,
+            "reference": "ChIJb43u3oQUlR4RW6zsyxdP5Mo",
+            "scope": "GOOGLE",
+            "types": [
+                "restaurant",
+                "meal_delivery",
+                "meal_takeaway",
+                "food",
+                "point_of_interest",
+                "establishment"
+            ],
+            "user_ratings_total": 228,
+            "vicinity": "Kelvin St, Shop 56, Festival Mall Shopping Centre, Kempton Park"
+        },
+        {
+            "business_status": "OPERATIONAL",
+            "geometry": {
+                "location": {
+                    "lat": -26.1048279,
+                    "lng": 28.2227985
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": -26.1035815197085,
+                        "lng": 28.2242026302915
+                    },
+                    "southwest": {
+                        "lat": -26.1062794802915,
+                        "lng": 28.2215046697085
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+            "icon_background_color": "#FF9E67",
+            "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+            "name": "OLD FASHIONED Fish And Chips TAKEAWAYS",
+            "opening_hours": {
+                "open_now": true
+            },
+            "photos": [
+                {
+                    "height": 4032,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/116048605927363851645\">Elize Nel</a>"
+                    ],
+                    "photo_reference": "Aaw_FcK9Gw4NR_9nLAbp4h_OItt9IRUndsEz9xXzUgsT88WbMeYWTSEtaCQ1pDFlLPJq-tIBGVP2BdoC-J2C5VoHlCMWp-EyroNoxPflovpEweHr34ZXf5kAIXEoEFB8vvux9FJLNI3U9io6MfPY2PKYIeXFUYzpykpVaKC7FVk8jJNo6Vea",
+                    "width": 1960
+                }
+            ],
+            "place_id": "ChIJEcijjJEUlR4R9eb9uo3u564",
+            "plus_code": {
+                "compound_code": "V6WF+34 Kempton Park, South Africa",
+                "global_code": "5G5CV6WF+34"
+            },
+            "rating": 3.2,
+            "reference": "ChIJEcijjJEUlR4R9eb9uo3u564",
+            "scope": "GOOGLE",
+            "types": [
+                "meal_takeaway",
+                "restaurant",
+                "food",
+                "point_of_interest",
+                "establishment"
+            ],
+            "user_ratings_total": 5,
+            "vicinity": "Shop 49, Festival Mall, Kelvin Street, Kempton Park, Johannesburg"
+        },
+        {
+            "business_status": "OPERATIONAL",
+            "geometry": {
+                "location": {
+                    "lat": -26.0797254,
+                    "lng": 28.2467765
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": -26.07834481970849,
+                        "lng": 28.2481879302915
+                    },
+                    "southwest": {
+                        "lat": -26.0810427802915,
+                        "lng": 28.2454899697085
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+            "icon_background_color": "#FF9E67",
+            "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+            "name": "Wimpy",
+            "opening_hours": {
+                "open_now": true
+            },
+            "photos": [
+                {
+                    "height": 400,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/100666889599426622652\">Wimpy</a>"
+                    ],
+                    "photo_reference": "Aaw_FcIVwvxcZDgb1MzmArDPc7aGdOxULGGOdEnBsWGKWhxzyMfw3vjv7bgLdU5OBPPje6mvZM-XbATS4i0-NSK1L00uV_h2RzEW7E6rx-lzb6_C0JsZNBLV66mabPc2b9iJc7ELpScXxUm964dbnopQDnjHA7K-P3nmEvULHtPu715JCsyP",
+                    "width": 400
+                }
+            ],
+            "place_id": "ChIJLwjRQygVlR4RauBGSDVDn0g",
+            "plus_code": {
+                "compound_code": "W6CW+4P Kempton Park, South Africa",
+                "global_code": "5G5CW6CW+4P"
+            },
+            "price_level": 2,
+            "rating": 4.1,
+            "reference": "ChIJLwjRQygVlR4RauBGSDVDn0g",
+            "scope": "GOOGLE",
+            "types": [
+                "restaurant",
+                "food",
+                "point_of_interest",
+                "establishment"
+            ],
+            "user_ratings_total": 656,
+            "vicinity": "Shop 16, Cnr Dann and Monument, Woodbridge Square, Glen marais, Kempton Park"
+        },
+        {
+            "business_status": "OPERATIONAL",
+            "geometry": {
+                "location": {
+                    "lat": -26.0784021,
+                    "lng": 28.2485554
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": -26.07704731970849,
+                        "lng": 28.2499745802915
+                    },
+                    "southwest": {
+                        "lat": -26.0797452802915,
+                        "lng": 28.24727661970849
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+            "icon_background_color": "#FF9E67",
+            "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+            "name": "Steers Drive Thru",
+            "opening_hours": {
+                "open_now": true
+            },
+            "photos": [
+                {
+                    "height": 3024,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/114568840144053240277\">Andrew Constanti</a>"
+                    ],
+                    "photo_reference": "Aaw_FcINyH5xQiqG_m3YnB7DrZBF1Ip7XnPbmhlcqwvxt45QF-Nv9lCyDyfrAJdOZvWUIKbkDWvdkOdzQsrIQ9o7qeGixQ7FTZJ7CXFUvqBhVyEeXpEZQGchY4wJFD3jnMpB_Hc8k7zzepS5cw336_WvOw2CXD4K6IAmKznIDQU_h0K0Wm4k",
+                    "width": 4032
+                }
+            ],
+            "place_id": "ChIJaZMKQ9cUlR4RMRtr1E_IF5E",
+            "plus_code": {
+                "compound_code": "W6CX+JC Kempton Park, South Africa",
+                "global_code": "5G5CW6CX+JC"
+            },
+            "price_level": 2,
+            "rating": 4,
+            "reference": "ChIJaZMKQ9cUlR4RMRtr1E_IF5E",
+            "scope": "GOOGLE",
+            "types": [
+                "restaurant",
+                "food",
+                "point_of_interest",
+                "establishment"
+            ],
+            "user_ratings_total": 669,
+            "vicinity": "Glen Acres Shopping Centre, Shop 35 Corner Dann Road &, Monument Road, Glen marais, Kempton Park"
+        },
+        {
+            "business_status": "OPERATIONAL",
+            "geometry": {
+                "location": {
+                    "lat": -26.0782672,
+                    "lng": 28.2485176
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": -26.0768634697085,
+                        "lng": 28.2498596302915
+                    },
+                    "southwest": {
+                        "lat": -26.0795614302915,
+                        "lng": 28.2471616697085
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+            "icon_background_color": "#FF9E67",
+            "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+            "name": "Nando's Glen Acres Drive Thru",
+            "opening_hours": {
+                "open_now": true
+            },
+            "photos": [
+                {
+                    "height": 2918,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/115386557291709446980\">kelvine</a>"
+                    ],
+                    "photo_reference": "Aaw_FcLl_xWWEcoZf6vo51xzkSAeIKoRsW8XTsjXwgWBY8wHN20_pMfDt9MPQjwkegkBL-kvbaxkhDVdTaFfbuCpWzkVwL_28Prs603OlbSSFVSNeyjEHuGAOik21QBC0_tfUKhNE47JbAWFkqhP1v4ZcEIeU1i_2u67TncPL-l-GKUif3ib",
+                    "width": 3891
+                }
+            ],
+            "place_id": "ChIJk8IKQ9cUlR4RmPnQpeT1myE",
+            "plus_code": {
+                "compound_code": "W6CX+MC Kempton Park, South Africa",
+                "global_code": "5G5CW6CX+MC"
+            },
+            "price_level": 2,
+            "rating": 4,
+            "reference": "ChIJk8IKQ9cUlR4RmPnQpeT1myE",
+            "scope": "GOOGLE",
+            "types": [
+                "restaurant",
+                "meal_delivery",
+                "meal_takeaway",
+                "food",
+                "point_of_interest",
+                "establishment"
+            ],
+            "user_ratings_total": 1553,
+            "vicinity": "Cnr Monument & Dann Rd, Glen Acres Shopping Centre, Glen Marais, Kempton Park"
+        },
+        {
+            "business_status": "OPERATIONAL",
+            "geometry": {
+                "location": {
+                    "lat": -26.0783042,
+                    "lng": 28.248802
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": -26.0771113697085,
+                        "lng": 28.2503999302915
+                    },
+                    "southwest": {
+                        "lat": -26.0798093302915,
+                        "lng": 28.2477019697085
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+            "icon_background_color": "#FF9E67",
+            "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+            "name": "KFC Glen Marais",
+            "opening_hours": {
+                "open_now": true
+            },
+            "photos": [
+                {
+                    "height": 1080,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/109439980288491768110\">KFC Glen Marais</a>"
+                    ],
+                    "photo_reference": "Aaw_FcIxJGgGh4lSUgnD145k6GRup_Yp6zx2eKlxq-_gefABFyXaagtACjlHgGGaF7_p7z3CUS5spiLmAvR81nNj7i80GQg924lgzVLep4xU0rEImC4J7VY_7OBhaw8ZtyyIhsoOqpmB4YJDyUWjbiggc7KqttVYv35b7kNTVxMAaMX2mNUn",
+                    "width": 1626
+                }
+            ],
+            "place_id": "ChIJ4QcmmNcUlR4RLqoas0_SIEs",
+            "plus_code": {
+                "compound_code": "W6CX+MG Kempton Park, South Africa",
+                "global_code": "5G5CW6CX+MG"
+            },
+            "price_level": 2,
+            "rating": 3.4,
+            "reference": "ChIJ4QcmmNcUlR4RLqoas0_SIEs",
+            "scope": "GOOGLE",
+            "types": [
+                "meal_takeaway",
+                "restaurant",
+                "food",
+                "point_of_interest",
+                "establishment"
+            ],
+            "user_ratings_total": 1861,
+            "vicinity": "Cnr Dann &, Glen Acres Shopping Centre, Monument Road, Glen marais, Kempton Park"
+        },
+        {
+            "business_status": "OPERATIONAL",
+            "geometry": {
+                "location": {
+                    "lat": -26.0775446,
+                    "lng": 28.2483351
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": -26.0760535697085,
+                        "lng": 28.2496474802915
+                    },
+                    "southwest": {
+                        "lat": -26.0787515302915,
+                        "lng": 28.24694951970849
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/gas_station-71.png",
+            "icon_background_color": "#909CE1",
+            "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/gas_pinlet",
+            "name": "Shell Glenacres Service Station",
+            "photos": [
+                {
+                    "height": 6000,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/100653364891622858285\">Gishon Gishon</a>"
+                    ],
+                    "photo_reference": "Aaw_FcIwducbtTTT2f3WrC4mhUWpG7id8CzJxdvEgpf-qTrnTWmnyB8ImOnafmlB7ocbCZ8xrp5ZwvLQrkgB3OQh7FVq6I7bCFQXygHhqKW0bE_N54FcYR6CYmW94VPw1jyyc_Jmog5iYspIGpyTRn9ujOFhoZjAhb_NIZcR4FSk5xmqVHV9",
+                    "width": 8000
+                }
+            ],
+            "place_id": "ChIJgcvAF9cUlR4RaN0z4q3ApnY",
+            "plus_code": {
+                "compound_code": "W6CX+X8 Kempton Park, South Africa",
+                "global_code": "5G5CW6CX+X8"
+            },
+            "price_level": 2,
+            "rating": 3.5,
+            "reference": "ChIJgcvAF9cUlR4RaN0z4q3ApnY",
+            "scope": "GOOGLE",
+            "types": [
+                "gas_station",
+                "atm",
+                "convenience_store",
+                "car_wash",
+                "finance",
+                "store",
+                "restaurant",
+                "food",
+                "point_of_interest",
+                "establishment"
+            ],
+            "user_ratings_total": 53,
+            "vicinity": "Dann Road, Kempton Park"
+        },
+        {
+            "business_status": "OPERATIONAL",
+            "geometry": {
+                "location": {
+                    "lat": -26.0773222,
+                    "lng": 28.2491568
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": -26.0760974197085,
+                        "lng": 28.2504632802915
+                    },
+                    "southwest": {
+                        "lat": -26.0787953802915,
+                        "lng": 28.2477653197085
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+            "icon_background_color": "#FF9E67",
+            "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+            "name": "The Fish & Chip Co Glen Acres",
+            "opening_hours": {
+                "open_now": true
+            },
+            "photos": [
+                {
+                    "height": 720,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/118110471863211944446\">The Fish &amp; Chip Co Glen Acres</a>"
+                    ],
+                    "photo_reference": "Aaw_FcL58xHhaP27i9Q2a_Xw-qowbd2o2fK9YuRkS_4bQTz8zzpuGPx2j4bGLoJHhlDzAE383bSN3WXrRLF74nlAHHPFYjs_MGTFK1wgcGG8x8upLIguIJ2fFvj03-3AO1hRl3CDy30iYPTCv1Qm_CeCGfCAnUQvltS04WAftI0sqhHIyCoq",
+                    "width": 1280
+                }
+            ],
+            "place_id": "ChIJ1cwED9cUlR4RLs-0Y5MK5ZI",
+            "plus_code": {
+                "compound_code": "W6FX+3M Kempton Park, South Africa",
+                "global_code": "5G5CW6FX+3M"
+            },
+            "price_level": 1,
+            "rating": 3.8,
+            "reference": "ChIJ1cwED9cUlR4RLs-0Y5MK5ZI",
+            "scope": "GOOGLE",
+            "types": [
+                "meal_takeaway",
+                "restaurant",
+                "food",
+                "point_of_interest",
+                "establishment"
+            ],
+            "user_ratings_total": 118,
+            "vicinity": "and, Shop 22, Glen Acres Shopping Centre Cnr Dann Road, Monument Road, Glen marais, Kempton Park"
+        },
+        {
+            "business_status": "OPERATIONAL",
+            "geometry": {
+                "location": {
+                    "lat": -26.07697929999999,
+                    "lng": 28.2484006
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": -26.0757754697085,
+                        "lng": 28.24962878029151
+                    },
+                    "southwest": {
+                        "lat": -26.0784734302915,
+                        "lng": 28.2469308197085
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+            "icon_background_color": "#FF9E67",
+            "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+            "name": "RocoMamas Kempton Park",
+            "opening_hours": {
+                "open_now": true
+            },
+            "photos": [
+                {
+                    "height": 2268,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/102586424521340379670\">Francois Scherman</a>"
+                    ],
+                    "photo_reference": "Aaw_FcK5HhSCUH1RiipNJGtvw6HrebGPp8gLQNJ_V3C_1BYb3MYjH3Q0YjVLAaUE8KfS1aYzCIrkWyQn3e2TUby08oMWJubZL76ZdTQvOCkhvMMPI6oDYl_YbDYsliNg0WRcsfuNV4M4LGg2kbdGBIRZgnMcMtMNNMsJxBItBECL8-tbRjw",
+                    "width": 4032
+                }
+            ],
+            "place_id": "ChIJCZ3hHNcUlR4RKrPJ1YG3s7A",
+            "plus_code": {
+                "compound_code": "W6FX+69 Kempton Park, South Africa",
+                "global_code": "5G5CW6FX+69"
+            },
+            "price_level": 2,
+            "rating": 4.3,
+            "reference": "ChIJCZ3hHNcUlR4RKrPJ1YG3s7A",
+            "scope": "GOOGLE",
+            "types": [
+                "meal_takeaway",
+                "restaurant",
+                "food",
+                "point_of_interest",
+                "establishment"
+            ],
+            "user_ratings_total": 1745,
+            "vicinity": "Shop 33A, Glenacres Shopping Centre Cnr Monument &, Dann Road, Kempton Park"
+        },
+        {
+            "business_status": "OPERATIONAL",
+            "geometry": {
+                "location": {
+                    "lat": -26.076772,
+                    "lng": 28.2489375
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": -26.0751655197085,
+                        "lng": 28.25024298029151
+                    },
+                    "southwest": {
+                        "lat": -26.0778634802915,
+                        "lng": 28.2475450197085
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+            "icon_background_color": "#FF9E67",
+            "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+            "name": "Ocean Basket Kempton Park",
+            "opening_hours": {
+                "open_now": true
+            },
+            "photos": [
+                {
+                    "height": 3456,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/108409488184784698763\">Steven Coetzee</a>"
+                    ],
+                    "photo_reference": "Aaw_FcJDU3n2e3-Y4D69GV1-TWRh0u4yhNPcu4bqbw0iPxtR_Jrvxe17aMQpNsEC9UvyBqCo2AdDecZawF7T70FJTmPGp1o0_AESJBwHcgardPuSvjUB7MYwXRxFAlF6I-f8PtMGg0uRuBpAxFLfkqhbt-eEmZaP2O2sJ8iVhrB22DS_xbTn",
+                    "width": 4608
+                }
+            ],
+            "place_id": "ChIJ_5d2Q9cUlR4Ruz05MA5eyw4",
+            "plus_code": {
+                "compound_code": "W6FX+7H Glen marais, Kempton Park, South Africa",
+                "global_code": "5G5CW6FX+7H"
+            },
+            "price_level": 2,
+            "rating": 4,
+            "reference": "ChIJ_5d2Q9cUlR4Ruz05MA5eyw4",
+            "scope": "GOOGLE",
+            "types": [
+                "restaurant",
+                "food",
+                "point_of_interest",
+                "establishment"
+            ],
+            "user_ratings_total": 737,
+            "vicinity": "Cnr Dann &, Shop 30, Glen Acres Shopping Centre, Monument Road, Glen marais, Johannesburg"
+        },
+        {
+            "business_status": "OPERATIONAL",
+            "geometry": {
+                "location": {
+                    "lat": -26.0767684,
+                    "lng": 28.2489363
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": -26.0751637697085,
+                        "lng": 28.25024208029151
+                    },
+                    "southwest": {
+                        "lat": -26.0778617302915,
+                        "lng": 28.2475441197085
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+            "icon_background_color": "#FF9E67",
+            "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+            "name": "Mimmos Kempton Park",
+            "opening_hours": {
+                "open_now": true
+            },
+            "photos": [
+                {
+                    "height": 1050,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/113776762099283730797\">Mimmos Kempton Park</a>"
+                    ],
+                    "photo_reference": "Aaw_FcKKCqXwa43VcF7jT-jlZHHQvHlCebhUfx7Uvp8Am3BzbVCgjgR_pm6So065jCQzMUMjbkJXywTTREL79vjahEEUvErR0Fkz-M_jd-QE3IMCu-5_0tkZU_mIpUYxROynOcUwBNpuQ9JFezsvm_R49jGXACmgcEMQNfLvy_Hk91wrldaC",
+                    "width": 1800
+                }
+            ],
+            "place_id": "ChIJaZMKQ9cUlR4RpuNeM5sH-3c",
+            "plus_code": {
+                "compound_code": "W6FX+7H Kempton Park, South Africa",
+                "global_code": "5G5CW6FX+7H"
+            },
+            "price_level": 2,
+            "rating": 4.1,
+            "reference": "ChIJaZMKQ9cUlR4RpuNeM5sH-3c",
+            "scope": "GOOGLE",
+            "types": [
+                "restaurant",
+                "food",
+                "point_of_interest",
+                "establishment"
+            ],
+            "user_ratings_total": 308,
+            "vicinity": "0C Dann Road Glen Acres Shopping Centre, Glen marais, Kempton Park"
+        },
+        {
+            "business_status": "OPERATIONAL",
+            "geometry": {
+                "location": {
+                    "lat": -26.0768398,
+                    "lng": 28.2493726
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": -26.0756944697085,
+                        "lng": 28.2502723302915
+                    },
+                    "southwest": {
+                        "lat": -26.0783924302915,
+                        "lng": 28.2475743697085
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+            "icon_background_color": "#FF9E67",
+            "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+            "name": "Pizza Hut Glen Acres",
+            "opening_hours": {
+                "open_now": true
+            },
+            "photos": [
+                {
+                    "height": 2268,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/115386557291709446980\">kelvine</a>"
+                    ],
+                    "photo_reference": "Aaw_FcJCWfC5nsa9vo4Ut4bTDKQHwcqAsoIqjFDny5ZQ7Zr79rClYJRVWyFW9GnaUEcVgQOHVTnI0MZLIznX-sPQJ1bmSTTzPAh52khfsM0FxB9-rHKpaH3vcQ71QhNKhEI1kGDLkOIajXJLdMVfXIpNkwyC7PdVBDG-hl1V0j__xwh_YMk3",
+                    "width": 4032
+                }
+            ],
+            "place_id": "ChIJd6or4NYUlR4Rz1KqFKbn_9g",
+            "plus_code": {
+                "compound_code": "W6FX+7P Johannesburg, South Africa",
+                "global_code": "5G5CW6FX+7P"
+            },
+            "price_level": 2,
+            "rating": 3.6,
+            "reference": "ChIJd6or4NYUlR4Rz1KqFKbn_9g",
+            "scope": "GOOGLE",
+            "types": [
+                "restaurant",
+                "food",
+                "point_of_interest",
+                "establishment"
+            ],
+            "user_ratings_total": 353,
+            "vicinity": "Glen Acres Shopping Centre Corner Monument Road &, Dann Road, Kempton Park, Johannesburg"
+        },
+        {
+            "business_status": "OPERATIONAL",
+            "geometry": {
+                "location": {
+                    "lat": -26.0829024,
+                    "lng": 28.2423216
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": -26.08149471970849,
+                        "lng": 28.2435707302915
+                    },
+                    "southwest": {
+                        "lat": -26.0841926802915,
+                        "lng": 28.2408727697085
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+            "icon_background_color": "#FF9E67",
+            "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+            "name": "Fat Cake City",
+            "opening_hours": {
+                "open_now": true
+            },
+            "photos": [
+                {
+                    "height": 3000,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/105159304567884874937\">Steven Human</a>"
+                    ],
+                    "photo_reference": "Aaw_FcJnmD6ytgrgjSZL6yBlI0W4iaT69s92m3SsJh27mfMdjiZSoVM9881LM19vXhFmPa9dp5SgYEsyD5iT5S3XxCvXzutNOw7TimJOgy-jc3l7ByNGPsoQhQkOGBMs_RFV6pLdf-Zjrpad7fN4zgAxxsa3KuA5wSxix4GktRE6Nbs3V5we",
+                    "width": 4000
+                }
+            ],
+            "place_id": "ChIJYakI3doUlR4RvN3QYfE6ino",
+            "plus_code": {
+                "compound_code": "W68R+RW Kempton Park, South Africa",
+                "global_code": "5G5CW68R+RW"
+            },
+            "price_level": 1,
+            "rating": 3.9,
+            "reference": "ChIJYakI3doUlR4RvN3QYfE6ino",
+            "scope": "GOOGLE",
+            "types": [
+                "meal_takeaway",
+                "restaurant",
+                "food",
+                "point_of_interest",
+                "establishment"
+            ],
+            "user_ratings_total": 326,
+            "vicinity": "Shopping Centre, 132 Monument Road, Aston Manor, Kempton Park"
+        },
+        {
+            "business_status": "OPERATIONAL",
+            "geometry": {
+                "location": {
+                    "lat": -26.0769019,
+                    "lng": 28.25481419999999
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": -26.0754388197085,
+                        "lng": 28.2560788802915
+                    },
+                    "southwest": {
+                        "lat": -26.0781367802915,
+                        "lng": 28.25338091970849
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+            "icon_background_color": "#FF9E67",
+            "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+            "name": "Wimpy",
+            "opening_hours": {
+                "open_now": true
+            },
+            "photos": [
+                {
+                    "height": 400,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/108391071953974522913\">Wimpy</a>"
+                    ],
+                    "photo_reference": "Aaw_FcIIeIs4FvJaBUJQ-1AOx-HErQmaKC4bccxsLQ8MQdc_BzB17yHQ0UAeOr0M3105lL66Yf42hCh49Bt6C1k3ZjL0BWbzdJ2gwtMYRMoX2YR2xs7Sp-XRe29MBhHgX6pOxZt5NLEHhBa3Ym8Tf0It7s5yPV0toY72a-YsuuBxCpyb1ywW",
+                    "width": 400
+                }
+            ],
+            "place_id": "ChIJ1zP2XSgVlR4RX25ouao4-Pw",
+            "plus_code": {
+                "compound_code": "W7F3+6W Kempton Park, South Africa",
+                "global_code": "5G5CW7F3+6W"
+            },
+            "price_level": 2,
+            "rating": 4.1,
+            "reference": "ChIJ1zP2XSgVlR4RX25ouao4-Pw",
+            "scope": "GOOGLE",
+            "types": [
+                "restaurant",
+                "food",
+                "point_of_interest",
+                "establishment"
+            ],
+            "user_ratings_total": 92,
+            "vicinity": "Motors, Engen 1 Plus, 216 Monument Road, Glen marais, Kempton Park"
+        },
+        {
+            "business_status": "OPERATIONAL",
+            "geometry": {
+                "location": {
+                    "lat": -26.0760401,
+                    "lng": 28.2549221
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": -26.0748153197085,
+                        "lng": 28.2563635802915
+                    },
+                    "southwest": {
+                        "lat": -26.0775132802915,
+                        "lng": 28.2536656197085
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+            "icon_background_color": "#FF9E67",
+            "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+            "name": "The Food Bus Kitchen @ 233 Monument Road",
+            "opening_hours": {
+                "open_now": true
+            },
+            "photos": [
+                {
+                    "height": 880,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/116195187025827376342\">The Food Bus Kitchen @ 233 Monument Road</a>"
+                    ],
+                    "photo_reference": "Aaw_FcK9RvpfZXLak9BHbx_NmRJaWNsh5YhEgtMXZYY8vknQ3kitFr3MllKw_ZN_o0AB4uYZHIeIRWTxNhev88toQ-zf2RFLo6HBiapnMYRe9xson291mrMo2V-ol1ENpvkgYJmuU7eLuPTiN8IDiXdoGZS8oywJi8SmnunwtMxSzNnidnk",
+                    "width": 960
+                }
+            ],
+            "place_id": "ChIJ3dJK_ncVlR4RBi2O8djk0jA",
+            "plus_code": {
+                "compound_code": "W7F3+HX Kempton Park, South Africa",
+                "global_code": "5G5CW7F3+HX"
+            },
+            "rating": 5,
+            "reference": "ChIJ3dJK_ncVlR4RBi2O8djk0jA",
+            "scope": "GOOGLE",
+            "types": [
+                "meal_takeaway",
+                "restaurant",
+                "food",
+                "point_of_interest",
+                "establishment"
+            ],
+            "user_ratings_total": 3,
+            "vicinity": "233 Monument Road, Glen marais, Kempton Park"
+        },
+        {
+            "business_status": "OPERATIONAL",
+            "geometry": {
+                "location": {
+                    "lat": -26.0858865,
+                    "lng": 28.2522166
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": -26.0846249697085,
+                        "lng": 28.2535761302915
+                    },
+                    "southwest": {
+                        "lat": -26.0873229302915,
+                        "lng": 28.2508781697085
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+            "icon_background_color": "#FF9E67",
+            "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+            "name": "Pizza Perfect | Glen Marais",
+            "opening_hours": {
+                "open_now": true
+            },
+            "photos": [
+                {
+                    "height": 315,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/104490231687748939823\">Pizza Perfect | Glen Marais</a>"
+                    ],
+                    "photo_reference": "Aaw_FcKinEEOySokTagJeoPM_r4f7pOFxzxTBOWpx3WI57-mTMSwAXS6eIgGy74OT_AOO1xQDmH3esp5dmUwUa5_JqNqIcfUoaYVKsbKWoxCex2UvlhcWwBIJSn0CFwHN2WZ-MNLK1ristRS9UdUXOPFZyq7g5tZwl_3KmHdl7tqlzaC0yYz",
+                    "width": 851
+                }
+            ],
+            "place_id": "ChIJBSr_X98UlR4RtFZlPauGP30",
+            "plus_code": {
+                "compound_code": "W772+JV Glen marais, Kempton Park, South Africa",
+                "global_code": "5G5CW772+JV"
+            },
+            "price_level": 2,
+            "rating": 3.4,
+            "reference": "ChIJBSr_X98UlR4RtFZlPauGP30",
+            "scope": "GOOGLE",
+            "types": [
+                "meal_takeaway",
+                "restaurant",
+                "food",
+                "point_of_interest",
+                "establishment"
+            ],
+            "user_ratings_total": 86,
+            "vicinity": "35, Glen Balad Shopping Centre, Fried Street, Glen marais, Johannesburg"
+        }
+    ],
+    "status": "OK"
+}
