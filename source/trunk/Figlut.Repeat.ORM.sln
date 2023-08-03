@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.33913.275
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Figlut.Repeat.ORM", "Figlut.Repeat.ORM\Figlut.Repeat.ORM.csproj", "{1E8C9FDB-FC2B-4D4B-80B4-86CB1BF75214}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Figlut.Server.Toolkit.45", "..\..\..\Figlut-Suite\source\trunk\Windows\Figlut.Server.Toolkit.45\Figlut.Server.Toolkit.45.csproj", "{A7C9A24D-E19B-42F5-A298-805A489334EF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		CD_ROM|Any CPU = CD_ROM|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		DVD-5|Any CPU = DVD-5|Any CPU
+		Release|Any CPU = Release|Any CPU
+		SingleImage|Any CPU = SingleImage|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1E8C9FDB-FC2B-4D4B-80B4-86CB1BF75214}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{1E8C9FDB-FC2B-4D4B-80B4-86CB1BF75214}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{1E8C9FDB-FC2B-4D4B-80B4-86CB1BF75214}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E8C9FDB-FC2B-4D4B-80B4-86CB1BF75214}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E8C9FDB-FC2B-4D4B-80B4-86CB1BF75214}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E8C9FDB-FC2B-4D4B-80B4-86CB1BF75214}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{1E8C9FDB-FC2B-4D4B-80B4-86CB1BF75214}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E8C9FDB-FC2B-4D4B-80B4-86CB1BF75214}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E8C9FDB-FC2B-4D4B-80B4-86CB1BF75214}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{1E8C9FDB-FC2B-4D4B-80B4-86CB1BF75214}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{A7C9A24D-E19B-42F5-A298-805A489334EF}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{A7C9A24D-E19B-42F5-A298-805A489334EF}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{A7C9A24D-E19B-42F5-A298-805A489334EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7C9A24D-E19B-42F5-A298-805A489334EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7C9A24D-E19B-42F5-A298-805A489334EF}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7C9A24D-E19B-42F5-A298-805A489334EF}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{A7C9A24D-E19B-42F5-A298-805A489334EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7C9A24D-E19B-42F5-A298-805A489334EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7C9A24D-E19B-42F5-A298-805A489334EF}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{A7C9A24D-E19B-42F5-A298-805A489334EF}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E0E65EA3-FF0A-4902-921E-C65A83A4F23D}
+	EndGlobalSection
+EndGlobal
