@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="FiglutRepeat" Class="FiglutRepeatDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=PAULKOLOZSV38D1\MSSQLSERVER2012;Initial Catalog=FiglutRepeat;Persist Security Info=True;User ID=sa" SettingsObjectName="Figlut.Repeat.ORM.Properties.Settings" SettingsPropertyName="FiglutRepeatConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=10.0.0.2\SQLEXPRESS2014;Initial Catalog=FiglutRepeat;Persist Security Info=True;User ID=sa" SettingsObjectName="Figlut.Repeat.ORM.Properties.Settings" SettingsPropertyName="FiglutRepeatConnectionString4" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Country" Member="Countries">
     <Type Name="Country">
       <Column Name="CountryId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -284,6 +284,7 @@
       <Column Name="CustomerNotes" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
       <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="Subscription_Schedule" Member="Schedules" ThisKey="SubscriptionId" OtherKey="SubscriptionId" Type="Schedule" />
+      <Association Name="Subscription_SubscriptionProduct" Member="SubscriptionProducts" ThisKey="SubscriptionId" OtherKey="SubscriptionId" Type="SubscriptionProduct" />
       <Association Name="Subscriber_Subscription" Member="Subscriber" AccessModifier="Internal" ThisKey="SubscriberId" OtherKey="SubscriberId" Type="Subscriber" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="Organization_Subscription" Member="Organization" AccessModifier="Internal" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Organization" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
@@ -486,7 +487,59 @@
       <Association Name="Organization_User" Member="Users" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="User" />
       <Association Name="Organization_Order" Member="Orders" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Order" />
       <Association Name="Organization_Invoice" Member="Invoices" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Invoice" />
+      <Association Name="Organization_OrganizationProduct" Member="OrganizationProducts" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="OrganizationProduct" />
+      <Association Name="Organization_OrganizationLead" Member="OrganizationLeads" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="OrganizationLead" />
       <Association Name="OrganizationSubscriptionType_Organization" Member="OrganizationSubscriptionType" AccessModifier="Internal" ThisKey="OrganizationSubscriptionTypeId" OtherKey="OrganizationSubscriptionTypeId" Type="OrganizationSubscriptionType" IsForeignKey="true" DeleteRule="SET NULL" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OrganizationProduct" Member="OrganizationProducts">
+    <Type Name="OrganizationProduct">
+      <Column Name="OrganizationProductId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="OrganizationId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Code" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Price" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="OrganizationProduct_SubscriptionProduct" Member="SubscriptionProducts" ThisKey="OrganizationProductId" OtherKey="OrganizationProductId" Type="SubscriptionProduct" />
+      <Association Name="Organization_OrganizationProduct" Member="Organization" AccessModifier="Internal" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Organization" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SubscriptionProduct" Member="SubscriptionProducts">
+    <Type Name="SubscriptionProduct">
+      <Column Name="SubscriptionProductId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="OrganizationProductId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="SubscriptionId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="Quantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UnitOfMeasure" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="LastOrderNumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="LastOrderDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="OrganizationProduct_SubscriptionProduct" Member="OrganizationProduct" AccessModifier="Internal" ThisKey="OrganizationProductId" OtherKey="OrganizationProductId" Type="OrganizationProduct" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Subscription_SubscriptionProduct" Member="Subscription" AccessModifier="Internal" ThisKey="SubscriptionId" OtherKey="SubscriptionId" Type="Subscription" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OrganizationLead" Member="OrganizationLeads">
+    <Type Name="OrganizationLead">
+      <Column Name="OrganizationLeadId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="OrganizationId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="SearchLocationCentreName" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="SearchLocationCentreLatitude" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="SearchLocationCentreLongitude" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="SearchLocationRadius" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="GooglePlaceId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Latitude" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Longitude" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Vicinity" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="PhoneNumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="InternationPhoneNumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="IsMobilePhoneNumber" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="WebsiteUrl" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="BusinessStatus" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Organization_OrganizationLead" Member="Organization" AccessModifier="Internal" ThisKey="OrganizationId" OtherKey="OrganizationId" Type="Organization" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
 </Database>

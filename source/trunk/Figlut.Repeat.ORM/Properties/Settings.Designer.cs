@@ -12,7 +12,7 @@ namespace Figlut.Repeat.ORM.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.4.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.3.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -64,6 +64,17 @@ namespace Figlut.Repeat.ORM.Properties {
         public string FiglutRepeatConnectionString3 {
             get {
                 return ((string)(this["FiglutRepeatConnectionString3"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=10.0.0.2\\SQLEXPRESS2014;Initial Catalog=FiglutRepeat;Persist Security" +
+            " Info=True;User ID=sa")]
+        public string FiglutRepeatConnectionString4 {
+            get {
+                return ((string)(this["FiglutRepeatConnectionString4"]));
             }
         }
     }
