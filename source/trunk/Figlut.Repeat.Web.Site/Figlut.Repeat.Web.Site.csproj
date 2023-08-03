@@ -193,6 +193,7 @@
     <Compile Include="Controllers\InvoiceController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\OrganizationController.cs" />
+    <Compile Include="Controllers\OrganizationLeadController.cs" />
     <Compile Include="Controllers\OrganizationScheduleEntryController.cs" />
     <Compile Include="Controllers\OrganizationSubscriptionController.cs" />
     <Compile Include="Controllers\PublicHolidayController.cs" />
@@ -230,6 +231,7 @@
     <Compile Include="Models\HomePageImageGalleryModel.cs" />
     <Compile Include="Models\InformationModel.cs" />
     <Compile Include="Models\InvoiceModel.cs" />
+    <Compile Include="Models\OrganizationLeadModel.cs" />
     <Compile Include="Models\OrganizationModel.cs" />
     <Compile Include="Models\OrganizationProfileModel.cs" />
     <Compile Include="Models\OrganizationSubscriptionModel.cs" />
@@ -743,6 +745,9 @@
     <Content Include="Views\SmsSentQueueItem\Index.cshtml" />
     <Content Include="Views\Shared\_ResetPasswordDialog.cshtml" />
     <Content Include="Views\Shared\_EditProcessorDialog.cshtml" />
+    <Content Include="Views\Shared\_CreateOrganizationLeadDialog.cshtml" />
+    <Content Include="Views\Shared\_EditOrganizationLeadDialog.cshtml" />
+    <Content Include="Views\Shared\_OrganizationLeadGrid.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

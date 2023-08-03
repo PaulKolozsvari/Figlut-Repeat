@@ -28,6 +28,7 @@
         SubscribersPerPageToDisplay,
         UsersPerPageToDisplay,
         SubscriptionsPerPageToDisplay,
+        OrganizationLeadsPerPageToDisplay,
         ProcessorsPerPageToDisplay,
         ProcessorLogsPerPageToDisplay,
         WebRequestActivityPerPageToDisplay,

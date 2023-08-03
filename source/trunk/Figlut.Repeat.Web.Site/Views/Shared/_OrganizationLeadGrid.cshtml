@@ -1,0 +1,198 @@
+﻿@model Figlut.Repeat.Web.Site.Models.FilterModel<OrganizationLeadModel>
+
+@using Figlut.Server.Toolkit.Data;
+@using Figlut.Repeat.Web.Site.Configuration;
+@using Figlut.Repeat.Web.Site.Models;
+@using Figlut.Repeat.Web.Site.Extensions;
+@using Figlut.Repeat.ORM.Helpers;
+
+@{
+    Figlut.Repeat.Web.Site.Models.OrganizationLeadModel organizationLead = new OrganizationLeadModel();
+}
+@{
+    int leadsPerPageToDisplay = Convert.ToInt32(RepeatWebApp.Instance.GlobalSettings[GlobalSettingName.OrganizationLeadsPerPageToDisplay].SettingValue);
+    var grid = new WebGrid(Model.DataModel, canPage: true, rowsPerPage: leadsPerPageToDisplay, selectionFieldName: "selectedRow", ajaxUpdateContainerId: "gridContent");
+    grid.Pager(WebGridPagerModes.All);
+}
+
+<div id="gridContent" class="data-grid">
+    <div id="gridWrapper">
+        @Html.HiddenFor(p => p.ParentId)
+        @Html.HiddenFor(p => p.ParentCaption)
+        <div class="centerInformation" style="float:inherit; margin-top:1%; margin-bottom:1%;">
+            <div class="grid-search">
+                <table style="width:99%;">
+                    <tr>
+                        <td style="width:60%;">
+                            <div class="search-text">
+                                @Html.Raw("Search Text")
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.EditorFor(m => m.SearchText)
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="grid-buttons">
+                <div style="float: left; margin-left:2%; margin-right:2%">
+                    @Html.LinkButtonForSubmit("Search", "onSearchOrganizationLeadsClick()", "btnSearch", "search.png")
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        @Html.LinkButtonForSubmit("Download", "onDownloadAllOrganizationLeadsCsvFileClick()", "btnDownload", "spreadsheet.png")
+                        if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+                        {
+                            organizationLead = (OrganizationLeadModel)grid.Rows[grid.SelectedIndex].Value;
+                        }
+                    }
+                </div>
+                <div style="float: right; margin-left:2%; margin-right:2%">
+                    @if (string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        @Html.LinkButtonForSubmit("Create", "onCreateOrganizationLeadClick()", "btnCreateOrganizationLead", "red-document-plus-icon32.png")
+                        @Html.LinkButtonForCancel("Delete All", "onDeleteAllOrganizationLeadsClick()", "btnDeleteAllOrganizationLeads")
+                        if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+                        {
+                            organizationLead = (OrganizationLeadModel)grid.Rows[grid.SelectedIndex].Value;
+                            @Html.LinkButtonForCancel("Delete", "onDeleteOrganizationLeadClick()", "btnDeleteOrganizationLead")
+                            @Html.LinkButtonForSubmit("Edit", "onEditOrganizationLeadClick()", "btnEditOrganizationLead", "red-edit.png")
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="organization-lead-preview">
+            @if (Model.IsAdministrator && grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+            {
+                organizationLead = (OrganizationLeadModel)grid.Rows[grid.SelectedIndex].Value;
+                <div style="float:left; margin-left:2%; margin-right:2%;">
+                    <b>@Html.Raw(string.Format("ID: {0}", organizationLead.OrganizationLeadId.ToString()))</b>
+                </div>
+            }
+            <div style="float: right; margin-left:2%; margin-right:2%">
+                <b>@Html.Raw(string.Format("Leads Loaded: {0} of {1}", Model.TotalCount.ToString(), Model.TotalTableCount.ToString()))</b>
+            </div>
+        </div>
+        <div id="gridTableContainer">
+            @grid.GetHtml(
+                tableStyle: "webGrid",
+                headerStyle: "header",
+                alternatingRowStyle: "alt",
+                selectedRowStyle: "select",
+                columns: grid.Columns(
+                grid.Column("Leads", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
+                grid.Column(EntityReader<OrganizationLeadModel>.GetPropertyName(p => p.SearchLocationCentreName, false), "Centre Name"),
+                grid.Column(EntityReader<OrganizationLeadModel>.GetPropertyName(p => p.SearchLocationRadius, false), "Centre Radius"),
+                grid.Column(EntityReader<OrganizationLeadModel>.GetPropertyName(p => p.GooglePlaceId, false), "Place ID"),
+                grid.Column(EntityReader<OrganizationLeadModel>.GetPropertyName(p => p.Name, false), "Name"),
+                grid.Column(EntityReader<OrganizationLeadModel>.GetPropertyName(p => p.IsMobilePhoneNumber, false), "Mobile Number")
+            ))
+        </div>
+        <div class="organization-lead-preview">
+            @if (grid.HasSelection && (grid.SelectedIndex < grid.Rows.Count))
+            {
+                organizationLead = (OrganizationLeadModel)grid.Rows[grid.SelectedIndex].Value;
+                <div style="float: left; margin-left:2%; margin-right:2%">
+                    <b>@Html.Raw(string.Format("Cell Phone: {0}", organizationLead.Address))</b>
+                </div>
+                <div style="float:right; margin-left:2%; margin-right:2%; color: #a30e0e;">
+                    @Html.Raw(string.Format("{0}", organizationLead.WebsiteUrl))
+                </div>
+            }
+        </div>
+    </div>
+    <div id="OrganizationLeadsErrorField" style="color:#8A0808">
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <br />
+            @Html.Raw(ViewBag.ErrorMessage)
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#SearchText").focus();
+        makeGridRowsPostForm();
+        enableDatepickers();
+    });
+
+    function onSearchOrganizationLeadsClick() {
+        postOrganizationLeads();
+    }
+
+    function onDeleteOrganizationLeadClick() {
+        showDialog(
+            '#divConfirmationDialog',
+            '#dlgConfirmation',
+            'ConfirmDeleteDialog',
+            'OrganizationLead',
+            'identifier',
+            '@organizationLead.OrganizationLeadId.ToString()');
+    };
+
+    function onEditOrganizationLeadClick() {
+        showDialog(
+            '#divEditOrganizationLead',
+            '#dlgEditOrganizationLead',
+            'EditDialog',
+            'OrganizationLead',
+            'leadId',
+            '@organizationLead.OrganizationLeadId.ToString()');
+    };
+
+    function onCreateOrganizationLeadClick() {
+        showDialog(
+            '#divCreateOrganizationLead',
+            '#dlgCreateOrganizationLead',
+            'CreateDialog',
+            'OrganizationLead',
+            'organizationId',
+            '@Model.ParentId');
+    }
+
+    function getSearchParametersString() {
+        var searchParameters = '@string.Format("{0}|{1}|{2}|{3}",
+        Model.SearchText != null ? Model.SearchText : string.Empty,
+        Model.StartDate.HasValue ? Model.StartDate.Value.Date.ToString() : string.Empty,
+        Model.EndDate.HasValue ? Model.EndDate.Value.Date.ToString() : string.Empty,
+        Model.ParentId.ToString())'
+        return searchParameters;
+    }
+
+    function onDeleteAllOrganizationLeadsClick() {
+        var searchParameters = getSearchParametersString();
+        showDialog(
+            '#divConfirmationDialog',
+            '#dlgConfirmation',
+            'ConfirmDeleteAllDialog',
+            'OrganizationLead',
+            'searchParametersString',
+            searchParameters);
+    }
+
+    function onCreateSmsCampaignClick() {
+        var searchParameters = getSearchParametersString();
+        showDialog(
+            '#divCreateSmsCampaign',
+            '#dlgCreateSmsCampaign',
+            'CreateSmsCampaignDialog',
+            'OrganizationLead',
+            'searchParametersString',
+            searchParameters);
+    }
+
+    function onDownloadAllOrganizationLeadsCsvFileClick() {
+        var searchParameters = getSearchParametersString();
+        var downloadUrl = '@Url.Action("DownloadCsvFile", "OrganizationLead", new { searchParametersString = "_searchValue" })';
+        downloadUrl = downloadUrl.replace('_searchValue', searchParameters);
+        window.location = downloadUrl;
+    }
+
+    function postOrganizationLeads() {
+        $('form#frmDetails').trigger('submit');
+    };
+
+</script>

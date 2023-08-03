@@ -397,7 +397,7 @@
             {
                 if (!organizationId.HasValue || organizationId.Value == Guid.Empty)
                 {
-                    return PartialView(CREATE_ORGANIZATION_SUBSCRIPTION_DIALOG_PARTIAL_VIEW_NAME, new PublicHolidayModel());
+                    return PartialView(CREATE_ORGANIZATION_SUBSCRIPTION_DIALOG_PARTIAL_VIEW_NAME, new OrganizationSubscriptionModel());
                 }
                 return PartialView(CREATE_ORGANIZATION_SUBSCRIPTION_DIALOG_PARTIAL_VIEW_NAME, new OrganizationSubscriptionModel()
                 {

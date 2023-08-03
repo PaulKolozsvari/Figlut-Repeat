@@ -44,6 +44,7 @@
     <Compile Include="Csv\CountryCsv.cs" />
     <Compile Include="Csv\GlobalSettingCsv.cs" />
     <Compile Include="Csv\OrganizationCsv.cs" />
+    <Compile Include="Csv\OrganizationLeadCsv.cs" />
     <Compile Include="Csv\OrganizationSubscriptionCsv.cs" />
     <Compile Include="Csv\PublicHolidayCsv.cs" />
     <Compile Include="Csv\ScheduleCsv.cs" />

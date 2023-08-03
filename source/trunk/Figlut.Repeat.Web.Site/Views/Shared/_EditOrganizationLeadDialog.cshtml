@@ -1,0 +1,127 @@
+﻿@model Figlut.Repeat.Web.Site.Models.OrganizationLeadModel
+<div id="dlgEditOrganizationLead">
+    <img src="~/Images/Icons/red-edit32.png" style="float:right; margin-right:1%; margin-left:1%" />
+    <div class="centerForm">
+        <form id="EditOrganizationLeadForm">
+            @Html.ValidationSummary(true, "Failed to edit.")
+            <fieldset>
+                <legend>Confirmation Form</legend>
+                @Html.HiddenFor(m => m.OrganizationLeadId)
+                @Html.HiddenFor(m => m.OrganizationId)
+
+                @Html.HiddenFor(m => m.SearchLocationCentreName)
+                @Html.HiddenFor(m => m.SearchLocationCentreLatitude)
+                @Html.HiddenFor(m => m.SearchLocationCentreLongitude)
+                @Html.HiddenFor(m => m.SearchLocationRadius)
+                @Html.HiddenFor(m => m.GooglePlaceId)
+                @Html.HiddenFor(m => m.OrganizationLeadId)
+                @Html.HiddenFor(m => m.DateCreated)
+
+                <div class="field-label">
+                    @Html.Raw("Name *")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.TextBoxFor(m => m.Name)
+                    @Html.ValidationMessageFor(m => m.Name)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Latitude")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.Latitude)
+                    @Html.ValidationMessageFor(m => m.Latitude)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Longitude")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.Longitude)
+                    @Html.ValidationMessageFor(m => m.Longitude)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Address")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.Address)
+                    @Html.ValidationMessageFor(m => m.Address)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Customer Physical Address")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.Vicinity)
+                    @Html.ValidationMessageFor(m => m.Vicinity)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Phone Number")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.PhoneNumber)
+                    @Html.ValidationMessageFor(m => m.PhoneNumber)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Is Mobile Phone Number")
+                </div>
+                <div class="editor-field">
+                    @Html.DropDownListFor(m => m.IsMobilePhoneNumber, new SelectList(
+                        new[]
+                        {
+                            new { Value = "true", Text = "Yes" },
+                            new { Value = "false", Text = "No" },
+                        },
+                        "Value",
+                        "Text",
+                        Model
+                    ),
+                    new { @class = "drop-down-field" })
+                    @Html.ValidationMessageFor(m => m.IsMobilePhoneNumber, "Enabled is required.")
+                </div>
+                <div class="field-label">
+                    @Html.Raw("Business Status")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.BusinessStatus)
+                    @Html.ValidationMessageFor(m => m.BusinessStatus)
+                </div>
+                <br />
+                <div id="EditOrganizationLeadErrorField" style="color:#8A0808"></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var dialogName = '#dlgEditOrganizationLead';
+        createDialog(dialogName, 'Edit Organization Subscription', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
+    });
+
+    function onConfirmOK() {
+        var dialogName = '#dlgEditOrganizationLead';
+        var postBackUrl = '@Url.Action("EditDialog", "OrganizationLead")';
+        $.ajax({
+            url: postBackUrl,
+            type: 'POST',
+            data: $("#EditOrganizationLeadForm").serialize(),
+            success: function (data) {
+                if (data.Success) {
+                    $(dialogName).dialog("close");
+                    //Submit the form which will refresh grid to show the change the enabled/disabled.
+                    var form = $('#frmDetails');
+                    form.submit()
+                } else {
+                    $("#EditOrganizationLeadErrorField").html(data.ErrorMsg);
+                }
+            }
+        })
+    };
+
+    function onConfirmOpen() {
+
+    }
+
+    function onConfirmCancel() {
+        //$('#confirmation-message').val('');
+        $("#EditOrganizationLeadErrorField").html('');
+    }
+</script>

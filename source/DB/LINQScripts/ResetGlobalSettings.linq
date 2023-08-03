@@ -1,10 +1,14 @@
 <Query Kind="Statements">
   <Connection>
-    <ID>72244da7-af1c-4a14-a9a5-7097dd8b610c</ID>
+    <ID>609802f6-b984-4a66-9e38-919e8455af43</ID>
+    <NamingServiceVersion>2</NamingServiceVersion>
     <Persist>true</Persist>
-    <Server>PAULKOLOZSV38D1\MSSQLSERVER2012</Server>
+    <Server>localhost\SQLEXPRESS2014</Server>
+    <AllowDateOnlyTimeOnly>true</AllowDateOnlyTimeOnly>
     <Database>FiglutRepeat</Database>
-    <ShowServer>true</ShowServer>
+    <DriverData>
+      <LegacyMFA>false</LegacyMFA>
+    </DriverData>
   </Connection>
 </Query>
 
@@ -328,7 +332,16 @@ GlobalSetting subscriptionsPerPageToDisplay = new GlobalSetting()
 	Description = "Number of Subsriptions to display per grid page."
 };
 GlobalSettings.InsertOnSubmit(subscriptionsPerPageToDisplay);
-
+GlobalSetting organizationLeadsPerPageToDisplay = new GlobalSetting()
+{
+	GlobalSettingId = Guid.NewGuid(),
+	Category = "Grid",
+	SettingName = "OrganizationLeadsPerPageToDisplay",
+	SettingValue = "8",
+	DateCreated = DateTime.Now,
+	Description = "Number of leads to display per grid page."
+};
+GlobalSettings.InsertOnSubmit(organizationLeadsPerPageToDisplay);
 GlobalSetting processorPerPageToDisplay = new GlobalSetting()
 {
 	GlobalSettingId = Guid.NewGuid(),
