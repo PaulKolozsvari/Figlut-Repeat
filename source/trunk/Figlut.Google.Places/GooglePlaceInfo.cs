@@ -1,4 +1,5 @@
-﻿using System.Net.NetworkInformation;
+﻿using System;
+using System.Net.NetworkInformation;
 
 namespace Figlut.Google.Places
 {
@@ -34,15 +35,19 @@ namespace Figlut.Google.Places
 
         public double Longitude { get; set; }
 
+        public string Address { get; set; }
+
         public string Vicinity { get; set; }
 
         public string PhoneNumber { get; set; }
 
         public string InternationalPhoneNumber { get; set; }
 
-        public bool IsMobilePhoneNumber { get; set; }
+        public Nullable<bool> IsMobilePhoneNumber { get; set; }
 
         public string Website { get; set; }
+
+        public string BusinessStatus { get; set; }
 
         #endregion //Properties
     }

@@ -22,6 +22,7 @@
     using Figlut.Google.Places.Responses;
     using Figlut.Server.Toolkit.Data;
     using System.IO;
+    using System.Diagnostics;
 
     #endregion //Using Directives
 
@@ -326,7 +327,9 @@
             placeInfo.Name = place.name;
             placeInfo.Latitude = place.geometry.location.lat;
             placeInfo.Longitude = place.geometry.location.lng;
-            place.vicinity = place.vicinity;
+            placeInfo.Vicinity = place.vicinity;
+            placeInfo.BusinessStatus = place.business_status;
+
             GooglePlaceDetailResponse detailResponse = GetGooglePlaceDetails(client, placeInfo.PlaceId, placeInfo);
         }
 
@@ -340,16 +343,17 @@
             }
             placeInfo.PhoneNumber = detailResponse.result.formatted_phone_number;
             placeInfo.InternationalPhoneNumber = detailResponse.result.international_phone_number;
+            placeInfo.Address = detailResponse.result.formatted_address;
             placeInfo.IsMobilePhoneNumber = !IsInternationPhoneNumberLandline(placeInfo.InternationalPhoneNumber);
             placeInfo.Website = detailResponse.result.website;
             return detailResponse;
         }
 
-        public static bool IsInternationPhoneNumberLandline(string phoneNumber)
+        public static Nullable<bool> IsInternationPhoneNumberLandline(string phoneNumber)
         {
             if (string.IsNullOrEmpty(phoneNumber))
             {
-                return false;
+                return null;
             }
             phoneNumber = phoneNumber.Trim().Replace(" ", string.Empty);
             if (phoneNumber.Contains("+2721") ||
