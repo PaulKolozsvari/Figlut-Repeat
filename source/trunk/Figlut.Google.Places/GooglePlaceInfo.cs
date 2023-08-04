@@ -1,8 +1,12 @@
-﻿using System;
-using System.Net.NetworkInformation;
-
-namespace Figlut.Google.Places
+﻿namespace Figlut.Google.Places
 {
+    #region Using Directives
+
+    using System;
+    using System.Net.NetworkInformation;
+
+    #endregion //Using Directives
+
     public class GooglePlaceInfo
     {
         #region Constructors

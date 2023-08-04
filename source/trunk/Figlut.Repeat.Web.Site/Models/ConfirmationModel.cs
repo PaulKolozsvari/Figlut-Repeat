@@ -39,6 +39,11 @@
         public string SearchText { get; set; }
 
         /// <summary>
+        /// Category of the search results.
+        /// </summary>
+        public string SearchCategory { get; set; }
+
+        /// <summary>
         /// To be used when confirming for multiple entities in a date range.
         /// </summary>
         public Nullable<DateTime> StartDate { get; set; }

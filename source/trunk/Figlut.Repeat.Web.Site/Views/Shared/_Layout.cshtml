@@ -200,11 +200,13 @@
                                     <li>
                                         @Html.Raw("Manage")
                                         <ul style="left:7.0%">
-                                            @if(currentOrganization != null)
+                                            @if (currentOrganization != null)
                                             {
                                                 <li>@Html.ActionLink("Subscriptions", "Index", "OrganizationSubscription", new { organizationId = currentOrganization.OrganizationId }, null)</li>
                                                 <br />
                                                 <li>@Html.ActionLink("Schedule Entries", "Index", "OrganizationScheduleEntry", new { organizationId = currentOrganization.OrganizationId }, null)</li>
+                                                <br />
+                                                <li>@Html.ActionLink("Leads", "Index", "OrganizationLead", new { organizationId = currentOrganization.OrganizationId }, null)</li>
                                                 <br />
                                                 <hr />
                                             }

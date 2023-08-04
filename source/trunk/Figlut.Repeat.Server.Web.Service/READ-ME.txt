@@ -243,3 +243,8 @@ Create Logos:
 Creating and editing HTML code in C#:
 	HTML Agility Pack: get the Nuget package:
 		http://html-agility-pack.net/?z=codeplex
+
+	
+	ImportGooglePlacesLeadsFromFile Example Command:
+		/import_google_places_leads_from_file #viro "C:\Docs\temp\Restaurants.csv"
+		/import_google_places_leads #viro 50000

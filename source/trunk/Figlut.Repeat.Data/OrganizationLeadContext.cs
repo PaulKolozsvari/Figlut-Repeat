@@ -32,6 +32,13 @@
             return result;
         }
 
+        public List<string> GetOrganizationLeadCentreNamesDistinct()
+        {
+            return (from s in DB.GetTable<OrganizationLead>()
+                    orderby s.SearchLocationCentreName
+                    select s.SearchLocationCentreName).Distinct().ToList();
+        }
+
         public long GetAllOrganizationLeadsCount()
         {
             return DB.GetTable<OrganizationLead>().LongCount();
@@ -46,40 +53,29 @@
             return DB.GetTable<OrganizationLead>().LongCount(p => p.OrganizationId == organizationId.Value);
         }
 
-        public List<OrganizationLead> GetOrganizationLeadsByFilter(string searchFilter, Nullable<Guid> organizationId)
+        public List<OrganizationLead> GetOrganizationLeadsByFilter(string searchFilter, Nullable<Guid> organizationId, string centreName)
         {
             string searchFilterLower = searchFilter == null ? string.Empty : searchFilter.ToLower();
-            List<OrganizationLead> result = null;
-            if (organizationId.HasValue)
-            {
-                result = (from lead in DB.GetTable<OrganizationLead>()
-                          where lead.OrganizationId == organizationId.Value &&
-                          (lead.Name.ToLower().Contains(searchFilterLower) ||
-                          lead.PhoneNumber.ToLower().Contains(searchFilterLower) ||
-                          lead.InternationPhoneNumber.ToLower().Contains(searchFilterLower) ||
-                          lead.WebsiteUrl.ToLower().Contains(searchFilterLower))
-                          orderby lead.SearchLocationCentreName descending
-                          select lead).ToList();
-            }
-            else
-            {
-                result = (from lead in DB.GetTable<OrganizationLead>()
-                          where
-                          (lead.Name.ToLower().Contains(searchFilterLower) ||
-                          lead.PhoneNumber.ToLower().Contains(searchFilterLower) ||
-                          lead.InternationPhoneNumber.ToLower().Contains(searchFilterLower) ||
-                          lead.WebsiteUrl.ToLower().Contains(searchFilterLower))
-                          orderby lead.SearchLocationCentreName descending
-                          select lead).ToList();
-            }
+            bool searchByOrganizationId = organizationId.HasValue;
+            bool searchByCentreName = !string.IsNullOrEmpty(centreName);
+            centreName = centreName == null ? string.Empty : centreName.ToLower();
+            List<OrganizationLead> result = (from lead in DB.GetTable<OrganizationLead>()
+                                             where (searchByOrganizationId ? lead.OrganizationId == organizationId.Value : true) &&
+                                             (searchByCentreName ? lead.SearchLocationCentreName.ToLower() == centreName : true) &&
+                                             (lead.SearchLocationCentreName.ToLower().Contains(searchFilterLower) ||
+                                             lead.Name.ToLower().Contains(searchFilterLower) ||
+                                             lead.PhoneNumber.ToLower().Contains(searchFilterLower) ||
+                                             lead.InternationPhoneNumber.ToLower().Contains(searchFilterLower) ||
+                                             lead.WebsiteUrl.ToLower().Contains(searchFilterLower))
+                                             select lead).ToList();
             return result;
         }
 
-        public void DeleteOrganizationLeadsByFilter(string searchFilter, Nullable<Guid> organizationId)
+        public void DeleteOrganizationLeadsByFilter(string searchFilter, Nullable<Guid> organizationId, string centreName)
         {
             using (TransactionScope t = new TransactionScope())
             {
-                List<OrganizationLead> subscriptions = GetOrganizationLeadsByFilter(searchFilter, organizationId);
+                List<OrganizationLead> subscriptions = GetOrganizationLeadsByFilter(searchFilter, organizationId, centreName);
                 DB.GetTable<OrganizationLead>().DeleteAllOnSubmit(subscriptions);
                 DB.SubmitChanges();
                 t.Complete();

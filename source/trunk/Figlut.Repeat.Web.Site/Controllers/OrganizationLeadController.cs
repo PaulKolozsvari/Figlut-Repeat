@@ -32,7 +32,8 @@
         private FilterModel<OrganizationLeadModel> GetOrganizationLeadFilterModel(
             RepeatEntityContext context,
             FilterModel<OrganizationLeadModel> model,
-            Guid organizationId)
+            Guid organizationId,
+            string centreName)
         {
             if (organizationId == Guid.Empty)
             {
@@ -45,7 +46,7 @@
                 context = RepeatEntityContext.Create();
             }
             model.IsAdministrator = IsCurrentUserAdministrator(context);
-            List<OrganizationLead> leads = context.GetOrganizationLeadsByFilter(model.SearchText, organizationId);
+            List<OrganizationLead> leads = context.GetOrganizationLeadsByFilter(model.SearchText, organizationId, centreName);
             List<OrganizationLeadModel> modelList = new List<OrganizationLeadModel>();
             foreach (OrganizationLead view in leads)
             {
@@ -61,15 +62,43 @@
             {
                 model.ParentId = organization.OrganizationId;
                 model.ParentCaption = organization.Name;
+                model.SearchCategory = centreName ?? string.Empty;
             }
             return model;
+        }
+
+        public void RefreshCentresDropDownList(string defaultCentreName, RepeatEntityContext context)
+        {
+            List<SelectListItem> centreNamesList = new List<SelectListItem>();
+            List<string> centreNames = context.GetOrganizationLeadCentreNamesDistinct();
+            centreNamesList.Add(new SelectListItem() //Add an empty entry where it's not selected.
+            {
+                Text = string.Empty,
+                Value = string.Empty,
+                Selected = true
+            });
+            for (int i = 0; i < centreNames.Count; i++)
+            {
+                string centreName = centreNames[i];
+                centreNamesList.Add(new SelectListItem()
+                {
+                    Text = centreName,
+                    Value = centreName,
+                    Selected = false
+                });
+            }
+            ViewBag.CentreNamesList = centreNamesList;
+            if (!string.IsNullOrEmpty(defaultCentreName))
+            {
+                ViewBag.SearchCategory = defaultCentreName;
+            }
         }
 
         #endregion //Methods
 
         #region Actions
 
-        public ActionResult Index(Guid organizationId)
+        public ActionResult Index(Guid organizationId, string centreName)
         {
             try
             {
@@ -81,8 +110,10 @@
                 FilterModel<OrganizationLeadModel> model = GetOrganizationLeadFilterModel(
                     context,
                     new FilterModel<OrganizationLeadModel>(),
-                    organizationId);
+                    organizationId,
+                    centreName);
                 ViewBag.SearchFieldIdentifier = model.SearchFieldIdentifier;
+                RefreshCentresDropDownList(centreName, context);
                 return View(model);
             }
             catch (Exception ex)
@@ -103,7 +134,8 @@
                 {
                     return RedirectToHome();
                 }
-                FilterModel<OrganizationLeadModel> resultModel = GetOrganizationLeadFilterModel(context, model, model.ParentId);
+                FilterModel<OrganizationLeadModel> resultModel = GetOrganizationLeadFilterModel(context, model, model.ParentId, model.SearchCategory);
+                RefreshCentresDropDownList(model.SearchCategory, context);
                 if (resultModel == null) //There was an error and ViewBag.ErrorMessage has been set. So just return an empty model.
                 {
                     return PartialView(ORGANIZATION_LEAD_GRID_PARTIAL_VIEW_NAME, new FilterModel<OrganizationLeadModel>());
@@ -149,7 +181,7 @@
                 {
                     return RedirectToHome();
                 }
-                OrganizationLead lead = context.GetOrganizationLead(identifier, true);
+                OrganizationLead lead = context.GetOrganizationLead(identifier, false);
                 ConfirmationModel model = new ConfirmationModel();
                 model.PostBackControllerAction = GetCurrentActionName();
                 model.PostBackControllerName = GetCurrentControllerName();
@@ -214,7 +246,8 @@
                 string searchText;
                 GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
 
-                string organizationIdString = searchParameters[searchParameters.Length - 1];
+                string organizationIdString = searchParameters[searchParameters.Length - 2];
+                string centreName = searchParameters[searchParameters.Length - 1];
                 Guid organizationId = Guid.Parse(organizationIdString);
                 Organization organization = context.GetOrganization(organizationId, true);
                 if (!CurrentUserHasAccessToOrganization(organization.OrganizationId, context))
@@ -224,7 +257,10 @@
                 model.ParentId = organization.OrganizationId;
                 model.ParentCaption = organization.Name;
                 model.SearchText = searchText;
-                model.ConfirmationMessage = string.Format("Delete all Leads currently loaded for {0} '{1}'?", typeof(Organization).Name, organization.Name);
+                model.SearchCategory = centreName;
+                model.ConfirmationMessage = !string.IsNullOrEmpty(centreName) ?
+                    string.Format("Delete all Leads currently loaded for {0} '{1}' in area {2}?", typeof(Organization).Name, organization.Name, centreName) :
+                    string.Format("Delete all Leads currently loaded for {0} '{1}'?", typeof(Organization).Name, organization.Name);
                 PartialViewResult result = PartialView(CONFIRMATION_DIALOG_PARTIAL_VIEW_NAME, model);
                 return result;
             }
@@ -251,7 +287,7 @@
                 {
                     return RedirectToHome();
                 }
-                context.DeleteOrganizationLeadsByFilter(model.SearchText, model.ParentId);
+                context.DeleteOrganizationLeadsByFilter(model.SearchText, model.ParentId, model.SearchCategory);
                 return GetJsonResult(true);
             }
             catch (Exception ex)
@@ -272,7 +308,7 @@
                 string searchText;
                 GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
 
-                string organizationIdString = searchParameters[searchParameters.Length - 1];
+                string organizationIdString = searchParameters[searchParameters.Length - 2];
                 Guid organizationId = Guid.Parse(organizationIdString);
                 Organization organization = context.GetOrganization(organizationId, true);
                 if (organizationId == Guid.Empty)
@@ -280,12 +316,13 @@
                     return RedirectToError(string.Format("{0} not specified.",
                         EntityReader<OrganizationLeadModel>.GetPropertyName(p => p.OrganizationId, false)));
                 }
+                string centreName = searchParameters[searchParameters.Length - 1];
                 if (!Request.IsAuthenticated || !CurrentUserHasAccessToOrganization(organization.OrganizationId, context))
                 {
                     return RedirectToHome();
                 }
                 GetConfirmationModelFromSearchParametersString(searchParametersString, out searchParameters, out searchText);
-                List<OrganizationLead> leads = context.GetOrganizationLeadsByFilter(searchText, organizationId);
+                List<OrganizationLead> leads = context.GetOrganizationLeadsByFilter(searchText, organizationId, centreName);
                 EntityCache<Guid, OrganizationLeadCsv> cache = new EntityCache<Guid, OrganizationLeadCsv>();
                 foreach (OrganizationLead v in leads)
                 {
@@ -403,6 +440,7 @@
                     return GetJsonResult(false, errorMessage);
                 }
                 OrganizationLead lead = new OrganizationLead();
+                model.DateCreated = DateTime.Now;
                 model.CopyPropertiesToOrganizationLead(lead);
                 context.Save<OrganizationLead>(lead, lead.OrganizationLeadId, false);
                 return GetJsonResult(true);

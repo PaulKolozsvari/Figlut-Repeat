@@ -35,7 +35,7 @@
         {
             try
             {
-                Start(true);
+                Start(true, true);
             }
             catch (Exception ex)
             {
@@ -57,9 +57,9 @@
             }
         }
 
-        internal static void Start(bool initializeServiceHost)
+        internal static void Start(bool initializeServiceHost, bool initializeProcessors)
         {
-            RepeatApp.Instance.Initialize(initializeServiceHost, true);
+            RepeatApp.Instance.Initialize(initializeServiceHost, initializeProcessors);
         }
 
         internal static new void Stop()

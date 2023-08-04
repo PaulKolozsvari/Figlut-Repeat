@@ -23,6 +23,10 @@
     using Figlut.Server.Toolkit.Data;
     using System.IO;
     using System.Diagnostics;
+    using System.Security.Cryptography;
+    using System.Xml.Linq;
+    using System.IdentityModel.Metadata;
+    using System.Runtime.Remoting.Contexts;
 
     #endregion //Using Directives
 
@@ -38,6 +42,7 @@
         private const string DOWNLOAD_COUNTRY_PUBLIC_HOLIDAYS = "/download_country_public_holidays";
         private const string DOWNLOAD_ALL_COUNTRIES_PUBLIC_HOLIDAYS = "/download_all_countries_public_holidays";
         private const string IMPORT_GOOGLE_PLACES_LEADS = "/import_google_places_leads";
+        private const string IMPORT_GOOGLE_PLACES_LEADS_FROM_FILE = "/import_google_places_leads_from_file";
 
         #endregion //Constants
 
@@ -54,6 +59,10 @@
             string countryCode = null;
             string countryName = null;
             string yearString = null;
+            string organizationIdentifier = null;
+            string radiusString = null;
+            int radius = 0;
+            string filePath = null;
             int year = 0;
             for (int i = 0; i < args.Length; i++)
             {
@@ -115,7 +124,30 @@
                         DownloadAllCountriesPublicHolidays(true, year);
                         return false;
                     case IMPORT_GOOGLE_PLACES_LEADS:
-                        ImportGooglePlacesLeads(true);
+                        if (args.Length < i + 2)
+                        {
+                            throw new ArgumentException(string.Format(
+                                @"{0} requires 1 additional parameters: File Path, Organization Identifier e.g. /{0} figlut",
+                                IMPORT_GOOGLE_PLACES_LEADS));
+                        }
+                        organizationIdentifier = args[i + 1];
+                        radiusString = args[i + 2];
+                        if (!int.TryParse(radiusString, out radius))
+                        {
+                            throw new InvalidCastException(string.Format("Could not parse {0} to an integer for the radius parameter.", radiusString));
+                        }
+                        ImportGooglePlacesLeads(true, organizationIdentifier, radius);
+                        return false;
+                    case IMPORT_GOOGLE_PLACES_LEADS_FROM_FILE:
+                        if (args.Length < i + 2)
+                        {
+                            throw new ArgumentException(string.Format(
+                                @"{0} requires 2 additional parameters: File Path, Organization Identifier e.g. /{0} figlut ""C:\Docs\temp\Restaurants.csv""",
+                                IMPORT_GOOGLE_PLACES_LEADS_FROM_FILE));
+                        }
+                        organizationIdentifier = args[i + 1];
+                        filePath = args[i + 2];
+                        ImportGooglePlacesLeadsFromFile(true, organizationIdentifier, filePath);
                         return false;
                     default:
                         throw new ArgumentException(string.Format("Invalid argument '{0}'.", a));
@@ -206,7 +238,7 @@
         {
             if (initializeService)
             {
-                RepeatService.Start(false);
+                RepeatService.Start(false, false);
             }
             GOC.Instance.Logger.LogMessage(new LogMessage(string.Format("Sending SMS to {0}: {1}", recipientNumber, message), LogMessageType.Information, LoggingLevel.Maximum));
             SmsResponse smsResponse = RepeatApp.Instance.SmsSender.SendSms(new SmsRequest(recipientNumber, message, 130, null, null, null));
@@ -234,7 +266,7 @@
         {
             if (initializeService)
             {
-                RepeatService.Start(false);
+                RepeatService.Start(false, false);
             }
             GOC.Instance.Logger.LogMessage(new LogMessage("Querying countries in database.", LogMessageType.Information, LoggingLevel.Maximum));
             RepeatEntityContext context = RepeatEntityContext.Create();
@@ -249,7 +281,7 @@
         {
             if (initializeService)
             {
-                RepeatService.Start(false);
+                RepeatService.Start(false, false);
             }
             GOC.Instance.Logger.LogMessage(new LogMessage(string.Format("Downloading {0} public holidays calendar for {1}.", year, countryName), LogMessageType.Information, LoggingLevel.Maximum));
             ICalCalendar calendar = RepeatApp.Instance.CalendarDownloader.DownloadICalCalendar(countryCode, countryName, year, null, true);
@@ -261,13 +293,14 @@
             GOC.Instance.Logger.LogMessage(new LogMessage(string.Format("Downloaded and saved {0} public holidays calendar successfully for {1}.", year, countryName), LogMessageType.SuccessAudit, LoggingLevel.Normal));
         }
 
-        private static void ImportGooglePlacesLeads(bool initializeService)
+        private static void ImportGooglePlacesLeads(bool initializeService, string organizationIdentifier, int radius)
         {
             if (initializeService)
             {
-                RepeatService.Start(false);
+                RepeatService.Start(false, false);
             }
-            int radius = 50000;
+            RepeatEntityContext context = RepeatEntityContext.Create();
+            ORM.Organization organization = context.GetOrganizationByIdentifier(organizationIdentifier, true);
             List<GooglePlaceCentre> centres = new List<GooglePlaceCentre>()
             {
                 new GooglePlaceCentre("Viro Solutions Cape Town", -33.9652741174112, 18.59194739700472, radius),
@@ -280,9 +313,8 @@
                 new GooglePlaceCentre("East Rand Mall Boksburg", -26.181537847699772, 28.240395212071544, radius),
                 new GooglePlaceCentre("Bedfordview", -26.176624536574266, 28.13697606229055, radius),
                 new GooglePlaceCentre("Bryanston", -26.075343008367188, 28.027774135582316, radius),
-                new GooglePlaceCentre("Greenstone", -26.118463112657444, 28.141951140905014, radius),
+                new GooglePlaceCentre("Greenstone", -26.118463112657444, 28.141951140905014, radius)
             };
-
             EntityCache<Guid, GooglePlaceInfo> cache = new EntityCache<Guid, GooglePlaceInfo>();
             GooglePlacesClient client = new GooglePlacesClient("https://maps.googleapis.com/maps/api/place", 30000, key: "AIzaSyD-PwB2sxuK31DnRYXEJO0l58xrzScZzkc");
             foreach (var centre in centres)
@@ -295,6 +327,7 @@
                     GooglePlaceInfo placeInfo = new GooglePlaceInfo(centre);
                     ParseGooglePlacesResult(client, place, placeInfo);
                     cache.Add(Guid.NewGuid(), placeInfo);
+                    SaveGooglePlaceInfoAsOrganizationLead(placeInfo, organization, context);
                 }
                 int pageIndex = 2;
                 while (!string.IsNullOrEmpty(placesResponse.next_page_token))
@@ -307,15 +340,54 @@
                         GooglePlaceInfo placeInfo = new GooglePlaceInfo(centre);
                         ParseGooglePlacesResult(client, place, placeInfo);
                         cache.Add(Guid.NewGuid(), placeInfo);
+                        SaveGooglePlaceInfoAsOrganizationLead(placeInfo, organization, context);
                     }
                 }
             }
-            string filePath = @"C:\Docs\temp\Restaurants.csv";
-            if (File.Exists(filePath))
+        }
+
+        private static void SaveGooglePlaceInfoAsOrganizationLead(GooglePlaceInfo placeInfo, ORM.Organization organization, RepeatEntityContext context)
+        {
+            OrganizationLead lead = new OrganizationLead()
             {
-                File.Delete(filePath);
+                OrganizationLeadId = Guid.NewGuid(),
+                OrganizationId = organization.OrganizationId,
+                SearchLocationCentreName = placeInfo.CentreName,
+                SearchLocationCentreLatitude = placeInfo.CentreLatitude,
+                SearchLocationCentreLongitude = placeInfo.CentreLongitude,
+                SearchLocationRadius = placeInfo.RadiusFromCentre,
+                GooglePlaceId = placeInfo.PlaceId,
+                Name = placeInfo.Name,
+                Latitude = placeInfo.Latitude,
+                Longitude = placeInfo.Longitude,
+                Address = placeInfo.Address,
+                Vicinity = placeInfo.Vicinity,
+                PhoneNumber = placeInfo.PhoneNumber,
+                InternationPhoneNumber = placeInfo.InternationalPhoneNumber,
+                IsMobilePhoneNumber = placeInfo.IsMobilePhoneNumber,
+                WebsiteUrl = placeInfo.Website,
+                BusinessStatus = placeInfo.BusinessStatus,
+                DateCreated = DateTime.Now
+            };
+            context.Save<OrganizationLead>(lead, lead.Name, false);
+        }
+
+        private static void ImportGooglePlacesLeadsFromFile(bool initializeService, string organizationIdentifier, string filePath)
+        {
+            if (initializeService)
+            {
+                RepeatService.Start(false, false);
             }
-            cache.ExportToCsv(filePath, null, false, false);
+            FileSystemHelper.ValidateFileExists(filePath);
+            GOC.Instance.Logger.LogMessage(new LogMessage($"Importing Google Places as leads from file ... {filePath}", LogMessageType.Information, LoggingLevel.Normal));
+            EntityCache<Guid, GooglePlaceInfo> cache = new EntityCache<Guid, GooglePlaceInfo>();
+            cache.ImportFromCsv(filePath, false);
+            RepeatEntityContext context = RepeatEntityContext.Create();
+            ORM.Organization organization = context.GetOrganizationByIdentifier(organizationIdentifier, true);
+            foreach (GooglePlaceInfo place in cache)
+            {
+                SaveGooglePlaceInfoAsOrganizationLead(place, organization, context);
+            }
         }
 
         private static void ParseGooglePlacesResult(
@@ -341,8 +413,8 @@
             {
                 return null;
             }
-            placeInfo.PhoneNumber = detailResponse.result.formatted_phone_number;
-            placeInfo.InternationalPhoneNumber = detailResponse.result.international_phone_number;
+            placeInfo.PhoneNumber = !string.IsNullOrEmpty(detailResponse.result.formatted_phone_number) ? detailResponse.result.formatted_phone_number.Replace(" ", string.Empty) : null;
+            placeInfo.InternationalPhoneNumber = !string.IsNullOrEmpty(detailResponse.result.international_phone_number) ? detailResponse.result.international_phone_number.Replace(" ", string.Empty) : null;
             placeInfo.Address = detailResponse.result.formatted_address;
             placeInfo.IsMobilePhoneNumber = !IsInternationPhoneNumberLandline(placeInfo.InternationalPhoneNumber);
             placeInfo.Website = detailResponse.result.website;
@@ -379,7 +451,7 @@
                 if (_testMode)
                 {
                     Console.WriteLine(string.Format("Starting {0} ... ", RepeatApp.Instance.Settings.ApplicationName));
-                    RepeatService.Start(true);
+                    RepeatService.Start(true, true);
 
                     Console.WriteLine();
                     Console.WriteLine("Initialization complete.");

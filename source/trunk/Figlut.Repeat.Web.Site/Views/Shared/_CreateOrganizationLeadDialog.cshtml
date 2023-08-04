@@ -46,7 +46,7 @@
                     @Html.ValidationMessageFor(m => m.Address)
                 </div>
                 <div class="field-label">
-                    @Html.Raw("Customer Physical Address")
+                    @Html.Raw("Vicinity")
                 </div>
                 <div class="editor-field-dialog">
                     @Html.EditorFor(m => m.Vicinity)
@@ -58,6 +58,13 @@
                 <div class="editor-field-dialog">
                     @Html.EditorFor(m => m.PhoneNumber)
                     @Html.ValidationMessageFor(m => m.PhoneNumber)
+                </div>
+                <div class="field-label">
+                    @Html.Raw("International Phone Number")
+                </div>
+                <div class="editor-field-dialog">
+                    @Html.EditorFor(m => m.InternationPhoneNumber)
+                    @Html.ValidationMessageFor(m => m.InternationPhoneNumber)
                 </div>
                 <div class="field-label">
                     @Html.Raw("Is Mobile Phone Number")
@@ -93,7 +100,7 @@
 <script type="text/javascript">
     $(function () {
         var dialogName = '#dlgCreateOrganizationLead';
-        createDialog(dialogName, 'Create Organization Subscription', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
+        createDialog(dialogName, 'Create Organization Lead', onConfirmOK, onConfirmOpen, onConfirmCancel, 450, 450);
     });
 
     function onConfirmOK() {

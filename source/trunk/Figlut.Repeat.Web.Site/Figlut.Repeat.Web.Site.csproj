@@ -14,7 +14,7 @@
     <RootNamespace>Figlut.Repeat.Web.Site</RootNamespace>
     <AssemblyName>Figlut.Repeat.Web.Site</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <MvcBuildViews>true</MvcBuildViews>
+    <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -748,6 +748,7 @@
     <Content Include="Views\Shared\_CreateOrganizationLeadDialog.cshtml" />
     <Content Include="Views\Shared\_EditOrganizationLeadDialog.cshtml" />
     <Content Include="Views\Shared\_OrganizationLeadGrid.cshtml" />
+    <Content Include="Views\OrganizationLead\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

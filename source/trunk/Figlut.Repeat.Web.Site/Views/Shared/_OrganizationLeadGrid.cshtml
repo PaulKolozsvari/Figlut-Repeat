@@ -28,11 +28,30 @@
                                 @Html.Raw("Search Text")
                             </div>
                         </td>
+                        @if (ViewBag.CentreNamesList != null)
+                        {
+                            <td style="width:28%;">
+                                @if (ViewBag.CentreNamesList != null)
+                                {
+                                    <div class="field-label">
+                                        @Html.Raw("Area")
+                                    </div>
+                                }
+                            </td>
+                        }
                     </tr>
                     <tr>
                         <td>
                             @Html.EditorFor(m => m.SearchText)
                         </td>
+                        @if (ViewBag.CentreNamesList != null)
+                        {
+                            <td>
+                                <div class="editor-field">
+                                    @Html.DropDownList("SearchCategory", ViewBag.CentreNamesList as List<SelectListItem>, new { @class = "drop-down-field" })
+                                </div>
+                            </td>
+                        }
                     </tr>
                 </table>
             </div>
@@ -83,11 +102,12 @@
                 selectedRowStyle: "select",
                 columns: grid.Columns(
                 grid.Column("Leads", format: (item) => item.GetSelectLink("*"), style: "select-column-style"),
-                grid.Column(EntityReader<OrganizationLeadModel>.GetPropertyName(p => p.SearchLocationCentreName, false), "Centre Name"),
-                grid.Column(EntityReader<OrganizationLeadModel>.GetPropertyName(p => p.SearchLocationRadius, false), "Centre Radius"),
-                grid.Column(EntityReader<OrganizationLeadModel>.GetPropertyName(p => p.GooglePlaceId, false), "Place ID"),
+                grid.Column(EntityReader<OrganizationLeadModel>.GetPropertyName(p => p.SearchLocationCentreName, false), "Area"),
+                //grid.Column(EntityReader<OrganizationLeadModel>.GetPropertyName(p => p.SearchLocationRadius, false), "Centre Radius"),
+                //grid.Column(EntityReader<OrganizationLeadModel>.GetPropertyName(p => p.GooglePlaceId, false), "Place ID"),
                 grid.Column(EntityReader<OrganizationLeadModel>.GetPropertyName(p => p.Name, false), "Name"),
-                grid.Column(EntityReader<OrganizationLeadModel>.GetPropertyName(p => p.IsMobilePhoneNumber, false), "Mobile Number")
+                grid.Column(EntityReader<OrganizationLeadModel>.GetPropertyName(p => p.InternationPhoneNumber, false), "Phone"),
+                grid.Column(EntityReader<OrganizationLeadModel>.GetPropertyName(p => p.IsMobilePhoneNumber, false), "Mobile Number", format: (item) => @Html.Raw("<input type='checkbox' " + ((item.IsMobilePhoneNumber == true) ? "checked" : "") + " disabled='disabled' />"))
             ))
         </div>
         <div class="organization-lead-preview">
@@ -95,7 +115,7 @@
             {
                 organizationLead = (OrganizationLeadModel)grid.Rows[grid.SelectedIndex].Value;
                 <div style="float: left; margin-left:2%; margin-right:2%">
-                    <b>@Html.Raw(string.Format("Cell Phone: {0}", organizationLead.Address))</b>
+                    <b>@Html.Raw(string.Format("Address: {0}", organizationLead.Address))</b>
                 </div>
                 <div style="float:right; margin-left:2%; margin-right:2%; color: #a30e0e;">
                     @Html.Raw(string.Format("{0}", organizationLead.WebsiteUrl))
@@ -139,7 +159,7 @@
             '#dlgEditOrganizationLead',
             'EditDialog',
             'OrganizationLead',
-            'leadId',
+            'organizationLeadId',
             '@organizationLead.OrganizationLeadId.ToString()');
     };
 
@@ -154,11 +174,12 @@
     }
 
     function getSearchParametersString() {
-        var searchParameters = '@string.Format("{0}|{1}|{2}|{3}",
+        var searchParameters = '@string.Format("{0}|{1}|{2}|{3}|{4}",
         Model.SearchText != null ? Model.SearchText : string.Empty,
         Model.StartDate.HasValue ? Model.StartDate.Value.Date.ToString() : string.Empty,
         Model.EndDate.HasValue ? Model.EndDate.Value.Date.ToString() : string.Empty,
-        Model.ParentId.ToString())'
+        Model.ParentId.ToString(),
+        Model.SearchCategory.ToString())'
         return searchParameters;
     }
 
@@ -168,17 +189,6 @@
             '#divConfirmationDialog',
             '#dlgConfirmation',
             'ConfirmDeleteAllDialog',
-            'OrganizationLead',
-            'searchParametersString',
-            searchParameters);
-    }
-
-    function onCreateSmsCampaignClick() {
-        var searchParameters = getSearchParametersString();
-        showDialog(
-            '#divCreateSmsCampaign',
-            '#dlgCreateSmsCampaign',
-            'CreateSmsCampaignDialog',
             'OrganizationLead',
             'searchParametersString',
             searchParameters);

@@ -62,7 +62,19 @@
             string formattedPhoneNumber = null;
             if (string.IsNullOrEmpty(this.Name))
             {
-                errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationSubscriptionModel>.GetPropertyName(p => p.SubscriberCellPhoneNumber, true));
+                errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationLeadModel>.GetPropertyName(p => p.Name, true));
+            }
+            else if (string.IsNullOrEmpty(this.PhoneNumber))
+            {
+                errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationLeadModel>.GetPropertyName(p => p.PhoneNumber, true));
+            }
+            else if (string.IsNullOrEmpty(this.InternationPhoneNumber))
+            {
+                errorMessage = string.Format("{0} not entered.", EntityReader<OrganizationLeadModel>.GetPropertyName(p => p.InternationPhoneNumber, true));
+            }
+            else if (!DataShaper.IsValidPhoneNumber(this.PhoneNumber, out formattedPhoneNumber))
+            {
+                errorMessage = string.Format("{0} is not a valid phone number.", this.InternationPhoneNumber);
             }
             else if (!DataShaper.IsValidPhoneNumber(this.InternationPhoneNumber, out formattedPhoneNumber))
             {
@@ -78,7 +90,7 @@
 
         public void CopyPropertiesToOrganizationLead(OrganizationLead organizationLead)
         {
-            EntityReader.CopyProperties(organizationLead, this, true);
+            EntityReader.CopyProperties(this, organizationLead, true);
         }
 
         #endregion //Methods

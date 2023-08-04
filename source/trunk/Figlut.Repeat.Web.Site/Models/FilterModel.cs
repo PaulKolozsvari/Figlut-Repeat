@@ -67,6 +67,8 @@ using System.Web;
 
         public string ParentCaption { get; set; }
 
+        public string SearchCategory { get; set; }
+
         #endregion //Properties
 
         #region Methods
