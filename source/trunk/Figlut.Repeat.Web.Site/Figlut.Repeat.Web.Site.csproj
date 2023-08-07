@@ -231,6 +231,7 @@
     <Compile Include="Models\HomePageImageGalleryModel.cs" />
     <Compile Include="Models\InformationModel.cs" />
     <Compile Include="Models\InvoiceModel.cs" />
+    <Compile Include="Models\OrganizationLeadFilterModel.cs" />
     <Compile Include="Models\OrganizationLeadModel.cs" />
     <Compile Include="Models\OrganizationModel.cs" />
     <Compile Include="Models\OrganizationProfileModel.cs" />

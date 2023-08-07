@@ -337,7 +337,7 @@ GlobalSetting organizationLeadsPerPageToDisplay = new GlobalSetting()
 	GlobalSettingId = Guid.NewGuid(),
 	Category = "Grid",
 	SettingName = "OrganizationLeadsPerPageToDisplay",
-	SettingValue = "8",
+	SettingValue = "4",
 	DateCreated = DateTime.Now,
 	Description = "Number of leads to display per grid page."
 };

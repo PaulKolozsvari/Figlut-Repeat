@@ -1,5 +1,5 @@
 ﻿.webGrid {
-    margin: 10px;
+    margin: 100px;
     border-collapse: collapse;
     width: 80%;
     /*max-width: 300px;*/
@@ -10,18 +10,13 @@
     margin-right: auto;
     margin-bottom: auto;
     margin-top: auto;
-    /*width: auto;*/
-    /*background-image: -ms-linear-gradient(bottom, #dcebf1 0%, #fff 80%);
-    background-image: -o-linear-gradient(bottom, #dcebf1 0%, #fff 80%);
-    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #dcebf1), color-stop(1, #fff));
-    background-image: -webkit-linear-gradient(bottom, #dcebf1 0%, #fff 80%);
-    background-image: linear-gradient(bottom, #dcebf1 0%, #fff 80%);*/
     background-image: -ms-linear-gradient(bottom, #e7e7e7 0%, #fff 80%);
     background-image: -o-linear-gradient(bottom, #e7e7e7 0%, #fff 80%);
     background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #e7e7e7), color-stop(1, #fff));
     background-image: -webkit-linear-gradient(bottom, #e7e7e7 0%, #fff 80%);
     background-image: linear-gradient(bottom, #e7e7e7 0%, #fff 80%);
     /*color: #dcebf1;*/
+    font-size: 0.8em;
 }
 
 .webGrid a{
@@ -41,23 +36,19 @@
 }
 
 .header {
-    /*background-image: -ms-linear-gradient(bottom, #3195c2 0%, #fff 100%);
-    background-image: -o-linear-gradient(bottom, #3195c2 0%, #fff 100%);
-    background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #3195c2), color-stop(1, #fff));
-    background-image: -webkit-linear-gradient(bottom, #3195c2 0%, #fff 100%);
-    background-image: linear-gradient(bottom, #3195c2 0%, #fff 100%);*/
     background-image: -ms-linear-gradient(bottom, #1e7aa3 0%, #fff 100%);
     background-image: -o-linear-gradient(bottom, #1e7aa3 0%, #fff 100%);
     background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #1e7aa3), color-stop(1, #fff));
     background-image: -webkit-linear-gradient(bottom, #1e7aa3 0%, #fff 100%);
     background-image: linear-gradient(bottom, #1e7aa3 0%, #fff 100%);
-    font-weight: bold;
+    font-weight: normal;
     color: white;
 }
 
 .webGrid th, .webGrid td {
-    border: 1px solid #fff;
+    border: 0.5px solid #fff;
     padding: 5px;
+    font-weight: normal;
 }
 
 

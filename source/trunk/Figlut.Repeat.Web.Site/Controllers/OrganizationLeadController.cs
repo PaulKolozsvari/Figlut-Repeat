@@ -29,9 +29,9 @@
 
         #region Methods
 
-        private FilterModel<OrganizationLeadModel> GetOrganizationLeadFilterModel(
+        private OrganizationLeadFilterModel GetOrganizationLeadFilterModel(
             RepeatEntityContext context,
-            FilterModel<OrganizationLeadModel> model,
+            OrganizationLeadFilterModel model,
             Guid organizationId,
             string centreName)
         {
@@ -63,6 +63,7 @@
                 model.ParentId = organization.OrganizationId;
                 model.ParentCaption = organization.Name;
                 model.SearchCategory = centreName ?? string.Empty;
+                model.SetCentreLocation(centreName);
             }
             return model;
         }
@@ -107,9 +108,9 @@
                 {
                     return RedirectToHome();
                 }
-                FilterModel<OrganizationLeadModel> model = GetOrganizationLeadFilterModel(
+                OrganizationLeadFilterModel model = GetOrganizationLeadFilterModel(
                     context,
-                    new FilterModel<OrganizationLeadModel>(),
+                    new OrganizationLeadFilterModel(),
                     organizationId,
                     centreName);
                 ViewBag.SearchFieldIdentifier = model.SearchFieldIdentifier;
@@ -125,7 +126,7 @@
         }
 
         [HttpPost]
-        public ActionResult Index(FilterModel<OrganizationLeadModel> model)
+        public ActionResult Index(OrganizationLeadFilterModel model)
         {
             try
             {
@@ -134,11 +135,11 @@
                 {
                     return RedirectToHome();
                 }
-                FilterModel<OrganizationLeadModel> resultModel = GetOrganizationLeadFilterModel(context, model, model.ParentId, model.SearchCategory);
+                OrganizationLeadFilterModel resultModel = GetOrganizationLeadFilterModel(context, model, model.ParentId, model.SearchCategory);
                 RefreshCentresDropDownList(model.SearchCategory, context);
                 if (resultModel == null) //There was an error and ViewBag.ErrorMessage has been set. So just return an empty model.
                 {
-                    return PartialView(ORGANIZATION_LEAD_GRID_PARTIAL_VIEW_NAME, new FilterModel<OrganizationLeadModel>());
+                    return PartialView(ORGANIZATION_LEAD_GRID_PARTIAL_VIEW_NAME, new OrganizationLeadFilterModel());
                 }
                 return PartialView(ORGANIZATION_LEAD_GRID_PARTIAL_VIEW_NAME, resultModel);
             }

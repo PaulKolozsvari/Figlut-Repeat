@@ -4,6 +4,7 @@
 
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Web;
     using Figlut.Repeat.ORM;
@@ -32,9 +33,9 @@
 
         public string Name { get; set; }
 
-        public double Latitude { get; set; }
+        public Nullable<double> Latitude { get; set; }
 
-        public double Longitude { get; set; }
+        public Nullable<double> Longitude { get; set; }
 
         public string Address { get; set; }
 
@@ -51,6 +52,28 @@
         public string BusinessStatus { get; set; }
 
         public DateTime DateCreated { get; set; }
+
+        #region Properties
+
+        public string GetLatitudeString()
+        {
+            if (!Latitude.HasValue)
+            {
+                return string.Empty;
+            }
+            return Latitude.Value.ToString(CultureInfo.InvariantCulture);
+        }
+
+        public string GetLongitudeString()
+        {
+            if (!Longitude.HasValue)
+            {
+                return string.Empty;
+            }
+            return Longitude.Value.ToString(CultureInfo.InvariantCulture);
+        }
+
+        #endregion //Properties
 
         #endregion //Properties
 
